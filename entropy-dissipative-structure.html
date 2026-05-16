@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="teaching">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>熵增 · 耗散结构 · 目标与精气神 — 互动教学课</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0f766e;--primary-container:#115e59;--on-primary:#fff;
+  --secondary-container:#f59e0b;--tertiary:#4d44e3;
+  --bg:#f6fbfb;--surface:#f6fbfb;
+  --surface-container-lowest:#ffffff;--surface-container-low:#edf7f5;
+  --surface-container:#e3f0ee;--surface-container-high:#d6e8e5;
+  --fg-1:#10201f;--fg-2:#304c49;--fg-muted:#647b78;
+  --border:rgba(15,118,110,.12);--border-strong:rgba(15,118,110,.26);
+  --green:#10b981;--blue:#3b82f6;--yellow:#f59e0b;--red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans','PingFang SC',ui-sans-serif,system-ui,sans-serif;
+  --font-serif:'Noto Serif SC',Georgia,serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px;--space-sm:8px;--space-md:12px;--space-lg:16px;--space-xl:20px;
+  --space-2xl:24px;--space-3xl:32px;--space-4xl:48px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(16,32,31,.05);
+  --shadow-md:0 4px 14px rgba(16,32,31,.09);
+  --shadow-lg:0 10px 30px rgba(16,32,31,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:
+  radial-gradient(circle at 1px 1px,rgba(15,118,110,.07) 1px,transparent 0) 0 0/22px 22px,var(--bg);
+  color:var(--fg-1)}
+body{font-family:var(--font-body);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+button{font-family:var(--font-body);cursor:pointer}
+::selection{background:var(--primary);color:#fff}
+.lesson-shell{max-width:1200px;margin:0 auto;padding:var(--space-3xl) var(--space-2xl) var(--space-4xl)}
+
+.lesson-head{margin-bottom:var(--space-xl)}
+.kicker{font-family:var(--font-headline);font-size:12px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--primary)}
+.lesson-head h1{font-family:var(--font-serif);font-size:clamp(26px,4.2vw,40px);
+  line-height:1.22;font-weight:700;margin:var(--space-sm) 0 var(--space-md);letter-spacing:-.01em}
+.objective{display:flex;gap:var(--space-sm);align-items:flex-start;max-width:78ch;
+  background:var(--surface-container-low);border:1px solid var(--border);
+  border-left:3px solid var(--secondary-container);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg);font-size:14px;color:var(--fg-2)}
+.objective b{color:var(--fg-1)}
+
+.lesson-workbench{display:grid;grid-template-columns:270px 1fr;gap:var(--space-xl);
+  margin-top:var(--space-xl);align-items:start}
+
+/* step rail */
+.step-rail{position:sticky;top:var(--space-lg);display:flex;flex-direction:column;
+  gap:var(--space-md);background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.rail-label{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.steps{display:flex;flex-direction:column;gap:6px}
+.step{display:flex;gap:var(--space-sm);align-items:flex-start;text-align:left;
+  background:transparent;border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:9px var(--space-sm);transition:all .15s;width:100%}
+.step:hover{border-color:var(--primary);background:var(--surface-container-low)}
+.step[aria-current="true"]{background:var(--primary);border-color:var(--primary);box-shadow:var(--shadow-md)}
+.step[aria-current="true"] .step-n,.step[aria-current="true"] .step-t{color:#fff}
+.step[aria-current="true"] .step-n{background:rgba(255,255,255,.22)}
+.step-n{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--primary);
+  background:var(--surface-container);border-radius:var(--radius-sm);padding:2px 7px;
+  white-space:nowrap;margin-top:1px}
+.step-t{font-size:12.5px;color:var(--fg-1);line-height:1.4;font-weight:500}
+
+.try-control{background:var(--surface-container-low);border:1px dashed var(--border-strong);
+  border-radius:var(--radius-md);padding:var(--space-md)}
+.tc-head{display:flex;align-items:center;gap:6px;font-family:var(--font-headline);
+  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--secondary-container);margin-bottom:var(--space-sm)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm)}
+.toggle-row span{font-size:12.5px;color:var(--fg-2);font-weight:500}
+.switch{position:relative;width:46px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.slider-ui{position:absolute;inset:0;background:var(--border-strong);
+  border-radius:var(--radius-pill);transition:.2s}
+.slider-ui::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;
+  background:#fff;border-radius:50%;transition:.2s;box-shadow:var(--shadow-sm)}
+.switch input:checked + .slider-ui{background:var(--primary)}
+.switch input:checked + .slider-ui::before{transform:translateX(20px)}
+.switch input:focus-visible + .slider-ui{outline:2px solid var(--secondary-container);outline-offset:2px}
+.energy-row{margin-top:var(--space-md)}
+.energy-row label{font-size:11.5px;color:var(--fg-2);display:flex;justify-content:space-between;
+  font-weight:500}
+.energy-row label b{font-family:var(--font-mono);color:var(--primary)}
+.energy-row input[type=range]{width:100%;accent-color:var(--secondary-container);
+  height:4px;margin-top:6px}
+.energy-row input:disabled{opacity:.4}
+.tc-hint{font-size:11px;color:var(--fg-muted);margin-top:var(--space-sm);line-height:1.45}
+
+/* stage */
+.stage-col{display:flex;flex-direction:column;gap:var(--space-lg)}
+.lesson-stage{background:#0c1f1d;border-radius:var(--radius-lg);padding:var(--space-xl);
+  box-shadow:var(--shadow-lg);position:relative}
+.stage-topbar{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:var(--space-lg);flex-wrap:wrap;gap:var(--space-sm)}
+.stage-topbar .st-title{font-family:var(--font-mono);font-size:11px;color:#5b827e;letter-spacing:.05em}
+.status-pill{font-family:var(--font-headline);font-size:11px;font-weight:600;
+  padding:4px 12px;border-radius:var(--radius-pill);letter-spacing:.04em}
+.status-pill.run{background:rgba(16,185,129,.16);color:#6ee7b7;border:1px solid rgba(16,185,129,.4)}
+.status-pill.decay{background:rgba(245,158,11,.16);color:#f7c267;border:1px solid rgba(245,158,11,.4)}
+.status-pill.dead{background:rgba(239,68,68,.16);color:#fca5a5;border:1px solid rgba(239,68,68,.42)}
+
+#grid{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;
+  border-radius:var(--radius-sm);overflow:hidden;aspect-ratio:16/9}
+#grid div{border-radius:2px;transition:background-color .35s ease}
+
+.boundary{display:flex;justify-content:space-between;font-family:var(--font-mono);
+  font-size:10px;color:#5b827e;margin-top:8px}
+.boundary span{display:flex;align-items:center;gap:5px}
+.flow-dot{width:7px;height:7px;border-radius:50%}
+.flow-in{background:#6ee7b7}.flow-out{background:#f7c267}
+.boundary.closed span{opacity:.28}
+
+.meters{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);margin-top:var(--space-lg)}
+.meter{background:rgba(255,255,255,.04);border-radius:var(--radius-sm);
+  padding:var(--space-sm) var(--space-md)}
+.meter .m-label{font-family:var(--font-mono);font-size:10px;color:#5b827e;letter-spacing:.04em}
+.meter .m-bar{height:7px;background:rgba(255,255,255,.07);border-radius:var(--radius-pill);
+  margin-top:7px;overflow:hidden}
+.meter .m-fill{height:100%;border-radius:var(--radius-pill);transition:width .4s ease,background-color .4s}
+.meter .m-val{font-family:var(--font-headline);font-size:15px;font-weight:700;color:#fff;
+  margin-top:5px}
+
+.stage-note{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-left:3px solid var(--primary);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg)}
+.stage-note .sn-tag{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--primary)}
+.stage-note p{font-size:14px;color:var(--fg-2);margin-top:5px;line-height:1.64}
+.stage-note p b{color:var(--fg-1)}
+.stage-note code{font-family:var(--font-mono);font-size:12.5px;background:var(--surface-container);
+  padding:1px 5px;border-radius:4px;color:var(--primary)}
+
+.section-title{font-family:var(--font-serif);font-size:clamp(20px,3vw,25px);font-weight:700;
+  margin:var(--space-3xl) 0 var(--space-md);letter-spacing:-.01em}
+.section-lead{font-size:14px;color:var(--fg-muted);max-width:70ch;margin-bottom:var(--space-lg)}
+
+.concept-drawer{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:var(--space-md)}
+.concept{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-sm);
+  transition:transform .15s,box-shadow .15s}
+.concept:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.concept .c-n{font-family:var(--font-mono);font-size:11px;font-weight:600;color:#fff;
+  background:var(--primary);border-radius:var(--radius-sm);padding:3px 8px;display:inline-block}
+.concept .c-t{font-family:var(--font-headline);font-weight:600;font-size:15px;
+  margin:var(--space-sm) 0 6px;color:var(--fg-1);line-height:1.35}
+.concept .c-b{font-size:13px;color:var(--fg-2);line-height:1.58}
+
+/* physics vs analogy callout */
+.line-callout{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-top:var(--space-lg)}
+.line-card{border-radius:var(--radius-md);padding:var(--space-lg);border:1px solid var(--border)}
+.line-card.phys{background:var(--surface-container-low)}
+.line-card.ana{background:#fdf4e3}
+.line-card .lc-tag{font-family:var(--font-headline);font-size:11px;font-weight:700;
+  letter-spacing:.06em;margin-bottom:var(--space-sm);display:flex;align-items:center;gap:6px}
+.line-card.phys .lc-tag{color:var(--primary)}
+.line-card.ana .lc-tag{color:#b9770e}
+.line-card ul{margin-left:1.05em;font-size:13px;color:var(--fg-2)}
+.line-card li{margin:6px 0;line-height:1.55}
+.line-card li b{color:var(--fg-1)}
+
+/* case study */
+.video-quote{margin:var(--space-lg) 0;padding:var(--space-lg) var(--space-xl);
+  background:var(--surface-container-low);border-left:4px solid var(--secondary-container);
+  border-radius:0 var(--radius-md) var(--radius-md) 0;font-family:var(--font-serif);
+  font-size:16px;font-weight:600;color:var(--fg-1);line-height:1.55}
+.video-quote .vq-src{display:block;margin-top:var(--space-sm);font-family:var(--font-body);
+  font-size:11.5px;font-weight:400;color:var(--fg-muted)}
+.video-quote .vq-src a{color:var(--primary)}
+.bayes-bench{display:flex;flex-direction:column;gap:var(--space-sm);margin-top:var(--space-md)}
+.judge{border:1px solid var(--border);border-radius:var(--radius-md);
+  background:var(--surface-container-lowest);overflow:hidden}
+.judge summary{display:flex;align-items:center;gap:var(--space-md);flex-wrap:wrap;
+  padding:var(--space-md) var(--space-lg);cursor:pointer;list-style:none}
+.judge summary::-webkit-details-marker{display:none}
+.judge summary:hover{background:var(--surface-container-low)}
+.j-no{font-family:var(--font-mono);font-size:11px;font-weight:600;color:#fff;
+  background:var(--fg-2);border-radius:var(--radius-sm);padding:3px 8px;white-space:nowrap}
+.j-claim{flex:1;min-width:180px;font-size:13.5px;font-weight:500;color:var(--fg-1);line-height:1.4}
+.j-stars{font-size:13px;white-space:nowrap;letter-spacing:1px}
+.j-stars .on{color:var(--secondary-container)}.j-stars .off{color:var(--border-strong)}
+.j-body{padding:0 var(--space-lg) var(--space-lg);font-size:13px;color:var(--fg-2);line-height:1.62}
+.j-body b{color:var(--fg-1)}
+.synthesis{margin-top:var(--space-md);font-size:13.5px;color:var(--fg-2);line-height:1.66;
+  background:var(--surface-container-low);border:1px solid var(--border);
+  border-left:3px solid var(--primary);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg)}
+.synthesis b{color:var(--fg-1)}
+.check-yourself{background:linear-gradient(135deg,#0f766e 0%,#115e59 100%);
+  border-radius:var(--radius-lg);padding:var(--space-2xl);color:#fff;
+  box-shadow:var(--shadow-md);margin-top:var(--space-lg)}
+.cy-tag{font-family:var(--font-headline);font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:#9ae6da}
+.cy-q{font-family:var(--font-serif);font-size:18px;font-weight:600;
+  margin:var(--space-sm) 0 var(--space-lg);line-height:1.45}
+.cy-opts{display:flex;flex-direction:column;gap:var(--space-sm)}
+.cy-opt{text-align:left;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+  border-radius:var(--radius-md);padding:var(--space-md) var(--space-lg);color:#fff;
+  font-size:14px;transition:all .15s;line-height:1.5}
+.cy-opt:hover:not(:disabled){background:rgba(255,255,255,.2)}
+.cy-opt.right{background:#10b981;border-color:#10b981;font-weight:600}
+.cy-opt.wrong{background:rgba(239,68,68,.85);border-color:#ef4444}
+.cy-opt:disabled{cursor:default}
+.cy-feedback{margin-top:var(--space-lg);font-size:13.5px;line-height:1.62;
+  background:rgba(255,255,255,.12);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg);display:none}
+.cy-feedback.show{display:block}
+.cy-feedback b{color:#9ae6da}
+
+.recap-strip{display:grid;grid-template-columns:2fr 1fr 1fr;gap:var(--space-md);margin-top:var(--space-lg)}
+.recap-card{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.recap-card .r-tag{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:var(--space-sm)}
+.recap-card.takeaways .r-tag{color:var(--primary)}
+.recap-card.misconception .r-tag{color:var(--red)}
+.recap-card.next .r-tag{color:var(--secondary-container)}
+.recap-card ol{margin-left:1.05em;font-size:13px;color:var(--fg-2)}
+.recap-card ol li{margin:6px 0}
+.recap-card p{font-size:13px;color:var(--fg-2);line-height:1.6}
+.recap-card p b{color:var(--fg-1)}
+
+.lesson-foot{margin-top:var(--space-3xl);padding-top:var(--space-lg);
+  border-top:1px solid var(--border);font-size:12px;color:var(--fg-muted)}
+.lesson-foot .src{margin-top:6px}
+.lesson-foot a{color:var(--primary);word-break:break-all}
+
+@media (max-width:880px){
+  .lesson-shell{padding:var(--space-xl) var(--space-lg) var(--space-3xl)}
+  .lesson-workbench{grid-template-columns:1fr}
+  .step-rail{position:static;order:2}.stage-col{order:1}
+  .recap-strip,.line-callout{grid-template-columns:1fr}
+  #grid{grid-template-columns:repeat(12,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="lesson-shell">
+
+  <header class="lesson-head">
+    <div class="kicker">互动教学课 · 热力学 × 自我管理</div>
+    <h1>熵增 · 耗散结构 · 为什么"目标"养精气神</h1>
+    <div class="objective"><span>🎯</span>
+      <span><b>学完你会掌握：</b>熵增定律为什么让一切"放着不管就会烂"；耗散结构靠什么逆流而上、自发产生秩序；
+      以及——为什么"目标"是一个人维持精气神的<b>负熵泵</b>。课程会明确划清：哪部分是硬物理，哪部分是类比。
+      拖动下面的开关与滑块，亲手让一个系统"活"起来或"死"过去。</span>
+    </div>
+  </header>
+
+  <div class="lesson-workbench">
+
+    <!-- STEP RAIL -->
+    <aside class="step-rail">
+      <div class="rail-label">课程步骤 · 点击跳转</div>
+      <div class="steps" id="steps"></div>
+      <div class="try-control">
+        <div class="tc-head">🔧 动手试 · 系统模拟器</div>
+        <div class="toggle-row">
+          <span id="tcState">封闭系统</span>
+          <label class="switch">
+            <input type="checkbox" id="openSys" aria-label="开放/封闭系统开关">
+            <span class="slider-ui"></span>
+          </label>
+        </div>
+        <div class="energy-row">
+          <label>能量 / 负熵输入 <b id="energyVal">0</b></label>
+          <input type="range" id="energy" min="0" max="100" value="0" step="1" disabled aria-label="能量输入速率">
+        </div>
+        <div class="tc-hint" id="tcHint">封闭系统：没有能量进出。看右边的格子怎样滑向无序——这就是熵增。</div>
+      </div>
+    </aside>
+
+    <!-- STAGE -->
+    <div class="stage-col">
+      <div class="lesson-stage">
+        <div class="stage-topbar">
+          <span class="st-title">系统状态模拟 · 16×9 元胞</span>
+          <span class="status-pill dead" id="statusPill">趋于热寂</span>
+        </div>
+        <div id="grid" aria-hidden="true"></div>
+        <div class="boundary closed" id="boundary">
+          <span><span class="flow-dot flow-in"></span>能量 / 秩序 流入</span>
+          <span>熵 排出环境 <span class="flow-dot flow-out"></span></span>
+        </div>
+        <div class="meters">
+          <div class="meter">
+            <div class="m-label">系统有序度（结构）</div>
+            <div class="m-bar"><div class="m-fill" id="orderFill"></div></div>
+            <div class="m-val" id="orderVal">8%</div>
+          </div>
+          <div class="meter">
+            <div class="m-label">离平衡度（"活力"距离）</div>
+            <div class="m-bar"><div class="m-fill" id="vitalFill"></div></div>
+            <div class="m-val" id="vitalVal">5%</div>
+          </div>
+        </div>
+      </div>
+      <div class="stage-note">
+        <span class="sn-tag" id="snTag">第 1 步</span>
+        <p id="snText"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCEPT DRAWER -->
+  <h2 class="section-title">六个核心概念</h2>
+  <p class="section-lead">从"熵是什么"到"目标作负熵泵"，按因果顺序排列。前四个是物理，第五个是物理与生物的接口，第六个是类比。</p>
+  <div class="concept-drawer">
+    <div class="concept"><span class="c-n">概念 1</span>
+      <div class="c-t">熵 / 熵增定律</div>
+      <div class="c-b">熵是系统无序程度的度量。热力学第二定律：在<b>孤立系统</b>里，熵只增不减，自发地趋向最大值。通俗说——放着不管，一切都朝混乱、均匀、无差别滑落。</div></div>
+    <div class="concept"><span class="c-n">概念 2</span>
+      <div class="c-t">平衡态 = 热寂</div>
+      <div class="c-b">熵达到最大时，系统进入<b>热力学平衡态</b>：温度、浓度处处相同，没有梯度、没有可做功的能量、没有变化。对宇宙叫"热寂"，对一个有序结构而言——它就是死亡。</div></div>
+    <div class="concept"><span class="c-n">概念 3</span>
+      <div class="c-t">耗散结构</div>
+      <div class="c-b">普里高津（1977 诺贝尔化学奖）发现：一个<b>开放、远离平衡</b>的系统，能自发组织出有序结构。它内部仍在产生熵，但把熵<b>排到环境</b>、不让它堆积——靠"耗散"维持秩序。</div></div>
+    <div class="concept"><span class="c-n">概念 4</span>
+      <div class="c-t">耗散结构的三个条件</div>
+      <div class="c-b"><b>① 开放</b>——与环境交换物质和能量；<b>② 远离平衡态</b>——存在驱动它的梯度/能流；<b>③ 非线性 + 涨落</b>——组分间非线性作用，秩序"通过涨落"涌现。三者缺一不可。</div></div>
+    <div class="concept"><span class="c-n">概念 5</span>
+      <div class="c-t">负熵 / 生命以负熵为食</div>
+      <div class="c-b">薛定谔 1944《生命是什么》：生命靠"吸取负熵"维持秩序。他后来修正——真正的来源是<b>自由能</b>。生命是开放系统，吃、呼吸、感知 = 输入秩序、排出熵，因此与第二定律不冲突。</div></div>
+    <div class="concept"><span class="c-n">概念 6</span>
+      <div class="c-t">目标 = 负熵泵（类比）</div>
+      <div class="c-b">人是一台耗散结构。没有目标时，人走<b>最小阻力路径</b>，滑向"低能平衡态"——涣散、内耗、躺平。目标制造"现状 vs 理想"的<b>梯度</b>，把散落的注意力组织成定向结构，逼你持续泵入负熵。</div></div>
+  </div>
+
+  <!-- PHYSICS VS ANALOGY -->
+  <h2 class="section-title">划清边界：哪些是物理，哪些是类比</h2>
+  <p class="section-lead">这是这堂课最该记住的一页。把类比当物理，会让你以为"精气神"能像温度一样被测量——它不能。</p>
+  <div class="line-callout">
+    <div class="line-card phys">
+      <div class="lc-tag">✓ 站得住的物理 / 事实</div>
+      <ul>
+        <li>孤立系统熵增、趋向平衡态——<b>严格的物理定律</b>。</li>
+        <li>开放系统可以局部降熵、自组织出耗散结构——<b>普里高津证明过</b>，贝纳德对流、化学振荡都是实例。</li>
+        <li>人确实是一个<b>开放的耗散系统</b>：必须持续摄入能量与秩序（食物、信息、行动），否则结构瓦解。这条字面成立。</li>
+      </ul>
+    </div>
+    <div class="line-card ana">
+      <div class="lc-tag">≈ 是类比，不是物理</div>
+      <ul>
+        <li>"精气神"<b>不是热力学量</b>，没有单位、不能测量。它是对"这台耗散结构运转良好"的<b>外部观感</b>。</li>
+        <li>"目标降低你的熵"——<b>没有方程</b>。目标作用于动机与注意力，是<b>心理学机制</b>，只是借了物理的词。</li>
+        <li>"目标=负熵泵"是一个<b>好的心智模型</b>：它准确地提醒你"秩序需要持续供能"。但它的力量在于<b>启发</b>，不在于它是定律。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CASE STUDY -->
+  <h2 class="section-title">案例检验：一个流行说法经得起推敲吗</h2>
+  <p class="section-lead">网上有大量"目标养精气神"的说法。我们用 video-mind 转写了一条代表性视频，对它的三个论断逐条评级——这正是上一节"物理 vs 类比"的实战练习：同一个母题，怎样用才不跑偏。</p>
+  <div class="video-quote">
+    "心里没有目标、不能围绕目标发力，再怎么养出来的精气神也会白白散掉。"
+    <span class="vq-src">视频《精气神不聚焦目标就是白养》核心主张 ·
+      <a href="https://www.yuque.com/oudizuo/video-mind/1778921705" target="_blank" rel="noopener">完整转写 + 评述 ↗</a></span>
+  </div>
+  <div class="bayes-bench">
+    <details class="judge">
+      <summary>
+        <span class="j-no">论断 1</span>
+        <span class="j-claim">精气神是会"自动漏掉"的守恒存量，没目标就泄漏</span>
+        <span class="j-stars"><span class="on">★★★</span><span class="off">★★</span></span>
+      </summary>
+      <div class="j-body">方向上有支持——目标设定理论（Locke &amp; Latham）确实表明明确、有挑战的目标能提升专注与坚持。但"能量池守恒、不用于正道就必然泄漏"这个底层模型证据薄弱：与它最接近的"自我损耗（ego depletion）"理论，近十年大量<b>预注册重复实验未能复现</b>。而且闲聊、刷手机、休息本身有恢复与社交功能，不是纯损耗。<b>评级 ★★★☆☆</b>——目标助专注成立，"精气神是会自动漏的守恒量"是民间能量学模型。</div>
+    </details>
+    <details class="judge">
+      <summary>
+        <span class="j-no">论断 2</span>
+        <span class="j-claim">事业财富没结果，"基本上都是因为"不够聚焦</span>
+        <span class="j-stars"><span class="on">★★</span><span class="off">★★★</span></span>
+      </summary>
+      <div class="j-body">典型的<b>单因归因</b>，且接近"公正世界谬误"。世俗结果高度依赖结构性因素——初始资本与出身、行业与时点、人脉、健康与意外、运气。社会流动性研究反复显示出身对收入解释力极强；现实中也有大量极度自律的人长期拿不到结果（创业失败率本身就说明专注不是充分条件）。把缺乏结果几乎全归到"不聚焦"，既高估努力的因果权重，也隐含对失败者的道德指责。<b>评级 ★★☆☆☆</b>。</div>
+    </details>
+    <details class="judge">
+      <summary>
+        <span class="j-no">论断 3</span>
+        <span class="j-claim">不围绕目标做事，早睡晚睡"都没有任何用"</span>
+        <span class="j-stars"><span class="on">★</span><span class="off">★★★★</span></span>
+      </summary>
+      <div class="j-body">与医学共识<b>直接冲突</b>。充足睡眠的收益是<b>内在的、独立于是否有目标</b>：免疫、心血管、代谢、情绪调节、记忆巩固，睡眠不足与痴呆/心脏病风险升高有大量流行病学证据。一个没有宏大事业目标的人，规律早睡同样显著降低患病率。视频把"睡眠服务于目标的工具价值"偷换成"睡眠的全部价值"——把手段当成了唯一目的。<b>评级 ★☆☆☆☆</b>。</div>
+    </details>
+  </div>
+  <div class="synthesis">
+    <b>整合判断：</b>耗散结构框架里站得住的核心是——人是开放系统、秩序需要持续供能、目标能<b>组织</b>这种供能。这条视频抓住了对的母题，却把它推过了头：把"精气神"当守恒量、把世俗成败单因归到聚焦、把睡眠价值绑死在目标上。<b>好的心智模型，是用来提醒自己持续供能的，不是用来评判他人、也不是用来否定休息的。</b>这就是"物理 vs 类比"那条线在现实里的样子。
+  </div>
+
+  <!-- CHECK YOURSELF -->
+  <h2 class="section-title">检验一下</h2>
+  <div class="check-yourself">
+    <div class="cy-tag">即时反馈 · 单选</div>
+    <div class="cy-q">一个人长期没有目标、放任自己。用耗散结构的视角看，他大概率会滑向哪种状态？为什么？</div>
+    <div class="cy-opts" id="cyOpts">
+      <button class="cy-opt" data-correct="0">A. 自发变得更有序——休息够了，秩序会自己回来。</button>
+      <button class="cy-opt" data-correct="1">B. 滑向"平衡态"——精力涣散、内耗、低能。因为没有目标这个梯度，他不再主动泵入负熵，系统朝最小阻力方向衰退。</button>
+      <button class="cy-opt" data-correct="0">C. 维持不变——不设目标也不会变差，只是停在原地。</button>
+    </div>
+    <div class="cy-feedback" id="cyFeedback"></div>
+  </div>
+
+  <!-- RECAP -->
+  <h2 class="section-title">课堂小结</h2>
+  <div class="recap-strip">
+    <div class="recap-card takeaways">
+      <div class="r-tag">三个拿走</div>
+      <ol>
+        <li>放着不管 = 熵增 = 滑向无序。<b>有序是要持续花能量去维持的</b>，不是默认状态。</li>
+        <li>耗散结构靠三件事活着：<b>开放、远离平衡、把熵排出去</b>。封闭=必死。</li>
+        <li>目标的作用是制造梯度、组织注意力，让你<b>有理由持续泵入负熵</b>——这是把人当耗散结构看时，"养精气神"的机制。</li>
+      </ol>
+    </div>
+    <div class="recap-card misconception">
+      <div class="r-tag">一个误区</div>
+      <p>别把<b>类比当物理</b>。"精气神"不是熵的读数，目标不是焦耳。物理上成立的只是"人是开放系统、需要持续供能"；"目标组织这种供能"是<b>心理学</b>，借了物理的壳。</p>
+    </div>
+    <div class="recap-card next">
+      <div class="r-tag">下一步探索</div>
+      <p>给自己设一个<b>具体、够得着又有张力</b>的目标，观察两周——注意力是否更聚焦、行动是否更主动。你在做的，就是给自己这台耗散结构<b>接上负熵泵</b>。</p>
+    </div>
+  </div>
+
+  <footer class="lesson-foot">
+    <span>Lesson Lab · html-anything · 互动教学课</span>
+    <div class="src">参考：
+      <a href="https://en.wikipedia.org/wiki/Dissipative_system" target="_blank" rel="noopener">Dissipative system (Wikipedia)</a> ·
+      <a href="https://en.wikipedia.org/wiki/Entropy_and_life" target="_blank" rel="noopener">Entropy and life</a> ·
+      <a href="https://www.nobelprize.org/uploads/2018/06/prigogine-lecture.pdf" target="_blank" rel="noopener">Prigogine 诺贝尔讲座</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id);};
+  var COLS=16,ROWS=9,N=COLS*ROWS;
+
+  /* build grid + per-cell stable random */
+  var grid=$("grid"),cells=[],rand=[];
+  for(var i=0;i<N;i++){
+    var d=document.createElement("div");grid.appendChild(d);cells.push(d);
+    rand.push(Math.random());
+  }
+
+  /* ---- lesson steps ---- */
+  var STEPS=[
+    {n:"第 1 步",t:"熵增定律",open:false,energy:0,
+     note:"<b>热力学第二定律：</b>孤立系统里，熵（无序）只增不减，自发趋向最大。把系统放着不管——格子正在失去结构，颜色越来越乱、越来越均匀。这不是偶然，是定律。"},
+    {n:"第 2 步",t:"终点：热寂",open:false,energy:0,
+     note:"封闭系统的归宿是<b>平衡态</b>：处处相同、没有梯度、没有可做功的能量。对宇宙这叫"热寂"，对任何有序结构——它就是<b>死亡</b>。注意状态牌：<code>趋于热寂</code>。"},
+    {n:"第 3 步",t:"耗散结构：逆流而上",open:true,energy:80,
+     note:"现在打开系统、注入能量。看格子<b>自发组织出条纹</b>——这就是耗散结构（普里高津，1977 诺奖）。秩序不是凭空来的：系统在内部产熵，但把熵<b>排到环境</b>、不让它堆积。"},
+    {n:"第 4 步",t:"三个条件",open:true,energy:55,
+     note:"耗散结构要同时满足：<b>① 开放</b>（与环境换物质能量）<b>② 远离平衡态</b>（有驱动的能流）<b>③ 非线性涨落</b>（秩序通过涨落涌现）。试着把能量滑块往下拉——能流不够，结构就撑不住。"},
+    {n:"第 5 步",t:"人是一个耗散结构",open:true,energy:70,
+     note:"薛定谔《生命是什么》：生命<b>以负熵为食</b>（后修正为"自由能"）。你吃饭、学习、行动 = 把秩序输进来、把熵排出去。停止输入，人这台耗散结构就开始瓦解——这与第二定律不冲突，因为人是<b>开放系统</b>。"},
+    {n:"第 6 步",t:"目标 = 负熵泵",open:true,energy:90,
+     note:"没有目标时，人走<b>最小阻力路径</b>，滑向低能平衡态——涣散、内耗、躺平。<b>目标</b>制造"现状 vs 理想"的梯度，把散落的注意力组织成定向结构，逼你持续泵入负熵。<b>精气神</b>，就是这台耗散结构运转良好时的外部signature。⚠️ 记住下一节：这是类比，不是方程。"}
+  ];
+
+  var cur=0,openSys=false,energy=0,phase=0,decay=1,reduceMotion=false;
+  try{reduceMotion=window.matchMedia("(prefers-reduced-motion:reduce)").matches;}catch(e){}
+
+  /* order value 0..1 */
+  function orderValue(){
+    if(!openSys) return 0.06*decay;          /* closed -> drifts to ~0 */
+    return 0.14 + 0.84*(energy/100);          /* open -> tracks energy */
+  }
+
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function paint(){
+    var o=orderValue();
+    for(var i=0;i<N;i++){
+      var x=i%COLS,y=(i/COLS)|0;
+      /* ordered target: convection rolls -> teal<->amber stripes */
+      var roll=(Math.sin(x/COLS*Math.PI*2*2.0 + phase)+1)/2;
+      var orR=lerp(15,245,roll),orG=lerp(118,158,roll),orB=lerp(110,11,roll);
+      /* disordered target: muted grey, per-cell random lightness */
+      var g=70+rand[i]*90;
+      /* blend */
+      var t=o;
+      var r=lerp(g,orR,t),gg=lerp(g,orG,t),b=lerp(g*0.98,orB,t);
+      cells[i].style.backgroundColor="rgb("+(r|0)+","+(gg|0)+","+(b|0)+")";
+    }
+    /* meters */
+    var orderPct=Math.round(o*100);
+    var vital=openSys?Math.round((0.1+0.9*(energy/100))*100):Math.round(6*decay);
+    $("orderVal").textContent=orderPct+"%";
+    $("vitalVal").textContent=vital+"%";
+    var of=$("orderFill"),vf=$("vitalFill");
+    of.style.width=orderPct+"%";vf.style.width=vital+"%";
+    var col=orderPct>60?"#10b981":orderPct>30?"#f59e0b":"#ef4444";
+    of.style.background=col;vf.style.background=col;
+    /* status pill */
+    var pill=$("statusPill");
+    if(openSys&&orderPct>=58){pill.className="status-pill run";pill.textContent="耗散结构 · 运转中";}
+    else if(openSys&&orderPct>=30){pill.className="status-pill decay";pill.textContent="能流不足 · 正在衰退";}
+    else if(openSys){pill.className="status-pill decay";pill.textContent="濒临瓦解";}
+    else{pill.className="status-pill dead";pill.textContent="封闭 · 趋于热寂";}
+  }
+
+  /* gentle convection animation */
+  function loop(){
+    if(!reduceMotion && openSys && energy>0){ phase+=0.012+energy/100*0.03; paint(); }
+    requestAnimationFrame(loop);
+  }
+
+  /* closed-system slow decay each time a closed step is shown */
+  var decayTimer=null;
+  function startDecay(){
+    if(decayTimer)clearInterval(decayTimer);
+    decay=1;
+    if(reduceMotion){decay=0;paint();return;}
+    decayTimer=setInterval(function(){
+      decay-=0.08;
+      if(decay<=0){decay=0;clearInterval(decayTimer);decayTimer=null;}
+      paint();
+    },140);
+  }
+
+  function applyState(){
+    $("openSys").checked=openSys;
+    $("energy").disabled=!openSys;
+    $("energy").value=energy;
+    $("energyVal").textContent=energy;
+    $("tcState").textContent=openSys?"开放系统":"封闭系统";
+    $("boundary").className=openSys?"boundary":"boundary closed";
+    $("tcHint").textContent=openSys
+      ? "开放系统：拖能量滑块。能流足→自组织出条纹（耗散结构）；能流弱→结构撑不住，滑回无序。"
+      : "封闭系统：没有能量进出。看格子怎样滑向无序——这就是熵增。";
+    if(decayTimer){clearInterval(decayTimer);decayTimer=null;}
+    if(!openSys) startDecay(); else { decay=1; paint(); }
+  }
+
+  /* step rail */
+  var stepsEl=$("steps");
+  STEPS.forEach(function(s,i){
+    var b=document.createElement("button");
+    b.className="step";b.type="button";
+    b.innerHTML='<span class="step-n">'+(i+1)+'</span><span class="step-t">'+s.t+'</span>';
+    b.addEventListener("click",function(){gotoStep(i);});
+    stepsEl.appendChild(b);
+  });
+  var stepBtns=[].slice.call(stepsEl.children);
+
+  function gotoStep(i){
+    cur=i;var s=STEPS[i];
+    openSys=s.open;energy=s.energy;
+    stepBtns.forEach(function(b,j){b.setAttribute("aria-current",j===i?"true":"false");});
+    $("snTag").textContent=s.n+" · "+s.t;
+    $("snText").innerHTML=s.note;
+    applyState();
+  }
+
+  /* manual controls */
+  $("openSys").addEventListener("change",function(){
+    openSys=this.checked;
+    if(openSys&&energy===0)energy=60;
+    applyState();
+  });
+  $("energy").addEventListener("input",function(){
+    energy=parseInt(this.value,10);
+    $("energyVal").textContent=energy;
+    paint();
+  });
+
+  /* quiz */
+  var answered=false;
+  [].slice.call(document.querySelectorAll(".cy-opt")).forEach(function(opt){
+    opt.addEventListener("click",function(){
+      if(answered)return;answered=true;
+      var correct=opt.getAttribute("data-correct")==="1";
+      [].slice.call(document.querySelectorAll(".cy-opt")).forEach(function(o){
+        o.disabled=true;
+        if(o.getAttribute("data-correct")==="1")o.classList.add("right");
+      });
+      if(!correct)opt.classList.add("wrong");
+      var fb=$("cyFeedback");fb.classList.add("show");
+      fb.innerHTML=correct
+        ? "<b>答对了。</b>有序不是默认状态——它要靠持续供能维持。没有目标这个梯度，人不再主动泵入负熵，就会沿最小阻力方向滑向平衡态：涣散、低能。这正是把人看作耗散结构时的核心结论。"
+        : "<b>再想想。</b>关键点：<b>有序需要持续花能量维持</b>，它不会自己回来、也不会原地不动。没有目标制造的梯度，系统默认朝无序滑落。正确答案是 B。";
+    });
+  });
+
+  /* init */
+  gotoStep(0);
+  loop();
+})();
+</script>
+</body>
+</html>
