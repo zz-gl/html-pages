@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="teaching">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 编程七个月 · 互动教学课</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0f766e; --primary-container:#115e59; --on-primary:#fff;
+  --secondary-container:#f59e0b; --tertiary:#4d44e3;
+  --bg:#f6fbfb; --surface:#f6fbfb;
+  --surface-container-lowest:#ffffff; --surface-container-low:#edf7f5;
+  --surface-container:#e3f0ee; --surface-container-high:#d6e8e5;
+  --fg-1:#10201f; --fg-2:#304c49; --fg-muted:#647b78;
+  --border:rgba(15,118,110,.12); --border-strong:rgba(15,118,110,.24);
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --grad-text:linear-gradient(120deg,#0f766e 0%,#f59e0b 100%);
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans','PingFang SC',ui-sans-serif,system-ui,sans-serif;
+  --font-serif:'Noto Serif SC',Georgia,serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px;--space-sm:8px;--space-md:12px;--space-lg:16px;--space-xl:20px;
+  --space-2xl:24px;--space-3xl:32px;--space-4xl:48px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(16,32,31,.05);
+  --shadow-md:0 4px 14px rgba(16,32,31,.09);
+  --shadow-lg:0 10px 30px rgba(16,32,31,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:
+  radial-gradient(circle at 1px 1px,rgba(15,118,110,.07) 1px,transparent 0) 0 0/22px 22px,
+  var(--bg);color:var(--fg-1)}
+body{font-family:var(--font-body);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+button{font-family:var(--font-body);cursor:pointer}
+::selection{background:var(--primary);color:#fff}
+
+.lesson-shell{max-width:1200px;margin:0 auto;padding:var(--space-3xl) var(--space-2xl) var(--space-4xl)}
+
+/* ---- header ---- */
+.lesson-head{margin-bottom:var(--space-2xl)}
+.kicker{font-family:var(--font-headline);font-size:12px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--primary)}
+.lesson-head h1{font-family:var(--font-serif);font-size:clamp(27px,4.4vw,42px);
+  line-height:1.2;font-weight:700;margin:var(--space-sm) 0 var(--space-md);letter-spacing:-.01em}
+.objective{display:flex;gap:var(--space-sm);align-items:flex-start;max-width:74ch;
+  background:var(--surface-container-low);border:1px solid var(--border);
+  border-left:3px solid var(--secondary-container);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg);font-size:14px;color:var(--fg-2)}
+.objective b{color:var(--fg-1)}
+.objective .ico{font-size:15px}
+
+/* ---- workbench ---- */
+.lesson-workbench{display:grid;grid-template-columns:268px 1fr;gap:var(--space-xl);
+  margin-top:var(--space-2xl);align-items:start}
+
+/* ---- step rail ---- */
+.step-rail{position:sticky;top:var(--space-lg);display:flex;flex-direction:column;
+  gap:var(--space-md);background:var(--surface-container-lowest);
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.rail-label{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.steps{display:flex;flex-direction:column;gap:6px}
+.step{display:flex;gap:var(--space-sm);align-items:flex-start;text-align:left;
+  background:transparent;border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:9px var(--space-sm);transition:all .15s;width:100%}
+.step:hover{border-color:var(--primary);background:var(--surface-container-low)}
+.step[aria-current="true"]{background:var(--primary);border-color:var(--primary);
+  box-shadow:var(--shadow-md)}
+.step[aria-current="true"] .step-n,
+.step[aria-current="true"] .step-t{color:#fff}
+.step[aria-current="true"] .step-n{background:rgba(255,255,255,.22)}
+.step-n{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--primary);
+  background:var(--surface-container);border-radius:var(--radius-sm);
+  padding:2px 7px;white-space:nowrap;margin-top:1px}
+.step-t{font-size:12.5px;color:var(--fg-1);line-height:1.4;font-weight:500}
+
+/* try control */
+.try-control{background:var(--surface-container-low);border:1px dashed var(--border-strong);
+  border-radius:var(--radius-md);padding:var(--space-md)}
+.try-control .tc-head{display:flex;align-items:center;gap:6px;font-family:var(--font-headline);
+  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--secondary-container);margin-bottom:var(--space-sm)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm)}
+.toggle-row span{font-size:12.5px;color:var(--fg-2);font-weight:500}
+.switch{position:relative;width:46px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.slider-ui{position:absolute;inset:0;background:var(--border-strong);
+  border-radius:var(--radius-pill);transition:.2s}
+.slider-ui::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;
+  background:#fff;border-radius:50%;transition:.2s;box-shadow:var(--shadow-sm)}
+.switch input:checked + .slider-ui{background:var(--primary)}
+.switch input:checked + .slider-ui::before{transform:translateX(20px)}
+.switch input:focus-visible + .slider-ui{outline:2px solid var(--secondary-container);outline-offset:2px}
+.tc-hint{font-size:11px;color:var(--fg-muted);margin-top:var(--space-sm);line-height:1.45}
+
+/* ---- stage column ---- */
+.stage-col{display:flex;flex-direction:column;gap:var(--space-lg)}
+.lesson-stage{background:#0d1f1e;border-radius:var(--radius-lg);
+  padding:var(--space-xl);box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.lesson-stage::before{content:"model.go — 解剖台";position:absolute;top:12px;left:18px;
+  font-family:var(--font-mono);font-size:11px;color:#5b827e;letter-spacing:.05em}
+.stage-inner{margin-top:var(--space-xl)}
+
+/* scrubber */
+.scrubber{display:flex;align-items:center;gap:var(--space-md);margin-bottom:var(--space-lg)}
+.scrubber label{font-family:var(--font-mono);font-size:11px;color:#7ba8a3;white-space:nowrap}
+.scrubber input[type=range]{flex:1;accent-color:var(--secondary-container);height:4px}
+.week-badge{font-family:var(--font-mono);font-size:11px;color:#0d1f1e;
+  background:var(--secondary-container);padding:3px 9px;border-radius:var(--radius-pill);
+  font-weight:600;white-space:nowrap}
+
+/* struct box */
+.struct-wrap{display:grid;gap:var(--space-md)}
+.struct-box{border:1.5px solid #2f5651;border-radius:var(--radius-md);
+  background:rgba(255,255,255,.03);padding:var(--space-md);transition:border-color .3s}
+.struct-box.danger{border-color:var(--red);box-shadow:0 0 0 1px rgba(239,68,68,.25)}
+.struct-title{font-family:var(--font-mono);font-size:12px;color:#9fc9c4;margin-bottom:var(--space-sm)}
+.struct-title b{color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
+.chip{font-family:var(--font-mono);font-size:11px;padding:4px 9px;border-radius:var(--radius-sm);
+  background:rgba(245,158,11,.15);color:#f7c267;border:1px solid rgba(245,158,11,.3);
+  animation:pop .3s ease}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.chip.mod{background:rgba(16,185,129,.14);color:#6ee7b7;border-color:rgba(16,185,129,.34)}
+
+/* modules grid (constrained mode) */
+.modules{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-sm)}
+.module-card{border:1.5px solid rgba(16,185,129,.4);border-radius:var(--radius-sm);
+  background:rgba(16,185,129,.06);padding:var(--space-sm);text-align:center}
+.module-card .mc-t{font-family:var(--font-mono);font-size:11px;color:#6ee7b7;font-weight:600}
+.module-card .mc-s{font-size:10px;color:#5b827e;margin-top:3px}
+.bus{text-align:center;font-family:var(--font-mono);font-size:11px;color:#7ba8a3;
+  border:1px dashed rgba(123,168,163,.4);border-radius:var(--radius-sm);padding:6px;
+  margin-top:var(--space-sm)}
+
+/* update() bar */
+.update-block{margin-top:var(--space-md)}
+.update-head{display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--font-mono);font-size:11px;color:#9fc9c4;margin-bottom:5px}
+.update-head b{color:#f7c267;font-size:13px}
+.switch-track{height:14px;background:rgba(255,255,255,.06);border-radius:var(--radius-sm);
+  overflow:hidden}
+.switch-fill{height:100%;width:0;border-radius:var(--radius-sm);
+  background:linear-gradient(90deg,#0f766e,#f59e0b,#ef4444);transition:width .4s ease}
+
+/* meters */
+.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-sm);
+  margin-top:var(--space-md)}
+.meter{background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:var(--space-sm) var(--space-md)}
+.meter .m-label{font-family:var(--font-mono);font-size:10px;color:#5b827e;letter-spacing:.04em}
+.meter .m-val{font-family:var(--font-headline);font-size:21px;font-weight:700;color:#fff;
+  margin-top:2px;line-height:1}
+.meter .m-val small{font-size:11px;color:#7ba8a3;font-weight:500}
+.meter.risk .m-val{color:var(--green)}
+.meter.risk[data-lv=mid] .m-val{color:var(--yellow)}
+.meter.risk[data-lv=high] .m-val{color:#fb923c}
+.meter.risk[data-lv=crit] .m-val{color:var(--red)}
+
+/* stage note */
+.stage-note{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-left:3px solid var(--primary);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg)}
+.stage-note .sn-tag{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--primary)}
+.stage-note p{font-size:14px;color:var(--fg-2);margin-top:5px;line-height:1.62}
+.stage-note p b{color:var(--fg-1)}
+
+/* ---- concept drawer ---- */
+.section-title{font-family:var(--font-serif);font-size:clamp(20px,3vw,25px);
+  font-weight:700;margin:var(--space-3xl) 0 var(--space-md);letter-spacing:-.01em}
+.section-lead{font-size:14px;color:var(--fg-muted);max-width:66ch;margin-bottom:var(--space-lg)}
+.concept-drawer{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));
+  gap:var(--space-md)}
+.concept{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-sm);
+  transition:transform .15s,box-shadow .15s}
+.concept:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.concept .c-n{font-family:var(--font-mono);font-size:11px;font-weight:600;color:#fff;
+  background:var(--primary);border-radius:var(--radius-sm);padding:3px 8px;display:inline-block}
+.concept .c-t{font-family:var(--font-headline);font-weight:600;font-size:15px;
+  margin:var(--space-sm) 0 6px;color:var(--fg-1);line-height:1.35}
+.concept .c-b{font-size:13px;color:var(--fg-2);line-height:1.58}
+
+/* ---- check yourself ---- */
+.check-yourself{background:linear-gradient(135deg,#0f766e 0%,#115e59 100%);
+  border-radius:var(--radius-lg);padding:var(--space-2xl);color:#fff;
+  box-shadow:var(--shadow-md);margin-top:var(--space-lg)}
+.check-yourself .cy-tag{font-family:var(--font-headline);font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:#9ae6da}
+.check-yourself .cy-q{font-family:var(--font-serif);font-size:18px;font-weight:600;
+  margin:var(--space-sm) 0 var(--space-lg);line-height:1.45}
+.cy-opts{display:flex;flex-direction:column;gap:var(--space-sm)}
+.cy-opt{text-align:left;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+  border-radius:var(--radius-md);padding:var(--space-md) var(--space-lg);color:#fff;
+  font-size:14px;transition:all .15s;line-height:1.5}
+.cy-opt:hover:not(:disabled){background:rgba(255,255,255,.2)}
+.cy-opt.right{background:#10b981;border-color:#10b981;font-weight:600}
+.cy-opt.wrong{background:rgba(239,68,68,.85);border-color:#ef4444}
+.cy-opt:disabled{cursor:default}
+.cy-feedback{margin-top:var(--space-lg);font-size:13.5px;line-height:1.6;
+  background:rgba(255,255,255,.12);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg);display:none}
+.cy-feedback.show{display:block}
+.cy-feedback b{color:#9ae6da}
+
+/* ---- recap strip ---- */
+.recap-strip{display:grid;grid-template-columns:2fr 1fr 1fr;gap:var(--space-md);
+  margin-top:var(--space-lg)}
+.recap-card{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.recap-card .r-tag{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:var(--space-sm)}
+.recap-card.takeaways .r-tag{color:var(--primary)}
+.recap-card.misconception .r-tag{color:var(--red)}
+.recap-card.next .r-tag{color:var(--secondary-container)}
+.recap-card ol{margin-left:1.05em;font-size:13px;color:var(--fg-2)}
+.recap-card ol li{margin:6px 0}
+.recap-card p{font-size:13px;color:var(--fg-2);line-height:1.58}
+.recap-card p b{color:var(--fg-1)}
+
+/* ---- bayes bench ---- */
+.bayes-bench{margin-top:var(--space-lg);display:flex;flex-direction:column;gap:var(--space-sm)}
+.judge{border:1px solid var(--border);border-radius:var(--radius-md);
+  background:var(--surface-container-lowest);overflow:hidden}
+.judge summary{display:flex;align-items:center;gap:var(--space-md);
+  padding:var(--space-md) var(--space-lg);cursor:pointer;list-style:none}
+.judge summary::-webkit-details-marker{display:none}
+.judge summary:hover{background:var(--surface-container-low)}
+.j-no{font-family:var(--font-mono);font-size:11px;font-weight:600;color:#fff;
+  background:var(--fg-2);border-radius:var(--radius-sm);padding:3px 8px;white-space:nowrap}
+.j-claim{flex:1;font-size:13.5px;font-weight:500;color:var(--fg-1);line-height:1.4}
+.j-stars{font-size:13px;white-space:nowrap;letter-spacing:1px}
+.j-stars .on{color:var(--secondary-container)}
+.j-stars .off{color:var(--border-strong)}
+.j-body{padding:0 var(--space-lg) var(--space-lg);font-size:13px;color:var(--fg-2);
+  line-height:1.62;display:grid;gap:6px}
+.j-body .jb-tag{font-family:var(--font-headline);font-size:10px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--primary)}
+
+.lesson-foot{margin-top:var(--space-3xl);padding-top:var(--space-lg);
+  border-top:1px solid var(--border);font-size:12px;color:var(--fg-muted);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.lesson-foot a{color:var(--primary)}
+
+@media (max-width:880px){
+  .lesson-shell{padding:var(--space-xl) var(--space-lg) var(--space-3xl)}
+  .lesson-workbench{grid-template-columns:1fr}
+  .step-rail{position:static;order:2}
+  .stage-col{order:1}
+  .recap-strip{grid-template-columns:1fr}
+  .modules{grid-template-columns:1fr 1fr}
+  .meters{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="lesson-shell">
+
+  <header class="lesson-head">
+    <div class="kicker">互动教学课 · AI 编程</div>
+    <h1>AI 编程七个月：写功能，不写架构</h1>
+    <div class="objective">
+      <span class="ico">🎯</span>
+      <span><b>学完你会明白：</b>为什么"无约束 + 零审查"地用 AI 写代码，
+      七个月后会得到一个必须整体归档的"上帝对象"——以及人该把哪条约束握在手里。
+      拖动时间轴看残骸如何长大，再打开"架构约束"开关，看同样的 AI 产出如何分岔。</span>
+    </div>
+  </header>
+
+  <div class="lesson-workbench">
+
+    <!-- ===== STEP RAIL ===== -->
+    <aside class="step-rail">
+      <div class="rail-label">课程步骤 · 点击跳转</div>
+      <div class="steps" id="steps"></div>
+
+      <div class="try-control">
+        <div class="tc-head">🔧 动手试 · 架构约束</div>
+        <div class="toggle-row">
+          <span id="tcState">关 — AI 自由驾驶</span>
+          <label class="switch">
+            <input type="checkbox" id="constraint" aria-label="架构约束开关">
+            <span class="slider-ui"></span>
+          </label>
+        </div>
+        <div class="tc-hint" id="tcHint">打开它：同样用 Claude，但初始提示要求"每个视图独立 model、状态走消息传递"——看解剖台如何分岔。</div>
+      </div>
+    </aside>
+
+    <!-- ===== STAGE ===== -->
+    <div class="stage-col">
+      <div class="lesson-stage">
+        <div class="stage-inner">
+          <div class="scrubber">
+            <label>项目时间轴</label>
+            <input type="range" id="scrub" min="0" max="5" value="0" step="1" aria-label="项目时间轴">
+            <span class="week-badge" id="weekBadge">第 3 周末</span>
+          </div>
+
+          <div class="struct-wrap" id="structWrap">
+            <!-- god-object view -->
+            <div class="struct-box" id="godBox">
+              <div class="struct-title">type <b>model</b> struct  &nbsp;<span id="respCount"></span></div>
+              <div class="chips" id="chips"></div>
+            </div>
+            <!-- modular view (constrained) -->
+            <div id="modBox" style="display:none">
+              <div class="modules">
+                <div class="module-card"><div class="mc-t">Pod 视图模块</div><div class="mc-s">own model · ~280 行</div></div>
+                <div class="module-card"><div class="mc-t">节点视图模块</div><div class="mc-s">own model · ~260 行</div></div>
+                <div class="module-card"><div class="mc-t">GPU 舰队模块</div><div class="mc-s">own model · ~300 行</div></div>
+              </div>
+              <div class="bus">↑ 状态通过「消息总线」传递，互不共享可变状态 ↑</div>
+            </div>
+          </div>
+
+          <div class="update-block">
+            <div class="update-head">
+              <span>func (m *model) <b>update()</b></span>
+              <span><b id="switchCount">15</b> 个 switch case</span>
+            </div>
+            <div class="switch-track"><div class="switch-fill" id="switchFill"></div></div>
+          </div>
+
+          <div class="meters">
+            <div class="meter"><div class="m-label">model.go 行数</div>
+              <div class="m-val" id="mLines">400</div></div>
+            <div class="meter"><div class="m-label">update() 分支</div>
+              <div class="m-val" id="mSwitch">15</div></div>
+            <div class="meter risk" id="mRiskWrap" data-lv="low"><div class="m-label">崩溃风险</div>
+              <div class="m-val" id="mRisk">18<small>%</small></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-note">
+        <span class="sn-tag" id="snTag">第 1 步 · 魔法开端</span>
+        <p id="snText"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CONCEPT DRAWER ===== -->
+  <h2 class="section-title">五条经验教训</h2>
+  <p class="section-lead">普特把这次失败提炼成五条。注意它们是一条因果链：默认行为 → 速度幻觉 → 审查缺位 → 提示治标 → 人该做司机。</p>
+  <div class="concept-drawer">
+    <div class="concept"><span class="c-n">教训 1</span>
+      <div class="c-t">AI 建造功能，不建造架构</div>
+      <div class="c-b">每次提示都给出完美工作的功能，但每个功能都在"让此刻能运行"的上下文里实现，对共享状态毫无意识。50 个功能共享同一可变状态时，系统必然出问题。</div></div>
+    <div class="concept"><span class="c-n">教训 2</span>
+      <div class="c-t">速度是幻觉，直到它不再是</div>
+      <div class="c-b">vibe coding 的快感来自即时交付，却掩盖了技术债的累积。代码量小时 AI 能 hold 住全局；一旦项目超出上下文窗口，它就开始重复造轮子、打补丁。</div></div>
+    <div class="concept"><span class="c-n">教训 3</span>
+      <div class="c-t">浅层审查不够，你必须读代码</div>
+      <div class="c-b">普特七个月只做"编译通过 + happy path"的最低审查。若在第 100 次提交时读完 model.go，他会在 500 行而非 1690 行时就发现问题。</div></div>
+    <div class="concept"><span class="c-n">教训 4</span>
+      <div class="c-t">提示工程不能替代设计</div>
+      <div class="c-b">系统故障时，第一反应是继续提示 AI 修复。但上帝对象修不好——它需要的是自上而下的架构重构，而不是再加一个 switch 分支。</div></div>
+    <div class="concept"><span class="c-n">教训 5</span>
+      <div class="c-t">AI 是加速器，不是司机</div>
+      <div class="c-b">没有人类架构约束时，AI 会沿最小阻力路径不断堆功能，直到系统被自身重量压垮。重写后仍用 AI——但由人定架构边界，AI 在约束内填实现。</div></div>
+  </div>
+
+  <!-- ===== CHECK YOURSELF ===== -->
+  <h2 class="section-title">检验一下</h2>
+  <div class="check-yourself">
+    <div class="cy-tag">即时反馈 · 单选</div>
+    <div class="cy-q">系统开始崩溃时，普特的第一反应是「继续提示 AI 修复」。为什么这条路走不通？</div>
+    <div class="cy-opts" id="cyOpts">
+      <button class="cy-opt" data-correct="0">A. AI 模型不够聪明，修不了这种 bug——换个更强的模型就行。</button>
+      <button class="cy-opt" data-correct="1">B. 上帝对象的问题是架构性的，需要自上而下重构；增量提示只会再加一个 switch 分支，治标不治本。</button>
+      <button class="cy-opt" data-correct="0">C. 提示写得不够详细——只要把 prompt 写得更长更具体，AI 就能修好。</button>
+    </div>
+    <div class="cy-feedback" id="cyFeedback"></div>
+  </div>
+
+  <!-- ===== RECAP ===== -->
+  <h2 class="section-title">课堂小结</h2>
+  <div class="recap-strip">
+    <div class="recap-card takeaways">
+      <div class="r-tag">三个拿走</div>
+      <ol>
+        <li>AI 默认<b>局部最优</b>：给它一个大文件 +「加功能」，它原地扩展、不重构。</li>
+        <li>早期 10× 提速是真的，但<b>净收益 = 早期提速 − 后期返工</b>；零审查会把返工拉到极端。</li>
+        <li>架构是<b>人的责任</b>：先定模块边界与状态流，再让 AI 在约束内填实现。</li>
+      </ol>
+    </div>
+    <div class="recap-card misconception">
+      <div class="r-tag">一个误区</div>
+      <p>别把"<b>我没审查 + 没给约束</b>"的后果，归因成"AI 的固有缺陷"。AI 完全能产出分层架构——<b>前提是提示里要求了</b>。锅不全在 AI。</p>
+    </div>
+    <div class="recap-card next">
+      <div class="r-tag">下一步探索</div>
+      <p>在你手头的项目里，给 AI 的<b>初始提示</b>加一句架构约束（如"每个视图独立 model、状态走消息传递"），对比产出——这就是上面那个开关在教的事。</p>
+    </div>
+  </div>
+
+  <!-- ===== BAYES BENCH ===== -->
+  <h2 class="section-title">深入：三个论断站得住吗</h2>
+  <p class="section-lead">这篇文章把一次具体失败总结成了普适结论。下面用 Bayes 视角给每条核心断言独立评级（★ 越多越可信）——教学时可作为"批判性阅读"的例子。</p>
+  <div class="bayes-bench">
+    <details class="judge">
+      <summary>
+        <span class="j-no">判断 1</span>
+        <span class="j-claim">AI 写功能不写架构，对共享状态毫无意识，"必然"堆成上帝对象</span>
+        <span class="j-stars"><span class="on">★★★</span><span class="off">★★</span></span>
+      </summary>
+      <div class="j-body">
+        <div><span class="jb-tag">证据</span> 方向成立、强度被夸大。AI 确有"局部最优、就地修改"的默认倾向；但"不写架构"是伪命题——只要提示要求，AI 完全能产出分层架构与模块边界。问题在<b>默认行为 + 用户没给约束</b>，而非能力天花板。</div>
+        <div><span class="jb-tag">修正</span> 更准确的说法是"无约束 + 零审查 + 单人 7 个月，崩溃概率很高"——而非"AI 无意识所以必然崩溃"。</div>
+        <div><span class="jb-tag">评级</span> ★★★☆☆</div>
+      </div>
+    </details>
+    <details class="judge">
+      <summary>
+        <span class="j-no">判断 2</span>
+        <span class="j-claim">约 10× 提速是幻觉，技术债"指数级"累积</span>
+        <span class="j-stars"><span class="on">★★★</span><span class="off">★★</span></span>
+      </summary>
+      <div class="j-body">
+        <div><span class="jb-tag">证据</span> "债务被快感掩盖"成立；"速度是幻觉"过度反转。提速高度依赖场景——2024 年 METR 受控实验里，有经验的开源开发者用 AI 反而慢了约 19%。债务更像<b>线性叠加 + 阈值后陡增</b>，不是数学意义的指数。</div>
+        <div><span class="jb-tag">修正</span> 真问题不是"提速是假的"，而是本案例零审查把后期返工拉到了极端（整体归档）。正常审查的项目，净收益通常仍为正。</div>
+        <div><span class="jb-tag">评级</span> ★★★☆☆</div>
+      </div>
+    </details>
+    <details class="judge">
+      <summary>
+        <span class="j-no">判断 3</span>
+        <span class="j-claim">正确用法：人先设计架构、划模块边界，AI 在约束内填实现</span>
+        <span class="j-stars"><span class="on">★★★★</span><span class="off">★</span></span>
+      </summary>
+      <div class="j-body">
+        <div><span class="jb-tag">证据</span> 三条里最稳，与软件工程长期共识高度吻合——架构决策属"难逆转、影响全局"，历来主张前置和人为把关。AI 只是把"实现"层成本压低了。</div>
+        <div><span class="jb-tag">边界</span> 真正的一次性原型，先架构反而是过度工程；"读代码"也不必只靠人肉通读 1690 行——定期让 AI 做架构审查同样能更早暴露问题。</div>
+        <div><span class="jb-tag">评级</span> ★★★★☆</div>
+      </div>
+    </details>
+  </div>
+
+  <footer class="lesson-foot">
+    <span>Lesson Lab · html-anything · 互动教学课</span>
+    <a href="https://www.yuque.com/oudizuo/video-mind/ai-1778841294" target="_blank" rel="noopener">语雀原文 / 完整评述 ↗</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  /* ---- lesson data ---- */
+  var STEPS=[
+    {n:"第 1 步",t:"魔法开端 · 第 3 周末",week:"第 3 周末",
+     chips:["UI 控件","K8S 客户端","Pod 视图状态"],
+     lines:400,sw:15,risk:18,lv:"low",
+     note:"<b>注意：</b>自然语言提示，「给我加一个实时更新的 Pod 视图」——3 秒后代码就能跑。一个完整 K9S 克隆只用了三个周末，速度约手写的 <b>10 倍</b>。此刻一切都像魔法。"},
+    {n:"第 2 步",t:"债务潜伏 · 第 10 周",week:"第 10 周",
+     chips:["UI 控件","K8S 客户端","Pod 视图状态","命名空间过滤","日志流","describe 面板","导航历史"],
+     lines:800,sw:45,risk:42,lv:"mid",
+     note:"功能不断堆叠。普特每次提示后<b>只扫一眼 diff</b>，确认能编译、happy path 通过，就进入下一个功能。七个月里，他从未完整读过 AI 写的代码——债务在水面下累积。"},
+    {n:"第 3 步",t:"GPU 舰队视图上线",week:"第 14 周",
+     chips:["UI 控件","K8S 客户端","Pod 视图状态","命名空间过滤","日志流","describe 面板","导航历史","舰队视图状态","缓存","DCGM 渲染"],
+     lines:1200,sw:75,risk:64,lv:"high",
+     note:"核心卖点上线。Claude 一次性生成了 UI、标签过滤、自定义渲染、分配进度条——<b>看起来完美</b>。但这个功能又一次被直接塞进同一个 struct。"},
+    {n:"第 4 步",t:"视图切换崩溃",week:"第 15 周",
+     chips:["UI 控件","K8S 客户端","Pod 视图状态","命名空间过滤","日志流","describe 面板","导航历史","舰队视图状态","缓存","DCGM 渲染","节点视图状态","鼠标处理"],
+     lines:1450,sw:95,risk:86,lv:"crit",
+     note:"输入 <code>:pod</code> 切回 Pod 视图——<b>空表格</b>，实时更新停了；切到节点视图，显示的是舰队视图<b>过期的缓存</b>；切回舰队视图，标签计数又错了。50 个功能共享同一可变状态，开始互相打架。"},
+    {n:"第 5 步",t:"第一次读 model.go",week:"第 16 周",
+     chips:["UI 控件","K8S 客户端","Pod 视图状态","命名空间过滤","日志流","describe 面板","导航历史","舰队视图状态","缓存","DCGM 渲染","节点视图状态","鼠标处理","原始对象列表"],
+     lines:1690,sw:110,risk:98,lv:"crit",
+     note:"他第一次坐下来读 <code>model.go</code>：<b>1690 行</b>，一个 struct 包揽一切。<code>update()</code> 方法 500 行、<b>110 个 switch case</b>。这就是「上帝对象」——每个功能都被塞进来，因为 AI 的上下文里只有「让此刻能跑」。"},
+    {n:"第 6 步",t:"归档重写",week:"第 30 周",
+     chips:["UI 控件","K8S 客户端","Pod 视图状态","命名空间过滤","日志流","describe 面板","导航历史","舰队视图状态","缓存","DCGM 渲染","节点视图状态","鼠标处理","原始对象列表"],
+     lines:1690,sw:110,risk:98,lv:"crit",
+     note:"234 次提交、约 30 个周末——<b>整体归档，从零手写</b>。普特并不反 AI：重写后的 K10S 仍用 AI，但方式变了——由<b>人</b>设计架构、划模块边界、定义状态流，AI 在约束内填实现。👉 现在打开左边的「架构约束」开关，看这条岔路。"}
+  ];
+  var CONSTRAINED={
+    note:"<b>同一个 AI，岔路出现了。</b>初始提示改成「每个视图独立 model、状态通过消息传递」（Elm 架构思路）——Claude 产出的不再是上帝对象，而是三个边界清晰、互不共享可变状态的模块。崩溃风险从 98% 落到 15%。<b>约束是人的责任，不是 AI 的能力上限。</b>"
+  };
+
+  var cur=0, constrained=false;
+  var $=function(id){return document.getElementById(id);};
+
+  /* build step rail */
+  var stepsEl=$("steps");
+  STEPS.forEach(function(s,i){
+    var b=document.createElement("button");
+    b.className="step";b.type="button";
+    b.innerHTML='<span class="step-n">'+s.n.replace("第 ","").replace(" 步","")+'</span>'+
+                '<span class="step-t">'+s.t+'</span>';
+    b.addEventListener("click",function(){cur=i;$("scrub").value=i;render();});
+    stepsEl.appendChild(b);
+  });
+  var stepBtns=[].slice.call(stepsEl.children);
+
+  function animateNum(el,to,suffix){
+    var from=parseInt(el.getAttribute("data-v")||"0",10);
+    if(from===to){el.innerHTML=to+(suffix||"");return;}
+    var t0=null,dur=420;
+    function tick(ts){
+      if(!t0)t0=ts;
+      var p=Math.min((ts-t0)/dur,1);
+      var v=Math.round(from+(to-from)*(1-Math.pow(1-p,3)));
+      el.innerHTML=v+(suffix||"");
+      if(p<1)requestAnimationFrame(tick);
+      else el.setAttribute("data-v",to);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function render(){
+    var s=STEPS[cur];
+    $("weekBadge").textContent=s.week;
+    /* step rail active */
+    stepBtns.forEach(function(b,i){b.setAttribute("aria-current",i===cur?"true":"false");});
+
+    if(constrained){
+      $("godBox").style.display="none";
+      $("modBox").style.display="block";
+      $("snTag").textContent="动手试 · 架构约束 = 开";
+      $("snText").innerHTML=CONSTRAINED.note;
+      animateNum($("mLines"),280,'<small> 行/模块</small>');
+      animateNum($("mSwitch"),12);
+      animateNum($("mRisk"),15,'<small>%</small>');
+      $("switchCount").textContent="~12";
+      $("switchFill").style.width="12%";
+      $("mRiskWrap").setAttribute("data-lv","low");
+      $("godBox").classList.remove("danger");
+      $("respCount").textContent="";
+      return;
+    }
+
+    $("godBox").style.display="block";
+    $("modBox").style.display="none";
+    /* chips */
+    var chipsEl=$("chips");chipsEl.innerHTML="";
+    s.chips.forEach(function(c){
+      var sp=document.createElement("span");
+      sp.className="chip";sp.textContent=c;chipsEl.appendChild(sp);
+    });
+    $("respCount").textContent="// "+s.chips.length+" 项职责，全塞在一个 struct 里";
+    $("godBox").classList.toggle("danger",s.risk>=80);
+    /* update bar */
+    $("switchCount").textContent=s.sw;
+    $("switchFill").style.width=(s.sw/110*100).toFixed(0)+"%";
+    /* meters */
+    animateNum($("mLines"),s.lines);
+    animateNum($("mSwitch"),s.sw);
+    animateNum($("mRisk"),s.risk,'<small>%</small>');
+    $("mRiskWrap").setAttribute("data-lv",s.lv);
+    /* note */
+    $("snTag").textContent=s.n+" · "+s.t;
+    $("snText").innerHTML=s.note;
+  }
+
+  /* scrubber */
+  $("scrub").addEventListener("input",function(){
+    cur=parseInt(this.value,10);render();
+  });
+
+  /* constraint toggle */
+  $("constraint").addEventListener("change",function(){
+    constrained=this.checked;
+    $("tcState").textContent=constrained?"开 — 人定架构边界":"关 — AI 自由驾驶";
+    $("tcHint").textContent=constrained
+      ? "解剖台已分岔：上帝对象 → 三个独立模块。把开关关掉可回到「无约束」对照。"
+      : "打开它：同样用 Claude，但初始提示要求「每个视图独立 model、状态走消息传递」——看解剖台如何分岔。";
+    render();
+  });
+
+  /* check yourself */
+  var answered=false;
+  [].slice.call(document.querySelectorAll(".cy-opt")).forEach(function(opt){
+    opt.addEventListener("click",function(){
+      if(answered)return;answered=true;
+      var correct=opt.getAttribute("data-correct")==="1";
+      [].slice.call(document.querySelectorAll(".cy-opt")).forEach(function(o){
+        o.disabled=true;
+        if(o.getAttribute("data-correct")==="1")o.classList.add("right");
+      });
+      if(!correct)opt.classList.add("wrong");
+      var fb=$("cyFeedback");fb.classList.add("show");
+      fb.innerHTML=correct
+        ? "<b>答对了。</b>这正是教训 4「提示工程不能替代设计」。上帝对象的根因是架构——把所有职责塞进一个 struct、用 110 个 switch 分发。继续提示只会再加一个分支，让对象更胖。唯一出路是自上而下重构（划模块边界、拆状态）。"
+        : "<b>再想想。</b>问题不在模型强弱或 prompt 长短——再强的模型、再长的提示，面对「一个 struct 包揽 13 项职责」也只能就地打补丁。根因是<b>架构</b>：需要自上而下重构，而不是又一个 switch 分支。正确答案是 B。";
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
