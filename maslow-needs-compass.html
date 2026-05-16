@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="teaching">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>马斯洛需求理论 · 校准你的底层目标 — 心理辅导课</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0f766e;--primary-container:#115e59;--on-primary:#fff;
+  --secondary-container:#f59e0b;--tertiary:#4d44e3;
+  --bg:#f6fbfb;--surface:#f6fbfb;
+  --surface-container-lowest:#ffffff;--surface-container-low:#edf7f5;
+  --surface-container:#e3f0ee;--surface-container-high:#d6e8e5;
+  --fg-1:#10201f;--fg-2:#304c49;--fg-muted:#647b78;
+  --border:rgba(15,118,110,.12);--border-strong:rgba(15,118,110,.26);
+  --green:#10b981;--blue:#3b82f6;--yellow:#f59e0b;--red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans','PingFang SC',ui-sans-serif,system-ui,sans-serif;
+  --font-serif:'Noto Serif SC',Georgia,serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px;--space-sm:8px;--space-md:12px;--space-lg:16px;--space-xl:20px;
+  --space-2xl:24px;--space-3xl:32px;--space-4xl:48px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(16,32,31,.05);
+  --shadow-md:0 4px 14px rgba(16,32,31,.09);
+  --shadow-lg:0 10px 30px rgba(16,32,31,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:
+  radial-gradient(circle at 1px 1px,rgba(15,118,110,.07) 1px,transparent 0) 0 0/22px 22px,var(--bg);
+  color:var(--fg-1)}
+body{font-family:var(--font-body);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+button{font-family:var(--font-body);cursor:pointer}
+::selection{background:var(--primary);color:#fff}
+.lesson-shell{max-width:1200px;margin:0 auto;padding:var(--space-3xl) var(--space-2xl) var(--space-4xl)}
+
+.lesson-head{margin-bottom:var(--space-xl)}
+.kicker{font-family:var(--font-headline);font-size:12px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--primary)}
+.lesson-head h1{font-family:var(--font-serif);font-size:clamp(25px,4.1vw,39px);
+  line-height:1.24;font-weight:700;margin:var(--space-sm) 0 var(--space-md);letter-spacing:-.01em}
+.objective{display:flex;gap:var(--space-sm);align-items:flex-start;max-width:80ch;
+  background:var(--surface-container-low);border:1px solid var(--border);
+  border-left:3px solid var(--secondary-container);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg);font-size:14px;color:var(--fg-2)}
+.objective b{color:var(--fg-1)}
+.prof-note{margin-top:var(--space-md);font-size:12.5px;color:var(--fg-muted);
+  font-style:italic;max-width:80ch}
+
+.lesson-workbench{display:grid;grid-template-columns:268px 1fr;gap:var(--space-xl);
+  margin-top:var(--space-xl);align-items:start}
+
+.step-rail{position:sticky;top:var(--space-lg);display:flex;flex-direction:column;
+  gap:var(--space-md);background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.rail-label{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.steps{display:flex;flex-direction:column;gap:6px}
+.step{display:flex;gap:var(--space-sm);align-items:flex-start;text-align:left;
+  background:transparent;border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:9px var(--space-sm);transition:all .15s;width:100%}
+.step:hover{border-color:var(--primary);background:var(--surface-container-low)}
+.step[aria-current="true"]{background:var(--primary);border-color:var(--primary);box-shadow:var(--shadow-md)}
+.step[aria-current="true"] .step-n,.step[aria-current="true"] .step-t{color:#fff}
+.step[aria-current="true"] .step-n{background:rgba(255,255,255,.22)}
+.step-n{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--primary);
+  background:var(--surface-container);border-radius:var(--radius-sm);padding:2px 7px;
+  white-space:nowrap;margin-top:1px}
+.step-t{font-size:12.5px;color:var(--fg-1);line-height:1.4;font-weight:500}
+
+.try-control{background:var(--surface-container-low);border:1px dashed var(--border-strong);
+  border-radius:var(--radius-md);padding:var(--space-md)}
+.tc-head{display:flex;align-items:center;gap:6px;font-family:var(--font-headline);
+  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--secondary-container);margin-bottom:var(--space-sm)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm)}
+.toggle-row span{font-size:12.5px;color:var(--fg-2);font-weight:500}
+.switch{position:relative;width:46px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.slider-ui{position:absolute;inset:0;background:var(--border-strong);
+  border-radius:var(--radius-pill);transition:.2s}
+.slider-ui::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;
+  background:#fff;border-radius:50%;transition:.2s;box-shadow:var(--shadow-sm)}
+.switch input:checked + .slider-ui{background:var(--primary)}
+.switch input:checked + .slider-ui::before{transform:translateX(20px)}
+.switch input:focus-visible + .slider-ui{outline:2px solid var(--secondary-container);outline-offset:2px}
+.tc-hint{font-size:11px;color:var(--fg-muted);margin-top:var(--space-sm);line-height:1.45}
+
+.stage-col{display:flex;flex-direction:column;gap:var(--space-lg)}
+.lesson-stage{background:#0c1f1d;border-radius:var(--radius-lg);padding:var(--space-xl);
+  box-shadow:var(--shadow-lg)}
+.stage-topbar{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:var(--space-lg);flex-wrap:wrap;gap:var(--space-sm)}
+.st-title{font-family:var(--font-mono);font-size:11px;color:#5b827e;letter-spacing:.05em}
+.mode-pill{font-family:var(--font-headline);font-size:11px;font-weight:600;
+  padding:4px 12px;border-radius:var(--radius-pill);letter-spacing:.04em}
+.mode-pill.myth{background:rgba(239,68,68,.16);color:#fca5a5;border:1px solid rgba(239,68,68,.4)}
+.mode-pill.real{background:rgba(16,185,129,.16);color:#6ee7b7;border:1px solid rgba(16,185,129,.4)}
+
+.model{display:flex;flex-direction:column;gap:6px}
+.layer{border-radius:var(--radius-sm);padding:9px var(--space-md);
+  display:flex;align-items:center;gap:var(--space-sm);transition:all .35s ease;
+  border:1px solid transparent;position:relative}
+.layer .l-name{font-family:var(--font-headline);font-size:13px;font-weight:600;color:#fff;
+  white-space:nowrap}
+.layer .l-desc{font-size:11px;color:rgba(255,255,255,.62);line-height:1.35}
+.layer .l-fill{margin-left:auto;font-family:var(--font-mono);font-size:10px;
+  color:rgba(255,255,255,.5)}
+.layer.dim{opacity:.32}
+.layer.hl{box-shadow:0 0 0 2px var(--secondary-container);border-color:var(--secondary-container)}
+.gate{font-size:13px}
+/* myth = tapering pyramid */
+.model.myth .layer{margin:0 auto;justify-content:center;text-align:center}
+.model.real .layer .l-bar{margin-left:auto;width:120px;height:8px;
+  background:rgba(255,255,255,.1);border-radius:var(--radius-pill);overflow:hidden;flex-shrink:0}
+.model.real .layer .l-bar i{display:block;height:100%;background:#6ee7b7;border-radius:var(--radius-pill)}
+.model.myth .l-bar,.model.myth .split{display:none}
+.split{display:flex;gap:6px;margin-left:auto;flex-shrink:0}
+.split .sub{font-family:var(--font-mono);font-size:9.5px;padding:3px 7px;border-radius:5px}
+.split .ext{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
+.split .int{background:rgba(16,185,129,.2);color:#6ee7b7;border:1px solid rgba(16,185,129,.35)}
+.model.real .layer.esteem .l-bar{display:none}
+.stage-caption{margin-top:var(--space-md);font-size:11.5px;color:#7ba8a3;
+  font-family:var(--font-mono);line-height:1.5}
+
+.stage-note{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-left:3px solid var(--primary);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg)}
+.stage-note .sn-tag{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--primary)}
+.stage-note p{font-size:14px;color:var(--fg-2);margin-top:5px;line-height:1.64}
+.stage-note p b{color:var(--fg-1)}
+
+.section-title{font-family:var(--font-serif);font-size:clamp(20px,3vw,25px);font-weight:700;
+  margin:var(--space-3xl) 0 var(--space-md);letter-spacing:-.01em}
+.section-lead{font-size:14px;color:var(--fg-muted);max-width:74ch;margin-bottom:var(--space-lg)}
+
+.concept-drawer{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:var(--space-md)}
+.concept{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-sm);
+  transition:transform .15s,box-shadow .15s}
+.concept:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.concept .c-n{font-family:var(--font-mono);font-size:11px;font-weight:600;color:#fff;
+  background:var(--primary);border-radius:var(--radius-sm);padding:3px 8px;display:inline-block}
+.concept .c-t{font-family:var(--font-headline);font-weight:600;font-size:15px;
+  margin:var(--space-sm) 0 6px;color:var(--fg-1);line-height:1.35}
+.concept .c-b{font-size:13px;color:var(--fg-2);line-height:1.58}
+
+/* diagnosis bench */
+.diag-bench{display:flex;flex-direction:column;gap:var(--space-md)}
+.diag{border:1px solid var(--border);border-radius:var(--radius-md);
+  background:var(--surface-container-lowest);overflow:hidden;box-shadow:var(--shadow-sm)}
+.diag summary{display:flex;align-items:center;gap:var(--space-md);flex-wrap:wrap;
+  padding:var(--space-lg);cursor:pointer;list-style:none}
+.diag summary::-webkit-details-marker{display:none}
+.diag summary:hover{background:var(--surface-container-low)}
+.d-verdict{font-family:var(--font-mono);font-size:11px;font-weight:600;
+  border-radius:var(--radius-sm);padding:4px 9px;white-space:nowrap}
+.d-verdict.ok{background:#e7f6ee;color:#0b7a44}
+.d-verdict.warn{background:#fdf2dc;color:#b9770e}
+.d-verdict.no{background:#fce8e8;color:#c0392b}
+.d-goal{flex:1;min-width:160px;font-family:var(--font-headline);font-weight:600;
+  font-size:15px;color:var(--fg-1)}
+.d-tag{font-size:11.5px;color:var(--fg-muted);font-family:var(--font-mono)}
+.d-body{padding:0 var(--space-lg) var(--space-lg);font-size:13.5px;color:var(--fg-2);
+  line-height:1.66}
+.d-body b{color:var(--fg-1)}
+.synthesis{margin-top:var(--space-md);font-size:14px;color:var(--fg-2);line-height:1.68;
+  background:var(--surface-container-low);border:1px solid var(--border);
+  border-left:3px solid var(--secondary-container);border-radius:var(--radius-md);
+  padding:var(--space-lg)}
+.synthesis b{color:var(--fg-1)}
+
+/* yin-yang sorter */
+.sorter{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:var(--space-xl);box-shadow:var(--shadow-sm)}
+.sort-row{display:flex;align-items:center;gap:var(--space-md);padding:var(--space-sm) 0;
+  border-bottom:1px solid var(--border);flex-wrap:wrap}
+.sort-row:last-child{border-bottom:none}
+.sort-row .sr-item{flex:1;min-width:170px;font-size:13.5px;color:var(--fg-1)}
+.sort-btns{display:flex;gap:6px}
+.sort-btns button{font-family:var(--font-headline);font-size:12px;font-weight:600;
+  border:1px solid var(--border-strong);background:var(--surface-container-low);
+  color:var(--fg-2);border-radius:var(--radius-sm);padding:6px 14px}
+.sort-btns button:hover:not(:disabled){border-color:var(--primary)}
+.sort-btns button.picked-right{background:var(--green);color:#fff;border-color:var(--green)}
+.sort-btns button.picked-wrong{background:var(--red);color:#fff;border-color:var(--red)}
+.sort-btns button:disabled{cursor:default;opacity:.5}
+.sort-btns button.picked-right:disabled,.sort-btns button.picked-wrong:disabled{opacity:1}
+.sr-fb{flex-basis:100%;font-size:12px;color:var(--fg-muted);line-height:1.5;display:none}
+.sr-fb.show{display:block}
+.sorter-note{margin-top:var(--space-md);font-size:12.5px;color:var(--fg-muted);font-style:italic}
+
+/* self spectrum */
+.prof-para{font-size:14px;color:var(--fg-2);line-height:1.7;max-width:78ch;
+  margin-bottom:var(--space-lg)}
+.prof-para b{color:var(--fg-1)}
+.spectrum{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md)}
+.sp-card{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.sp-card.bad{border-top:3px solid var(--red)}
+.sp-card.trap{border-top:3px solid var(--yellow)}
+.sp-card.good{border-top:3px solid var(--green)}
+.sp-card .sp-badge{font-family:var(--font-mono);font-size:10.5px;font-weight:600;
+  border-radius:var(--radius-sm);padding:3px 9px;display:inline-block}
+.sp-card.bad .sp-badge{background:#fce8e8;color:#c0392b}
+.sp-card.trap .sp-badge{background:#fdf2dc;color:#b9770e}
+.sp-card.good .sp-badge{background:#e7f6ee;color:#0b7a44}
+.sp-card .sp-t{font-family:var(--font-headline);font-weight:600;font-size:15.5px;
+  margin:var(--space-sm) 0 6px;color:var(--fg-1)}
+.sp-card .sp-b{font-size:12.5px;color:var(--fg-2);line-height:1.6}
+.sp-card .sp-b b{color:var(--fg-1)}
+@media(max-width:880px){.spectrum{grid-template-columns:1fr}}
+.check-yourself{background:linear-gradient(135deg,#0f766e 0%,#115e59 100%);
+  border-radius:var(--radius-lg);padding:var(--space-2xl);color:#fff;
+  box-shadow:var(--shadow-md);margin-top:var(--space-lg)}
+.cy-tag{font-family:var(--font-headline);font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:#9ae6da}
+.cy-q{font-family:var(--font-serif);font-size:18px;font-weight:600;
+  margin:var(--space-sm) 0 var(--space-lg);line-height:1.5}
+.cy-opts{display:flex;flex-direction:column;gap:var(--space-sm)}
+.cy-opt{text-align:left;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+  border-radius:var(--radius-md);padding:var(--space-md) var(--space-lg);color:#fff;
+  font-size:14px;transition:all .15s;line-height:1.52}
+.cy-opt:hover:not(:disabled){background:rgba(255,255,255,.2)}
+.cy-opt.right{background:#10b981;border-color:#10b981;font-weight:600}
+.cy-opt.wrong{background:rgba(239,68,68,.85);border-color:#ef4444}
+.cy-opt:disabled{cursor:default}
+.cy-feedback{margin-top:var(--space-lg);font-size:13.5px;line-height:1.64;
+  background:rgba(255,255,255,.12);border-radius:var(--radius-md);
+  padding:var(--space-md) var(--space-lg);display:none}
+.cy-feedback.show{display:block}
+.cy-feedback b{color:#9ae6da}
+
+.recap-strip{display:grid;grid-template-columns:2fr 1fr 1fr;gap:var(--space-md);margin-top:var(--space-lg)}
+.recap-card{background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.recap-card .r-tag{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:var(--space-sm)}
+.recap-card.takeaways .r-tag{color:var(--primary)}
+.recap-card.misconception .r-tag{color:var(--red)}
+.recap-card.next .r-tag{color:var(--secondary-container)}
+.recap-card ol{margin-left:1.05em;font-size:13px;color:var(--fg-2)}
+.recap-card ol li{margin:7px 0}
+.recap-card p{font-size:13px;color:var(--fg-2);line-height:1.6}
+.recap-card p b{color:var(--fg-1)}
+
+.lesson-foot{margin-top:var(--space-3xl);padding-top:var(--space-lg);
+  border-top:1px solid var(--border);font-size:12px;color:var(--fg-muted)}
+.lesson-foot .src{margin-top:6px}
+.lesson-foot a{color:var(--primary);word-break:break-all}
+
+@media (max-width:880px){
+  .lesson-shell{padding:var(--space-xl) var(--space-lg) var(--space-3xl)}
+  .lesson-workbench{grid-template-columns:1fr}
+  .step-rail{position:static;order:2}.stage-col{order:1}
+  .recap-strip{grid-template-columns:1fr}
+  .model.myth .layer{width:100%!important}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="lesson-shell">
+
+  <header class="lesson-head">
+    <div class="kicker">心理辅导课 · 动机心理学</div>
+    <h1>马斯洛需求理论：校准你的"底层目标"</h1>
+    <div class="objective"><span>🎯</span>
+      <span><b>这堂课要做两件事：</b>① 看清马斯洛需求理论的<b>真实样子</b>——破除那个流传最广的金字塔神话；
+      ② 用它<b>检验你自己的目标观</b>——"自我实现 / 社会认同 / 财富积累"，这三个真的都是"底层"吗？
+      作为陪你走这一程的辅导者，我不会只顺着你说。把罗盘校准，才谈得上走正途。</span>
+    </div>
+    <p class="prof-note">说明：本页是一份基于动机心理学的<b>自我反思框架</b>，不是临床心理治疗。真正的心理困扰，请寻求专业人士。</p>
+  </header>
+
+  <div class="lesson-workbench">
+
+    <aside class="step-rail">
+      <div class="rail-label">课程步骤 · 点击跳转</div>
+      <div class="steps" id="steps"></div>
+      <div class="try-control">
+        <div class="tc-head">🔧 动手试 · 切换视图</div>
+        <div class="toggle-row">
+          <span id="tcState">金字塔神话版</span>
+          <label class="switch">
+            <input type="checkbox" id="modeSw" aria-label="金字塔/真实视图切换">
+            <span class="slider-ui"></span>
+          </label>
+        </div>
+        <div class="tc-hint" id="tcHint">打开它：从"必须逐级解锁"的金字塔，切到实证支持的"并行需求"真实图。</div>
+      </div>
+    </aside>
+
+    <div class="stage-col">
+      <div class="lesson-stage">
+        <div class="stage-topbar">
+          <span class="st-title">需求模型 · 交互演示</span>
+          <span class="mode-pill myth" id="modePill">神话版 · 严格层级</span>
+        </div>
+        <div class="model myth" id="model"></div>
+        <div class="stage-caption" id="caption"></div>
+      </div>
+      <div class="stage-note">
+        <span class="sn-tag" id="snTag">第 1 步</span>
+        <p id="snText"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCEPT DRAWER -->
+  <h2 class="section-title">五个核心概念</h2>
+  <p class="section-lead">从"需求有哪些"到"因与果的分别"。第四、五个概念，是这堂课真正想交到你手里的工具。</p>
+  <div class="concept-drawer">
+    <div class="concept"><span class="c-n">概念 1</span>
+      <div class="c-t">五种需求</div>
+      <div class="c-b">马斯洛 1943：生理、安全、归属与爱、尊重、自我实现。它们描述了人为什么会被驱动——这部分至今仍被广泛接受。</div></div>
+    <div class="concept"><span class="c-n">概念 2</span>
+      <div class="c-t">金字塔是后人画的</div>
+      <div class="c-b">马斯洛<b>本人从未画过金字塔</b>。那个图是咨询心理学家 McDermid 后来画的。马斯洛从没说必须严格逐级解锁。</div></div>
+    <div class="concept"><span class="c-n">概念 3</span>
+      <div class="c-t">需求是并行的</div>
+      <div class="c-b">Tay &amp; Diener 2011（6 万人 / 123 国）：每种需求<b>独立</b>贡献幸福感。基本需求没满足，人照样能体验到自我实现。顺序，没那么重要。</div></div>
+    <div class="concept"><span class="c-n">概念 4</span>
+      <div class="c-t">尊重有两种</div>
+      <div class="c-b"><b>外部尊重</b>=他人给的认可、地位、关注；<b>内部尊重</b>=自尊、胜任感、成就感、自由。前者随平台波动，后者你自己能验证——稳定得多。</div></div>
+    <div class="concept"><span class="c-n">概念 5</span>
+      <div class="c-t">因与果</div>
+      <div class="c-b"><b>因</b>=你能直接投入、可累积、不可被夺走的（胜任、成长、贡献）；<b>果</b>=下游的、随平台与运气波动的（财富、地位、认可）。瞄准因，果会随之而来；只瞄准果，会得到一台跑步机。</div></div>
+  </div>
+
+  <!-- DIAGNOSIS -->
+  <h2 class="section-title">辅导环节 · 检验你说的三个"底层"</h2>
+  <p class="section-lead">你说："人的目标不是具象的东西，而是自我实现、社会认同、财富积累；事业斗转星移，这些底层不变。"
+    我先肯定一句——你这个<b>元判断是对的</b>："底层不变、事业会变"，正是"终极价值 vs 工具性目标"的区分，是个好罗盘。
+    问题只在内容。逐个翻开看。</p>
+  <div class="diag-bench">
+    <details class="diag" open>
+      <summary>
+        <span class="d-verdict ok">✓ 真·底层</span>
+        <span class="d-goal">自我实现</span>
+        <span class="d-tag">内在驱动 · 因</span>
+      </summary>
+      <div class="d-body">这一条你说对了。<b>自我实现</b>——成长、掌握、创造出你独有的东西——是内在驱动，
+        它的满足来自你与事情本身的关系，不需要别人发放。所以无论赛道怎么换，它确实<b>不变</b>。
+        这是你罗盘上真正的"北"。守住它。</div>
+    </details>
+    <details class="diag">
+      <summary>
+        <span class="d-verdict warn">⚠ 锚错了层</span>
+        <span class="d-goal">社会认同</span>
+        <span class="d-tag">外部尊重 · 脆弱</span>
+      </summary>
+      <div class="d-body">社会认同 = 马斯洛说的<b>外部尊重</b>——认可、地位、关注。它不是不重要，
+        而是<b>不稳定</b>：它绑在平台、职位、赛道上。你在一个体系里被认可，体系一变、平台一换，它会突然变空。
+        真正能扛住"沧海桑田"的，是<b>内部尊重</b>——自尊与胜任感：那种"我自己知道我做到了什么"的确定。
+        把锚下到别人的眼光里，浪一大，罗盘就漂。<b>建议：把"被认同"换成"值得被认同的真实能力"。</b>后者你能直接修炼，前者你只能等。</div>
+    </details>
+    <details class="diag">
+      <summary>
+        <span class="d-verdict no">✗ 这是果，不是因</span>
+        <span class="d-goal">财富积累</span>
+        <span class="d-tag">工具 · 非终点</span>
+      </summary>
+      <div class="d-body">财富在马斯洛的框架里<b>根本不是一个需求层</b>。它是<b>工具</b>——用来买安全感、买自由、买选择权。
+        工具有巨大价值，但把工具本身当终点，就掉进<b>享乐跑步机</b>：数字永远差一点，积累永远不满足，
+        因为"积累"没有天然的终线。更准确的位置是：财富应该是你<b>把事情做对之后的"果"</b>，
+        而不是你瞄准的"因"。<b>建议：把目标从"积累多少"改写成"创造多少价值 / 解决多大的真问题"——财富会作为副产品到来，而且这个版本不会让你空。</b></div>
+    </details>
+  </div>
+  <div class="synthesis">
+    <b>校准后的罗盘。</b>你原来的三条：自我实现 ✓、社会认同 ⚠、财富积累 ✗。
+    把后两条换掉之后，真正能穿越"斗转星移"的"底层"是这三样——
+    <b>① 自我实现</b>（成长与创造）<b>② 内部尊重</b>（可自我验证的胜任感）<b>③ 自我超越</b>（贡献于比你自己更大的事）。
+    它们的共同点：都是<b>因</b>，都在你直接的努力半径之内，都不依赖外部发放。
+    财富与社会认同不必丢掉——把它们放回<b>"果"</b>的位置：是结果，是反馈，不是瞄准点。
+    这就是"因上努力，果上随缘"——你说的"因上正途"，落到这里就是一句话：<b>瞄准因，把果交给时间。</b></div>
+
+  <!-- INDIVIDUALISM VS COLLECTIVISM -->
+  <h2 class="section-title">辨析 · "以自我为本"是地基，不是天花板</h2>
+  <p class="prof-para">你补充说：东方文化里自我常被淹没在集体中，这很<b>虚伪、很扭曲</b>，所以应该"以自我为本"。
+    作为陪你校准罗盘的人，我要分两半回应——<b>前半你是对的，后半我要拦你一下。</b>
+    前半：被迫的自我压抑确实有害，你对"虚伪扭曲"的反感是健康的，这一步不能含糊。
+    后半：但"以自我为本"如果被推成"自我是终点"，那是<b>另一个陷阱</b>——而且它和这堂课的金字塔顶端直接冲突。
+    下面是同一根轴上的三个位置，看清你要站哪个。</p>
+  <div class="spectrum">
+    <div class="sp-card bad">
+      <span class="sp-badge">✗ 失重 · 有害</span>
+      <div class="sp-t">自我淹没</div>
+      <div class="sp-b">被迫扮演不认同的角色，没人问过你真正想要什么。结果是心理学说的<b>"假自体"</b>（Winnicott）：
+        长期表演、自主感被剥夺。自我决定论（Deci &amp; Ryan）讲得很清楚——<b>自主是基本心理需要</b>，
+        压垮它就压垮幸福感。这确实虚伪、扭曲。<b>你对它的反感，完全正确。</b></div>
+    </div>
+    <div class="sp-card trap">
+      <span class="sp-badge">⚠ 过正 · 另一个陷阱</span>
+      <div class="sp-t">自我膨胀</div>
+      <div class="sp-b">把"以自我为本"推到反面极端：自我成为万物的终点，一切绕我转。
+        它的隐藏代价是<b>孤独、关系稀薄、意义变薄</b>。更要命的是——它其实是把"自我"当成了
+        又一个要不断抬高、积累的<b>"果"</b>。你刚摆脱了"为别人而活"，别又掉进"为放大自我而活"。</div>
+    </div>
+    <div class="sp-card good">
+      <span class="sp-badge">✓ 成熟解</span>
+      <div class="sp-t">自我超越</div>
+      <div class="sp-b">先长出一个真实、自主的自我<b>作为地基</b>；再由这个自我<b>主动选择</b>去连接、去贡献。
+        这不是自我淹没——<b>区别只在一点：有没有一个自主的自我在做选择。</b>
+        虚伪来自"被迫"和"不真实"，不来自"在乎他人"本身。这正是马斯洛金字塔的顶层。</div>
+    </div>
+  </div>
+  <div class="synthesis">
+    <b>校准：</b>"以自我为本"——如果你指的是"先长出一个不表演的、真实的自我，作为一切的地基"，
+    那么<b>对，必须的，这一步不能跳</b>，东方文化确实常让人直接跳过它。
+    但如果你指的是"自我就是终点、是天花板"，那会把你<b>通回那种'兑现了目标却依然空'的状态</b>——
+    因为自我被你又一次当成了要积累的果。马斯洛自己的答案，就写在金字塔顶：
+    最高的不是<b>自我实现</b>，是<b>自我超越</b>。<b>地基是拥有自己，屋顶是自由地给出自己</b>——
+    两者不矛盾，而且有先后：你得先真正拥有自己，才谈得上不虚伪地给出自己。</div>
+
+  <!-- SORTER -->
+  <h2 class="section-title">动手分一分 · 这是"因"还是"果"</h2>
+  <p class="section-lead">下面是常见的人生目标。给每一个判一下：它是你能直接努力的"因"，还是下游的"果"？判完看反馈。</p>
+  <div class="sorter">
+    <div id="sortRows"></div>
+    <div class="sorter-note">规律：凡是"别人给 / 数字 / 头衔 / 排名"，多半是果；凡是"能力 / 状态 / 关系质量 / 贡献"，多半是因。</div>
+  </div>
+
+  <!-- CHECK YOURSELF -->
+  <h2 class="section-title">检验一下</h2>
+  <div class="check-yourself">
+    <div class="cy-tag">即时反馈 · 单选</div>
+    <div class="cy-q">一个人在一次重大晋升之后，反而陷入了意义感的低谷。用这堂课的框架看，最可能的原因是？</div>
+    <div class="cy-opts" id="cyOpts">
+      <button class="cy-opt" data-correct="0">A. 他不够努力，应该立刻定一个更高的目标、更狠的 KPI。</button>
+      <button class="cy-opt" data-correct="1">B. 他的罗盘锚在"果"上——晋升兑现了"外部认同"这个果，兑现完就空了；而"因"（自我实现、胜任感、贡献）一直没被喂养。低谷不是没目标，是目标锚错了地方。</button>
+      <button class="cy-opt" data-correct="0">C. 自我实现是个虚的概念，他应该只追求看得见的财富和地位。</button>
+    </div>
+    <div class="cy-feedback" id="cyFeedback"></div>
+  </div>
+
+  <!-- RECAP -->
+  <h2 class="section-title">课堂小结 · 因上正途</h2>
+  <div class="recap-strip">
+    <div class="recap-card takeaways">
+      <div class="r-tag">三个拿走</div>
+      <ol>
+        <li>需求<b>不是金字塔</b>、不必逐级解锁——你现在就可以同时喂养高层需求，别等"条件成熟"。</li>
+        <li>"被认同"是外部尊重，脆弱；<b>把目标换成"值得被认同的真实能力"</b>——那是内部尊重，你能直接修炼。</li>
+        <li>财富与地位是<b>果</b>。瞄准"因"（胜任、成长、贡献），果会作为副产品到来，而且这个版本不让你空。</li>
+      </ol>
+    </div>
+    <div class="recap-card misconception">
+      <div class="r-tag">一个误区</div>
+      <p>把<b>财富、认可、职级</b>当成"底层目标"。它们是果。瞄准果，你会得到一台永不停的跑步机；
+        瞄准因，果会自己赶来。</p>
+    </div>
+    <div class="recap-card next">
+      <div class="r-tag">下一步 · 留作业</div>
+      <p>写下你的<b>终极价值（≤3 条，每条都必须是"因"）</b>，贴在看得见的地方。
+        往后每一次重大选择，先拿它对一遍——这就是把罗盘握在自己手里。</p>
+    </div>
+  </div>
+
+  <footer class="lesson-foot">
+    <span>Lesson Lab · html-anything · 心理辅导课</span>
+    <div class="src">参考：
+      <a href="https://en.wikipedia.org/wiki/Maslow%27s_hierarchy_of_needs" target="_blank" rel="noopener">Maslow's hierarchy of needs (Wikipedia)</a> ·
+      Tay &amp; Diener (2011) <em>Needs and Subjective Well-Being Around the World</em> ·
+      <a href="https://bigthink.com/neuropsych/maslow-self-transcendence/" target="_blank" rel="noopener">Maslow 的自我超越</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id);};
+
+  /* 8 needs (real); classic-5 flagged */
+  var LAYERS=[
+    {key:"phys",name:"生理需求",desc:"食物、睡眠、健康",classic:true,fill:90},
+    {key:"safe",name:"安全需求",desc:"稳定、保障、秩序",classic:true,fill:78},
+    {key:"love",name:"归属与爱",desc:"亲密关系、被接纳",classic:true,fill:64},
+    {key:"esteem",name:"尊重需求",desc:"外部尊重 vs 内部尊重",classic:true,fill:55,esteem:true},
+    {key:"cog",name:"认知需求",desc:"求知、理解、探索",classic:false,fill:70},
+    {key:"aes",name:"审美需求",desc:"秩序、美、和谐",classic:false,fill:48},
+    {key:"sa",name:"自我实现",desc:"成长、掌握、创造",classic:true,fill:52},
+    {key:"st",name:"自我超越",desc:"贡献于比自己更大的事",classic:false,fill:30}
+  ];
+
+  var STEPS=[
+    {n:"第 1 步",t:"五种需求",mode:"myth",hl:[],
+     note:"马斯洛 1943 提出五种需求：生理、安全、归属、尊重、自我实现。它们很好地描述了<b>人为什么会被驱动</b>。注意——这一步先看那个最广为流传的样子：金字塔。"},
+    {n:"第 2 步",t:"金字塔是后人画的",mode:"myth",hl:[],
+     note:"几乎所有人脑里的"马斯洛金字塔"，<b>马斯洛本人从未画过</b>。那个图是咨询心理学家 McDermid 后来画的。金字塔暗示"下层没满足，上层就锁死"——这个"严格逐级"的含义，<b>是图强加的，不是理论本身</b>。"},
+    {n:"第 3 步",t:"需求其实是并行的",mode:"real",hl:["cog","aes","st"],
+     note:"切到真实视图。Tay &amp; Diener 2011 调查 123 国 6 万人发现：<b>每种需求独立贡献幸福感</b>，顺序关系很弱——基本需求没完全满足，人照样能体验到自我实现。还原后是 8 种需求（多了认知、审美、自我超越），而且它们<b>可以同时被部分满足</b>。对你的启示：别等"条件成熟"才去喂养高层需求。"},
+    {n:"第 4 步",t:"尊重有两种",mode:"real",hl:["esteem"],
+     note:"把"尊重"这一层拆开——它其实是两样东西。<b>外部尊重</b>：他人给的认可、地位、关注（红）。<b>内部尊重</b>：自尊、胜任感、成就、自由（绿）。关键区别：外部尊重<b>绑在平台上、会随境遇蒸发</b>；内部尊重你自己能验证、能积累。你说的"社会认同"，正是脆弱的那一半。"},
+    {n:"第 5 步",t:"顶端不止自我实现",mode:"real",hl:["st"],
+     note:"马斯洛晚年（1969 年前后）在自我实现<b>之上</b>又加了一层——<b>自我超越</b>：超越自我，把自己投入到比个人更大的目标里（他人、事业、某种意义）。流行金字塔几乎都把它删了。它的特别之处：当事业起落时，"贡献于更大的事"这个锚<b>依然成立</b>。"},
+    {n:"第 6 步",t:"因与果",mode:"real",hl:["sa","esteem","st"],
+     note:"现在做最后的归类。绿色高亮的——自我实现、内部尊重、自我超越——都是<b>因</b>：在你直接努力的半径内，可累积、不可被夺走。而<b>财富、社会认同（外部尊重）、职级</b>是<b>果</b>：下游的、随平台和运气波动。👉 往下走，我们用这把尺子检验你说的三个"底层"。"}
+  ];
+
+  var cur=0,realMode=false;
+
+  /* render model */
+  function renderModel(){
+    var m=$("model"),hl=STEPS[cur].hl;
+    m.className="model "+(realMode?"real":"myth");
+    m.innerHTML="";
+    var list=realMode?LAYERS:LAYERS.filter(function(l){return l.classic;});
+    /* myth: bottom (phys) widest -> top narrowest; render top-to-bottom = reverse */
+    var ordered=list.slice().reverse();
+    var n=ordered.length;
+    ordered.forEach(function(l,i){
+      var d=document.createElement("div");
+      d.className="layer"+(l.esteem?" esteem":"");
+      if(hl.indexOf(l.key)>-1)d.className+=" hl";
+      /* myth pyramid coloring + width */
+      var depth=realMode?1:(0.55+0.45*((i)/(n-1)));
+      var hue=realMode?168:(8+i*30);
+      d.style.background="linear-gradient(90deg,hsl("+hue+",42%,26%),hsl("+hue+",38%,20%))";
+      if(!realMode){d.style.width=(depth*100).toFixed(0)+"%";}
+      var inner='<span class="l-name">'+l.name+'</span>'+
+                '<span class="l-desc">'+l.desc+'</span>';
+      if(realMode){
+        if(l.esteem){
+          inner+='<span class="split"><span class="sub ext">外部尊重·脆弱</span>'+
+                 '<span class="sub int">内部尊重·稳定</span></span>';
+        }else{
+          inner+='<span class="l-bar"><i style="width:'+l.fill+'%"></i></span>';
+        }
+      }else{
+        inner+='<span class="gate">'+(i===n-1?"":"🔒")+'</span>';
+      }
+      d.innerHTML=inner;
+      m.appendChild(d);
+    });
+  }
+
+  function render(){
+    var s=STEPS[cur];
+    realMode=(s.mode==="real");
+    $("modeSw").checked=realMode;
+    $("tcState").textContent=realMode?"真实并行版":"金字塔神话版";
+    $("modePill").className="mode-pill "+(realMode?"real":"myth");
+    $("modePill").textContent=realMode?"真实版 · 并行需求":"神话版 · 严格层级";
+    $("caption").textContent=realMode
+      ? "// 真实版：8 种需求，各自独立贡献幸福感，可同时部分满足（Tay & Diener, 2011, 123 国）"
+      : "// 神话版：金字塔暗示「逐级解锁」——这个含义是后人的图强加的，非马斯洛原意";
+    $("tcHint").textContent=realMode
+      ? "已切到真实视图。关掉开关可切回流传最广的金字塔，对照着看。"
+      : "打开它：从「必须逐级解锁」的金字塔，切到实证支持的「并行需求」真实图。";
+    document.querySelectorAll(".step").forEach(function(b,i){
+      b.setAttribute("aria-current",i===cur?"true":"false");
+    });
+    $("snTag").textContent=s.n+" · "+s.t;
+    $("snText").innerHTML=s.note;
+    renderModel();
+  }
+
+  /* step rail */
+  var stepsEl=$("steps");
+  STEPS.forEach(function(s,i){
+    var b=document.createElement("button");
+    b.className="step";b.type="button";
+    b.innerHTML='<span class="step-n">'+(i+1)+'</span><span class="step-t">'+s.t+'</span>';
+    b.addEventListener("click",function(){cur=i;render();});
+    stepsEl.appendChild(b);
+  });
+
+  /* manual toggle */
+  $("modeSw").addEventListener("change",function(){
+    realMode=this.checked;
+    /* keep current step note but flip the model */
+    $("tcState").textContent=realMode?"真实并行版":"金字塔神话版";
+    $("modePill").className="mode-pill "+(realMode?"real":"myth");
+    $("modePill").textContent=realMode?"真实版 · 并行需求":"神话版 · 严格层级";
+    $("caption").textContent=realMode
+      ? "// 真实版：8 种需求，各自独立贡献幸福感，可同时部分满足（Tay & Diener, 2011, 123 国）"
+      : "// 神话版：金字塔暗示「逐级解锁」——这个含义是后人的图强加的，非马斯洛原意";
+    renderModel();
+  });
+
+  /* sorter */
+  var SORT=[
+    {item:"把一个领域的能力做到行业前列",yin:true,
+     fb:"因。能力是你能直接投入、长期累积的，且不会被平台变动夺走。"},
+    {item:"年薪 / 身家达到某个数字",yin:false,
+     fb:"果。数字是能力、时机、行业、运气共同的下游产物，且没有天然终线——容易变成跑步机。"},
+    {item:"获得上级与同行的认可",yin:false,
+     fb:"果。认可由别人发放、随平台波动，是「外部尊重」。可换成「值得被认可的真实能力」——那才是因。"},
+    {item:"保持一种持续学习、成长的状态",yin:true,
+     fb:"因。成长是过程、是你能每天选择的状态，不依赖任何外部结果。"},
+    {item:"解决一个真问题、实实在在帮到具体的人",yin:true,
+     fb:"因。这是「贡献 / 自我超越」，在你努力半径内，且事业起落时依然成立。"},
+    {item:"拿到某个职级 / title",yin:false,
+     fb:"果。title 是体系给的标签，体系一变就重新洗牌；它是反馈，不该是瞄准点。"}
+  ];
+  var sortRows=$("sortRows");
+  SORT.forEach(function(it,idx){
+    var row=document.createElement("div");
+    row.className="sort-row";
+    row.innerHTML='<span class="sr-item">'+it.item+'</span>'+
+      '<span class="sort-btns">'+
+      '<button type="button" data-i="'+idx+'" data-v="yin">因</button>'+
+      '<button type="button" data-i="'+idx+'" data-v="guo">果</button>'+
+      '</span><span class="sr-fb" id="fb'+idx+'"></span>';
+    sortRows.appendChild(row);
+  });
+  [].slice.call(sortRows.querySelectorAll("button")).forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var i=+btn.getAttribute("data-i"),v=btn.getAttribute("data-v");
+      var it=SORT[i];
+      var correct=(v==="yin")===it.yin;
+      var rowBtns=btn.parentNode.querySelectorAll("button");
+      [].slice.call(rowBtns).forEach(function(b){b.disabled=true;});
+      btn.classList.add(correct?"picked-right":"picked-wrong");
+      if(!correct){
+        [].slice.call(rowBtns).forEach(function(b){
+          if((b.getAttribute("data-v")==="yin")===it.yin)b.classList.add("picked-right");
+        });
+      }
+      var fb=$("fb"+i);
+      fb.textContent=(correct?"✓ ":"✗ 正解："+(it.yin?"因":"果")+"。 ")+it.fb;
+      fb.classList.add("show");
+    });
+  });
+
+  /* quiz */
+  var answered=false;
+  [].slice.call(document.querySelectorAll(".cy-opt")).forEach(function(opt){
+    opt.addEventListener("click",function(){
+      if(answered)return;answered=true;
+      var correct=opt.getAttribute("data-correct")==="1";
+      [].slice.call(document.querySelectorAll(".cy-opt")).forEach(function(o){
+        o.disabled=true;
+        if(o.getAttribute("data-correct")==="1")o.classList.add("right");
+      });
+      if(!correct)opt.classList.add("wrong");
+      var fb=$("cyFeedback");fb.classList.add("show");
+      fb.innerHTML=correct
+        ? "<b>答对了。</b>这正是这堂课的核心：成就感的「果」一旦摘下，如果罗盘指的就是那个果，摘完便没有方向。出路不是定更高的 KPI（那只是换一个更大的果），而是把罗盘<b>移到因上</b>——重新开始喂养自我实现、内部尊重、贡献。"
+        : "<b>再想想。</b>定更高的 KPI、或只追财富地位，都是在「果」上加码——跑步机调快一档而已。真正的问题是罗盘<b>锚错了层</b>。正确答案是 B。";
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
