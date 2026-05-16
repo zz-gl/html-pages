@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="document">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI时代的人才与组织变革 · 对谈实录</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --doc-accent:#8b3f1f;
+  --on-primary:#fff; --accent-glow:#E8400D;
+  --secondary-container:#7b40e0; --tertiary:#4d44e3;
+  --bg:#fff8f6; --surface:#fff8f6;
+  --surface-container-lowest:#ffffff; --surface-container-low:#fbf2ef;
+  --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans','PingFang SC',ui-sans-serif,system-ui,sans-serif;
+  --font-serif:'Noto Serif SC',Georgia,serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px;--space-sm:8px;--space-md:12px;--space-lg:16px;--space-xl:20px;
+  --space-2xl:24px;--space-3xl:32px;--space-4xl:48px;--space-5xl:64px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:28px;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04);
+  --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --shadow-lg:0 8px 24px rgba(30,27,25,.12);
+  --shadow-accent:0 8px 24px rgba(160,59,0,.15);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#060B18;--surface:#0B1426;--surface-container-lowest:#101D35;
+    --surface-container-low:#101D35;--surface-container:#162544;--surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC;--fg-2:#CBD5E1;--fg-muted:#94a3b8;
+    --border:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.16);
+    --outline-variant:#2c3e63;
+    --primary:#FF6B35;--doc-accent:#ff9b6a;--accent-glow:#00D4FF;
+    --shadow-md:0 4px 12px rgba(0,0,0,.4);--shadow-lg:0 8px 24px rgba(0,0,0,.5);
+    --shadow-accent:0 8px 24px rgba(255,107,53,.18);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg-1)}
+body{font-family:var(--font-body);line-height:1.62;font-size:15.5px;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-underline-offset:3px}
+::selection{background:var(--primary);color:#fff}
+
+/* ---------- shell ---------- */
+.document-shell{max-width:1180px;margin:0 auto;padding:0 var(--space-2xl) var(--space-5xl)}
+
+/* ---------- cover ---------- */
+.cover{padding:var(--space-5xl) 0 var(--space-3xl);border-bottom:2px solid var(--border-strong)}
+.cover .kicker{font-family:var(--font-headline);font-size:12.5px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--primary)}
+.cover h1{font-family:var(--font-serif);font-size:clamp(32px,5.4vw,52px);
+  line-height:1.18;font-weight:700;margin:var(--space-lg) 0 var(--space-xl);
+  letter-spacing:-.01em;max-width:18ch}
+.deck{font-size:clamp(16px,2vw,18.5px);color:var(--fg-2);max-width:64ch;line-height:1.66}
+.deck strong{color:var(--fg-1);font-weight:600}
+.cover-meta{display:flex;flex-wrap:wrap;gap:var(--space-sm) var(--space-2xl);
+  margin-top:var(--space-2xl);font-size:13px;color:var(--fg-muted)}
+.cover-meta span{display:flex;align-items:center;gap:6px}
+.cover-meta b{color:var(--fg-2);font-weight:600;font-family:var(--font-mono)}
+.caveat-box{margin-top:var(--space-2xl);background:var(--surface-container-low);
+  border:1px solid var(--outline-variant);border-left:3px solid var(--doc-accent);
+  border-radius:var(--radius-md);padding:var(--space-lg) var(--space-xl);
+  font-size:13.5px;color:var(--fg-2);max-width:72ch}
+.caveat-box b{color:var(--fg-1)}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:248px 1fr;gap:var(--space-4xl);
+  margin-top:var(--space-3xl);align-items:start}
+
+/* ---------- reader rail ---------- */
+.reader-rail{position:sticky;top:var(--space-xl);display:flex;flex-direction:column;
+  gap:var(--space-xl)}
+.rail-block-label{font-family:var(--font-headline);font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);
+  margin-bottom:var(--space-md)}
+.mode-switch{display:flex;flex-direction:column;gap:6px}
+.mode-btn{font-family:var(--font-body);text-align:left;cursor:pointer;
+  background:transparent;border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm);padding:9px var(--space-md);font-size:13px;
+  color:var(--fg-2);display:flex;justify-content:space-between;align-items:center;
+  transition:all .15s}
+.mode-btn:hover{border-color:var(--doc-accent);color:var(--fg-1)}
+.mode-btn[aria-pressed="true"]{background:var(--primary);color:#fff;
+  border-color:var(--primary);box-shadow:var(--shadow-accent)}
+.mode-btn small{font-size:10.5px;opacity:.7}
+.search-wrap{position:relative}
+.search-wrap input{width:100%;font-family:var(--font-body);font-size:13px;
+  padding:9px var(--space-md);border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm);background:var(--surface-container-lowest);
+  color:var(--fg-1)}
+.search-wrap input:focus{outline:2px solid var(--primary);outline-offset:1px;border-color:transparent}
+.search-count{font-size:11px;color:var(--fg-muted);margin-top:6px;min-height:14px}
+.toc{display:flex;flex-direction:column;gap:1px;border-left:2px solid var(--border-strong)}
+.toc a{font-size:12.8px;color:var(--fg-muted);text-decoration:none;padding:6px 0 6px var(--space-md);
+  margin-left:-2px;border-left:2px solid transparent;transition:all .15s;line-height:1.4}
+.toc a:hover{color:var(--fg-1)}
+.toc a.active{color:var(--primary);border-left-color:var(--primary);font-weight:600}
+.toc a.toc-critique{color:var(--doc-accent)}
+
+/* ---------- body ---------- */
+.body-section{padding:var(--space-3xl) 0;border-bottom:1px solid var(--border)}
+.body-section:first-child{padding-top:0}
+.section-index{font-family:var(--font-mono);font-size:12px;color:var(--primary);
+  font-weight:500;letter-spacing:.04em}
+.body-section h2{font-family:var(--font-serif);font-size:clamp(21px,3vw,27px);
+  font-weight:700;line-height:1.32;margin:var(--space-sm) 0 var(--space-lg);letter-spacing:-.01em}
+.body-section h3{font-family:var(--font-headline);font-size:16px;font-weight:600;
+  margin:var(--space-2xl) 0 var(--space-sm);color:var(--fg-1)}
+.body-section p{margin:var(--space-md) 0;color:var(--fg-2);max-width:70ch}
+.body-section p.lead{font-size:16.5px;color:var(--fg-1)}
+
+/* speaker turns */
+.turn{display:grid;grid-template-columns:max-content 1fr;gap:var(--space-md);
+  margin:var(--space-md) 0;max-width:74ch}
+.turn .who{font-family:var(--font-headline);font-size:11.5px;font-weight:600;
+  padding:3px 9px;border-radius:var(--radius-pill);height:max-content;
+  white-space:nowrap;letter-spacing:.02em;margin-top:3px}
+.turn.guest .who{background:var(--primary);color:#fff}
+.turn.host .who{background:var(--surface-container-high);color:var(--fg-2);
+  border:1px solid var(--border-strong)}
+.turn p{margin:0}
+.turn em{font-style:normal;font-weight:600;color:var(--fg-1);
+  background:linear-gradient(transparent 62%,var(--primary-fixed,#ffdbcd) 0)}
+@media (prefers-color-scheme:dark){.turn em{background:none;color:var(--accent-glow)}}
+
+/* pull quote */
+.pull-quote{margin:var(--space-2xl) 0;padding:var(--space-xl) var(--space-2xl);
+  background:var(--surface-container-low);border-radius:var(--radius-lg);
+  border-left:4px solid var(--primary);box-shadow:var(--shadow-sm)}
+.pull-quote q{font-family:var(--font-serif);font-size:clamp(17px,2.4vw,21px);
+  font-weight:600;line-height:1.5;color:var(--fg-1);quotes:none;display:block}
+.pull-quote .src{margin-top:var(--space-md);font-size:12px;color:var(--fg-muted);
+  font-family:var(--font-headline);letter-spacing:.04em}
+
+/* evidence margin */
+.evidence-margin{margin:var(--space-xl) 0;padding:var(--space-lg) var(--space-xl);
+  background:var(--surface-container);border-radius:var(--radius-md);
+  font-size:13.5px;color:var(--fg-2);max-width:70ch}
+.evidence-margin .em-label{font-family:var(--font-headline);font-size:10.5px;
+  font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--doc-accent);display:block;margin-bottom:6px}
+
+/* problem cards */
+.problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:var(--space-md);margin:var(--space-lg) 0;max-width:74ch}
+.claim-card{background:var(--surface-container-lowest);border:1px solid var(--border-strong);
+  border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.claim-card .pc-num{font-family:var(--font-mono);font-size:12px;color:var(--primary);font-weight:600}
+.claim-card .pc-title{font-family:var(--font-headline);font-weight:600;font-size:14.5px;
+  margin:6px 0 var(--space-sm);color:var(--fg-1)}
+.claim-card .pc-body{font-size:13px;color:var(--fg-2);line-height:1.55}
+
+/* ---------- critique ---------- */
+.critique-section{padding-top:var(--space-3xl)}
+.critique-section .body-section{border-bottom:none;padding-bottom:var(--space-lg)}
+.judge{border:1px solid var(--outline-variant);border-radius:var(--radius-lg);
+  margin:var(--space-lg) 0;background:var(--surface-container-lowest);
+  overflow:hidden;box-shadow:var(--shadow-sm)}
+.judge-head{display:flex;align-items:center;gap:var(--space-md);width:100%;
+  cursor:pointer;background:transparent;border:none;text-align:left;
+  padding:var(--space-lg) var(--space-xl);font-family:var(--font-body);color:inherit}
+.judge-head:hover{background:var(--surface-container-low)}
+.judge-no{font-family:var(--font-mono);font-size:12px;font-weight:600;
+  color:#fff;background:var(--doc-accent);border-radius:var(--radius-sm);
+  padding:4px 8px;white-space:nowrap}
+.judge-claim{flex:1;font-family:var(--font-headline);font-weight:600;font-size:15px;
+  line-height:1.4;color:var(--fg-1)}
+.stars{font-size:14px;letter-spacing:1px;white-space:nowrap}
+.stars .on{color:var(--yellow)}
+.stars .off{color:var(--border-strong)}
+.judge-toggle{font-size:18px;color:var(--fg-muted);transition:transform .2s;line-height:1}
+.judge[open] .judge-toggle{transform:rotate(45deg)}
+.judge-body{padding:0 var(--space-xl) var(--space-xl);
+  display:grid;gap:var(--space-md);max-width:76ch}
+.bayes-row{display:grid;grid-template-columns:max-content 1fr;gap:var(--space-md);
+  align-items:start}
+.bayes-tag{font-family:var(--font-headline);font-size:10.5px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-sm);
+  white-space:nowrap;margin-top:2px}
+.bayes-tag.prior{background:var(--surface-container-high);color:var(--fg-2)}
+.bayes-tag.like{background:#e7ecfb;color:var(--tertiary)}
+.bayes-tag.post{background:var(--primary);color:#fff}
+@media (prefers-color-scheme:dark){.bayes-tag.like{background:#1c2d52;color:#9db4ff}}
+.bayes-row p{margin:0;font-size:13.5px;color:var(--fg-2);line-height:1.6}
+.bayes-row.post-row p{color:var(--fg-1);font-weight:500}
+
+/* question panel */
+.question-panel{margin-top:var(--space-3xl);background:var(--surface-container-low);
+  border:1px solid var(--outline-variant);border-radius:var(--radius-xl);
+  padding:var(--space-2xl) var(--space-2xl)}
+.question-panel h2{font-family:var(--font-serif);font-size:21px;font-weight:700;margin-bottom:var(--space-md)}
+.question-panel ol{margin-left:1.1em;color:var(--fg-2);font-size:14px}
+.question-panel li{margin:var(--space-sm) 0;padding-left:4px}
+.source-spread{margin-top:var(--space-xl);padding-top:var(--space-lg);
+  border-top:1px solid var(--border);font-size:12.5px;color:var(--fg-muted)}
+.source-spread a{word-break:break-all}
+
+/* search highlight */
+mark.hit{background:var(--yellow);color:#1e1b19;border-radius:3px;padding:0 2px}
+
+/* reading-mode visibility */
+body[data-mode="quick"] [data-mode-hide~="quick"]{display:none!important}
+body[data-mode="critique"] [data-mode-hide~="critique"]{display:none!important}
+body[data-mode="quick"] .body-section{padding:var(--space-xl) 0}
+.mode-note{display:none;font-size:12.5px;color:var(--fg-muted);
+  font-style:italic;margin:var(--space-sm) 0}
+body[data-mode="quick"] .mode-note.for-quick{display:block}
+body[data-mode="critique"] .mode-note.for-critique{display:block}
+
+/* footer */
+.doc-foot{margin-top:var(--space-4xl);padding-top:var(--space-xl);
+  border-top:1px solid var(--border);font-size:12px;color:var(--fg-muted);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--space-sm)}
+
+/* ---------- responsive ---------- */
+@media (max-width:860px){
+  .document-shell{padding:0 var(--space-lg) var(--space-4xl)}
+  .layout{grid-template-columns:1fr;gap:var(--space-lg)}
+  .reader-rail{position:static;flex-direction:column;
+    background:var(--surface-container-low);border:1px solid var(--border-strong);
+    border-radius:var(--radius-lg);padding:var(--space-lg);margin-bottom:var(--space-lg)}
+  .toc{max-height:none}
+  .cover{padding-top:var(--space-3xl)}
+  .turn{grid-template-columns:1fr;gap:4px}
+  .turn .who{margin-top:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body data-mode="full">
+<div class="document-shell">
+
+  <!-- ===== COVER ===== -->
+  <header class="cover">
+    <div class="kicker">对谈实录 · AI 与组织变革</div>
+    <h1>AI 时代的人才与组织变革</h1>
+    <p class="deck">一位制造业公司管理者的实践视角：在 AI 大规模进入工作流之后，
+      <strong>不要轻易裁人</strong>——旧标准下的"最佳员工"未必是 AI 时代的人才；
+      AI <strong>放大专业能力</strong>而非替代专业人士；理想的用法是
+      <strong>增效而非降本</strong>。对谈还拆出 AI 工作化的三个真问题，
+      以及战略团队"直接复制 cowork"的意外发现。文末附 AI 客观评述。</p>
+    <div class="cover-meta">
+      <span>来源 · <b>语雀 / video-mind</b></span>
+      <span>正文 · <b>约 6200 字</b></span>
+      <span>结构 · <b>6 节正文 + 3 条评述</b></span>
+      <span>体裁 · <b>访谈整理</b></span>
+    </div>
+    <div class="caveat-box">
+      <b>阅读说明：</b>正文为访谈对话的结构化整理，"嘉宾／主持人"观点均属个人经验之谈，
+      非普适结论。文末「客观评述」由 AI 以 Bayes 视角对三个核心判断做独立评估，
+      用 ★ 表示可信度，与嘉宾立场分开看待。
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ===== READER RAIL ===== -->
+    <aside class="reader-rail">
+      <nav>
+        <div class="rail-block-label">阅读模式</div>
+        <div class="mode-switch" role="group" aria-label="阅读模式">
+          <button class="mode-btn" data-mode-set="full" aria-pressed="true">
+            <span>全文</span><small>对话 + 评述</small></button>
+          <button class="mode-btn" data-mode-set="quick" aria-pressed="false">
+            <span>速读</span><small>标题 + 金句 + 结论</small></button>
+          <button class="mode-btn" data-mode-set="critique" aria-pressed="false">
+            <span>仅评述</span><small>只看 AI 评述</small></button>
+        </div>
+      </nav>
+      <div>
+        <div class="rail-block-label">检索</div>
+        <div class="search-wrap">
+          <input type="search" id="q" placeholder="搜正文关键词…" aria-label="搜索正文">
+          <div class="search-count" id="qcount"></div>
+        </div>
+      </div>
+      <nav>
+        <div class="rail-block-label">目录</div>
+        <div class="toc" id="toc"></div>
+      </nav>
+    </aside>
+
+    <!-- ===== BODY ===== -->
+    <main class="body" id="body">
+
+      <section class="body-section" id="s1" data-toc="一个人的公司不乐观">
+        <div class="section-index">01</div>
+        <h2>一个人的公司不乐观，小团队大公司可期</h2>
+        <div class="turn guest"><span class="who">嘉宾</span>
+          <p>我对将来"一个人的公司"也不乐观，但是三五个人、十几个人做一个大型公司，我还挺乐观的。</p></div>
+
+        <h3 data-mode-hide="quick">用 token 消耗量识别真正的人才</h3>
+        <div class="turn guest" data-mode-hide="quick"><span class="who">嘉宾</span>
+          <p>在我们公司，大家 <em>token 是可以放开去用的</em>。因为我认为至少到今年年底，
+          token 的消耗其实都相当于是一个<em>认知的过程</em>。我会看公司内部 token 消耗量前二十的同事，
+          跟他们具体聊真实在干什么。我发现，排在前面的这些人<em>没有白给的</em>。</p></div>
+        <div class="turn guest" data-mode-hide="quick"><span class="who">嘉宾</span>
+          <p>很有意思——他们并不是常规想象里、旧标准下最顶级的员工。比如过去表达能力不强、
+          获取不了什么资源，但是<em>脑子极强</em>。只要有 token、有业务环境，他就可以去改造一切。</p></div>
+
+        <div class="evidence-margin" data-mode-hide="quick">
+          <span class="em-label">核心代理指标</span>
+          嘉宾把 <b>token 消耗量</b>当作"认知活动强度"的可观察代理，并强调它只是
+          <b>找谁聊聊</b>的筛选起点——真正的判断仍来自逐个访谈，而非消耗量本身。
+        </div>
+
+        <h3 data-mode-hide="quick">不要轻易裁人：人才标准变了</h3>
+        <div class="pull-quote">
+          <q>所有公司不要裁人——因为 AI 时代的人才，和上个时代的标准大概率不一样。
+            上来就裁人，很容易按旧标准把最好的人裁掉。</q>
+          <div class="src">嘉宾 · 核心建议</div>
+        </div>
+        <div class="turn host" data-mode-hide="quick"><span class="who">主持人</span>
+          <p>但现在很多重度用 AI 的企业裁人，不就是因为有的人不愿意学、有意拒绝学新知识吗？</p></div>
+        <div class="turn guest" data-mode-hide="quick"><span class="who">嘉宾</span>
+          <p>我们公司裁了不少这样的。但我还没发现"给了他 AI 以后他不用"的情况——
+          大家都喜欢继续用，只是过去没让他迈这一步，因为迈这一步挺难。所以这先是个
+          <em>认知过程</em>，要避免过早地把认知定下来。</p></div>
+      </section>
+
+      <section class="body-section" id="s2" data-toc="AI 放大专业，不替代专业">
+        <div class="section-index">02</div>
+        <h2>AI 放大专业能力，而非替代专业人士</h2>
+        <div class="turn guest"><span class="who">嘉宾</span>
+          <p class="lead">"一些专业的工作被替代"——我真正使用以后觉得，这是<em>最胡扯的事情</em>。
+          一个普通人做出来的代码，可用性差到极致，更不要说大规模部署，那对他们来说就是个灾难。</p></div>
+        <div class="turn host" data-mode-hide="quick"><span class="who">主持人</span>
+          <p>你之前在网上提过，大意是专业人士用它能放大——从原来比普通人强十倍、百倍，
+          现在可能变成千倍。</p></div>
+        <div class="turn guest" data-mode-hide="quick"><span class="who">嘉宾</span>
+          <p>原来是两三倍，现在其实是十倍、百倍。举个例子：大家都能用 Claude Code，
+          但我们公司专业人员拿它做出来的，真的非常好。今天还多了一个<em>有效的过滤器</em>——
+          朋友拿 Claude Code 做出来很垃圾的东西发给你，你原来没那么讨厌这个人，
+          现在开始讨厌了。大部分人如果不是专业的，都是民科水平。</p></div>
+        <div class="evidence-margin" data-mode-hide="quick">
+          <span class="em-label">机制</span>
+          杠杆论建立在"专业 vs 民科"的二分上：AI 抬高了产出的<b>表面完成度</b>，
+          却没抬高<b>正确性与可维护性</b>——后者仍依赖专业判断。
+        </div>
+      </section>
+
+      <section class="body-section" id="s3" data-toc="AI 工作化的三个真问题">
+        <div class="section-index">03</div>
+        <h2>AI 在工作中的三个严重问题</h2>
+        <p class="lead">嘉宾强调：抛开"个人怎么玩"，单看<em>工作场景</em>，
+          AI 目前有三个比较严重的问题——而且都是 token 消耗量最大的那批人提出来的。</p>
+        <div class="problem-grid">
+          <div class="claim-card">
+            <div class="pc-num">问题 01</div>
+            <div class="pc-title">工作协同的缺失</div>
+            <div class="pc-body">今天所有 AI 工具都只满足个人，工作协同非常差——
+              跨软件、跨部门都难。生产是一条链，局部高、其他不行，整体价值依然有限。</div>
+          </div>
+          <div class="claim-card">
+            <div class="pc-num">问题 02</div>
+            <div class="pc-title">数据获取与数仓管理</div>
+            <div class="pc-body">不必再用传统 SaaS / ETL 取数，最好直接进数据库。
+              数据库可看作"四维数据"，AI 读四维（带时间轴等任意维度）毫无问题——
+              数仓该怎么管，成了大挑战。</div>
+          </div>
+          <div class="claim-card">
+            <div class="pc-num">问题 03</div>
+            <div class="pc-title">工作价值如何被衡量</div>
+            <div class="pc-body">新方式下个人能学到很多、反馈也好，
+              但"我的工作价值怎么被衡量"成为一个悬而未决的真问题。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="body-section" id="s4" data-toc="战略研究依然有价值">
+        <div class="section-index">04</div>
+        <h2>战略研究依然有价值：复制 cowork，用 demo 验证</h2>
+        <div class="turn guest"><span class="who">嘉宾</span>
+          <p class="lead">有人说搞研究、搞战略、搞商分的人不需要了。我把这三个问题交给战略团队
+          （一个负责人带着几个校招生），让他们研究 Anthropic、OpenAI 这些顶级公司怎么做。
+          结果非常惊讶——<em>他们直接把 cowork 复制了</em>。</p></div>
+        <div class="turn guest" data-mode-hide="quick"><span class="who">嘉宾</span>
+          <p>因为他们发现这些公司不做传统 PRD 文档，而是直接做<em>可验证的 demo</em>。
+          于是战略组把三个需求直接做成一个完整的 cowork demo，不用任何额外东西，
+          也不需要开发人员介入：跟 HR 做了工作联通的验证，跟数仓团队做了数据打通
+          （哪些走云端模型、哪些走本地模型）、连"一个人的工作怎么衡量"都做了 demo。</p></div>
+        <div class="turn host" data-mode-hide="quick"><span class="who">主持人</span>
+          <p>这个全程不让工程师介入吗？</p></div>
+        <div class="turn guest" data-mode-hide="quick"><span class="who">嘉宾</span>
+          <p>工程师没介入。验证完之后，工程师再去做专业开发，因为还要大规模全员部署。
+          如果按"商分不需要了、战略研究不需要了、我自己拿个 agent 就能干"的常规想法，
+          其实我做不到那种程度——那样可能又把最顶级的人才送走了。</p></div>
+      </section>
+
+      <section class="body-section" id="s5" data-toc="给产品经理充分放权">
+        <div class="section-index">05</div>
+        <h2>给产品经理充分放权</h2>
+        <div class="turn host" data-mode-hide="quick"><span class="who">主持人</span>
+          <p>很多企业在这么做了。以前立项很谨慎，怕浪费资源；现在<em>给产品经理充分放权</em>，
+          有想法直接去验证，拿出一个能操作的东西，代码自己弄。最终还是要交给工程师实现
+          ——海量用户下的压力测试这些得工程师把握。</p></div>
+        <div class="turn guest" data-mode-hide="quick"><span class="who">嘉宾</span>
+          <p>我们连硬件都这么做——先在 agent 的虚拟环境里跑通再开发。但我不可能让产品经理
+          去做战略研究，也不可能找任何业务负责人来做。</p></div>
+        <div class="pull-quote">
+          <q>专业的人在今天仍然有巨大的价值，只是不再是"做一些文档"那种标准化的价值。
+            专业的人只要能用好 AI，会进入到另一个高度——这个高度，不是专业的人替代不了。</q>
+          <div class="src">嘉宾 · 对"专业价值"的重新定义</div>
+        </div>
+      </section>
+
+      <section class="body-section" id="s6" data-toc="增效而非降本">
+        <div class="section-index">06</div>
+        <h2>AI 用于增效，而非降本</h2>
+        <div class="turn host" data-mode-hide="quick"><span class="who">主持人</span>
+          <p>以前一个战略调研主管带十个人，现在可能一个人就差不多了。这种事你们那儿会发生吧？</p></div>
+        <div class="turn guest" data-mode-hide="quick"><span class="who">嘉宾</span>
+          <p>我们人本来就不多。任何企业发展有两种可能：一种是行业撞了天花板，
+          要靠<em>降本</em>解决问题；另一种像我们——汽车才做了一点点，后边还有机器人，
+          那就希望这些人能乘以 5 到 10 倍效率。</p></div>
+        <div class="pull-quote">
+          <q>今天我拿 3 万人做一千多亿收入；往后看 5 到 10 年，有没有机会拿 3 万人做 1 万亿？
+            用 AI 主要是用于增效，不是降本。</q>
+          <div class="src">嘉宾 · 战略选择</div>
+        </div>
+        <div class="evidence-margin" data-mode-hide="quick">
+          <span class="em-label">前提</span>
+          这条结论是<b>条件性</b>的——成立的前提是"产业规模足够大、远未触顶"。
+          嘉宾自己也承认：行业撞天花板时，降本才是理性选择。
+        </div>
+      </section>
+
+      <!-- ===== CRITIQUE ===== -->
+      <div class="critique-section" id="s7" data-toc="客观评述（Bayes）" data-toc-critique="1">
+        <section class="body-section">
+          <div class="section-index">评述</div>
+          <h2>客观评述 · Bayes 三判断</h2>
+          <p class="mode-note for-quick">速读模式：以下仅显示每条判断与最终评级，点开可看完整推理。</p>
+          <p class="mode-note for-critique">仅评述模式：已隐去访谈正文，只保留 AI 独立评估。</p>
+          <p style="font-size:13.5px;color:var(--fg-muted);max-width:70ch" data-mode-hide="quick">
+            以下由 AI 以 Prior（视频立场）→ Likelihood（外部证据）→ Posterior（修正后判断）
+            的结构，对三个核心论断做独立评估。★ 越多表示该论断越站得住。点击展开。</p>
+
+          <details class="judge" open>
+            <summary class="judge-head">
+              <span class="judge-no">判断 1</span>
+              <span class="judge-claim">token 消耗量可以识别出真正的人才</span>
+              <span class="stars" title="3/5"><span class="on">★★★</span><span class="off">★★</span></span>
+              <span class="judge-toggle">+</span>
+            </summary>
+            <div class="judge-body">
+              <div class="bayes-row"><span class="bayes-tag prior">Prior</span>
+                <p>嘉宾说公司内 token 消耗排名前二十的同事"没有白给的"，且常不是旧标准下的
+                顶级员工——表达弱、拿不到资源，但"脑子极强"。隐含因果：高 token 消耗 ≈
+                高强度认知活动 ≈ 真正的人才。</p></div>
+              <div class="bayes-row"><span class="bayes-tag like">Evidence</span>
+                <p>作为弱信号有合理性——主动、高频用 AI 解决问题，确实与好奇心、迭代意愿相关。
+                但作为度量问题明显：消耗量混杂大量噪声（反复试错、prompt 写得差、生成大段无用代码）；
+                Goodhart 定律提示——一旦"token 多 = 人才"被员工知晓，指标立即被刷量污染。
+                嘉宾自己也说这是"今年年底前"的临时窗口，等于承认相关性不稳定。</p></div>
+              <div class="bayes-row post-row"><span class="bayes-tag post">Posterior</span>
+                <p>★★★☆☆ — 作为发现候选人的弱信号成立，作为人才度量则易被噪声和刷量击穿。
+                嘉宾的正确用法是把它当"找谁聊聊"的起点，而非结论。</p></div>
+            </div>
+          </details>
+
+          <details class="judge">
+            <summary class="judge-head">
+              <span class="judge-no">判断 2</span>
+              <span class="judge-claim">AI 放大专业人士而非替代；"专业工作被替代"是胡扯</span>
+              <span class="stars" title="4/5"><span class="on">★★★★</span><span class="off">★</span></span>
+              <span class="judge-toggle">+</span>
+            </summary>
+            <div class="judge-body">
+              <div class="bayes-row"><span class="bayes-tag prior">Prior</span>
+                <p>嘉宾称专业人士用 AI 的杠杆从"两三倍"变成"十倍、百倍"，普通人产出的代码
+                "可用性差到极致"，连部署都谈不上；因此"专业工作被替代"是"最胡扯的事"。</p></div>
+              <div class="bayes-row"><span class="bayes-tag like">Evidence</span>
+                <p>在"复杂系统工程"这类工作上判断基本吻合——代码正确性、可维护性、规模化部署
+                仍强依赖专业判断。但"被替代是胡扯"作为<b>全称判断过强</b>：初级、标准化、
+                规则明确的专业任务（基础文案、初级翻译、模板化法律/财务文书、入门客服）
+                确实在被压缩。嘉宾跳过了"AI 抬高业余者下限，从而侵蚀专业者中低端市场"
+                这一真实机制。</p></div>
+              <div class="bayes-row post-row"><span class="bayes-tag post">Posterior</span>
+                <p>★★★★☆ — 高端专业工作被放大证据充分；准确表述应是：AI 替代专业工作的<b>低端</b>、
+                放大其<b>高端</b>，而非"专业工作整体不被替代"。</p></div>
+            </div>
+          </details>
+
+          <details class="judge">
+            <summary class="judge-head">
+              <span class="judge-no">判断 3</span>
+              <span class="judge-claim">AI 应主要用于增效，而非降本</span>
+              <span class="stars" title="3/5"><span class="on">★★★</span><span class="off">★★</span></span>
+              <span class="judge-toggle">+</span>
+            </summary>
+            <div class="judge-body">
+              <div class="bayes-row"><span class="bayes-tag prior">Prior</span>
+                <p>嘉宾主张产业天花板未到时（汽车、机器人空间巨大），AI 应让人效乘以 5–10 倍——
+                "3 万人做一千亿"变成"3 万人做一万亿"，而非靠裁员降本。</p></div>
+              <div class="bayes-row"><span class="bayes-tag like">Evidence</span>
+                <p>这本质不是普适事实判断，而是<b>条件性的战略选择</b>。高增长、远未触顶的业务里，
+                "增效"确实更优；但成熟、零和或衰退的行业里，需求侧没有增量，"增效"会直接
+                转化为产能过剩，降本反而理性——嘉宾自己也承认行业撞天花板时需要降本。
+                此外"5–10 倍人效"目前缺乏跨行业实证支撑。</p></div>
+              <div class="bayes-row post-row"><span class="bayes-tag post">Posterior</span>
+                <p>★★★☆☆ — 高增长情境下合理，但作为普适建议过度外推；
+                把它当通用准则会误导真正处于存量市场的企业。</p></div>
+            </div>
+          </details>
+        </section>
+      </div>
+
+      <!-- ===== QUESTION PANEL ===== -->
+      <section class="question-panel" data-mode-hide="critique">
+        <h2>延伸思考</h2>
+        <ol>
+          <li>如果"token 消耗量"被员工知道会用于评估，你的团队会如何刷量？有没有抗 Goodhart 的替代指标？</li>
+          <li>你所在的行业属于"高增长未触顶"还是"存量／零和"？这直接决定该走增效还是降本。</li>
+          <li>哪些是你团队里"标准化、可被 AI 压缩的低端专业任务"，哪些是"被 AI 放大的高端判断"？</li>
+          <li>"战略组直接复制 cowork、用可验证 demo 替代 PRD"——这套方式能不能搬到你的立项流程？</li>
+        </ol>
+        <div class="source-spread">
+          原文（含视频出处与完整评述）· 语雀：
+          <a href="https://www.yuque.com/oudizuo/video-mind/ai-1778898803" target="_blank" rel="noopener">
+          yuque.com/oudizuo/video-mind/ai-1778898803</a>
+        </div>
+      </section>
+
+      <footer class="doc-foot">
+        <span>Document Review · html-anything</span>
+        <span>访谈观点属个人经验，评述为 AI 独立评估</span>
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  /* ---- build TOC ---- */
+  var toc=document.getElementById('toc');
+  var secs=[].slice.call(document.querySelectorAll('[data-toc]'));
+  secs.forEach(function(sec){
+    var a=document.createElement('a');
+    a.href='#'+sec.id;
+    a.textContent=sec.getAttribute('data-toc');
+    if(sec.hasAttribute('data-toc-critique')) a.className='toc-critique';
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      document.getElementById(sec.id).scrollIntoView({behavior:'smooth',block:'start'});
+    });
+    toc.appendChild(a);
+  });
+  var links=[].slice.call(toc.children);
+
+  /* ---- scroll spy ---- */
+  var spy=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        var id=en.target.id;
+        links.forEach(function(l){
+          l.classList.toggle('active',l.getAttribute('href')==='#'+id);
+        });
+      }
+    });
+  },{rootMargin:'-15% 0px -70% 0px'});
+  secs.forEach(function(s){spy.observe(s);});
+
+  /* ---- reading modes ---- */
+  var body=document.body;
+  var modeBtns=[].slice.call(document.querySelectorAll('[data-mode-set]'));
+  modeBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var m=btn.getAttribute('data-mode-set');
+      body.setAttribute('data-mode',m);
+      modeBtns.forEach(function(b){
+        b.setAttribute('aria-pressed', b===btn?'true':'false');
+      });
+      /* critique mode: open all judgements so nothing is hidden behind a fold */
+      if(m==='critique'){
+        document.querySelectorAll('.judge').forEach(function(j){j.open=true;});
+      }
+    });
+  });
+
+  /* ---- search highlight ---- */
+  var input=document.getElementById('q');
+  var count=document.getElementById('qcount');
+  var bodyEl=document.getElementById('body');
+  function clearMarks(){
+    bodyEl.querySelectorAll('mark.hit').forEach(function(m){
+      var t=document.createTextNode(m.textContent);
+      m.parentNode.replaceChild(t,m);
+    });
+    bodyEl.normalize();
+  }
+  function walk(node,term,acc){
+    if(node.nodeType===3){
+      var idx=node.nodeValue.toLowerCase().indexOf(term);
+      if(idx>-1) acc.push(node);
+    }else if(node.nodeType===1 && node.tagName!=='SCRIPT' && node.tagName!=='STYLE'){
+      for(var c=node.firstChild;c;c=c.nextSibling) walk(c,term,acc);
+    }
+    return acc;
+  }
+  var deb;
+  input.addEventListener('input',function(){
+    clearTimeout(deb);
+    deb=setTimeout(function(){
+      clearMarks();
+      var term=input.value.trim().toLowerCase();
+      if(term.length<1){count.textContent='';return;}
+      var hits=walk(bodyEl,term,[]),n=0,first=null;
+      hits.forEach(function(tn){
+        var txt=tn.nodeValue,low=txt.toLowerCase(),frag=document.createDocumentFragment(),i=0,p;
+        while((p=low.indexOf(term,i))>-1){
+          if(p>i) frag.appendChild(document.createTextNode(txt.slice(i,p)));
+          var mk=document.createElement('mark');
+          mk.className='hit';mk.textContent=txt.slice(p,p+term.length);
+          frag.appendChild(mk);if(!first)first=mk;n++;i=p+term.length;
+        }
+        if(i<txt.length) frag.appendChild(document.createTextNode(txt.slice(i)));
+        tn.parentNode.replaceChild(frag,tn);
+      });
+      count.textContent=n?('命中 '+n+' 处'):'无匹配';
+      if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+    },220);
+  });
+})();
+</script>
+</body>
+</html>
