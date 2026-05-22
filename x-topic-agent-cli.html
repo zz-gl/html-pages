@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default" data-theme="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI/Agent 时代的 CLI 化：最佳实践与陷阱 · X 主题调研</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --primary-fixed-dim:#ffb597;
+  --on-primary:#fff; --accent-glow:#E8400D;
+  --secondary:#d5baff; --secondary-container:#7b40e0; --tertiary:#4d44e3; --accent-cyan:#00D4FF;
+  --bg:#fff8f6; --surface:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef;
+  --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px;--space-sm:8px;--space-md:12px;--space-lg:16px;--space-xl:20px;--space-2xl:24px;--space-3xl:32px;--space-4xl:48px;--space-5xl:64px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:28px;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --shadow-lg:0 8px 24px rgba(30,27,25,.12); --shadow-accent:0 8px 24px rgba(160,59,0,.15);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+}
+html[data-theme="dark"]{
+  --bg:#060B18; --surface:#0B1426; --surface-container-lowest:#101D35; --surface-container-low:#101D35;
+  --surface-container:#162544; --surface-container-high:#1c2d52;
+  --fg-1:#F8FAFC; --fg-2:#CBD5E1; --fg-muted:#94A3B8;
+  --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#33415c;
+  --primary:#FF6B35; --primary-fixed:#3a1d10; --accent-glow:#00D4FF;
+  --shadow-md:0 4px 12px rgba(0,0,0,.4); --shadow-lg:0 8px 24px rgba(0,0,0,.5);
+}
+@media (prefers-color-scheme:dark){
+  html[data-theme="auto"]{
+    --bg:#060B18; --surface:#0B1426; --surface-container-lowest:#101D35; --surface-container-low:#101D35;
+    --surface-container:#162544; --surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC; --fg-2:#CBD5E1; --fg-muted:#94A3B8;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#33415c;
+    --primary:#FF6B35; --primary-fixed:#3a1d10; --accent-glow:#00D4FF;
+    --shadow-md:0 4px 12px rgba(0,0,0,.4); --shadow-lg:0 8px 24px rgba(0,0,0,.5);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.insight-shell{max-width:1080px;margin:0 auto;padding:var(--space-lg) var(--space-lg) var(--space-5xl)}
+h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-.01em;line-height:1.25;font-weight:600}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.mono{font-family:var(--font-mono)}
+.ipa{font-family:var(--font-mono);color:var(--fg-muted);font-size:.85em}
+
+/* header */
+.brief-header{position:relative;background:var(--gradient-hero);color:#fff;border-radius:var(--radius-2xl);padding:var(--space-4xl) var(--space-3xl);margin-top:var(--space-md);overflow:hidden}
+.brief-header::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(255,255,255,.16),transparent 55%);pointer-events:none}
+.brief-eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85;font-weight:600}
+.brief-header h1{font-size:clamp(1.7rem,4.5vw,2.7rem);font-weight:700;margin:var(--space-md) 0 var(--space-md);max-width:18ch}
+.brief-lede{font-size:clamp(1rem,2vw,1.18rem);opacity:.95;max-width:54ch;font-weight:300}
+.chip-row{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl);position:relative;z-index:1}
+.useful-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;padding:7px 13px;border-radius:var(--radius-pill);font-size:.82rem;font-weight:500;backdrop-filter:blur(6px)}
+.useful-chip b{font-family:var(--font-mono);font-weight:600}
+.theme-toggle{position:absolute;top:var(--space-lg);right:var(--space-lg);z-index:2;display:flex;gap:4px;background:rgba(0,0,0,.18);border-radius:var(--radius-pill);padding:4px}
+.theme-toggle button{background:none;border:none;color:rgba(255,255,255,.7);font-size:.95rem;cursor:pointer;padding:5px 9px;border-radius:var(--radius-pill);line-height:1;font-family:var(--font-body)}
+.theme-toggle button[aria-pressed="true"]{background:rgba(255,255,255,.92);color:var(--primary)}
+.theme-toggle button:focus-visible{outline:2px solid #fff;outline-offset:1px}
+
+section{margin-top:var(--space-4xl)}
+.sec-label{display:flex;align-items:center;gap:var(--space-sm);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);font-weight:600;margin-bottom:var(--space-md)}
+.sec-label::before{content:"";width:22px;height:2px;background:var(--primary);border-radius:2px}
+.sec-title{font-size:clamp(1.3rem,3vw,1.7rem);margin-bottom:var(--space-sm)}
+.sec-intro{color:var(--fg-2);max-width:62ch;margin-bottom:var(--space-xl)}
+
+/* answer panel */
+.answer-panel{background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-md);margin-top:var(--space-2xl)}
+.answer-panel .qa{display:grid;gap:var(--space-lg);grid-template-columns:1fr 1fr}
+.answer-panel .qa>div{padding:var(--space-lg);background:var(--surface-container-low);border-radius:var(--radius-lg);border:1px solid var(--border)}
+.answer-panel .qa h4{font-size:.92rem;color:var(--primary);margin-bottom:6px}
+.answer-panel .qa p{color:var(--fg-2);font-size:.95rem}
+.signals{list-style:none;display:grid;gap:var(--space-md);margin-top:var(--space-xl);counter-reset:s}
+.signals li{counter-increment:s;position:relative;padding:var(--space-lg) var(--space-lg) var(--space-lg) 56px;background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);font-size:.96rem;color:var(--fg-1)}
+.signals li::before{content:counter(s);position:absolute;left:var(--space-lg);top:var(--space-lg);width:28px;height:28px;border-radius:50%;background:var(--gradient-hero);color:#fff;display:grid;place-items:center;font-family:var(--font-mono);font-weight:700;font-size:.9rem}
+.signals li b{color:var(--primary)}
+.cite{display:inline-flex;align-items:center;gap:3px;font-size:.8rem;font-family:var(--font-mono);color:var(--secondary-container);white-space:nowrap}
+html[data-theme="dark"] .cite,html[data-theme="auto"] .cite{color:var(--secondary)}
+@media (prefers-color-scheme:dark){html[data-theme="auto"] .cite{color:var(--secondary)}}
+.cite::before{content:"𝕏";font-family:var(--font-headline)}
+
+/* glossary */
+.glossary-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-md)}
+.glossary-search{flex:1;min-width:200px;max-width:340px;position:relative}
+.glossary-search input{width:100%;padding:10px 14px 10px 36px;border-radius:var(--radius-pill);border:1px solid var(--border-strong);background:var(--surface-container-lowest);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem}
+.glossary-search input:focus-visible{outline:2px solid var(--primary);outline-offset:1px}
+.glossary-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--fg-muted)}
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:var(--space-md);margin-top:var(--space-xl)}
+.term-card{background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);transition:transform .15s,box-shadow .15s}
+.term-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.term-card .word{font-family:var(--font-headline);font-weight:600;font-size:1.05rem;color:var(--fg-1)}
+.term-card .ipa{display:block;margin:3px 0 8px}
+.term-card .mean{font-size:.9rem;color:var(--fg-2);line-height:1.55}
+.term-empty{grid-column:1/-1;color:var(--fg-muted);text-align:center;padding:var(--space-2xl)}
+
+/* primary insight: code mode */
+.primary-insight{background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-lg);margin-top:var(--space-2xl)}
+.pi-tag{display:inline-block;background:var(--primary-fixed);color:var(--primary);font-size:.78rem;font-weight:600;padding:4px 12px;border-radius:var(--radius-pill);margin-bottom:var(--space-md)}
+html[data-theme="dark"] .pi-tag,@media (prefers-color-scheme:dark){html[data-theme="auto"] .pi-tag{color:var(--primary-fixed-dim)}}
+.pi-title{font-size:clamp(1.25rem,3vw,1.6rem);margin-bottom:var(--space-sm)}
+.pi-sub{color:var(--fg-2);max-width:60ch;margin-bottom:var(--space-2xl)}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg)}
+.debate-side{padding:var(--space-lg);border-radius:var(--radius-lg);border:1px solid var(--border)}
+.debate-side h4{font-size:.95rem;margin-bottom:var(--space-md);display:flex;align-items:center;gap:8px}
+.debate-side ul{list-style:none;display:grid;gap:8px}
+.debate-side li{font-size:.88rem;color:var(--fg-2);padding-left:18px;position:relative}
+.debate-side li::before{content:"•";position:absolute;left:4px;color:var(--fg-muted)}
+.side-mcp{background:rgba(123,64,224,.07);border-color:rgba(123,64,224,.25)}
+.side-cli{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.3)}
+.side-mcp h4{color:var(--secondary-container)} .side-cli h4{color:#0891b2}
+html[data-theme="dark"] .side-mcp h4,@media(prefers-color-scheme:dark){html[data-theme="auto"] .side-mcp h4{color:var(--secondary)}}
+.verdict{margin-top:var(--space-xl);padding:var(--space-xl);background:var(--gradient-hero);color:#fff;border-radius:var(--radius-lg)}
+.verdict .vk{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85;font-weight:600}
+.verdict p{margin-top:8px;font-size:1.02rem}
+.verdict b{font-weight:700}
+.token-bars{display:grid;gap:var(--space-md);margin-top:var(--space-xl)}
+.token-bar{display:grid;grid-template-columns:130px 1fr auto;align-items:center;gap:var(--space-md);font-size:.85rem}
+.token-bar .lab{color:var(--fg-2);font-weight:500}
+.token-bar .track{height:22px;background:var(--surface-container);border-radius:var(--radius-pill);overflow:hidden;position:relative}
+.token-bar .fill{height:100%;border-radius:var(--radius-pill);transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.token-bar .val{font-family:var(--font-mono);font-weight:600;color:var(--fg-1);white-space:nowrap}
+.fill-old{background:linear-gradient(90deg,#ef4444,#f59e0b)}
+.fill-new{background:linear-gradient(90deg,#10b981,#00D4FF)}
+.toggle-mode{display:inline-flex;gap:4px;margin-top:var(--space-xl);background:var(--surface-container);padding:4px;border-radius:var(--radius-pill)}
+.toggle-mode button{border:none;background:none;padding:7px 16px;border-radius:var(--radius-pill);cursor:pointer;font-family:var(--font-body);font-size:.85rem;font-weight:500;color:var(--fg-2)}
+.toggle-mode button[aria-pressed="true"]{background:var(--surface-container-lowest);color:var(--primary);box-shadow:var(--shadow-sm)}
+.toggle-mode button:focus-visible{outline:2px solid var(--primary)}
+
+/* evidence stack */
+.evidence-stack{display:grid;gap:var(--space-xl);margin-top:var(--space-2xl)}
+.ev-card{background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.ev-card>h3{font-size:1.12rem;margin-bottom:var(--space-xs);display:flex;align-items:center;gap:10px}
+.ev-card .claim{color:var(--fg-2);font-size:.95rem;margin-bottom:var(--space-lg)}
+.ev-rows{display:grid;gap:var(--space-md)}
+.ev-row{padding:var(--space-md) var(--space-lg);background:var(--surface-container-low);border-left:3px solid var(--outline-variant);border-radius:0 var(--radius-md) var(--radius-md) 0}
+.ev-row p{font-size:.92rem;color:var(--fg-1)}
+.ev-row p b{color:var(--primary)}
+.ev-row .src{margin-top:6px}
+.pitfall .ev-row{border-left-color:var(--red)}
+.pitfall .ev-row p b{color:var(--red)}
+
+/* source browser */
+.source-browser{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-xl);padding:var(--space-2xl);margin-top:var(--space-2xl)}
+.sb-controls{display:flex;flex-wrap:wrap;gap:var(--space-md);align-items:center;margin-bottom:var(--space-lg)}
+.sb-controls .glossary-search{max-width:none}
+.sb-count{font-size:.82rem;color:var(--fg-muted);font-family:var(--font-mono)}
+.tweet-list{display:grid;gap:var(--space-md)}
+.tweet-card{display:block;background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);transition:border-color .15s,transform .15s}
+.tweet-card:hover{border-color:var(--primary);transform:translateX(2px);text-decoration:none}
+.tweet-card .tw-top{display:flex;align-items:center;gap:var(--space-sm);margin-bottom:6px;flex-wrap:wrap}
+.tweet-card .tw-user{font-weight:600;color:var(--fg-1);font-family:var(--font-headline)}
+.tweet-card .tw-handle{color:var(--fg-muted);font-size:.85rem;font-family:var(--font-mono)}
+.tweet-card .tw-likes{margin-left:auto;font-size:.8rem;color:var(--fg-muted);font-family:var(--font-mono)}
+.tweet-card .tw-gist{font-size:.92rem;color:var(--fg-2)}
+.tw-tag{font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:var(--radius-pill);background:var(--primary-fixed);color:var(--primary)}
+html[data-theme="dark"] .tw-tag,@media(prefers-color-scheme:dark){html[data-theme="auto"] .tw-tag{background:rgba(255,107,53,.18);color:var(--primary-fixed-dim)}}
+
+/* detail drawer */
+.detail-drawer{margin-top:var(--space-2xl)}
+.detail-drawer details{background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:var(--space-md);overflow:hidden}
+.detail-drawer summary{padding:var(--space-lg) var(--space-xl);cursor:pointer;font-family:var(--font-headline);font-weight:600;font-size:1rem;list-style:none;display:flex;align-items:center;justify-content:space-between}
+.detail-drawer summary::-webkit-details-marker{display:none}
+.detail-drawer summary::after{content:"+";font-size:1.4rem;color:var(--primary);font-weight:400}
+.detail-drawer details[open] summary::after{content:"−"}
+.detail-drawer .dd-body{padding:0 var(--space-xl) var(--space-xl);color:var(--fg-2);font-size:.92rem}
+.detail-drawer .dd-body ul{margin:var(--space-sm) 0 0 var(--space-lg)}
+.detail-drawer .dd-body li{margin-bottom:6px}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);color:var(--fg-muted);font-size:.82rem;text-align:center}
+
+@media (max-width:720px){
+  .insight-shell{padding:var(--space-sm) var(--space-sm) var(--space-4xl)}
+  .brief-header{padding:var(--space-3xl) var(--space-xl)}
+  .answer-panel .qa,.debate{grid-template-columns:1fr}
+  .token-bar{grid-template-columns:90px 1fr;grid-template-rows:auto auto}
+  .token-bar .val{grid-column:2;justify-self:end}
+  .theme-toggle{position:static;margin-bottom:var(--space-lg);width:max-content}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="insight-shell">
+
+  <header class="brief-header">
+    <div class="theme-toggle" role="group" aria-label="主题切换">
+      <button data-theme-set="auto" aria-pressed="true">自动</button>
+      <button data-theme-set="light" aria-pressed="false">浅色</button>
+      <button data-theme-set="dark" aria-pressed="false">深色</button>
+    </div>
+    <div class="brief-eyebrow">X 主题调研 · 近 3 个月</div>
+    <h1>AI/Agent 时代的 CLI 化：最佳实践与陷阱</h1>
+    <p class="brief-lede">给 LLM/Agent 调用的命令行工具，跟给人用的不是一回事。一份从 X 上 268 条推文里挖出的多方观点综述——每个结论都能点回原帖。</p>
+    <div class="chip-row">
+      <span class="useful-chip">🗓 <b>2026-02-22 → 05-22</b></span>
+      <span class="useful-chip">🔎 检索式 <b>17</b></span>
+      <span class="useful-chip">🐦 去重推文 <b>268</b></span>
+      <span class="useful-chip">🎯 角度：Agent CLI 设计</span>
+    </div>
+  </header>
+
+  <!-- ANSWER PANEL -->
+  <section class="answer-panel" aria-labelledby="ans-h">
+    <div class="qa">
+      <div>
+        <h4>这是什么？</h4>
+        <p>对「CLI 化的最佳实践与陷阱」聚焦到 <b>AI/Agent 角度</b>的 X 舆情综述：怎么设计让大模型/agent 用得高效、省 token 的命令行工具。</p>
+      </div>
+      <div>
+        <h4>为什么值得看？</h4>
+        <p>这是你做 bird、写 skill 正在踩的领域。X 上实践者刚刚就「CLI vs MCP」吵出了一个漂亮的综合结论 <span class="mono">Code Mode</span>，还沉淀了一份可直接用的陷阱清单。</p>
+      </div>
+    </div>
+    <h3 id="ans-h" style="margin-top:var(--space-2xl);font-size:1.05rem;color:var(--primary)">⚡ 5 条关键信号</h3>
+    <ol class="signals">
+      <li><b>「官方 CLI/API/MCP 大多不适合 agent」正成为共识</b>——它们是给人设计的，浪费 token 和时间，于是开发者开始做「agent-native CLI」。<a class="cite" href="https://x.com/mvanhorn/status/2052422567181611010" target="_blank" rel="noopener">@mvanhorn</a></li>
+      <li><b>吵了一年的「MCP vs CLI」，结论是「都不是重点」</b>——病根是会话一开始就把所有工具描述灌进上下文。Anthropic 的 Code Mode 让模型写代码调工具、用到才加载。<a class="cite" href="https://x.com/akshay_pachaar/status/2053380764805583212" target="_blank" rel="noopener">@akshay_pachaar</a></li>
+      <li><b>token 效率是第一约束</b>——5 服务器 MCP 开工前烧 55K token；Cloudflare 把 2500 个端点从 117 万 token 压到 1K，只暴露 search+execute 两个函数。<a class="cite" href="https://x.com/akshay_pachaar/status/2053380764805583212" target="_blank" rel="noopener">@akshay_pachaar</a></li>
+      <li><b>「开源模型不会写代码」多半是 harness 的锅</b>——4 个跟模型无关的管道级修复，让开源模型在内部评测逼平 Opus 4.7。<a class="cite" href="https://x.com/MrAhmadAwais/status/2051377695389589935" target="_blank" rel="noopener">@MrAhmadAwais</a></li>
+      <li><b>安全与沙箱最容易翻车</b>——别让 agent 碰生产凭证、要有独立备份；沙箱该开箱即用。连 Claude Code 都修过 Bash 提权漏洞。<a class="cite" href="https://x.com/simonw/status/2048598378171572332" target="_blank" rel="noopener">@simonw</a></li>
+    </ol>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section aria-labelledby="gl-h">
+    <div class="sec-label">读前预习</div>
+    <div class="glossary-head">
+      <div>
+        <h2 class="sec-title" id="gl-h">📖 生词预热</h2>
+        <p class="sec-intro" style="margin-bottom:0">读正文前先扫一眼术语卡，避免卡壳。输入关键词可筛。</p>
+      </div>
+      <div class="glossary-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" id="glossarySearch" placeholder="搜术语 / 中文 / 缩写…" aria-label="搜索术语">
+      </div>
+    </div>
+    <div class="term-grid" id="termGrid"></div>
+  </section>
+
+  <!-- PRIMARY INSIGHT: CODE MODE -->
+  <section aria-labelledby="pi-h">
+    <div class="sec-label">核心洞察</div>
+    <div class="primary-insight">
+      <span class="pi-tag">本主题信息密度最高的一块</span>
+      <h2 class="pi-title" id="pi-h">CLI vs MCP —— 以及为什么两边都错了</h2>
+      <p class="pi-sub">两派各执一词吵了整个 2025 年，直到 Anthropic 从第一性原理重构：真问题从来不是协议，而是「一开始就把所有工具灌进上下文」。</p>
+
+      <div class="debate">
+        <div class="debate-side side-cli">
+          <h4>⌨️ CLI 派的理由</h4>
+          <ul>
+            <li>agent 训练时就「认识」grep / cat / git，零学习成本</li>
+            <li>命令直接映射任务，不绕抽象层</li>
+            <li>MCP 一个 5 服务器配置开工前先烧 55K token</li>
+          </ul>
+        </div>
+        <div class="debate-side side-mcp">
+          <h4>🔌 MCP 派的反击</h4>
+          <ul>
+            <li>CLI 在多租户（multi-tenant）应用上会崩</li>
+            <li>没有类型契约，agent 只能猜输出</li>
+            <li>面对陌生 API，agent 浪费回合解析文本</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <div class="vk">2025.11 Anthropic 的重构 · Code Mode</div>
+        <p>不再让模型「通过上下文调工具」，而是让<b>模型写代码、通过运行时（runtime）调工具</b>。工具住在 runtime 里，模型只看到它 import 的部分。<b>Bash</b>（处理已装二进制）+ <b>typed imports</b>（专有 API，类型随 import 才加载）——「MCP 的类型契约 + CLI 的惰性加载，合在一个运行时里」。<a class="cite" href="https://x.com/akshay_pachaar/status/2053380764805583212" target="_blank" rel="noopener" style="color:#fff">@akshay_pachaar</a></p>
+      </div>
+
+      <div class="token-bars" id="tokenBars" aria-label="token 用量对比"></div>
+      <div class="toggle-mode" role="group" aria-label="切换案例">
+        <button data-case="anthropic" aria-pressed="true">Anthropic 例（−98.7%）</button>
+        <button data-case="cloudflare" aria-pressed="false">Cloudflare 例（−99.9%）</button>
+      </div>
+      <p style="margin-top:var(--space-lg);font-size:.85rem;color:var(--fg-muted)">📌 别误读成「MCP 已死」：Anthropic 报告 MCP SDK 下载量从年初 1 亿涨到 <b>3 亿</b>，是增长最快的 agent 基础设施。死掉的只是「一次性加载所有工具」这个坏习惯。</p>
+    </div>
+  </section>
+
+  <!-- EVIDENCE STACK -->
+  <section aria-labelledby="ev-h">
+    <div class="sec-label">证据栈</div>
+    <h2 class="sec-title" id="ev-h">分维度发现</h2>
+    <p class="sec-intro">按「共识 → 全景 → 陷阱」组织，每条都挂出处。</p>
+    <div class="evidence-stack">
+
+      <article class="ev-card">
+        <h3>🧩 共识：给 agent 的工具要为机器设计</h3>
+        <p class="claim">人类 CLI 的输出（彩色、日志、进度条）原样灌进上下文就是噪声 + 烧钱。</p>
+        <div class="ev-rows">
+          <div class="ev-row"><p>Printing Press（CLI 工厂+库）直言：<b>大多数 API、MCP、官方 CLI 给 agent 用都很烂</b>，于是做 agent-native CLI——快、本地、SQLite backed，跨 Claude Code/Codex/OpenClaw/Hermes 通用。</p><div class="src"><a class="cite" href="https://x.com/mvanhorn/status/2052422567181611010" target="_blank" rel="noopener">@mvanhorn · 3212♥</a></div></div>
+          <div class="ev-row"><p><b>机器可读输出是基本功</b>：Claude Code 2.1.145 新增 <span class="mono">claude agents --json</span>，把会话以 JSON 输出供脚本消费（本项目的 bird CLI 也是「全命令 --json」范式）。</p><div class="src"><a class="cite" href="https://x.com/ClaudeCodeLog/status/2056866139351753043" target="_blank" rel="noopener">@ClaudeCodeLog · 295♥</a></div></div>
+          <div class="ev-row"><p><b>Unix 管道哲学复兴</b>：<span class="mono">ai image "sunset" | ai video "animate"</span>，「pipe them together，适配任何 agent」；还做了双受众安装：给人 npm、给 agent <span class="mono">npx skills add</span>。</p><div class="src"><a class="cite" href="https://x.com/ctatedev/status/2050306123706613771" target="_blank" rel="noopener">@ctatedev · 1014♥</a></div></div>
+        </div>
+      </article>
+
+      <article class="ev-card">
+        <h3>🏗 全景：CLI 只是「harness 工程」里的一块</h3>
+        <p class="claim">你觉得像魔法的体验，背后是 harness 工程，不是模型本身。</p>
+        <div class="ev-rows">
+          <div class="ev-row"><p>Claude Code <b>远不止「一个调用 claude 的 CLI」</b>——是 6 层 harness（输入/知识/执行/集成/多agent/可观测），模型只是循环里一个节点；执行层用带类型的注册表分发 bash/read/write/grep。</p><div class="src"><a class="cite" href="https://x.com/akshay_pachaar/status/2053480693733433797" target="_blank" rel="noopener">@akshay_pachaar · 706♥</a></div></div>
+          <div class="ev-row"><p><b>别混淆四原语</b>：Skills=知道什么 / MCP=怎么连 / Hooks=何时自动 / Subagents=谁干活。混为一谈会导致生产环境崩掉的架构。</p><div class="src"><a class="cite" href="https://x.com/NainsiDwiv50980/status/2051589200282321154" target="_blank" rel="noopener">@NainsiDwiv50980 · 385♥</a></div></div>
+          <div class="ev-row"><p><b>MCP 给手，Skill 给肌肉记忆</b>：MCP 解决「连接问题」却没解决「使用问题」——给 50 个接好的工具，agent 仍可能不知何时用哪个。</p><div class="src"><a class="cite" href="https://x.com/_avichawla/status/2045404502753505591" target="_blank" rel="noopener">@_avichawla · 304♥</a></div></div>
+          <div class="ev-row"><p><b>harness &gt; 模型</b>：4 个跟模型无关的修复（前缀缓存保温=TTFT 从 6-8s 降到 1s 内、规范化模型 ID、能力位协商、思考模式兼容）让开源模型逼平 Opus。「模型没变聪明，是 harness 不再丢掉它的成果」。</p><div class="src"><a class="cite" href="https://x.com/MrAhmadAwais/status/2051377695389589935" target="_blank" rel="noopener">@MrAhmadAwais · 499♥</a></div></div>
+          <div class="ev-row"><p><b>「通用 agent」不存在</b>：针对某 Task 定制 harness 就能跑赢任何默认组合；最终都收敛到好的提示和工具设计（打包成 Skill）。<span style="color:var(--fg-muted)">正进入「子 agent 作为工具」的拆分时代。</span></p><div class="src"><a class="cite" href="https://x.com/Vtrivedy10/status/2052100726608781363" target="_blank" rel="noopener">@Vtrivedy10 · 789♥</a></div></div>
+        </div>
+      </article>
+
+      <article class="ev-card pitfall">
+        <h3>⚠️ 陷阱清单（最容易翻车的 9 个）</h3>
+        <p class="claim">从实践者的踩坑里提炼，每条挂出处。</p>
+        <div class="ev-rows">
+          <div class="ev-row"><p><b>把人类 CLI 直接给 agent</b>——给眼睛看的输出灌进上下文=噪声+烧钱。<a class="cite" href="https://x.com/mvanhorn/status/2052422567181611010" target="_blank" rel="noopener">@mvanhorn</a></p></div>
+          <div class="ev-row"><p><b>一次性加载所有工具描述</b>——单流程可膨胀到 150K token。<a class="cite" href="https://x.com/akshay_pachaar/status/2053380764805583212" target="_blank" rel="noopener">@akshay_pachaar</a></p></div>
+          <div class="ev-row"><p><b>终端原始输出直灌上下文</b>——<span class="mono">/context</span> 开局就 &gt;20% 说明在漏 token。<a class="cite" href="https://x.com/DeRonin_/status/2050878989674119424" target="_blank" rel="noopener">@DeRonin_</a></p></div>
+          <div class="ev-row"><p><b>MCP 工具响应不做摘要</b>——单个页面读取就吃数千 token，应 sandbox 到 SQLite 只回摘要。<a class="cite" href="https://x.com/DeRonin_/status/2050878989674119424" target="_blank" rel="noopener">@DeRonin_</a></p></div>
+          <div class="ev-row"><p><b>CLI 无类型契约让 agent 猜</b>——输出无结构，浪费回合解析文本。<a class="cite" href="https://x.com/akshay_pachaar/status/2053380764805583212" target="_blank" rel="noopener">@akshay_pachaar</a></p></div>
+          <div class="ev-row"><p><b>harness 偷懒 → 错怪模型</b>——前缀缓存被负载均衡偷走等，让模型「输掉」本该赢的评测。<a class="cite" href="https://x.com/MrAhmadAwais/status/2051377695389589935" target="_blank" rel="noopener">@MrAhmadAwais</a></p></div>
+          <div class="ev-row"><p><b>让 agent 碰生产凭证 / 无独立备份</b>——「别在 agent 能拿到生产凭证的地方跑它」。<a class="cite" href="https://x.com/simonw/status/2048598378171572332" target="_blank" rel="noopener">@simonw</a></p></div>
+          <div class="ev-row"><p><b>沙箱甩给用户自己搞</b>——「每个 agent 框架都该开箱自带一流沙箱」，现状是留给用户、且很难做好。<a class="cite" href="https://x.com/simonw/status/2048622519947841608" target="_blank" rel="noopener">@simonw</a></p></div>
+          <div class="ev-row"><p><b>CLI 自动放行命令留提权口子</b>——Claude Code 修过「裸环境变量赋值被自动批准」的 Bash bypass。<a class="cite" href="https://x.com/ClaudeCodeLog/status/2056866139351753043" target="_blank" rel="noopener">@ClaudeCodeLog</a></p></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- SOURCE BROWSER -->
+  <section aria-labelledby="sb-h">
+    <div class="sec-label">出处溯源</div>
+    <h2 class="sec-title" id="sb-h">🐦 引用推文浏览器</h2>
+    <p class="sec-intro">本报告引用的全部推文，点击任意一条直达 x.com 原帖。可搜索作者或主题。</p>
+    <div class="source-browser">
+      <div class="sb-controls">
+        <div class="glossary-search" style="max-width:380px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" id="tweetSearch" placeholder="搜作者 / 主题…" aria-label="搜索推文">
+        </div>
+        <span class="sb-count" id="tweetCount"></span>
+      </div>
+      <div class="tweet-list" id="tweetList"></div>
+    </div>
+  </section>
+
+  <!-- DETAIL DRAWER -->
+  <section class="detail-drawer" aria-labelledby="dd-h">
+    <div class="sec-label">方法与局限</div>
+    <h2 class="sec-title" id="dd-h" style="margin-bottom:var(--space-lg)">怎么调研的 · 有哪些坑</h2>
+    <details>
+      <summary>采集方法</summary>
+      <div class="dd-body"><p>用 <span class="mono">bird</span> CLI 检索 X，17 条检索式聚焦 agent/LLM CLI 设计、MCP vs CLI、token 效率、harness、陷阱；去重后 268 条候选，对 10+ 条高信号长贴/讨论串读全文做深挖。排序：按点赞降序优先深挖，正文优先采用观点鲜明、来自实践者、可溯源的推文。</p></div>
+    </details>
+    <details>
+      <summary>局限与偏差（重要）</summary>
+      <div class="dd-body">
+        <ul>
+          <li><b>限流</b>：13 条主批有 6 条首轮被 X 限流，经单独重试补回；最相关的几条是事后单独补采的。</li>
+          <li><b>样本偏 Anthropic / Claude Code 生态</b>：高赞结果高度集中在该圈子，可能低估其他立场（纯 MCP 拥护者、传统 CLI 设计学派）。</li>
+          <li><b>二手转述</b>：Simon Willison「Skills 比 MCP 更重要」一句为他人转述，未直接核到原帖。</li>
+          <li><b>时间窗</b>：仅近 3 个月，更早的奠基性讨论（如 Code execution with MCP 原文）未做一手采集。</li>
+          <li><b>未深挖评论区</b>：受限流影响，未系统下钻各长贴的 replies，反方声音覆盖不足——下一版可补强。</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>开放问题</summary>
+      <div class="dd-body">
+        <ul>
+          <li>CLI vs MCP 真「和解」了吗？Code Mode 把复杂度转移到运行时+代码沙箱，落地与安全成本尚无大规模生产数据。</li>
+          <li>Executor 这类「统一新原语」会赢，还是又多一个标准？仅见提出者自述。</li>
+          <li>上下文窗口数量级变大后，很多 token 优化前提（窗口 50-100K）是否会失效？</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    X 主题调研 · 数据源 bird CLI · 生成于 2026-05-22 · 互动数为采集时刻快照 · 观点归原作者，出处见链接
+  </footer>
+
+</div>
+
+<script>
+// ---- theme toggle ----
+const root=document.documentElement;
+document.querySelectorAll('[data-theme-set]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const t=b.dataset.themeSet; root.setAttribute('data-theme',t);
+    document.querySelectorAll('[data-theme-set]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  });
+});
+
+// ---- glossary ----
+const TERMS=[
+ ["agentic","/eɪˈdʒentɪk/","代理式的；指 AI 能自主规划、调用工具、多步执行，而非被动应答"],
+ ["harness","/ˈhɑːrnɪs/","外壳/框架；包在大模型外面、负责调度工具/上下文/循环的那层工程，Claude Code、Codex 都是 harness"],
+ ["CLI","Command-Line Interface","命令行界面/工具，如 git、curl、grep"],
+ ["MCP","Model Context Protocol","模型上下文协议；Anthropic 提的「agent 连接外部工具」的标准"],
+ ["Code Mode","—","本文核心概念：让模型写代码去调工具，而不是把工具描述全塞进上下文"],
+ ["token","/ˈtoʊkən/","词元；大模型计费与上下文长度的基本单位"],
+ ["context window","/ˈkɒntekst/","上下文（窗口）；模型一次能看到的内容总量，有上限"],
+ ["schema","/ˈskiːmə/","模式/结构定义；工具的输入输出类型描述（复数 schemas）"],
+ ["composable","/kəmˈpoʊzəbl/","可组合的；小工具能像管道一样串起来用"],
+ ["pipe","/paɪp/","管道（Unix 的 |）；把一个命令的输出喂给下一个命令"],
+ ["sandbox","/ˈsændbɒks/","沙箱；隔离环境，让 agent 犯错也伤不到真实系统"],
+ ["prefix cache","/ˈpriːfɪks/","前缀缓存；模型把对话开头不变的部分缓存住，省去重复计算"],
+ ["TTFT","Time To First Token","首字延迟；从请求到吐出第一个 token 的时间"],
+ ["typed contract","/taɪpt ˈkɒntrækt/","类型契约；工具输入输出有明确类型约定，agent 不用瞎猜"],
+ ["progressive disclosure","/prəˈɡresɪv dɪsˈkloʊʒər/","渐进式披露；先给摘要、用到才加载全文（Skill 的核心机制）"],
+ ["lazy loading","/ˈleɪzi/","惰性加载；用到才加载，不用不付代价"],
+ ["subagent","/ˈsʌbˌeɪdʒənt/","子代理；主 agent 派出去干活的、独立上下文的工作单元"],
+ ["OAuth","/ˈoʊɔːθ/","开放授权；第三方登录/授权协议（Slack、Notion 等用）"],
+ ["multi-tenant","/ˌmʌlti ˈtenənt/","多租户；一套系统服务多个隔离的客户"]
+];
+const termGrid=document.getElementById('termGrid');
+function renderTerms(q=''){
+  q=q.trim().toLowerCase();
+  const hit=TERMS.filter(t=>!q||t[0].toLowerCase().includes(q)||t[2].toLowerCase().includes(q)||t[1].toLowerCase().includes(q));
+  termGrid.innerHTML = hit.length? hit.map(t=>`<div class="term-card"><span class="word">${t[0]}</span><span class="ipa">${t[1]}</span><span class="mean">${t[2]}</span></div>`).join('')
+    : '<p class="term-empty">没有匹配的术语</p>';
+}
+renderTerms();
+document.getElementById('glossarySearch').addEventListener('input',e=>renderTerms(e.target.value));
+
+// ---- token bars (code mode) ----
+const CASES={
+ anthropic:[["旧方式（schema 双过模型）","old",150000,"≈150K"],["Code Mode（10 行 TS import）","new",2000,"2K"]],
+ cloudflare:[["旧方式（2500 端点全 schema）","old",1170000,"1.17M"],["Code Mode（search + execute）","new",1000,"1K"]]
+};
+const tokenBars=document.getElementById('tokenBars');
+function renderBars(c){
+  const rows=CASES[c]; const max=Math.max(...rows.map(r=>r[2]));
+  tokenBars.innerHTML=rows.map(r=>`<div class="token-bar"><span class="lab">${r[0]}</span><div class="track"><div class="fill fill-${r[1]}" style="width:0"></div></div><span class="val">${r[3]} tok</span></div>`).join('');
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+    [...tokenBars.querySelectorAll('.fill')].forEach((f,i)=>{f.style.width=Math.max(2,rows[i][2]/max*100)+'%';});
+  });});
+}
+renderBars('anthropic');
+document.querySelectorAll('[data-case]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('[data-case]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    renderBars(b.dataset.case);
+  });
+});
+
+// ---- source browser ----
+const TWEETS=[
+ ["akshay_pachaar","2053380764805583212",488,"MCP vs CLI 之争 → Code Mode 综合：工具定义放代码里，不放上下文","争议核心"],
+ ["akshay_pachaar","2053480693733433797",706,"Claude Code 是 6 层 harness，不止「调 claude 的 CLI」","全景"],
+ ["MrAhmadAwais","2051377695389589935",499,"4 个跟模型无关的 harness 修复让开源模型逼平 Opus 4.7","深度复盘"],
+ ["NainsiDwiv50980","2051589200282321154",385,"四原语别搞混：Skills/MCP/Hooks/Subagents","全景"],
+ ["mvanhorn","2052422567181611010",3212,"Printing Press：大多数官方 CLI/API/MCP 不适合 agent，做 agent-native CLI","共识"],
+ ["DeRonin_","2050878989674119424",582,"3 个仓库砍 70% Claude Code 账单：终端噪声/冗长输出/MCP 膨胀","token 效率"],
+ ["_avichawla","2045404502753505591",304,"MCP 给手，Skill 给肌肉记忆——别把两者当一回事","全景"],
+ ["ctatedev","2050306123706613771",1014,"AI CLI：ai image | ai video 管道串联，适配任何 agent","可组合"],
+ ["polydao","2055598382534598842",179,"Martin Keen 规则：命令直接对应任务用 CLI，抽象值回成本用 MCP","实用规则"],
+ ["RhysSullivan","2052987608305991900",259,"Executor：统一 MCP/OpenAPI/GraphQL/CLI 的新原语，保留破坏性动作语义","新原语"],
+ ["Vtrivedy10","2052100726608781363",789,"强观点：通用 agent 不存在，最终都收敛到好的提示+工具设计","观点"],
+ ["1weiho","2050602481953181968",2874,"open-slide：给 agent 用的 PPT 框架，一行 npx","agent-native"],
+ ["ClaudeCodeLog","2056866139351753043",295,"Claude Code 2.1.145：claude agents --json + 修复 Bash 提权 bypass","机器输出/安全"],
+ ["DataScienceDojo","2050274052040724869",1009,"MCP 与 A2A 是不同层的协议：MCP 接工具，A2A 管 agent 互通","背景"],
+ ["simonw","2048598378171572332",1455,"别让 agent 碰生产凭证；备份要独立于生产主机","安全"],
+ ["simonw","2048622519947841608",44,"每个 agent 框架都该开箱自带一流沙箱，现状留给用户且很难做好","安全"],
+ ["simonw","2049138029017833635",0,"跑 8 小时 agent 必开 skip-perms，诀窍是放进犯错也无所谓的沙箱","安全"],
+ ["simonw","2053914709720764770",368,"把 LLM CLI 用在 shebang 行——用英文写可执行脚本","CLI 创意"],
+ ["ctatedev","2050306804005875772",88,"双受众安装：给人 npm install，给 agent npx skills add","设计模式"]
+];
+const tweetList=document.getElementById('tweetList'), tweetCount=document.getElementById('tweetCount');
+function renderTweets(q=''){
+  q=q.trim().toLowerCase();
+  const hit=TWEETS.filter(t=>!q||t[0].toLowerCase().includes(q)||t[3].toLowerCase().includes(q)||t[4].toLowerCase().includes(q));
+  tweetList.innerHTML=hit.map(t=>`<a class="tweet-card" href="https://x.com/${t[0]}/status/${t[1]}" target="_blank" rel="noopener">
+    <div class="tw-top"><span class="tw-user">@${t[0]}</span><span class="tw-tag">${t[4]}</span><span class="tw-likes">♥ ${t[2].toLocaleString()}</span></div>
+    <div class="tw-gist">${t[3]}</div></a>`).join('');
+  tweetCount.textContent=`${hit.length} / ${TWEETS.length} 条`;
+}
+renderTweets();
+document.getElementById('tweetSearch').addEventListener('input',e=>renderTweets(e.target.value));
+</script>
+</body>
+</html>
