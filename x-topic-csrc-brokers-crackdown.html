@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 证监会拟严罚老虎/富途/长桥</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#c0392b 100%);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#7b1f1f 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0c0a0f; --surface-container-lowest:#16121a; --surface-container-low:#16121a; --surface-container:#211a26; --surface-container-high:#2a2230;
+    --fg-1:#F8FAFC; --fg-2:#d8cdd5; --fg-muted:#9b8f98;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#4a3f48;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.85rem;line-height:1.25;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--space-md);margin-top:var(--space-lg)}
+.fact{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg)}
+.fact .k{font-family:var(--font-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-muted)}
+.fact .v{font-family:var(--font-headline);font-size:1.35rem;font-weight:700;color:var(--primary-container);margin-top:.2rem;line-height:1.1}
+.fact .s{font-size:.78rem;color:var(--fg-2);margin-top:.2rem}
+.timeline-line{margin-top:var(--space-lg);padding:var(--space-lg);background:var(--surface-container-high);border-radius:var(--radius-lg);font-size:.92rem;border-left:3px solid var(--primary-container)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}
+.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}
+.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.05rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.98rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.92rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.68rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.fact{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.pos{background:rgba(16,185,129,.14);color:var(--green)}
+.tag.neg{background:rgba(239,68,68,.14);color:var(--red)}
+.tag.warn{background:rgba(245,158,11,.16);color:var(--yellow)}
+.q-open{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);margin-bottom:var(--space-md)}
+.q-open .q{font-weight:600;color:var(--fg-1)}
+.q-open .vs{font-size:.9rem;color:var(--fg-2);margin-top:.3rem}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.warn-box{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);margin-top:var(--space-md);font-size:.9rem;color:var(--fg-2)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.brief-header h1{font-size:1.4rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题深度调研 · 突发监管</div>
+    <h1>证监会拟严罚<span class="grad">老虎 / 富途 / 长桥</span><br>没收境内外全部违法所得</h1>
+    <p class="answer-strip">定性「非法跨境展业」，最狠一刀是<b>「没收境内外全部违法所得」</b>。八部门+国务院体系化行动、<b>2 年整治期「只出不进」</b>逐步清退、到期 App 关停；富途/老虎盘前暴跌 30–45%。官方称资金安全、可走港股通/QDII，舆论却分裂为「养肥了杀」批评派与安抚理性派。</p>
+    <div class="chips">
+      <span class="useful-chip hot">没收境外收入是争议焦点</span>
+      <span class="useful-chip">2年只出不进</span>
+      <span class="useful-chip">老虎香港实体硬刚</span>
+      <span class="useful-chip">仅「拟」处罚阶段</span>
+    </div>
+    <div class="meta-row">
+      <span>事发 <b>2026-05-22</b></span>
+      <span>检索式 <b>14 条</b></span>
+      <span>采集去重 <b>103 推</b></span>
+      <span>深度下钻 <b>9 串</b></span>
+      <span>生成 <b>2026-05-23</b></span>
+    </div>
+  </header>
+
+  <section class="primary-insight">
+    <div class="eyebrow">核心数字速览</div>
+    <div class="facts">
+      <div class="fact"><div class="k">老虎行政处罚</div><div class="v">≈3.081亿</div><div class="s">+没收 1.031 亿元</div></div>
+      <div class="fact"><div class="k">盘前股价</div><div class="v">−30~45%</div><div class="s">富途 / 老虎 当场腰斩</div></div>
+      <div class="fact"><div class="k">整治期</div><div class="v">2 年</div><div class="s">只出不进，到期关停</div></div>
+      <div class="fact"><div class="k">联合部门</div><div class="v">8 部门</div><div class="s">国务院同意印发方案</div></div>
+      <div class="fact"><div class="k">法律依据</div><div class="v">证券法 §202</div><div class="s">没收+1~10倍罚款</div></div>
+      <div class="fact"><div class="k">当前阶段</div><div class="v">「拟」处罚</div><div class="s">行政处罚事先告知</div></div>
+    </div>
+    <div class="timeline-line"><b>三被处罚主体：</b>Tiger Brokers (NZ) Limited（老虎）· 富途证券国际（香港）· 长桥证券（香港）——「境内外相关主体在境内非法经营证券业务」。官方同时强调：投资者合法权益不受影响，仍可通过<b>港股通、QDII</b> 等合法渠道投资境外。</div>
+  </section>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 跨境展业 / QDII / 违法所得 …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>🧱 分维度发现</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">每条观点后紧跟出处，🔗 可点回原推。<span class="tag fact">事实/官方</span><span class="tag pos">安抚/理性</span><span class="tag neg">批评/担忧</span><span class="tag warn">风险/噪声</span></p>
+  <div id="evidence"></div>
+
+  <h2>⚖️ 争议与开放问题</h2>
+  <div id="controversy"></div>
+
+  <h2>🔎 出处浏览器</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">本报告引用的推文，按搜索过滤。</p>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索作者或观点关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <div class="warn-box">⚠️ <b>强营销噪声警示</b>：本话题被大量券商/交易所导流广告污染（eToro、BIT、Bitget、币安等），不少「分析」实为带返佣链接的广告。本报告已剔除其结论，仅作为「导流现象」记录。</div>
+  <ul class="limit" style="margin-top:var(--space-md)">
+    <li><b>极强时效性</b>：事发 2026-05-22，目前仍是「<b>拟</b>处罚 / 行政处罚事先告知」阶段，最终处罚与执行细节可能变化；本报告是事发 24 小时内的舆论快照。</li>
+    <li><b>样本以中文圈、散户视角为主</b>，缺权威财经媒体/官方原文独立交叉核验；3.081 亿/1.031 亿等数字来自推文转述的「老虎公告」，未独立核实原文。</li>
+    <li><b>长桥的正式回应</b>在本批抓取中缺失。</li>
+    <li>政治立场化、情绪化表达较多，引用时已尽量区分「事实」与「观点」。</li>
+  </ul>
+
+  <footer>
+    X 主题深度调研 · bird CLI 采集 + 人工综合 · 观点均标注出处<br>
+    生成于 2026-05-23 · 同步语雀知识库 oudizuo/x-follows
+  </footer>
+</div>
+
+<script>
+const GLOSSARY=[
+ ["跨境展业","—","券商跨越境内外边界开展业务；此处特指境外券商未经许可在中国境内招揽客户、提供证券交易服务"],
+ ["非法经营证券业务","—","本案核心定性；指未取得境内牌照而经营证券业务，违反《证券法》"],
+ ["违法所得","—","违法行为产生的全部收入；本案争议焦点是「连境外主体的相关收入也一并没收」"],
+ ["行政处罚事先告知","—","正式处罚下达前告知拟处罚内容并给申辩期的法定程序；目前是「拟」决定阶段，尚未最终生效"],
+ ["《证券法》第二百零二条","—","处罚依据；违法经营证券业务可没收违法所得并处违法所得 1–10 倍罚款"],
+ ["顶格处罚","—","按法律上限（如 10 倍）处罚"],
+ ["存量用户 / 存量业务","—","已开户的老用户、已有的业务；与「新增」相对，本次整治把存量也纳入清理"],
+ ["整治期","—","本案设 2 年集中整治过渡期，期内「只出不进」、到期全面关停"],
+ ["港股通","—","内地与香港交易所互联互通机制，内地投资者投资港股的合法渠道"],
+ ["QDII","/ˌkjuː diː aɪ ˈaɪ/","Qualified Domestic Institutional Investor，合格境内机构投资者；居民通过其投资境外市场的合法渠道"],
+ ["持牌经营 / 持牌法团","—","持有监管牌照合规经营；老虎抗辩其香港实体是「持 HK 牌照的独立持牌法团」"],
+ ["SFC","—","Securities and Futures Commission，香港证券及期货事务监察委员会（香港证监会）"],
+ ["premarket（盘前）","/ˈpriːmɑːrkɪt/","美股正式开盘前的交易时段；本案股价剧烈反应发生在盘前"],
+ ["$FUTU / $TIGR / $LB","—","富途控股 / 老虎证券(UP Fintech) / 长桥 在美股的股票代码"],
+ ["RWA","—","Real World Assets，现实世界资产（代币化）；部分推文借本案宣传「美股上链/RWA」"],
+ ["KOL","/ˌkeɪ oʊ ˈel/","Key Opinion Leader，关键意见领袖；本次整治明确把「招揽中介、自媒体 KOL」也列为对象"]
+];
+const SIGNALS=[
+ ["1","定性「非法跨境展业 / 非法经营证券业务」，处罚最狠的一刀是 <b>没收境内外全部违法所得</b>。最受震动的是「连境外收入也要没收」。"],
+ ["2","这是 <b>八部门联合 + 国务院同意</b> 的体系化行动，不止罚三家——还包括协助经营的境内主体、招揽中介、发布信息的平台与自媒体 KOL。"],
+ ["3","存量用户被 <b>「2 年只出不进」逐步清退</b>，到期 App 全面关停。普遍解读为「彻底封死跨境券商炒港美股这条路」。"],
+ ["4","市场即时反应剧烈：<b>富途、老虎盘前暴跌 30%–45%</b>。老虎随后公告被罚约 3.081 亿、没收 1.031 亿，CEO 吴天华被警告并罚 125 万。"],
+ ["5","官方强调 <b>「投资者资产安全、可走港股通/QDII」</b>，但舆论分裂为「养肥了杀/关门打狗」批评派 vs 安抚理性派。"]
+];
+const EVIDENCE=[
+ {h:"维度 1 · 事件核心与官方口径",rows:[
+  {tag:"fact",claim:"证监会 5/22 宣布：三主体非法跨境展业，拟没收境内外全部违法所得并严厉处罚；投资者合法权益不受影响，仍可走港股通/QDII。",q:"国务院同意 8 部门联合印发方案，设置 2 年集中整治期清理非法存量业务。投资者合法权益不受影响，仍可通过港股通、QDII 等合法渠道开展境外投资。",u:"jkjk521",id:"2057808422142386590"}
+ ]},
+ {h:"维度 2 · 法律依据与定性",rows:[
+  {tag:"fact",claim:"主要依据《证券法》第 202 条，没收违法所得 + 1~10 倍罚款，大概率 5–10 倍甚至顶格。",q:"证监会明确了没收全部违法所得、依法严厉处罚，那大概率是 5-10 倍这个区间，不排除顶格处罚的可能性。",u:"NorthOceanFish",id:"2057817376805265650"}
+ ]},
+ {h:"维度 3 · 三家回应：硬刚 / 安抚 / 沉默",rows:[
+  {tag:"warn",claim:"老虎证券「硬刚」：香港实体独立营运、持 HK SFC 牌照，称通知不直接适用。",q:"针对中国证监会相关处罚事项，老虎证券（香港）COO 王珊称：相关通知并不直接适用于其香港实体，公司为持有香港 SFC 牌照、独立营运并受其监管的持牌法团。",u:"RobinSeun",id:"2057858258631786777"},
+  {tag:"fact",claim:"老虎公告认罚数字：行政处罚约 3.081 亿、没收 1.031 亿，CEO/控制人吴天华警告+125 万。（与香港实体「不适用」表态并存，口径存张力）",q:"中国证监会北京局已对其处以行政处罚总额约人民币 3.081 亿元，没收违法所得总额约人民币 1.031 亿元。董事兼 CEO、控制人吴天华先生也受到警告和 125 万元的罚款。 $TIGR",u:"yuyy614893671",id:"2057854940136309147"},
+  {tag:"pos",claim:"富途相对淡定，moomoo 推送被解读为安抚姿态。",q:"富途 moomoo 刚才的推送，永远相信富途可以",u:"zzxwill",id:"2057766394679468359"}
+ ]},
+ {h:"维度 4 · 2 年整治期与存量用户影响",rows:[
+  {tag:"fact",claim:"存量账户进入「单向通道 / 只出不进」。",q:"监管给了 2 年过渡期：❌ 禁止入金、禁止买入新股 ✅ 只能卖出现有持仓、只能提现出金。资金绝对安全，不用连夜恐慌抛售。",u:"Zh_Crypto517",id:"2057749001957790083"},
+  {tag:"neg",claim:"被视为「最终通牒」，彻底封死跨境券商投港美股的路径。",q:"这基本上已经是最终通牒了……之前还只是不让新用户注册，现在则是要把存量用户也全部清退。",u:"EmberCN",id:"2057799040407110023"},
+  {tag:"fact",claim:"2 年期满后全面关停境内服务并关停服务器。",q:"明确设立为期两年的集中整治期，期间『只出不进』；最严厉的措施在于两年整治期满后……全面关停境内服务。",u:"igeekbb",id:"2057773696732008936"}
+ ]},
+ {h:"维度 5 · 股价与市场反应",rows:[
+  {tag:"fact",claim:"富途、老虎盘前双双暴跌逾 30%（富途 −30~37%，老虎 −40~45%），被形容当场腰斩。",q:"杀杀杀！……用户只能卖不能买了，跨境券商美股盘前股价大幅下挫，老虎证券盘前跌逾 40%，富途跌超 30%。",u:"Crypto_He",id:"2057762883598213493"}
+ ]},
+ {h:"维度 6 · 政策背景与历史脉络",rows:[
+  {tag:"fact",claim:"早有伏笔：4 月政治局会议前金监总局已启动『防范和打击非法金融活动』三年总体战。",q:"会议前几天金监总局正式启动『防范和打击非法金融活动』三年总体战，提出『全领域覆盖、全链条治理、坚持持牌经营、打早打小』。现在回看……",u:"MacroMargin",id:"2057795750550175932"},
+  {tag:"fact",claim:"不是第一次：2022 年已整治过一次，本次是升级/最终处罚。",q:"这是对 2022 年调查的最终处罚吧。",u:"joshua7be",id:"2057764899904999734"},
+  {tag:"warn",claim:"整治对象含协助境内主体、招揽中介、平台及自媒体 KOL。",q:"整治对象：不仅要取缔非法经营机构，还包括协助经营的境内主体、招揽中介、发布信息的平台及自媒体 KOL。",u:"cryptobraveHQ",id:"2057747864311439499"}
+ ]},
+ {h:"维度 7 · 行业影响与替代路径",rows:[
+  {tag:"pos",claim:"合法替代：官方指引港股通/QDII；用户也提 IBKR、肉身出海。",q:"还好我有 IBKR。",u:"JinYu762",id:"2057754322881093963"},
+  {tag:"neg",claim:"「利好 A 股」多为反讽。",q:"你又不消费、又不买房、还不买 A 股，光想着搞美股港股……利空港股，利好 A 股。",u:"Baili1018",id:"2057811079972139473"},
+  {tag:"warn",claim:"强营销噪声：头部账号借案件导流交易所、称『跑路可代维权』，信息可信度低。",q:"现在用什么券商最好……我目前主要用 BIT……BIT 跑路我可以代为维权。",u:"PhyrexNi",id:"2057804517174087947"}
+ ]},
+ {h:"维度 8 · 各方情绪：安抚 vs 批评",rows:[
+  {tag:"pos",claim:"理性/安抚：资金有官方保障、账户不强制注销、有 2 年缓冲与合法通道。",q:"已经在老虎、富途、长桥开户的朋友请放心，资金是安全的，账户不会强制注销，资金也不会……",u:"ChainBeautyFaye",id:"2057798569130864836"},
+  {tag:"neg",claim:"批评：『养肥了杀』。",q:"当初看到🍠一大堆人晒富途的美股收益就感觉很奇怪……原来是为了养肥了杀。",u:"kennkenn123456",id:"2057773517056393602"},
+  {tag:"neg",claim:"批评：连亏钱的权利都没了。",q:"你的钱可以过来，但你不可以……说是保护你，结果连亏钱的权利都没了。",u:"FrankFred834567",id:"2057757935233863746"},
+  {tag:"neg",claim:"担忧管制恶性循环。",q:"管制压低了资本的定价效率→国内资产回报率下行→更多人想出去→管制必须更严→恶性循环。",u:"CoasL30824",id:"2057801927686316528"}
+ ]}
+];
+const CONTROVERSY=[
+ ["「没收境外违法所得」的法理与可执行性","延伸到境外主体收入是最大争议；对香港持牌实体的管辖与执行力存疑——这正是老虎打『香港实体独立、不适用』牌的依据。",["Bitebishuqin","2057753058906603841"],["RobinSeun","2057858258631786777"]],
+ ["老虎『认罚 3.08 亿』与『香港实体不适用』如何并存？","公告数字与抗辩表态之间的口径张力，是后续观察重点。",["yuyy614893671","2057854940136309147"],["RobinSeun","2057858258631786777"]],
+ ["是『合规整治』还是『资本管制升级』？","官方框架是打击非法经营、保护投资者；批评者读作收紧资本外流。立场分歧大，并列呈现、不下结论。",["jkjk521","2057808422142386590"],["FrankFred834567","2057757935233863746"]],
+ ["存量清退执行细节未定","2 年期满未卖出持仓如何处置、跨境资金如何安全转出、是否波及其他出海券商，仍不明朗。",["EmberCN","2057799040407110023"],["LeoSun0223","2057765954743103582"]]
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+const LBL={fact:'事实/官方',pos:'安抚/理性',neg:'批评/担忧',warn:'风险/噪声'};
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="h">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.8rem"><div class="claim"><span class="tag ${r.tag}">${LBL[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">@${r.u}</a></div></div>`).join('')+`</div>`).join('');
+document.getElementById('controversy').innerHTML=CONTROVERSY.map(([q,vs,a,b])=>`<div class="q-open"><div class="q">${q}</div><div class="vs">${vs}</div><div style="margin-top:.5rem;font-size:.78rem;font-family:var(--font-mono)"><a href="${X(a[0],a[1])}" target="_blank" rel="noopener">@${a[0]}</a> &nbsp;⚔️&nbsp; <a href="${X(b[0],b[1])}" target="_blank" rel="noopener">@${b[0]}</a></div></div>`).join('');
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{if(!seen.has(r.id)){seen.add(r.id);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
