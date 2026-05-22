@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 自建 harness 还是直接用 OpenClaw？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff; --accent-glow:#E8400D;
+  --secondary-container:#7b40e0; --tertiary:#4d44e3;
+  --bg:#fff8f6; --surface:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08); --shadow-lg:0 8px 24px rgba(30,27,25,.12);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#060B18; --surface:#0B1426; --surface-container-lowest:#101D35; --surface-container-low:#101D35; --surface-container:#162544; --surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC; --fg-2:#CBD5E1; --fg-muted:#94a3b8;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#334155;
+    --primary:#FF6B35; --primary-fixed:#3a1d10; --accent-glow:#00D4FF; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.4); --shadow-lg:0 8px 24px rgba(0,0,0,.5);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}
+a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md);display:flex;align-items:center;gap:.5rem}
+h3{font-family:var(--font-headline);font-size:1.12rem;margin:var(--space-2xl) 0 var(--space-sm);color:var(--fg-1)}
+p{color:var(--fg-2);margin:var(--space-sm) 0}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+
+/* brief header */
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:2rem;line-height:1.2;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+
+/* primary insight: the trade-off scale */
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.scale{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-lg)}
+.scale .col{border-radius:var(--radius-lg);padding:var(--space-lg);border:1px solid var(--border)}
+.scale .buy{background:linear-gradient(180deg,var(--surface-container) 0%,var(--surface-container-low) 100%)}
+.scale .build{background:linear-gradient(180deg,var(--primary-fixed) 0%,var(--surface-container-low) 100%)}
+.scale h4{font-family:var(--font-headline);font-size:1rem;margin-bottom:var(--space-sm)}
+.scale ul{list-style:none;font-size:.9rem}
+.scale li{padding:.28rem 0 .28rem 1.1rem;position:relative;color:var(--fg-2)}
+.scale li::before{content:"";position:absolute;left:0;top:.85em;width:6px;height:6px;border-radius:50%;background:var(--primary-container)}
+.verdict{margin-top:var(--space-lg);padding:var(--space-lg);border-radius:var(--radius-lg);background:var(--surface-container-high);font-size:.95rem;border-left:3px solid var(--primary-container)}
+
+/* glossary */
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.6rem 0;border-bottom:1px solid var(--border)}
+.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}
+.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+
+/* signals */
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}
+.signal .t b{color:var(--fg-1)}
+
+/* evidence stack */
+.evidence-stack{margin-top:var(--space-lg)}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .claim{font-weight:600;color:var(--fg-1);font-size:1rem}
+.quote{margin:var(--space-md) 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.92rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.68rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.08em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.buy{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.build{background:var(--primary-fixed);color:var(--primary)}
+.tag.warn{background:rgba(245,158,11,.16);color:var(--yellow)}
+.tag.mid{background:rgba(16,185,129,.14);color:var(--green)}
+
+/* controversy */
+.q-open{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);margin-bottom:var(--space-md)}
+.q-open .q{font-weight:600;color:var(--fg-1)}
+.q-open .vs{font-size:.9rem;color:var(--fg-2);margin-top:.3rem}
+
+/* source browser */
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .h{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}
+.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+
+.limit{font-size:.88rem;color:var(--fg-muted)}
+.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.scale{grid-template-columns:1fr}.brief-header h1{font-size:1.55rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== BRIEF HEADER ===== -->
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题深度调研</div>
+    <h1>自建 harness，还是<br>直接用 <span class="grad">OpenClaw</span>？</h1>
+    <p class="answer-strip">社区的真实答案不是「二选一」，而是 <b>「在 OpenClaw 上学，最后搭你自己的」</b>。核心权衡是一句话：用现成 = 省「管道工」时间、靠社区生态；自建 = 换「为我量身定制」+ 数据产权 + 模型自由，代价是维护成本会反噬。</p>
+    <div class="chips">
+      <span class="useful-chip hot">折中派最被认同</span>
+      <span class="useful-chip">省时 vs 定制</span>
+      <span class="useful-chip">harness 即护城河</span>
+      <span class="useful-chip">安全是最大短板</span>
+    </div>
+    <div class="meta-row">
+      <span>时间窗口 <b>2026-03 ~ 05</b></span>
+      <span>检索式 <b>20 条</b></span>
+      <span>采集去重 <b>~210 推</b></span>
+      <span>深度下钻 <b>17 串</b></span>
+      <span>生成 <b>2026-05-22</b></span>
+    </div>
+  </header>
+
+  <!-- ===== PRIMARY INSIGHT: the trade-off ===== -->
+  <section class="primary-insight">
+    <div class="eyebrow">核心权衡一图看懂</div>
+    <div class="scale">
+      <div class="col buy">
+        <h4>🦞 直接用 OpenClaw（现成）</h4>
+        <ul>
+          <li>省去自己维护底层「管道」的时间</li>
+          <li>开箱即用、渠道预配好（iMessage/Discord）</li>
+          <li>社区生态持续围着它造东西</li>
+          <li>门槛低，把非开发者也带进了 agentic</li>
+          <li>痛点：太复杂、升级即崩、记忆泄漏、安全存疑</li>
+        </ul>
+      </div>
+      <div class="col build">
+        <h4>🛠️ 自建 harness</h4>
+        <ul>
+          <li>为「我」量身定制，而非取悦最多用户</li>
+          <li>不依赖单一公司、可自由换模型</li>
+          <li>数据留在自己手里、不被画像/训练</li>
+          <li>长期 alpha 在「好到不开源」的私有方案</li>
+          <li>痛点：维护量会爆炸、最终可能退居二线</li>
+        </ul>
+      </div>
+    </div>
+    <div class="verdict"><b>决策法则（社区共识）：</b>单一、你极熟、要长期打磨的工作流 → 自建（但建议站在 OpenClaw / SDK 肩上 fork，别从零写）；用例面很宽、想快速见效 → 用现成。怕锁定？锁定主要来自「围着某 harness 的独家功能建工作流」，而非模型本身——换模型常常只是一行 env var。</div>
+  </section>
+
+  <!-- ===== GLOSSARY ===== -->
+  <details class="glossary" open>
+    <summary>📖 生词预热 <span class="hint">读正文前先扫一眼 · 可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 harness / agentic / lock-in …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <!-- ===== KEY SIGNALS ===== -->
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <!-- ===== EVIDENCE STACK ===== -->
+  <h2>🧱 分维度发现</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">每条观点后紧跟出处，🔗 可点回原推。<span class="tag buy">现成派</span><span class="tag build">自建派</span><span class="tag mid">折中</span><span class="tag warn">风险/争议</span></p>
+  <div class="evidence-stack" id="evidence"></div>
+
+  <!-- ===== CONTROVERSY ===== -->
+  <h2>⚖️ 争议与开放问题</h2>
+  <div id="controversy"></div>
+
+  <!-- ===== SOURCE BROWSER ===== -->
+  <h2>🔎 出处浏览器</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">本报告引用的全部推文，按搜索过滤。</p>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索作者或观点关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <!-- ===== LIMITATIONS ===== -->
+  <h2>🧪 方法与局限</h2>
+  <p style="font-size:.9rem">用 <code style="font-family:var(--font-mono)">bird</code> CLI 走 X GraphQL 批量搜索 + 对高信号推文追 thread / replies 下钻。诚实标注以下偏差：</p>
+  <ul class="limit">
+    <li><b>样本偏英文 + 偏 X 生态</b>，且话题与加密币炒作、影响者带货、玩梗文化高度交织，已尽力剔噪但难免残留。</li>
+    <li><b>限流</b>：密集 batch 中段多条被限（返回非 JSON），其中 build-your-own / security / lock-in 等核心检索式首轮失败、已隔开补跑，仍可能漏长尾观点。</li>
+    <li>点赞/回复数为抓取时刻快照。</li>
+    <li>本主题<b>时效极强</b>（OpenClaw、Hermes、各 fork、厂商政策都在周级变动），结论仅反映 2026 年 3–5 月窗口。</li>
+    <li>「OpenClaw 大部分由 Codex 编写」「某安全事件」等为二手转述，未独立核实。</li>
+  </ul>
+
+  <footer>
+    X 主题深度调研 · 由 bird CLI 采集 + 人工综合 · 观点均标注出处，无法溯源处标「推断」<br>
+    生成于 2026-05-22 · 同步语雀知识库 oudizuo/x-follows
+  </footer>
+</div>
+
+<script>
+const GLOSSARY=[
+ ["harness","/ˈhɑːrnɪs/","马具/挽具；此处指套在大模型外、负责规划-调用工具-多步循环-管理记忆的「代理外壳/脚手架」。本文核心词"],
+ ["agentic","/eɪˈdʒentɪk/","代理式的；AI 能自主规划、调用工具、多步执行而非被动应答"],
+ ["OpenClaw","—","开源、可自托管、模型无关的「个人 AI 代理」框架，🦞 为标志。本文主角"],
+ ["Hermes Agent","—","Nous Research 出的同类开源代理，OpenClaw 最大竞品，主打「深度/自我学习」"],
+ ["Nous Research","—","开源 AI 团队，Hermes 系列模型与 Hermes Agent 作者（@NousResearch / @Teknium）"],
+ ["self-hosted","/ˌselfˈhoʊstɪd/","自托管；跑在自己机器（Mac mini、树莓派、VPS）而非厂商云端"],
+ ["model-agnostic","/ˌæɡˈnɑːstɪk/","模型无关；可随意切换底层大模型（Claude/GPT/Qwen/GLM）"],
+ ["SDK","—","Software Development Kit，软件开发工具包；如 Claude Agent SDK、OpenCode SDK"],
+ ["gateway","/ˈɡeɪtweɪ/","网关层；代理对外连接各种渠道/工具/模型的统一入口"],
+ ["persistent memory","/pərˈsɪstənt/","持久记忆；跨会话保留上下文，OpenClaw 类工具核心卖点"],
+ ["MEMORY.md","—","「一行一概念」的极简记忆索引文件写法（源自 Karpathy 知识库模式）"],
+ ["RAG","—","Retrieval-Augmented Generation，检索增强生成；配合向量库给代理外挂记忆"],
+ ["lock-in / vendor lock-in","/ˈlɑːk ɪn/","（厂商）锁定；被某平台/模型绑死、难以迁移"],
+ ["stickiness","/ˈstɪkinəs/","黏性；让用户离不开的产品属性，本文指「harness 即护城河」之争"],
+ ["fork","/fɔːrk/","分叉；基于开源项目拉一份自己改"],
+ ["WASM sandboxing","/ˈwɑːzəm/","WebAssembly 沙箱；隔离运行不可信代码以提升安全（IronClaw 做法）"],
+ ["egress","/ˈiːɡres/","（网络）出站流量；OpenClaw 的 Proxyline 做的是按策略管控出站"],
+ ["MCP","—","Model Context Protocol，模型上下文协议；代理接入外部工具的标准接口"],
+ ["IKEA effect","—","宜家效应；亲手组装的东西会被高估价值，用来解释自建偏好"],
+ ["supply chain risk","—","供应链风险；引入第三方组件/harness 带来的安全与信任风险"]
+];
+const SIGNALS=[
+ ["1","这其实不是「二选一」，社区主流答案是 <b>「在 OpenClaw 上学，最后搭你自己的」</b>——建在你选定的 harness（CC SDK / OpenCode SDK / 树莓派）之上；OpenClaw 的真正价值是「示范了一个代理能做什么」。"],
+ ["2","<b>选现成 = 省「管道工」时间，自建 = 换「为我量身定制」。</b> wrapper 帮你省去维护底层管道的时间，省下的拿去出活；自建的人说「为我定制、而非取悦最多用户」更好用。"],
+ ["3","<b>自建的隐藏成本是「维护」会反噬。</b> 有人坦言自造的 bespoke 代理「维护量爆炸」，最终退居二线。法则：单一你极熟的工作流→自建；用例面宽→用社区生态。"],
+ ["4","<b>背后是一场平台控制权之争：harness 正变成厂商护城河。</b> Codex 放任你随便接第三方前端，Claude 对「拿订阅跑第三方 harness」态度暧昧——被解读为补贴订阅→绑定 harness→独家功能→形成黏性。"],
+ ["5","<b>现成方案最大现实短板是安全与稳定。</b> OpenClaw 被批「太复杂、记忆泄漏、安全存疑、难以走向主流」；官方已在加紧补安全，但「升级即崩」抱怨仍普遍。"]
+];
+const EVIDENCE=[
+ {h:"维度 0 · OpenClaw 是什么，「自建 harness」指什么",rows:[
+   {tag:"mid",claim:"OpenClaw（🦞）：开源、可自托管、模型无关的个人 AI 代理框架，带持久记忆/技能/定时任务，接入 iMessage·Discord·Telegram·X，跑在自己硬件上，把大量非开发者也带进了 agentic。",q:"these features weren't a thing natively before openclaw was made … made it way more accessible for people to try out SOTA models",u:"jarrodwatts",id:"2046138177711411543"},
+   {tag:"build",claim:"「自建 harness」有两层：① 在某 SDK 上搭你自己的「claw」；② 完全自己写一套模型无关、带技能/规则/上下文 + 自更新反馈环的代理——后者正是本主题的核心问句。",q:"如果我能自己搭一个 AI 无关、带技能/规则/上下文文件和自更新反馈环的代理……那这些 wrapper 的实际价值到底是什么？",u:"AishwaryaDevv",id:"2056264773625590059"}
+ ]},
+ {h:"维度 1 · 选现成（OpenClaw）的理由",rows:[
+   {tag:"buy",claim:"省去维护底层「管道」的时间——这是最被反复提炼的现成派论点。",q:"wrappers help when you don't want to maintain the plumbing yourself. time saved on config is time you can spend shipping.",u:"aminnnn_09",id:"2056273338943910332"},
+   {tag:"buy",claim:"开箱即用、上手即见效。",q:"只花了我 1-2 小时就搭好端到端流程，原来每天要花 1-2 小时的活，现在自助跑、2-3 分钟搞定。",u:"DarshanG_",id:"2046142040782557477"},
+   {tag:"buy",claim:"社区生态是隐形价值。",q:"很大一部分价值在围绕它造东西的社区。",u:"Rigario",id:"2056368414189564031"}
+ ]},
+ {h:"维度 2 · 自建 harness 的理由",rows:[
+   {tag:"build",claim:"为你定制，而非取悦大众。",q:"我自己造了一个，从 OpenClaw、Hermes 等吸取经验。对我更好，因为它是为我量身定制的，不是为了取悦最多用户。",u:"LudovicCarceles",id:"2056376823118778727"},
+   {tag:"build",claim:"「租客 vs 房东」的产权焦虑（高赞比喻）。",q:"OpenClaw 对 Claude 不是开源 vs 闭源，是租客 vs 房东。Claude 用户是爱房东的租客——头一年人人爱房东，第五年涨租才来。",u:"mtrajan",id:"2046227536913604677"},
+   {tag:"build",claim:"不想成为别人模型的训练素材 / 被画像。",q:"用自建 harness 把你自己的智慧喂给它，就不会是 1) 付钱替别人训模型 2) 别人给你建画像。",u:"thewaterox",id:"2056373187584172462"},
+   {tag:"build",claim:"长期 alpha 在私有定制。",q:"大家已经在转向 Hermes 了。长期看，alpha 在私有 AI harness、好到不会被开源的定制方案里。",u:"r0ckstardev",id:"2042465581870272517"}
+ ]},
+ {h:"维度 3 · 折中路线：站在 OpenClaw 肩上自建（最被认同）",rows:[
+   {tag:"mid",claim:"每个人都该在自己选的 harness 上造自己的 claw。",q:"everyone should build their own \"claw\" on top of their harness of choice. Mine was the Copilot SDK. But you could build on CC SDK, OpenCode SDK, etc. The magic of OpenClaw is that it shows us what an agent can do.",u:"burkeholland",id:"2046222141859758517"},
+   {tag:"mid",claim:"「三个都该有」，按场景挑。",q:"每个人都该有 OpenClaw、或 Hermes、或自己在树莓派上搭的——我三个都有，用哪个看心情。OpenClaw 是火箭筒。",u:"nuvolore",id:"2056379804782653557"},
+   {tag:"mid",claim:"决策法则：单一熟悉工作流→自建；用例面宽→用生态。",q:"If you have one workflow you know really well and want to work toward, roll your own. But if you have a wide range … community ecosystem.",u:"Rigario",id:"2056368414189564031"},
+   {tag:"mid",claim:"fork 而非从零；OpenClaw 是「参考架构」。",q:"Fork OpenClaw, customize. Better foundation.",u:"wcdispatch",id:"2042770431401189487"}
+ ]},
+ {h:"维度 4 · 模型与成本：模型无关是双方共同护身符",rows:[
+   {tag:"buy",claim:"现成方案也照样能换模型，削弱了「自建才不被锁定」论点。",q:"Hermes 和 openclaw 都是模型无关的，灵活性在那。",u:"codylschuldt",id:"2056374758376137060"},
+   {tag:"warn",claim:"成本之争激烈：Opus + OpenClaw 每月千刀也值？反对者主张 5 美元 VPS / 换 Qwen·GLM 即可。",q:"大多数人需要的是 5 美元的 VPS，不是 3 台 Mac Studio …… 关于 OpenClaw 这些 YouTube 影响者基本都说错了。",u:"iAmHenryMascot",id:"2046129811123298443"},
+   {tag:"warn",claim:"反讽点：OpenClaw 本身大部分由 ChatGPT/Codex 编写——自建与现成都离不开顶级闭源模型。",q:"the majority of OpenClaw is written and maintained with ChatGPT and Codex.",u:"BradGroux",id:"2046090006381400120"}
+ ]},
+ {h:"维度 5 · 平台控制权之争：harness 即护城河",rows:[
+   {tag:"warn",claim:"两家大厂态度相反。",q:"codex 一贯官方态度是『当然请随便拿 app server 接任何前端』，Claude 则是『拿订阅这么用允不允许……我们回头答复你』。",u:"willccbb",id:"2054746184791777497"},
+   {tag:"warn",claim:"「harness 即黏性」的策略拆解。",q:"1) 补贴订阅 2) 把订阅和 harness 联姻 3) 投入做独家 harness 功能让人围着它建工作流 4) 黏性就有了。",u:"markjaquith",id:"2050298164779876482"},
+   {tag:"buy",claim:"反方：锁定其实很弱，换 provider 一行 env var。",q:"在 claude code 里改 provider 一直是一行 bash 脚本（env vars）的事，他们甚至还在 GUI 里暴露了出来。",u:"EthosVentures",id:"2050731725857444341"},
+   {tag:"warn",claim:"被高赞的洞察：政策模糊比缺功能更致命。",q:"Devs can work around missing features; they can't build around policy ambiguity. The permission model ends up being part of the product.",u:"proxy_vector",id:"2054792848210551034"},
+   {tag:"mid",claim:"Anthropic 也让步：2026-06-15 起付费 Claude 计划获编程专项额度，覆盖 Agent SDK 及第三方应用。",q:"Starting June 15, paid Claude plans can claim a dedicated monthly credit for programmatic usage. The credit covers … Claude Agent SDK … Third-party apps built on the Agent SDK",u:"ClaudeDevs",id:"2054610152817619388"}
+ ]},
+ {h:"维度 6 · 安全与可维护性：现成方案的最大短板",rows:[
+   {tag:"warn",claim:"核心批评：太复杂、有 bug、记忆泄漏、安全存疑。",q:"OpenClaw is very good, but too complex and buggy with leaky memory, iffy security to really break through to mainstream.",u:"Austen",id:"2042444789891654076"},
+   {tag:"warn",claim:"升级即崩。",q:"Openclaw is getting feature bloated, and trying to follow the upgrade path is almost guaranteed to break your setup.",u:"ZenMagnets",id:"2042601324538446306"},
+   {tag:"mid",claim:"官方安全加固进行中。",q:"Security in OpenClaw is getting sharper 🦞 fs-safe（根目录受限文件系统）/ Proxyline（按策略管控出站）/ ClawHub 信任凭证 / 更智能的命令审批。强大的代理需要你能真正审计的护栏。",u:"openclaw",id:"2055437760459055405"},
+   {tag:"build",claim:"安全优先的 fork（IronClaw）被认为应是标配。",q:"IronClaw 的安全优先（WASM 沙箱 + 凭证保护）应该是 agent 框架的标配，今天的事件正说明我们需要这种安全思维。",u:"techNmak",id:"2025692187837517981"}
+ ]},
+ {h:"维度 7 · 生态对照：OpenClaw / Hermes / 厂商托管代理",rows:[
+   {tag:"mid",claim:"两种架构哲学：广度 vs 深度。",q:"@openclaw 优化广度、集成、网关控制、生态触达，Hermes Agent 优化深度与自我学习。",u:"Mars_DeFi",id:"2057457783046623340"},
+   {tag:"buy",claim:"一句广传玩笑总结。",q:"OpenClaw is ADHD, Hermes Agent is autism.",u:"garrytan",id:"2042608085861274023"},
+   {tag:"warn",claim:"厂商托管代理是第三条路，但有账单陷阱。",q:"managed agents 适合云端，但 7×24 跑扫描时『每会话小时 8 美分』累积很快，opencode + 本地循环跑器对怕账单意外的人仍是正经替代。",u:"MoonDevOnYT",id:"2047064865710444670"}
+ ]}
+];
+const CONTROVERSY=[
+ ["「锁定」到底有多真？","一派认为 harness 是精心设计的黏性护城河（联姻订阅+独家功能+拿走遥测）；另一派认为换 provider 只是一行 env var、模型无关已是标配，锁定被夸大。",["markjaquith","2050298164779876482"],["EthosVentures","2050731725857444341"]],
+ ["自建的维护成本是否被低估？","「为我定制」很香，但也有人亲历「维护量爆炸、最终退居二线」。自建长期 TCO 缺乏量化共识。",["LudovicCarceles","2056376823118778727"],["Cha0tikDino","2056366098946445371"]],
+ ["OpenClaw 是「门槛粉碎机」还是「反而更难」？","有人说它让非技术者也能用上代理；也有人反驳它恰恰是普通人最难搞的、所谓易用是错觉 + FOMO + 买新 Mac mini 的借口。",["jarrodwatts","2046138177711411543"],["computeless","2046143472126787771"]],
+ ["「价值就是省配置时间」是否站得住？","怀疑派认为这些只是「外挂了记忆的套壳」；支持派强调社区生态与持续维护才是真正省心处。",["AishwaryaDevv","2056264773625590059"],["Rigario","2056368414189564031"]]
+];
+
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+// glossary render + search
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+// signals
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+// evidence
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="claim" style="font-family:var(--font-headline);font-size:1.05rem;margin-bottom:.4rem">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.9rem"><div class="claim"><span class="tag ${r.tag}">${({buy:'现成派',build:'自建派',mid:'折中',warn:'风险/争议'})[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">@${r.u}</a></div></div>`).join('')+`</div>`).join('');
+// controversy
+document.getElementById('controversy').innerHTML=CONTROVERSY.map(([q,vs,a,b])=>`<div class="q-open"><div class="q">${q}</div><div class="vs">${vs}</div><div style="margin-top:.5rem;font-size:.78rem;font-family:var(--font-mono)"><a href="${X(a[0],a[1])}" target="_blank" rel="noopener">@${a[0]}</a> &nbsp;⚔️&nbsp; <a href="${X(b[0],b[1])}" target="_blank" rel="noopener">@${b[0]}</a></div></div>`).join('');
+// source browser (deduped)
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{if(!seen.has(r.id)){seen.add(r.id);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="h">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
