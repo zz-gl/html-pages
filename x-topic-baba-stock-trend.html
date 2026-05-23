@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 阿里巴巴 $BABA 股价走势</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#c94c00 0%,#e6a000 100%);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#c79100 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0a0d0c; --surface-container-lowest:#121816; --surface-container-low:#121816; --surface-container:#1a2320; --surface-container-high:#22302b;
+    --fg-1:#F8FAFC; --fg-2:#cdd8d3; --fg-muted:#8fa098;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#3a4a44;
+    --primary:#ff8c42; --primary-fixed:#3a2410; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.85rem;line-height:1.25;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.disclaimer{margin-top:var(--space-lg);font-size:.82rem;color:var(--fg-muted);background:var(--surface-container-high);border-radius:var(--radius-md);padding:.6rem .9rem;border-left:3px solid var(--yellow)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:var(--space-md);margin-top:var(--space-lg)}
+.level{border-radius:var(--radius-lg);padding:var(--space-lg);border:1px solid var(--border);text-align:center}
+.level .lbl{font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-muted)}
+.level .px{font-family:var(--font-headline);font-size:1.5rem;font-weight:700;margin-top:.2rem}
+.level.res{background:linear-gradient(180deg,rgba(16,185,129,.12),transparent)}.level.res .px{color:var(--green)}
+.level.piv{background:var(--primary-fixed)}.level.piv .px{color:var(--primary)}
+.level.sup{background:linear-gradient(180deg,rgba(239,68,68,.12),transparent)}.level.sup .px{color:var(--red)}
+.scale{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-lg)}
+.scale .col{border-radius:var(--radius-lg);padding:var(--space-lg);border:1px solid var(--border)}
+.scale .bull{background:linear-gradient(180deg,rgba(16,185,129,.12),var(--surface-container-low))}
+.scale .bear{background:linear-gradient(180deg,rgba(239,68,68,.12),var(--surface-container-low))}
+.scale h4{font-family:var(--font-headline);font-size:1rem;margin-bottom:var(--space-sm)}
+.scale ul{list-style:none;font-size:.9rem}.scale li{padding:.26rem 0 .26rem 1.1rem;position:relative;color:var(--fg-2)}
+.scale .bull li::before{content:"▲";position:absolute;left:0;color:var(--green);font-size:.7rem;top:.5em}
+.scale .bear li::before{content:"▼";position:absolute;left:0;color:var(--red);font-size:.7rem;top:.5em}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.05rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.98rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.92rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.68rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.bull{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.bear{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.tech{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.cat{background:rgba(245,158,11,.16);color:var(--yellow)}
+.tag.data{background:var(--surface-container-high);color:var(--fg-2)}
+.q-open{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);margin-bottom:var(--space-md)}
+.q-open .q{font-weight:600;color:var(--fg-1)}.q-open .vs{font-size:.9rem;color:var(--fg-2);margin-top:.3rem}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.scale{grid-template-columns:1fr}.brief-header h1{font-size:1.45rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题深度调研 · 个股趋势</div>
+    <h1>阿里巴巴 <span class="grad">$BABA</span> 股价走势<br>多空逻辑与趋势判断要素</h1>
+    <p class="answer-strip">近两周 X 情绪<b>偏多</b>，主线是「估值太便宜 + AI/云重估」：多头喊 $137 的 $300 股、大行上调目标价；空头则有<b>段永平 Q1 清仓阿里</b>、利润率承压与「利好不涨」警告。本质是「用短期利润换 AI/云长期期权」的押注——共识尚未形成。</p>
+    <div class="disclaimer">⚠️ 本页是 X 公开观点梳理，<b>非投资建议</b>，不构成买卖推荐。价格/目标价/资金流均为推文转述、未独立核实，且为某时刻快照。决策与风险请自行判断。</div>
+    <div class="chips">
+      <span class="useful-chip hot">情绪偏多但非共识</span>
+      <span class="useful-chip">$143 多空分水岭</span>
+      <span class="useful-chip">段永平清仓</span>
+      <span class="useful-chip">亚马逊式烧钱建云</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>2026-05 中下旬</b></span>
+      <span>检索式 <b>20 条</b></span>
+      <span>采集去重 <b>~170 推</b></span>
+      <span>下钻 <b>6 串</b></span>
+      <span>生成 <b>2026-05-23</b></span>
+    </div>
+  </header>
+
+  <section class="primary-insight">
+    <div class="eyebrow">关键价位（X 技术派口径，非建议）</div>
+    <div class="levels">
+      <div class="level res"><div class="lbl">阻力/目标</div><div class="px">$143</div><div class="lbl" style="text-transform:none;letter-spacing:0">50 周均线 · 站上看 ATH</div></div>
+      <div class="level piv"><div class="lbl">当前区域</div><div class="px">~$137</div><div class="lbl" style="text-transform:none;letter-spacing:0">YTD −21%→−3% 修复</div></div>
+      <div class="level sup"><div class="lbl">支撑</div><div class="px">$131 / $121</div><div class="lbl" style="text-transform:none;letter-spacing:0">斐波 0.618 / 财报低点</div></div>
+    </div>
+    <div class="scale">
+      <div class="col bull">
+        <h4>📈 多头逻辑</h4>
+        <ul>
+          <li>估值太便宜，「$137 的 $300 股」</li>
+          <li>云 +36%、AI 收入连 10 季三位数增长</li>
+          <li>中国云市占升至 38%，Qwen「次世代」</li>
+          <li>大行上调 PT：JPM $205、德银 $195</li>
+          <li>类比亚马逊 2013–16 烧利润建 AWS</li>
+        </ul>
+      </div>
+      <div class="col bear">
+        <h4>📉 空头逻辑</h4>
+        <ul>
+          <li>段永平 Q1 <b>清仓</b>阿里，转向 AI 名</li>
+          <li>EPS 屡不及预期、利润率承压</li>
+          <li>capex 过高，电商「原地踏步」</li>
+          <li>「利好不涨就该卖」「梦游僵尸撞墙」</li>
+          <li>关税拖累 + 政治脆弱性风险</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 50WMA / PT / capex …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>🧱 分维度发现</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">每条观点带出处，🔗 点回原推。<span class="tag bull">多头</span><span class="tag bear">空头</span><span class="tag tech">技术面</span><span class="tag cat">催化剂</span><span class="tag data">基本面</span></p>
+  <div id="evidence"></div>
+
+  <h2>🧭 趋势判断要素（帮你拍板 · 非建议）</h2>
+  <div id="judge"></div>
+
+  <h2>⚖️ 争议与开放问题</h2>
+  <div id="controversy"></div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索作者或观点关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <ul class="limit">
+    <li><b>X 舆论快照、非投研报告</b>；价格/目标价/资金流/财报数字均为推文转述，未独立核对原始数据。</li>
+    <li><b>样本偏 fintwit 情绪</b>且近期偏多，存在回声室效应，空头声音相对更少被高赞。</li>
+    <li>话题混入大量无关 NSFW/导流噪声（中文检索尤甚），已尽力剔除。</li>
+    <li><b>时效性强</b>：股价与催化剂按天变化，本报告反映 2026-05 中下旬，阅读时请核对最新行情。</li>
+    <li>「美国公司随 Trump 重投阿里云」等为<b>未证实传闻</b>，已标注。</li>
+  </ul>
+
+  <footer>X 主题深度调研 · bird CLI 采集 + 人工综合 · 观点均标注出处 · 非投资建议<br>生成于 2026-05-23 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["PT","—","Price Target，（分析师）目标价"],
+ ["Overweight","/ˈoʊvərweɪt/","增持评级（看好，建议高于基准配置）"],
+ ["ATH","—","All-Time High，历史最高价"],
+ ["50 WMA","—","50 周移动平均线；本案被多次提为关键阻力/突破位（约 $143）"],
+ ["0.618 Fib","/ˈfɪbə/","斐波那契回撤 0.618 关键位（约 $131）；技术派常用支撑/阻力参考"],
+ ["falling wedge","/ˈwedʒ/","下降楔形，技术形态；向上突破常被视作看涨信号"],
+ ["R/R","—","Risk/Reward，风险回报比"],
+ ["YTD","—","Year-To-Date，年初至今涨跌幅"],
+ ["GMV","—","Gross Merchandise Value，商品交易总额（电商规模指标）"],
+ ["CMR","—","Customer Management Revenue，客户管理收入（阿里电商核心变现指标）"],
+ ["capex","/ˈkæpeks/","Capital Expenditure，资本开支；此处指 AI/云大额基建投入"],
+ ["Cloud Intelligence","—","阿里云智能集团（财报口径的云业务分部）"],
+ ["Qwen（通义千问）","/kwɛn/","阿里开源大模型系列；被称占全球开源模型下载过半"],
+ ["Southbound（南向资金）","—","内地经港股通买入港股的资金流向，情绪风向标"],
+ ["like-for-like","—","同口径可比（剔除已剥离业务后的同比）"],
+ ["e-commerce","/ˌiːˈkɒmɜːrs/","电子商务；阿里的传统现金牛业务"]
+];
+const SIGNALS=[
+ ["1","近两周 X 情绪明显<b>偏多</b>，主线是「估值太便宜 + AI/云重估」。多个高赞喊「$137 的 $300 股」「严重低估」；YTD 从 −21% 修复到约 −3%。"],
+ ["2","机构同步上调目标价：<b>摩根大通 HKD200/$205（增持）、德银 Buy PT $195</b>，理由均指向云与 AI 收入加速变现。"],
+ ["3","技术面焦点是 <b>50 周均线 ≈ $143</b>：站上→看历史高位，站不稳→区间震荡。下方支撑 $131（斐波 0.618）/ $121（财报低点）。"],
+ ["4","核心多头逻辑＝<b>「亚马逊 2013–2016 剧本」</b>：牺牲短期利润砸钱建 AI 云。Qwen「次世代」、中国云市占 38%、管理层致股东信立「AI+云」为新引擎。"],
+ ["5","空头信号不可忽视：知名投资人<b>段永平 Q1 清仓阿里</b>，另有「卖出」评级与「利好不涨」警告，加上 EPS 屡不及预期、利润率承压、关税拖累。"]
+];
+const EVIDENCE=[
+ {h:"维度 1 · 多头逻辑与目标价",rows:[
+  {tag:"bull",claim:"「便宜 + 只有向上」。",q:"$BABA is $300 stock at $137 / 严重低估，唯一方向是上 / 股价太便宜了。",u:"TheLongInvest",id:"2053877539559416273"},
+  {tag:"bull",claim:"修复动能：YTD −21%→−3%，「从这里翻倍合理」。",q:"Alibaba went from being down 21% to 3% YTD … A Double from here is a very reasonable target.",u:"TheProfInvestor",id:"2054694433703002403"},
+  {tag:"bull",claim:"类比亚马逊 2013–2016：牺牲短期利润建 AWS 式云。",q:"$BABA pattern matches the Amazon 2013–2016 playbook, deliberately burning near-term earnings to fund their AI cloud ambitions.",u:"Arkalos77",id:"2056077399159157250"}
+ ]},
+ {h:"维度 2 · 空头逻辑与风险",rows:[
+  {tag:"bear",claim:"段永平 Q1 清仓阿里（与 ASML），转向 AI 名。",q:"段永平 2026 第一季度持仓……清仓：阿里巴巴、ASML……加仓：英伟达、拼多多、谷歌、伯克希尔。",u:"WEB3_furture",id:"2056736665691943183"},
+  {tag:"bear",claim:"被列为本周「卖出」（数据源 InvestingPro）。",q:"1 Stock to Buy, 1 Stock to Sell：🔴 Sell: Alibaba $BABA。",u:"JesseCohenInv",id:"2053496101450215580"},
+  {tag:"bear",claim:"价格行为质疑：利好不涨该卖 / 梦游僵尸撞墙。",q:"When stock is not reacting to positive news it is time to sell $baba.",u:"Dimas_DiBi",id:"2057057148065214891"},
+  {tag:"bear",claim:"关税拖累 vs Qwen 入淘宝的对冲难题；capex 过高。",q:"Qwen rolling into Taobao with 4B SKUs is the kicker. how do you weight Q4 print vs the 34% tariff drag?",u:"kunkelcapital",id:"2057057148065214891"}
+ ]},
+ {h:"维度 3 · 技术面与关键价位",rows:[
+  {tag:"tech",claim:"50 周均线 ≈ $143 是多空分水岭，站上看历史高位。",q:"Very straightforward from here - Break above the 50 WMA at $143, flip it to support and we move back to ATH's.",u:"TheLongInvest",id:"2057057148065214891"},
+  {tag:"tech",claim:"谨慎派：突破 $143 不保证站得住。",q:"break above 143 doesn't guarantee holding above it.",u:"MaksimXBT",id:"2057057148065214891"},
+  {tag:"tech",claim:"结构观点：「我目前追踪里最强的市场结构之一」。",q:"$BABA has one of the strongest market structures I'm currently tracking.",u:"CrypticTrades_",id:"2055305955999441100"}
+ ]},
+ {h:"维度 4 · 催化剂日程",rows:[
+  {tag:"cat",claim:"阿里云峰会（5/20–21）预告发布更强新模型。",q:"Alibaba will release a \"new friend\"……during the 2026 Alibaba Cloud Summit, May 20-21.",u:"Sino_Market",id:"2056258589120246059"},
+  {tag:"cat",claim:"致股东信：蔡崇信、吴泳铭立「AI+云」为新增长引擎。",q:"Letter to Shareholders from Joe Tsai and Eddie Wu: Striving to Make AI + Cloud Another Growth Engine for Alibaba.",u:"dyz_ob",id:"2057095364327743866"},
+  {tag:"cat",claim:"传闻：随 Trump 访华的美企将重投阿里 AI 云（未证实）。",q:"Rumors are US companies that went to China with Trump are going to invest heavily in Alibaba for its AI cloud infrastructure……$BABA moon soon.",u:"mmmikema",id:"2056113179340804300"}
+ ]},
+ {h:"维度 5 · 基本面数据（多为 3 月财报口径）",rows:[
+  {tag:"data",claim:"Q3 FY26：营收 $40.7B(+2%)、Non-GAAP EPS $1.01 不及预期，财报后一度跌 5–10% 测 $121。",q:"$BABA Q4'25 EARNINGS：Revenue $40.73B (Est. $41.43B); Adj. EPS $1.01 (Est. $1.56) … 不及预期。",u:"wallstengine",id:"2034573396709970253"},
+  {tag:"data",claim:"亮点在云与 AI：云 +36%、AI 收入连 10 季三位数增长，5 年目标 AI/云 $100B。",q:"$BABA targeting $100B in AI/cloud revenue in 5 years — but the stock is getting absolutely wrecked today.",u:"CaseyVSilver",id:"2034805442065359078"},
+  {tag:"data",claim:"中国云市占持续抬升，已达 38%。",q:"Alibaba's China Cloud market share just keeps rising. Now at 38%.",u:"AJButton2",id:"2056633812214571215"},
+  {tag:"data",claim:"大行 PT：摩根大通 HKD200/$205 增持。",q:"JP Morgan raises price target for Alibaba to HKD 200 (ADRs to USD 205) with an 'Overweight' rating maintained.",u:"dyz_ob",id:"2055911597852471693"}
+ ]}
+];
+const JUDGE=[
+ ["✅ 看多要确认的","有效站上 50 WMA $143 并翻转为支撑；云/AI 收入持续加速、市占继续抬升（已 38%）；财报利润率止跌；云峰会新模型、Trump 访华兑现为资金流入。"],
+ ["⛔ 看空要警惕的","利好频出但股价不涨（动能背离）；跌破 $131/$121 支撑；capex 持续压制现金流与利润率；关税/地缘与政治脆弱性；段永平等长线资金离场是否扩散。"],
+ ["⚖️ 本质分歧","这是「用短期利润换 AI/云长期期权」的押注——信『亚马逊剧本』偏多，担心『烧钱无回报+政治风险』偏空。X 当前情绪偏多，但并非共识。"]
+];
+const CONTROVERSY=[
+ ["「亚马逊 2013–2016 剧本」会否复现？","多头核心类比；但中国监管/竞争/关税环境与当年美国不同，AWS 式高回报云能否兑现仍待证明。",["Arkalos77","2056077399159157250"],["kunkelcapital","2057057148065214891"]],
+ ["段永平清仓 vs 大行上调目标价——谁对？","长线价值投资者离场与卖方乐观并存，是当前最尖锐的态度分歧。",["WEB3_furture","2056736665691943183"],["dyz_ob","2055911597852471693"]],
+ ["$143 突破的真假","能否有效站稳是技术面最大悬念。",["TheLongInvest","2057057148065214891"],["MaksimXBT","2057057148065214891"]]
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+const LBL={bull:'多头',bear:'空头',tech:'技术面',cat:'催化剂',data:'基本面'};
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="h">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.8rem"><div class="claim"><span class="tag ${r.tag}">${LBL[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">@${r.u}</a></div></div>`).join('')+`</div>`).join('');
+document.getElementById('judge').innerHTML=JUDGE.map(([h,t])=>`<div class="ev"><div class="claim">${h}</div><div style="font-size:.93rem;color:var(--fg-2);margin-top:.3rem">${t}</div></div>`).join('');
+document.getElementById('controversy').innerHTML=CONTROVERSY.map(([q,vs,a,b])=>`<div class="q-open"><div class="q">${q}</div><div class="vs">${vs}</div><div style="margin-top:.5rem;font-size:.78rem;font-family:var(--font-mono)"><a href="${X(a[0],a[1])}" target="_blank" rel="noopener">@${a[0]}</a> &nbsp;⚔️&nbsp; <a href="${X(b[0],b[1])}" target="_blank" rel="noopener">@${b[0]}</a></div></div>`).join('');
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{const key=r.u+r.id;if(!seen.has(key)){seen.add(key);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
