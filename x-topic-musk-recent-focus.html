@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 马斯克最近在关注什么</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#4d44e3 100%);
+  --gradient-hero:linear-gradient(135deg,#1e1b19 0%,#4d44e3 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#070910; --surface-container-lowest:#0e1320; --surface-container-low:#0e1320; --surface-container:#161d2e; --surface-container-high:#1d2638;
+    --fg-1:#F8FAFC; --fg-2:#cbd5e1; --fg-muted:#8a93a3;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#33405a;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.95rem;line-height:1.22;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.disclaimer{margin-top:var(--space-lg);font-size:.82rem;color:var(--fg-muted);background:var(--surface-container-high);border-radius:var(--radius-md);padding:.6rem .9rem;border-left:3px solid var(--yellow)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.attn{display:grid;gap:var(--space-sm);margin-top:var(--space-lg)}
+.attn-row{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-md);align-items:center}
+.attn-row .lab{font-size:.92rem;font-weight:600;min-width:9.5em}
+.attn-bar{height:14px;border-radius:var(--radius-pill);background:var(--gradient-text)}
+.attn-row .pct{font-family:var(--font-mono);font-size:.78rem;color:var(--fg-muted)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.05rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.98rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.92rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.68rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.space{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.ai{background:rgba(123,64,224,.16);color:var(--purple)}
+.tag.tesla{background:rgba(16,185,129,.14);color:var(--green)}
+.tag.pol{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.misc{background:var(--surface-container-high);color:var(--fg-2)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.warn-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);margin-top:var(--space-md);font-size:.9rem;color:var(--fg-2)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.brief-header h1{font-size:1.5rem}.wrap{padding:var(--space-lg)}.attn-row .lab{min-width:7em;font-size:.82rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 人物关注焦点</div>
+    <h1>马斯克<span class="grad">最近在关注什么</span><br><span style="font-size:1.1rem;font-weight:500;color:var(--fg-muted)">2026 年 5 月 · 基于 @elonmusk 时间线</span></h1>
+    <p class="answer-strip">压倒性焦点是 <b>SpaceX 星舰 V3 首飞</b>（亲自全程播报、"为人类进了一球"）；其次是 <b>SpaceX IPO/S-1</b> 与 <b>xAI/Grok 产品强推</b>；Tesla/FSD 近两日低频。非科技的最大关注是<b>政治与文化战</b>（欧洲移民/治安、反 woke、西方文明）——且单帖互动量最高。</p>
+    <div class="disclaimer">⚠️ 本页客观描述他在关注/放大什么，引用其原帖仅为还原表达，<b>不代表认同其中任何观点或事实主张</b>（部分政治言论具争议、情绪化且未核实）。</div>
+    <div class="chips">
+      <span class="useful-chip hot">星舰 V3 首飞刷屏</span>
+      <span class="useful-chip">SpaceX IPO</span>
+      <span class="useful-chip">Grok 强推</span>
+      <span class="useful-chip">政治帖互动最高</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>05-21~23</b></span>
+      <span>源 <b>@elonmusk 近 60 条</b></span>
+      <span>+ 高互动搜索</span>
+      <span>生成 <b>2026-05-23</b></span>
+    </div>
+  </header>
+
+  <section class="primary-insight">
+    <div class="eyebrow">注意力分配速览（近 60 条时间线定性观察）</div>
+    <div class="attn" id="attn"></div>
+    <div style="font-size:.78rem;color:var(--fg-muted);margin-top:var(--space-md)">※ 占比为定性估计，非精确统计；恰逢星舰首飞，SpaceX 被显著放大。</div>
+  </section>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 Starship / S-1 / Grok …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>🧱 分维度发现</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">每条带出处，🔗 点回原推。<span class="tag space">SpaceX</span><span class="tag ai">xAI/Grok</span><span class="tag tesla">Tesla</span><span class="tag pol">政治/文化战</span><span class="tag misc">其他</span></p>
+  <div id="evidence"></div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <div class="warn-box">⚠️ <b>政治内容中立记录</b>：其涉欧洲移民/治安的表述措辞激烈、争议大、未经核实，本报告仅客观转述、不予核实或背书。</div>
+  <ul class="limit" style="margin-top:var(--space-md)">
+    <li><b>时间窗偏置</b>：恰逢星舰首飞，SpaceX 被显著放大，不代表长期注意力分配。</li>
+    <li><b>转推 ≠ 原创</b>：RT 反映「他想传播什么」，与亲述权重不同，已尽量区分。</li>
+    <li>仅基于公开 X 行为，无法覆盖其内部实际工作重心。</li>
+    <li>时效性强，注意力日级变化，结论仅反映 2026-05-21~23 窗口。</li>
+  </ul>
+  <footer>X 主题深度调研 · bird CLI 采集 + 人工综合 · 观点均标注出处 · 中立记录不背书<br>生成于 2026-05-23 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const ATTN=[["🚀 SpaceX（星舰+IPO）",96],["🤖 xAI / Grok",70],["🗽 政治/文化战",62],["🛰️ 太空+AI/人口论",38],["🚗 Tesla / FSD",24]];
+const GLOSSARY=[
+ ["Starship V3","—","SpaceX 星舰第三代；本次 Flight 12 是 V3 首飞"],
+ ["S-1 / IPO","/ˌaɪ piː ˈoʊ/","上市招股说明书 / 首次公开募股；近期 SpaceX S-1 被热议"],
+ ["Starlink","—","SpaceX 卫星互联网；本次发射载约 45 吨星链质量模拟件"],
+ ["xAI","—","马斯克的 AI 公司（Grok 的开发方）"],
+ ["Grok / Grok Build","—","xAI 的大模型与编程/构建工具；近期推 Grok 4.3、Grok Build"],
+ ["FSD","—","特斯拉（监督式）全自动驾驶；近期版本 v14.3.2"],
+ ["AI4","—","特斯拉第四代自动驾驶计算硬件"],
+ ["go woke, go broke","—","反 woke 口号「搞政治正确，必将破产」"],
+ ["Henry Nowak","—","马斯克近期反复提及的英国少年命案当事人（其叙事，未核实）"],
+ ["population collapse","—","人口崩溃；马斯克长期主张「真问题是人口崩溃而非过剩」"],
+ ["Starbase","—","SpaceX 德州星舰基地/「星舰城」"]
+];
+const SIGNALS=[
+ ["1","压倒性焦点：<b>SpaceX 星舰 V3 首飞（Flight 12）</b>。时间线被刷屏，他亲自播报倒计时/入轨/溅落，称「为人类进了一球」。"],
+ ["2","<b>SpaceX 正走向 IPO</b>：大量转推 S-1 招股书、星链「应急通信基础设施」卖点——资本动作是另一主线。"],
+ ["3","<b>xAI/Grok 强力推广</b>：Grok 4.3、Grok Build、官网改版、新连接器，亲自喊「试试看」「欢迎批评反馈」。"],
+ ["4","<b>政治与文化战是非科技最大关注，互动最高</b>：放大欧洲移民/治安（Henry Nowak 案）、反 woke、盛赞西方文明/美国。"],
+ ["5","<b>跨界融合叙事</b>：转推「太空数据中心（跟着太阳 24/7）」，把 SpaceX 与 AI 算力打通；并重申「人口崩溃」才是真威胁。"]
+];
+const EVIDENCE=[
+ {h:"维度 1 · SpaceX：星舰 V3 首飞（当前第一焦点）",rows:[
+  {tag:"space",claim:"首飞成功，情绪高昂。",q:"祝贺 @SpaceX 团队完成史诗级的星舰 V3 首次发射与着陆！你们为人类进了一球。",u:"elonmusk",id:"2057974830469677092"},
+  {tag:"space",claim:"亲自全程播报发射。",q:"T-zero 现在是德州时间 5:30。",u:"elonmusk",id:"2057927486998978691"},
+  {tag:"space",claim:"前一日因技术问题推迟。",q:"固定塔臂的液压销没有回缩。如果今晚能修好，明天会再次尝试发射。",u:"elonmusk",id:"2057609682865254695"},
+  {tag:"space",claim:"里程碑情绪。",q:"这是非常美好的一天。",u:"elonmusk",id:"2058021274056614304"}
+ ]},
+ {h:"维度 2 · xAI / Grok：AI 产品强推",rows:[
+  {tag:"ai",claim:"亲自给 Grok 产品引流。",q:"试试看！",u:"elonmusk",id:"2057842724649209878"},
+  {tag:"ai",claim:"征求产品反馈（开发者姿态）。",q:"非常欢迎批评性反馈。",u:"elonmusk",id:"2057933447541219630"}
+ ]},
+ {h:"维度 3 · 政治与文化战（非科技最大关注 · 互动最高）",rows:[
+  {tag:"pol",claim:"放大英国少年命案 / 抨击对其沉默（27 万赞，远超科技帖）。注：其叙事，未核实。",q:"为何他们对这个无辜英国男孩被害、且有警方协助一事只字不提？",u:"elonmusk",id:"2057464814637633609"},
+  {tag:"pol",claim:"将其上升为「国家紧急状态」的激烈表述（争议、未核实，仅记录）。",q:"Henry Nowak 的残忍遇害应被宣布为国家紧急状态。欧洲的白人正在被屠杀……",u:"elonmusk",id:"2057466635334615351"},
+  {tag:"pol",claim:"抨击 Starmer 政府双标。",q:"这是 Starmer 为（在美国因吸毒过量身亡的）George Floyd 站台……他甚至没提过 Henry。",u:"elonmusk",id:"2057410409087242664"},
+  {tag:"pol",claim:"反 woke 口号。",q:"Go woke, go broke（搞政治正确，必将破产）。",u:"elonmusk",id:"2057470115390586942"},
+  {tag:"pol",claim:"盛赞西方文明。",q:"西方文明太棒了。",u:"elonmusk",id:"2057807177012613561"}
+ ]},
+ {h:"维度 4 · 其他反复主题",rows:[
+  {tag:"misc",claim:"轻松/哲思内容穿插其中。",q:"lol（配图）。",u:"elonmusk",id:"2057806372935254370"}
+ ]}
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const attn=document.getElementById('attn');
+attn.innerHTML=ATTN.map(([l,p])=>`<div class="attn-row"><div class="lab">${l}</div><div class="attn-bar" style="width:${p}%"></div><div class="pct">${p}</div></div>`).join('');
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+const LBL={space:'SpaceX',ai:'xAI/Grok',tesla:'Tesla',pol:'政治/文化战',misc:'其他'};
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="h">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.8rem"><div class="claim"><span class="tag ${r.tag}">${LBL[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">@${r.u}</a></div></div>`).join('')+`</div>`).join('');
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{const key=r.u+r.id;if(!seen.has(key)){seen.add(key);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
