@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 华为乾崑智驾 ADS 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#c94c00 0%,#d11a1a 100%);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#b81414 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0c0908; --surface-container-lowest:#171210; --surface-container-low:#171210; --surface-container:#221915; --surface-container-high:#2c211b;
+    --fg-1:#F8FAFC; --fg-2:#d8cdc8; --fg-muted:#9b8f88;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#4a3f38;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.85rem;line-height:1.25;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:var(--space-md);margin-top:var(--space-lg)}
+.fact{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg)}
+.fact .k{font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-muted)}
+.fact .v{font-family:var(--font-headline);font-size:1.4rem;font-weight:700;color:var(--primary-container);margin-top:.2rem;line-height:1.1}
+.fact .s{font-size:.78rem;color:var(--fg-2);margin-top:.2rem}
+.warn{margin-top:var(--space-lg);padding:var(--space-md) var(--space-lg);background:var(--surface-container-high);border-radius:var(--radius-md);font-size:.86rem;color:var(--fg-2);border-left:3px solid var(--yellow)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.05rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.98rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.92rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.68rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.fact{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.pro{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.con{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.mid{background:rgba(245,158,11,.16);color:var(--yellow)}
+.q-open{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);margin-bottom:var(--space-md)}
+.q-open .q{font-weight:600;color:var(--fg-1)}.q-open .vs{font-size:.9rem;color:var(--fg-2);margin-top:.3rem}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.warn-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);margin-top:var(--space-md);font-size:.9rem;color:var(--fg-2)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.brief-header h1{font-size:1.42rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 智能驾驶</div>
+    <h1>华为乾崑智驾 <span class="grad">ADS 5</span><br>能力、争议与多方观点</h1>
+    <p class="answer-strip">2026-04-23 北京车展发布，投入 <b>180 亿元冲 L3</b>。核心叙事是规模——<b>104 亿公里实测、25 品牌 50+ 车型一套栈、官方称比平均司机安全 4.2 倍</b>；L3 开始落地（阿维塔 06T、启境 GT7 路测牌照）。争议集中在「真实力 vs 营销」与对比 Tesla FSD，且讨论被强烈的国别/品牌情绪裹挟。</p>
+    <div class="chips">
+      <span class="useful-chip hot">投180亿冲L3</span>
+      <span class="useful-chip">104亿公里实测</span>
+      <span class="useful-chip">25品牌一套栈</span>
+      <span class="useful-chip">暴雨实测争议</span>
+    </div>
+    <div class="meta-row">
+      <span>发布 <b>2026-04-23</b></span>
+      <span>检索式 <b>28 条</b></span>
+      <span>采集去重 <b>~200 推</b></span>
+      <span>下钻 <b>4 串</b></span>
+      <span>生成 <b>2026-05-23</b></span>
+    </div>
+  </header>
+
+  <section class="primary-insight">
+    <div class="eyebrow">核心数字速览（多为厂商口径，未独立核实）</div>
+    <div class="facts">
+      <div class="fact"><div class="k">研发投入</div><div class="v">180亿+</div><div class="s">约 26 亿美元，推 L3+</div></div>
+      <div class="fact"><div class="k">实测里程</div><div class="v">104亿km</div><div class="s">累计乾崑 ADS 辅助驾驶</div></div>
+      <div class="fact"><div class="k">安全</div><div class="v">4.2×</div><div class="s">官方称比平均司机更安全</div></div>
+      <div class="fact"><div class="k">生态</div><div class="v">25品牌</div><div class="s">50+车型·170万+辆·一套栈</div></div>
+      <div class="fact"><div class="k">激光雷达</div><div class="v">896线</div><div class="s">全球量产最高·M9 用6颗</div></div>
+      <div class="fact"><div class="k">里程 vs 特斯拉</div><div class="v">65 < 100</div><div class="s">亿英里，华为仍落后</div></div>
+    </div>
+    <div class="warn">⚖️ <b>路线之争</b>：华为「激光雷达 + 多传感器融合 + 世界模型」 vs 特斯拉「纯视觉端到端」。FSD 已正式入华，正面竞争升温。</div>
+  </section>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 L3 / NCA / 世界模型 …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>🧱 分维度发现</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">每条带出处，🔗 点回原推。<span class="tag fact">事实/官方</span><span class="tag pro">支持/亮点</span><span class="tag con">质疑/争议</span><span class="tag mid">中立/理性</span></p>
+  <div id="evidence"></div>
+
+  <h2>⚖️ 争议与开放问题</h2>
+  <div id="controversy"></div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索作者或观点关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <div class="warn-box">⚠️ <b>强噪声 + 情绪对立警示</b>：本主题被日本模型圈（误命中「世界模型」）、泛 EV 口水及强烈的国别/品牌对立（华为粉 vs 特斯拉粉、爱国信仰 vs 逢国产必踩）大量污染。报告已尽力剔噪，对情绪化结论保持距离。</div>
+  <ul class="limit" style="margin-top:var(--space-md)">
+    <li><b>厂商口径未核实</b>：里程、4.2× 更安全、896 线参数等多为营销/转述。</li>
+    <li><b>对比类视频公允性存疑</b>：实测对比常存在雨量/昼夜/道路场景不一致，引用已标注争议。</li>
+    <li><b>时效性强</b>：智驾迭代与 L3 法规按月变化，本报告反映 2026-04~05 窗口。</li>
+    <li>未覆盖中文专业车媒/官方白皮书的深度技术细节，X 视角偏舆论与片段实测。</li>
+  </ul>
+  <footer>X 主题深度调研 · bird CLI 采集 + 人工综合 · 观点均标注出处<br>生成于 2026-05-23 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["乾崑（Qiankun）","/tɕʰjɛn kʰun/","华为车 BU 的智能驾驶品牌；ADS 是其核心系统"],
+ ["ADS","—","Advanced Driving System，华为高阶智驾系统；本案是第 5 代（ADS 5/5.0）"],
+ ["L3","—","有条件自动驾驶；限定场景系统可接管，但驾驶员需随时介入（责任界定是关键）"],
+ ["L2.99 /「L2.9」","—","高阶辅助但法规上仍属 L2（人为最终责任）；网民戏称华为多数车型为 L2.9"],
+ ["NCA","—","Navigate Cruise Assist，城区/高速领航辅助（自动变道、过路口等）"],
+ ["世界模型","—","让智驾「预测环境如何演变」的 AI 范式，ADS 4 起主打"],
+ ["VLA","—","Vision-Language-Action，视觉-语言-动作一体大模型，端到端智驾新范式"],
+ ["激光雷达（LiDAR）","/ˈlaɪdɑːr/","用激光建环境 3D 点云的传感器；线数越高越精细"],
+ ["鸿蒙智行","—","华为与车企的合作模式（问界/智界/享界/尊界等「界」字辈）"],
+ ["FSD","—","Full Self-Driving，特斯拉的（监督式）全自动驾驶；本案最常被对比"],
+ ["接管（takeover）","—","系统请求/需要人类驾驶员接手控制"],
+ ["ODD","—","Operational Design Domain，设计运行域；系统被允许工作的限定条件范围"]
+];
+const SIGNALS=[
+ ["1","ADS 5.0 于 <b>2026-04-23 北京车展</b>发布，华为宣布投入超 <b>180 亿元（约 26 亿美元）</b>推进 L3 及以上。"],
+ ["2","规模是核心护城河叙事：累计实测 <b>104 亿公里</b>、合作 18+ 车企、装车 170 万+ 辆、<b>25 品牌 50+ 车型共用一套栈</b>，官方称比平均司机安全 4.2 倍。"],
+ ["3","<b>L3 开始真实落地</b>：阿维塔 06T 主打 L3；启境 GT7 拿到广州 L3 有条件自动驾驶路测牌照。"],
+ ["4","硬件继续堆料：<b>全球量产最高 896 线双光路激光雷达</b>，120 米外识别 14 厘米小目标；问界 M9 升级到 6 颗激光雷达。"],
+ ["5","争议集中在「真实力 vs 营销」与对比 Tesla FSD：暴雨实测显示华为降速退出（但对比公允性被大量反驳）；累计里程华为(约65亿)仍少于特斯拉(约100亿英里)。"]
+];
+const EVIDENCE=[
+ {h:"维度 1 · ADS 5.0 是什么 / 发布",rows:[
+  {tag:"fact",claim:"2026-04-23 发布，投入超 180 亿元推进 L3 及以上；已合作 18+ 车企、装车 170 万+ 辆。",q:"On April 23 Huawei unveiled the Qiankun ADS 5.0 smart driving system and said it would invest over 18 billion yuan (~$2.6 billion) to advance L3 and above. Qiankun is already used by 18+ partner automakers across 1.7 million vehicles.",u:"BridgingNews_",id:"2047514281986670616"}
+ ]},
+ {h:"维度 2 · L3 落地",rows:[
+  {tag:"fact",claim:"阿维塔 06T 搭 ADS 5.0 主打 L3。",q:"Huawei Avatr 06T ADS 5.0 L3 — the car can handle most driving tasks but requires the driver to be ready to intervene.",u:"CCL2K30",id:"2053560453859852556"},
+  {tag:"fact",claim:"启境 GT7 获广州 L3 有条件自动驾驶路测牌照，北京车展首发。",q:"启境 GT7, featuring Huawei's ADS 5, received Guangzhou's L3 conditional autonomous driving road test permit, debuting at Beijing Auto Show.",u:"42how_",id:"2047518895574225288"}
+ ]},
+ {h:"维度 3 · 安全数据与里程",rows:[
+  {tag:"pro",claim:"累计实测 104 亿公里，背靠 180 亿元投入。",q:"Huawei's 10.4 Billion KM of Real-World ADS 5 Testing … backed by an investment of 18 billion CNY.",u:"commiepommie",id:"2050407536080113939"},
+  {tag:"pro",claim:"官方称搭载车比中国道路平均司机安全 4.2 倍；25 品牌一套栈。",q:"25 brands. 50+ models. One technology stack. Cars running their intelligent driving system are 4.2× safer than the average driver on Chinese roads.",u:"BarrettYouTube",id:"2051468939033780685"},
+  {tag:"mid",claim:"但累计里程仍少于特斯拉（约 65 亿 vs 100 亿英里，口径或不一）。",q:"智驾累计里程对比：Tesla 100亿英里、华为乾崑 65.1亿、Waymo 1.7亿、小鹏 1.4亿。",u:"HXM_196_44",id:"2051125743846150529"}
+ ]},
+ {h:"维度 4 · 硬件",rows:[
+  {tag:"fact",claim:"全球量产最高 896 线双光路激光雷达，120 米外识别 14 厘米小目标。",q:"华为乾崑发布全球量产最高规格896线激光雷达，双光路技术……120米外可识别14厘米小目标，低反射障碍物识别提升2倍，异型障碍物检出距离提升77%。",u:"eric20050906",id:"2031500015089365216"}
+ ]},
+ {h:"维度 5 · 对比 Tesla FSD",rows:[
+  {tag:"con",claim:"FSD 入华正面竞争；支持者贴问界实测、调侃华为「L2.9」。",q:"特斯拉官宣在中国上线FSD！说起智驾，对比下华为家的 L2.9，开了问界汽车能让司机爽到停不下来。",u:"realNyarime",id:"2057300522651308441"},
+  {tag:"mid",claim:"连特斯拉粉也提醒：黑别人品牌不好，可能只是个故障，不代表智驾水平。",q:"虽然我是特斯拉粉丝，但是这种黑别人的品牌很不好，这可能是某个故障，并不能反应智驾水平。",u:"1btc_huang",id:"2057300522651308441"}
+ ]},
+ {h:"维度 6 · 争议：暴雨实测「翻车」",rows:[
+  {tag:"con",claim:"暴雨高速实测：华为降速到 60 后退出、连车道保持都打不开，特斯拉 FSD 仍稳行。",q:"同样暴雨中高速行车，华为智驾降速到60公里/小时后直接罢工退出，甚至连最基础的车道保持都打不开，而特斯拉的FSD却可以稳稳保持高速行驶和不断超车。",u:"cuichenghao",id:"2051633980160802845"},
+  {tag:"mid",claim:"反驳：该对比不公允（雨量/昼夜/参照物/高速 vs 市区都不同）。",q:"第一个白天没有任何参照物、雨大得多、还是在高速路上；第二个雨小很多、夜里有路灯做参照、还是在市内道路。这种帖子就是测智商的。",u:"Jw010Skywalker",id:"2051633980160802845"},
+  {tag:"mid",claim:"理性视角：暴雨降速到 60 本就是更安全行为，早提示接管比硬撑更负责。",q:"虽然垃圾，但是降速到60是合理的，因为有些没修好的老高速会有积水，80km以上会甩尾漂移。",u:"UNONOTHING3",id:"2051633980160802845"}
+ ]}
+];
+const CONTROVERSY=[
+ ["「L3」是真落地还是营销话术？","阿维塔 L3、启境路测牌照是实质进展，但多数在售车型法规上仍是 L2；L3 的事故责任归属才是真正门槛，尚未大规模厘清。",["CCL2K30","2053560453859852556"],["realNyarime","2057300522651308441"]],
+ ["极端天气能力：安全保守 vs 能力不足","暴雨「降速退出」是负责还是拉胯？缺乏统一、公允的第三方评测标准。",["cuichenghao","2051633980160802845"],["Jw010Skywalker","2051633980160802845"]],
+ ["重激光雷达 vs 纯视觉，谁是终局？","成本、冗余安全与可扩展性的路线之争尚无定论。",["eric20050906","2031500015089365216"],["realNyarime","2057300522651308441"]],
+ ["厂商数据口径","「104 亿公里」「4.2× 更安全」多为厂商口径，缺独立核验。",["commiepommie","2050407536080113939"],["BarrettYouTube","2051468939033780685"]]
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+const LBL={fact:'事实/官方',pro:'支持/亮点',con:'质疑/争议',mid:'中立/理性'};
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="h">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.8rem"><div class="claim"><span class="tag ${r.tag}">${LBL[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">@${r.u}</a></div></div>`).join('')+`</div>`).join('');
+document.getElementById('controversy').innerHTML=CONTROVERSY.map(([q,vs,a,b])=>`<div class="q-open"><div class="q">${q}</div><div class="vs">${vs}</div><div style="margin-top:.5rem;font-size:.78rem;font-family:var(--font-mono)"><a href="${X(a[0],a[1])}" target="_blank" rel="noopener">@${a[0]}</a> &nbsp;·&nbsp; <a href="${X(b[0],b[1])}" target="_blank" rel="noopener">@${b[0]}</a></div></div>`).join('');
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{const key=r.u+r.id;if(!seen.has(key)){seen.add(key);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
