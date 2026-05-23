@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 老板被并入大团队：中层平稳落地策略 vs 失败原因</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#0b7a52 0%,#a03b00 100%);
+  --gradient-hero:linear-gradient(135deg,#10b981 0%,#a03b00 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0a0c0b; --surface-container-lowest:#131816; --surface-container-low:#131816; --surface-container:#1c2420; --surface-container-high:#243029;
+    --fg-1:#F8FAFC; --fg-2:#cdd8d3; --fg-muted:#90a098;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#3a4a44;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.7rem;line-height:1.28;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.disclaimer{margin-top:var(--space-lg);font-size:.82rem;color:var(--fg-muted);background:var(--surface-container-high);border-radius:var(--radius-md);padding:.6rem .9rem;border-left:3px solid var(--yellow)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.split{margin-top:var(--space-2xl);display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg)}
+.col{border-radius:var(--radius-xl);padding:var(--space-xl);border:1px solid var(--border)}
+.col.good{background:linear-gradient(180deg,rgba(16,185,129,.1),var(--surface-container-low))}
+.col.bad{background:linear-gradient(180deg,rgba(239,68,68,.1),var(--surface-container-low))}
+.col h3{font-family:var(--font-headline);font-size:1.1rem;margin-bottom:var(--space-md)}
+.col.good h3{color:var(--green)}.col.bad h3{color:var(--red)}
+.col .item{padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.92rem;color:var(--fg-2)}
+.col .item:last-child{border-bottom:none}
+.col .item b{color:var(--fg-1)}
+.col .item .src{font-family:var(--font-mono);font-size:.7rem;margin-left:.3rem}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.05rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.98rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.92rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.68rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.good{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.bad{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.org{background:rgba(59,130,246,.14);color:var(--blue)}
+.checklist .ck{display:flex;gap:var(--space-md);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);margin-bottom:var(--space-sm)}
+.checklist{counter-reset:ck;margin-top:var(--space-lg)}
+.ck::before{counter-increment:ck;content:counter(ck);font-family:var(--font-headline);font-weight:700;color:var(--on-primary);background:var(--primary-container);width:1.7em;height:1.7em;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-size:.9rem}
+.ck .t{font-size:.94rem;color:var(--fg-2)}.ck .t b{color:var(--fg-1)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.split{grid-template-columns:1fr}.brief-header h1{font-size:1.35rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 工程管理 / 组织重组</div>
+    <h1>老板被并入大团队<br><span class="grad">中层视角：平稳落地策略 vs 落地差的原因</span></h1>
+    <p class="answer-strip">平稳落地的关键：<b>沟通抢在传言前、不惜代价保士气、向上管理新领导、争清晰职责、保住团队焦点</b>。落地差的元凶：<b>信息黑箱、反复 reorg、政治过载、激进降本「烧家具」、强行合并丢焦点、粗暴对待人</b>。</p>
+    <div class="disclaimer">ℹ️ 本页是 X 上可信实践者复盘的提炼，<b>非针对你具体情形的定制建议</b>。组织合并高度依赖语境（谁主导、为何合并、你团队是否核心），请结合实际判断。</div>
+    <div class="chips">
+      <span class="useful-chip hot">沟通时序是分水岭</span>
+      <span class="useful-chip">保士气+心理安全</span>
+      <span class="useful-chip">向上管理新领导</span>
+      <span class="useful-chip">避开信息黑箱/反复reorg</span>
+    </div>
+    <div class="meta-row">
+      <span>检索 <b>2026-05-23</b></span>
+      <span>素材 <b>工程管理+M&A复盘</b></span>
+      <span>含 Skype-微软 / 3G-亨氏</span>
+    </div>
+  </header>
+
+  <section class="split">
+    <div class="col good">
+      <h3>✅ 平稳落地：用了什么策略</h3>
+      <div class="item"><b>抢时序沟通</b>：让团队先于媒体/传言从内部知道<span class="src">@SolimanAdam</span></div>
+      <div class="item"><b>不惜代价保士气</b>：开放对话+反馈+情绪支持，建心理安全网<span class="src">@SolimanAdam</span></div>
+      <div class="item"><b>向上管理</b>：主动对接新领导/skip-level，把团队价值讲清，锁定清晰 mandate</div>
+      <div class="item"><b>画新组织地图</b>：重建团队地图与关键联系人<span class="src">@GergelyOrosz</span></div>
+      <div class="item"><b>保焦点+快赢</b>：守住团队使命，尽快交付可见成果证明不可替代</div>
+      <div class="item"><b>选对组织形态</b>：奖励业务影响→管理者同队；奖励成长→专才归口<span class="src">@GergelyOrosz</span></div>
+    </div>
+    <div class="col bad">
+      <h3>❌ 落地差：是因为什么</h3>
+      <div class="item"><b>信息黑箱</b>：一线拿不到真实数据/方向，消解信任与紧迫感<span class="src">@GergelyOrosz</span></div>
+      <div class="item"><b>反复 reorg + 政治过载</b>：每 3–6 月一次，中层都嫌政治太多<span class="src">@GergelyOrosz</span></div>
+      <div class="item"><b>把 reorg 当逃避真问题的游戏</b><span class="src">@GergelyOrosz</span></div>
+      <div class="item"><b>激进降本「烧家具」</b>：一年做高利润、二年没增长杠杆<span class="src">@Mich6141</span></div>
+      <div class="item"><b>强行合并丢焦点</b>：功能越加越乱、基础体验被忽视<span class="src">@GergelyOrosz</span></div>
+      <div class="item"><b>粗暴对待人</b>：突袭裁员、无申诉沟通渠道→信任/留存崩盘<span class="src">@ByteRamble</span></div>
+    </div>
+  </section>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 reorg / 向上管理 / 心理安全 …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>🧱 分维度发现（带出处）</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">🔗 点回原推。<span class="tag good">平稳策略</span><span class="tag bad">失败原因</span><span class="tag org">组织设计</span></p>
+  <div id="evidence"></div>
+
+  <h2>✅ 中层落地检查清单（信息梳理 · 非定制建议）</h2>
+  <div class="checklist" id="checklist"></div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <ul class="limit">
+    <li><b>本细分题在 X 上信号偏薄、噪声多</b>，本报告是「少数可信实践者复盘 + 通用整合智慧」的提炼，<b>非大样本共识</b>。</li>
+    <li>多数强素材是失败案例的事后复盘（负面偏差）；「平稳落地」侧多为对失败的镜像推断，已标注。</li>
+    <li><b>非定制建议</b>：你的具体情形（合并动机、团队是否核心、新领导风格）决定打法。</li>
+    <li>含中英文双语境，西方大厂与国内大厂在政治/沟通文化上有差异。</li>
+  </ul>
+  <footer>X 主题深度调研 · bird 采集 + 人工综合 · 观点均标注出处 · 非定制建议<br>生成于 2026-05-23 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["reorg","/ˌriːˈɔːrɡ/","组织重组/架构调整；本文核心场景"],
+ ["defrag","/ˌdiːˈfræɡ/","谷歌内部对某类 reorg 的戏称（碎片整理），把分散团队重新归并"],
+ ["managing up（向上管理）","—","主动管理与上级/新领导的关系、预期与信息流"],
+ ["skip-level","—","隔级上级（你老板的老板）；合并后常出现新的 skip-level"],
+ ["mission-based vs functional","—","使命型 vs 职能型：按业务使命编队 / 按职能条线汇报"],
+ ["psychological safety（心理安全感）","—","团队敢发声、试错、表达担忧而不怕被罚的氛围"],
+ ["retention（留存）","—","关键人才在动荡期是否留下"],
+ ["information vacuum（信息黑箱）","—","一线拿不到真实业务数据/方向的状态"],
+ ["burn the furniture（烧家具）","—","激进降本：靠砍成本短期做高利润，却烧掉长期增长杠杆"],
+ ["mandate（授权/职责边界）","—","团队在新组织里被正式赋予的范围与决策权"]
+];
+const SIGNALS=[
+ ["1","<b>沟通时序是第一分水岭</b>：让员工先于公众/媒体从内部知道，是平稳落地的底线；反例是从媒体得知合并。"],
+ ["2","<b>不惜代价保团队士气 + 心理安全感</b>：开放对话+反馈+情绪支持，给被合并团队搭心理安全网。"],
+ ["3","<b>最毒的失败模式</b>：信息黑箱 + 每 3–6 月一次 reorg + 政治过载（Skype-微软），最终丧失焦点与紧迫感。"],
+ ["4","<b>激进降本反噬</b>：3G-亨氏「一年烧家具做高利润、二年没增长杠杆」——降本压倒成长会失速。"],
+ ["5","<b>组织怎么并取决于奖励什么</b>：奖励业务影响→管理者同队；奖励职业成长→专才归口。使命型在「EM 懂技术+给绩效反馈」时最有效。"]
+];
+const EVIDENCE=[
+ {h:"平稳落地：策略",rows:[
+  {tag:"good",claim:"沟通抢在媒体/传言前 + 不惜代价保士气、建心理安全网。",q:"Don't let employees find out about an acquisition or merger from the media. Protect team morale at all costs — create a psychological safety net through open dialogue, feedback, and emotional support throughout the transition.",u:"SolimanAdam",id:"1945539210812772635"},
+  {tag:"good",claim:"合并后第一件事：重建团队地图与联系人。",q:"Working in a large tech company, one thing I wish every team had (but barely any have): a 'map' of the teams [and who owns what].",u:"GergelyOrosz",id:"1613925367345205248"}
+ ]},
+ {h:"失败原因",rows:[
+  {tag:"bad",claim:"信息黑箱 + 反复 reorg + 政治过载（Skype-微软）。",q:"Being bought by Microsoft meant *so much* politics — even as a mid-level dev it felt too much. Reorg after reorg every 3-6 months (I stopped counting). Devs never saw usage/revenue numbers — no contact with reality.",u:"GergelyOrosz",id:"1919681824185307615"},
+  {tag:"bad",claim:"把 reorg 当成逃避真问题的「游戏」。",q:"…playing reorg games instead of reinventing themselves — right when [they] would desperately need to.",u:"GergelyOrosz",id:"2011950905038459189"},
+  {tag:"bad",claim:"激进降本「烧家具」：一年高利润、二年没增长杠杆。",q:"3G had an amazing year 1 playbook. Come in, burn the furniture and make the biz significantly more profitable. Year 2 comes and you have no levers for growth.",u:"Mich6141",id:"2018372418390143174"},
+  {tag:"bad",claim:"粗暴对待人：突袭裁员、无申诉沟通渠道。",q:"币安员工在10分钟遭遇突袭式暴力裁员……没给任何申诉沟通渠道。",u:"ByteRamble",id:"2009208221945430201"}
+ ]},
+ {h:"组织设计：怎么并",rows:[
+  {tag:"org",claim:"奖励什么决定组织形态；使命型需 EM 懂技术且给绩效反馈。",q:"I saw the 'mission-based' approach work well, when the EM is technical and gives perf feedback… A big difference is what you optimize for: business impact → managers on same team; career growth → specialized folks need to report [to a function].",u:"GergelyOrosz",id:"1630990835339632643"}
+ ]}
+];
+const CHECK=[
+ "<b>抢时序</b>：第一时间用正式渠道向团队同步，别让他们从传言/媒体知道；不确定的部分也坦诚说「还不知道」。",
+ "<b>稳人心</b>：把保士气与心理安全当头等任务，做团队的情绪缓冲垫。",
+ "<b>向上管理</b>：主动对接新领导/新 skip-level，讲清团队价值，尽快锁定清晰 mandate。",
+ "<b>画地图</b>：重建新组织的团队地图与关键联系人。",
+ "<b>保焦点+快赢</b>：守住团队使命，尽快交付可见成果证明不可替代。",
+ "<b>保人才</b>：识别关键人，主动沟通去留与发展，别让骨干在动荡里默默流失。",
+ "<b>盯信号</b>：警惕信息黑箱、反复 reorg、激进降本、政治过载——这些是落地差的早期征兆。"
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+const LBL={good:'平稳策略',bad:'失败原因',org:'组织设计'};
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="h">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.8rem"><div class="claim"><span class="tag ${r.tag}">${LBL[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">@${r.u}</a></div></div>`).join('')+`</div>`).join('');
+document.getElementById('checklist').innerHTML=CHECK.map(t=>`<div class="ck"><div class="t">${t}</div></div>`).join('');
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{const key=r.u+r.id;if(!seen.has(key)){seen.add(key);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
