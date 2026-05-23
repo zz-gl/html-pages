@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · ProgramBench 与 harness 的作用（含原文中译）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#4d44e3 100%);
+  --gradient-hero:linear-gradient(135deg,#0b3d2e 0%,#4d44e3 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#080b10; --surface-container-lowest:#0f1622; --surface-container-low:#0f1622; --surface-container:#17202f; --surface-container-high:#1e2839;
+    --fg-1:#F8FAFC; --fg-2:#cbd5e1; --fg-muted:#8a93a3;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#33405a;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.8rem;line-height:1.25;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.docs{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-xl)}
+.docs .dh{font-family:var(--font-headline);font-weight:700;margin-bottom:var(--space-md)}
+.doc-link{display:flex;gap:var(--space-md);align-items:baseline;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.92rem}
+.doc-link:last-child{border-bottom:none}
+.doc-link .t{font-family:var(--font-mono);font-size:.72rem;color:var(--purple);white-space:nowrap;min-width:5.5em}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:var(--space-md);margin-top:var(--space-lg)}
+.fact{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg)}
+.fact .k{font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-muted)}
+.fact .v{font-family:var(--font-headline);font-size:1.4rem;font-weight:700;color:var(--primary-container);margin-top:.2rem;line-height:1.1}
+.fact .s{font-size:.78rem;color:var(--fg-2);margin-top:.2rem}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.05rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.98rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.92rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.68rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.fact{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.harness{background:rgba(123,64,224,.16);color:var(--purple)}
+.tag.result{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.react{background:var(--surface-container-high);color:var(--fg-2)}
+.bi{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:var(--space-md)}
+.bi .lbl{font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;padding:.5rem var(--space-lg);background:var(--surface-container);color:var(--fg-muted);font-weight:600}
+.bi .en{padding:var(--space-md) var(--space-lg);font-size:.9rem;color:var(--fg-2);font-style:italic;border-bottom:1px dashed var(--border);background:var(--surface-container-lowest)}
+.bi .zh{padding:var(--space-md) var(--space-lg);font-size:.95rem;color:var(--fg-1);background:var(--surface-container-lowest)}
+.bi .zh b,.bi .en{line-height:1.7}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.brief-header h1{font-size:1.4rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 评测基准 & Agent Harness</div>
+    <h1>SWE-bench 作者发布 <span class="grad">ProgramBench</span><br>「harness」的作用与重要性（含原文中译）</h1>
+    <p class="answer-strip">只给二进制+文档，让 agent <b>从零重建整个软件</b>（FFmpeg/SQLite/PHP…）。9 个模型<b>无一完整解决任何任务</b>。它刻意用极简 harness <b>mini-SWE-agent</b>，正是为「减少模型能力与 harness 设计之间的混淆」——并号召<b>激发更多 harness 创新</b>。</p>
+    <div class="chips">
+      <span class="useful-chip hot">从零重建软件</span>
+      <span class="useful-chip">harness 即关键变量</span>
+      <span class="useful-chip">最高完成率 0.5%</span>
+      <span class="useful-chip">原文逐句中译</span>
+    </div>
+    <div class="meta-row">
+      <span>发布 <b>2026-05</b></span>
+      <span>来源 <b>X + 原始文档</b></span>
+      <span>200 任务 · 24.8万测试</span>
+      <span>生成 <b>2026-05-23</b></span>
+    </div>
+  </header>
+
+  <section class="docs">
+    <div class="dh">📦 已找到的原始文档（一手资料）</div>
+    <div class="doc-link"><span class="t">论文</span><a href="https://arxiv.org/abs/2605.03546" target="_blank" rel="noopener">arXiv 2605.03546 · Can Language Models Rebuild Programs From Scratch? ↗</a></div>
+    <div class="doc-link"><span class="t">全文HTML</span><a href="https://arxiv.org/html/2605.03546v1" target="_blank" rel="noopener">arxiv.org/html/2605.03546v1 ↗</a></div>
+    <div class="doc-link"><span class="t">官网</span><a href="https://programbench.com/" target="_blank" rel="noopener">programbench.com ↗</a></div>
+    <div class="doc-link"><span class="t">代码</span><a href="https://github.com/facebookresearch/programbench" target="_blank" rel="noopener">github.com/facebookresearch/programbench ↗</a></div>
+    <div class="doc-link"><span class="t">数据集</span><a href="https://huggingface.co/datasets/programbench/ProgramBench-Tests" target="_blank" rel="noopener">HuggingFace · ProgramBench-Tests ↗</a></div>
+    <div class="facts">
+      <div class="fact"><div class="k">任务数</div><div class="v">200</div><div class="s">jq→FFmpeg/SQLite/PHP</div></div>
+      <div class="fact"><div class="k">行为测试</div><div class="v">24.8万+</div><div class="s">agent 模糊测试生成</div></div>
+      <div class="fact"><div class="k">完整解决率</div><div class="v">0.5%</div><div class="s">最高 GPT-5.5 xhigh</div></div>
+      <div class="fact"><div class="k">完整解决任务</div><div class="v">0 个</div><div class="s">9 模型均未完整通过</div></div>
+    </div>
+  </section>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 harness / scaffold / fuzzing …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>🧱 分维度发现</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">每条带出处，🔗 点回原推。<span class="tag fact">是什么</span><span class="tag harness">harness</span><span class="tag result">结果</span><span class="tag react">反应</span></p>
+  <div id="evidence"></div>
+
+  <h2>📄 原文摘录与中文翻译</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">英文原文（引自 arXiv 2605.03546 / programbench.com）逐段对照中译。</p>
+  <div id="bilingual"></div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <ul class="limit">
+    <li>原文摘录基于网页抓取，已尽量保留逐字；个别数字跨来源或有口径差异，<b>以论文/官网最新版为准</b>。</li>
+    <li>X 样本偏英文技术圈，含 GPT vs Claude 立场化横评。</li>
+    <li>论文 HTML 抓取可能未覆盖全部 harness 段落，深读建议直接看 arXiv 全文与 GitHub README。</li>
+    <li>时效性：基准会出 v2、分数会变，结论反映 2026-05 窗口。</li>
+  </ul>
+  <footer>X 主题深度调研 · bird 采集 + WebSearch/WebFetch 取原文 + 人工中译<br>生成于 2026-05-23 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["harness","/ˈhɑːrnɪs/","评测/执行外壳：套在大模型外、负责喂任务、解析动作、调用工具、管理多步循环与环境的脚手架。本报告核心词"],
+ ["scaffold（脚手架）","/ˈskæfoʊld/","同 harness 近义，指 agent 的外层支撑代码与提示工程"],
+ ["mini-SWE-agent","—","SWE-bench 团队的极简 agent harness，核心类仅约 100 行；ProgramBench 用作基线"],
+ ["SWE-bench","—","同团队此前著名基准：修复真实 GitHub issue（改 bug，编辑式任务）"],
+ ["benchmark（基准）","/ˈbentʃmɑːrk/","评测模型能力的标准化任务集"],
+ ["agent-driven fuzzing","/ˈfʌzɪŋ/","智能体驱动的模糊测试；用 agent 自动生成大量行为测试用例"],
+ ["behavioral test","—","行为测试；只验证输出行为是否与参考程序一致，不看实现结构/代码相似度"],
+ ["monolithic（单体式）","/ˌmɒnəˈlɪθɪk/","把所有逻辑塞进单文件的实现风格"],
+ ["confound（混淆变量）","/kənˈfaʊnd/","干扰因果判断的第三方变量；此处指 harness 设计混淆了模型能力的测量"],
+ ["cleanroom（净室）","—","不接触原始源码、仅凭行为/文档重建的开发方式"],
+ ["build script","—","把源码编译成可执行程序的脚本"]
+];
+const SIGNALS=[
+ ["1","ProgramBench 是 SWE-bench 团队的「地狱级」新基准：<b>只给二进制+文档，让 agent 从零重建整个软件</b>。200 任务（jq→FFmpeg/SQLite/PHP）；不联网、不反编译、只验证最终行为。"],
+ ["2","<b>结果惊人地难</b>：9 个模型无一完整解决任何任务；最强仅在 3% 任务上通过 95% 测试；完整解决率最高 0.5%（GPT-5.5）。这是「创造」测试，远难于 SWE-bench「改 bug」。"],
+ ["3","<b>harness 是刻意控制的核心变量</b>：用极简 mini-SWE-agent，正是为「减少模型能力与 harness 设计之间的混淆」——即 harness 设计会显著影响 agent 表现。"],
+ ["4","团队把它定位为 <b>harness 创新的练兵场</b>：开放「用 mini-swe-agent 复现全部基线」，喊话「期待激发更多 harness 创新」。"],
+ ["5","X 焦点之一是模型横评：<b>GPT-5.5 在 ProgramBench 超过 Claude Opus 4.7</b>（但都极低分），还比谁更省步数/成本。"]
+];
+const EVIDENCE=[
+ {h:"维度 1 · ProgramBench 是什么",rows:[
+  {tag:"fact",claim:"SWE-bench 作者的「地狱级」新基准：从零重建真实软件，只验行为。",q:"SWE-Bench作者刚放出的地狱级新基准 ProgramBench，要求AI从零开始完整重建真实软件项目（比如FFmpeg、SQLite），不能联网、不看代码相似度、只验证最终行为是否正确。",u:"Phoenixyin13",id:"2054872685910298893"}
+ ]},
+ {h:"维度 2 · harness 的作用与重要性（核心）",rows:[
+  {tag:"harness",claim:"刻意用极简 harness 解耦「模型能力」与「外壳设计」（论文原文）。",q:"We use mini-SWE-agent because it is …… deliberately minimal in its scaffolding, reducing confounds between model capability and harness design.",u:"programbench.com",id:""},
+  {tag:"harness",claim:"发布即号召「harness 创新」，开放复现全部基线。",q:"You can now run mini-swe-agent on ProgramBench to reproduce all of our baselines. Excited to kickstart more harness innovation! 🧵",u:"KLieret",id:"2057471442066030795"},
+  {tag:"harness",claim:"mini-swe-agent 极简（核心类约 100 行）却性能优秀——适合做中性标尺。",q:"mini-swe-agent … main agent class is just 100 lines, while having excellent performance on SWE-bench & broad support for models & cloud envs.",u:"KLieret",id:"2057471444628705477"}
+ ]},
+ {h:"维度 3 · 结果与模型表现",rows:[
+  {tag:"result",claim:"集体翻车：最强模型也只解 0.5%，故事不是 AI 弱而是「从零创造」极难。",q:"GPT-5.5 — OpenAI's strongest coding model — solves only 0.5% of real software projects on ProgramBench. The story isn't that AI is weak…",u:"xiz25",id:"2054898027325018477"},
+  {tag:"react",claim:"模型横评：GPT-5.5 在 ProgramBench 超过 Opus 4.7。",q:"GPT 5.5 outperforming Opus 4.7 on ProgramBench.",u:"hiarun02",id:"2054932243441983773"}
+ ]},
+ {h:"维度 4 · X 反应",rows:[
+  {tag:"react",claim:"怀疑/期待并存：想看紧凑 agent 在哪些 failure mode、长尾任务上崩。",q:"these compact agents look impressive, but I want to see exactly where they fall apart — the failure modes, the edge cases, the long-tail tasks…",u:"aimalysheva",id:"2057501634939212164"},
+  {tag:"react",claim:"被视作越过 Opus 的标志性进展（情绪）。",q:"hyped, it looks like they've officially passed Opus with this one.",u:"max_paperclips",id:"2057577357318512754"}
+ ]}
+];
+const BILINGUAL=[
+ {lbl:"摘要 Abstract",en:"Turning ideas into full software projects from scratch has become a popular use case for language models. … We therefore introduce ProgramBench to measure the ability of software engineering agents to develop software holistically. In ProgramBench, given only a program and its documentation, agents must architect and implement a codebase that matches the reference executable's behavior. End-to-end behavioral tests are generated via agent-driven fuzzing, enabling evaluation without prescribing implementation structure. Our 200 tasks range from compact CLI tools to widely used software such as FFmpeg, SQLite, and the PHP interpreter. We evaluate 9 LMs and find that none fully resolve any task, with the best model passing 95% of tests on only 3% of tasks. Models favor monolithic, single-file implementations that diverge sharply from human-written code.",zh:"把想法从零变成完整的软件项目，已成为大语言模型的热门用例。……为此我们提出 <b>ProgramBench</b>，用以衡量软件工程 agent <b>整体性地</b>开发软件的能力。在 ProgramBench 中，<b>仅给定一个程序及其文档</b>，agent 必须架构并实现一个代码库，使其行为与参考可执行程序一致。端到端的<b>行为测试</b>通过<b>智能体驱动的模糊测试</b>生成，从而在<b>不规定实现结构</b>的前提下完成评测。我们的 <b>200 个任务</b>涵盖从紧凑的 CLI 工具到 FFmpeg、SQLite、PHP 解释器等广泛使用的软件。我们评测了 9 个大模型，发现<b>没有任何一个能完整解决任何一个任务</b>，最强的也只在 3% 的任务上通过 95% 的测试。模型倾向于写<b>单体、单文件</b>实现，与人类代码大相径庭。"},
+ {lbl:"关于 harness（论文）",en:"We use mini-SWE-agent because it is both widely adopted as a baseline by other benchmarks (SWE-bench Verified, Multilingual, Terminal-bench), and deliberately minimal in its scaffolding, reducing confounds between model capability and harness design.",zh:"我们采用 <b>mini-SWE-agent</b>，因为它既被其他基准（SWE-bench Verified、Multilingual、Terminal-bench）广泛用作基线，又在<b>脚手架上刻意保持极简</b>，从而<b>减少「模型能力」与「harness 设计」之间的混淆</b>。"},
+ {lbl:"构建流程用 harness（论文）",en:"All construction steps use the mini-SWE-agent harness with Claude Sonnet 4.5, operating inside a Docker container based on ubuntu:22.04.",zh:"所有（基准）构建步骤都使用 <b>mini-SWE-agent harness</b> 配合 Claude Sonnet 4.5，在基于 ubuntu:22.04 的 Docker 容器内运行。"},
+ {lbl:"任务设定（官网）",en:"Given only a compiled binary and its documentation, agents must architect and implement a complete codebase that reproduces the original program's behavior. Agents have no access to source code, cannot decompile the executable, and cannot use the internet. They must independently choose a language, design the architecture, write all source code, and produce a build script.",zh:"<b>仅给定一个编译好的二进制文件及其文档</b>，agent 必须架构并实现一个<b>完整的代码库</b>，复现原程序的行为。agent <b>无法访问源码、不能反编译、也不能联网</b>。它们必须<b>独立选择编程语言、设计架构、编写全部源码并产出构建脚本</b>。"},
+ {lbl:"发布喊话（@KLieret）",en:"You can now run mini-swe-agent on ProgramBench to reproduce all of our baselines. Excited to kickstart more harness innovation!",zh:"现在你可以在 ProgramBench 上运行 mini-swe-agent，复现我们全部的基线结果。<b>很期待以此点燃更多 harness 创新！</b>"}
+];
+const X=(u,id)=>id?`https://x.com/${u}/status/${id}`:(u.includes('.')?`https://${u}`:`https://x.com/${u}`);
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+const LBL={fact:'是什么',harness:'harness',result:'结果',react:'反应'};
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="h">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.8rem"><div class="claim"><span class="tag ${r.tag}">${LBL[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">${r.id?'@'+r.u:r.u}</a></div></div>`).join('')+`</div>`).join('');
+document.getElementById('bilingual').innerHTML=BILINGUAL.map(b=>`<div class="bi"><div class="lbl">${b.lbl}</div><div class="en">EN：${b.en}</div><div class="zh">中：${b.zh}</div></div>`).join('');
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{const key=r.u+r.id;if(!seen.has(key)){seen.add(key);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">${id?'@'+u:u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">原文 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
