@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-05-24</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd;
+  --primary-fixed-dim:#ffb597; --on-primary:#ffffff; --accent-glow:#E8400D;
+  --secondary:#d5baff; --secondary-container:#7b40e0; --tertiary:#4d44e3; --accent-cyan:#00D4FF;
+  --bg:#fff8f6; --surface:#fff8f6; --surface-container-lowest:#ffffff;
+  --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,0.06); --border-strong:rgba(0,0,0,0.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px;
+  --space-2xl:24px; --space-3xl:32px; --space-4xl:48px; --space-5xl:64px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,0.04);
+  --shadow-md:0 4px 12px rgba(30,27,25,0.08);
+  --shadow-lg:0 8px 24px rgba(30,27,25,0.12);
+  --shadow-accent:0 8px 24px rgba(160,59,0,0.15);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#060B18; --surface:#0B1426; --surface-container-lowest:#101D35;
+    --surface-container-low:#101D35; --surface-container:#162544; --surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC; --fg-2:#CBD5E1; --fg-muted:#94a3b8;
+    --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14); --outline-variant:#2c3d5e;
+    --primary:#FF6B35; --primary-fixed:#3a2317; --accent-glow:#00D4FF;
+    --shadow-md:0 4px 12px rgba(0,0,0,0.4); --shadow-lg:0 8px 24px rgba(0,0,0,0.5);
+    --shadow-accent:0 8px 24px rgba(0,0,0,0.5);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--fg-1); font-family:var(--font-body);
+  font-size:15.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  padding:var(--space-lg); max-width:920px; margin:0 auto;
+}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:4px}
+
+/* Header */
+.brief-header{padding:var(--space-2xl) 0 var(--space-lg)}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);font-weight:600}
+.brief-header h1{font-family:var(--font-headline);font-size:clamp(26px,6vw,40px);font-weight:700;letter-spacing:-.01em;line-height:1.1;margin:var(--space-sm) 0}
+.brief-header .lede{color:var(--fg-2);font-size:16px;max-width:62ch}
+.answer-strip{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-lg)}
+.useful-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-pill);padding:7px 14px;font-size:13.5px;font-weight:500;color:var(--fg-2)}
+.useful-chip b{color:var(--fg-1);font-family:var(--font-mono);font-size:15px}
+
+.section-label{font-family:var(--font-headline);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-muted);margin:var(--space-4xl) 0 var(--space-md);display:flex;align-items:center;gap:var(--space-sm)}
+.section-label::after{content:"";flex:1;height:1px;background:var(--border-strong)}
+
+/* Primary insight: key signals */
+.primary-insight{background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:var(--shadow-md);overflow:hidden}
+.primary-insight .pi-head{background:var(--gradient-hero);color:#fff;padding:var(--space-lg) var(--space-xl)}
+.primary-insight .pi-head h2{font-family:var(--font-headline);font-size:19px;font-weight:600;display:flex;align-items:center;gap:var(--space-sm)}
+.primary-insight .pi-head p{font-size:13.5px;opacity:.9;margin-top:2px}
+.signal{display:flex;gap:var(--space-lg);padding:var(--space-lg) var(--space-xl);border-top:1px solid var(--border)}
+.signal:first-of-type{border-top:none}
+.signal .num{flex:none;width:30px;height:30px;border-radius:var(--radius-pill);background:var(--primary-fixed);color:var(--primary);font-family:var(--font-headline);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.signal .body strong{color:var(--fg-1);font-weight:600}
+.signal .body{color:var(--fg-2);font-size:14.5px}
+.signal .body .tag{display:inline-block;font-family:var(--font-mono);font-size:11px;background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1px 7px;margin-right:6px;color:var(--fg-muted);vertical-align:middle}
+
+/* Vocab cards */
+.vocab-search{position:relative;margin-bottom:var(--space-md)}
+.vocab-search input{width:100%;padding:13px 16px 13px 42px;font-family:var(--font-body);font-size:15px;background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-pill);color:var(--fg-1)}
+.vocab-search input::placeholder{color:var(--fg-muted)}
+.vocab-search .ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--fg-muted);font-size:16px}
+.vocab-count{font-size:12.5px;color:var(--fg-muted);margin:0 0 var(--space-md) 4px;font-family:var(--font-mono)}
+.vocab-stack{display:flex;flex-direction:column;gap:var(--space-sm)}
+.vocab-card{background:var(--surface-container-lowest);border:1px solid var(--border);border-left:3px solid var(--primary-fixed-dim);border-radius:var(--radius-md);padding:var(--space-md) var(--space-lg);transition:border-color .15s,box-shadow .15s}
+.vocab-card:hover{border-left-color:var(--primary);box-shadow:var(--shadow-sm)}
+.vocab-card .term{font-family:var(--font-headline);font-weight:600;font-size:16px;color:var(--fg-1)}
+.vocab-card .ipa{font-family:var(--font-mono);font-size:13px;color:var(--secondary-container);margin-left:8px}
+.vocab-card .def{color:var(--fg-2);font-size:14px;margin-top:3px}
+.no-match{color:var(--fg-muted);font-size:14px;padding:var(--space-lg);text-align:center;display:none}
+
+/* Evidence stack */
+.user-jump{display:flex;flex-wrap:wrap;gap:var(--space-xs);margin-bottom:var(--space-lg)}
+.user-jump a{font-size:12.5px;background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-pill);padding:5px 12px;color:var(--fg-2);font-weight:500}
+.user-jump a:hover{background:var(--primary-fixed);color:var(--primary);text-decoration:none}
+.evidence-group{margin-bottom:var(--space-2xl);scroll-margin-top:var(--space-lg)}
+.eg-head{display:flex;align-items:baseline;gap:var(--space-sm);flex-wrap:wrap;padding-bottom:var(--space-sm);border-bottom:2px solid var(--border-strong);margin-bottom:var(--space-md)}
+.eg-head .name{font-family:var(--font-headline);font-size:20px;font-weight:700;letter-spacing:-.01em}
+.eg-head .count{font-family:var(--font-mono);font-size:12px;color:var(--primary);background:var(--primary-fixed);padding:2px 9px;border-radius:var(--radius-pill);font-weight:600}
+.eg-bio{color:var(--fg-muted);font-size:13.5px;margin-bottom:var(--space-lg);font-style:italic}
+.eg-note{color:var(--fg-2);font-size:13.5px;background:var(--surface-container-low);border-left:3px solid var(--outline-variant);padding:var(--space-sm) var(--space-md);border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin-bottom:var(--space-md)}
+
+.tweet{background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.tweet .claim{font-weight:600;font-size:15.5px;color:var(--fg-1);margin-bottom:var(--space-sm);display:flex;gap:8px;align-items:flex-start}
+.tweet .claim .rt{flex:none;font-size:11px;font-weight:600;color:var(--green);background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);border-radius:var(--radius-sm);padding:2px 7px;white-space:nowrap;margin-top:1px}
+.tweet .quote-body{color:var(--fg-2);font-size:14.5px}
+.tweet .quoted{margin-top:var(--space-sm);padding:var(--space-sm) var(--space-md);background:var(--surface-container-low);border-left:3px solid var(--secondary);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:13.5px;color:var(--fg-2)}
+.tweet .quoted .qlabel{font-size:11px;font-weight:600;color:var(--secondary-container);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:2px}
+.tweet .links{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-md)}
+.tweet .links a{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-family:var(--font-mono);background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-pill);padding:5px 12px;color:var(--fg-2)}
+.tweet .links a:hover{background:var(--primary-fixed);color:var(--primary);text-decoration:none;border-color:var(--primary-fixed-dim)}
+.tweet .links a .xbird{color:var(--primary);font-weight:700}
+
+/* Silent users */
+.silent{background:var(--surface-container-low);border:1px dashed var(--border-strong);border-radius:var(--radius-lg);padding:var(--space-lg)}
+.silent h3{font-family:var(--font-headline);font-size:15px;font-weight:600;margin-bottom:var(--space-sm);color:var(--fg-2)}
+.silent .names{font-family:var(--font-mono);font-size:12.5px;color:var(--fg-muted);line-height:1.9;word-break:break-all}
+.silent .names span{display:inline-block;margin-right:10px}
+
+footer{text-align:center;color:var(--fg-muted);font-size:12px;padding:var(--space-4xl) 0 var(--space-lg);font-family:var(--font-mono)}
+
+@media (max-width:560px){
+  body{padding:var(--space-md);font-size:15px}
+  .signal{padding:var(--space-md);gap:var(--space-md)}
+  .primary-insight .pi-head{padding:var(--space-md) var(--space-lg)}
+  .eg-head .name{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<header class="brief-header">
+  <div class="eyebrow">X / Twitter 关注动态 · 每日汇总</div>
+  <h1>2026-05-24 关注动态简报</h1>
+  <p class="lede">近 24 小时关注列表的重点动态：Codex 开源被低估、GPT-5.5 Pro 成为强力事实核查工具、开源机器人推进，以及 LeCun 的密集政治转发。</p>
+  <div class="answer-strip">
+    <span class="useful-chip">时间窗口 <b>05-23 07:00 → 05-24 07:00 UTC</b></span>
+    <span class="useful-chip">关注总数 <b>41</b></span>
+    <span class="useful-chip">有动态用户 <b>9</b></span>
+    <span class="useful-chip">窗口内动态 <b>28</b></span>
+  </div>
+</header>
+
+<!-- KEY SIGNALS -->
+<div class="section-label">🔑 关键信号总结</div>
+<section class="primary-insight">
+  <div class="pi-head">
+    <h2>本期最值得关注的 5 件事</h2>
+    <p>按重要性排序 · 快速了解重点</p>
+  </div>
+  <div class="signal"><div class="num">1</div><div class="body"><span class="tag">Codex</span><strong>Codex 是开源的，仍被低估。</strong> Greg Brockman（OpenAI 总裁）连发多帖强调这一点「被严重低估」，并展示 Codex 用「计算机操作」端到端构建、并在 iPhone 模拟器里自我排查（bug bash）一个功能。</div></div>
+  <div class="signal"><div class="num">2</div><div class="body"><span class="tag">GPT-5.5 Pro</span><strong>GPT-5.5 Pro 成为强力事实核查工具。</strong> Ethan Mollick 实测可整章投喂、精准追溯每条关键引用，唯一「毛病」是过于追求细节上的微妙差别；他建议用「让 AI 核查你熟悉的内容」向不常用 AI 的人快速展示进步。</div></div>
+  <div class="signal"><div class="num">3</div><div class="body"><span class="tag">开源</span><strong>开源 AI / 机器人持续推进。</strong> Hugging Face 发布约 2,500 美元可自建的人形机器人 LeRobot（全开放软硬件栈）；Sebastian Raschka 在 LLMs-from-scratch 仓库新增 DeepSeek 稀疏注意力（DSA）的从零实现。</div></div>
+  <div class="signal"><div class="num">4</div><div class="body"><span class="tag">政治</span><strong>Yann LeCun 大量转发政治批评。</strong> 集中转发针对 Trump 政府的批评（绿卡新政、移民、科学经费、美国「衰落」论等），这是本期他唯一的活动方向，非技术内容。</div></div>
+  <div class="signal"><div class="num">5</div><div class="body"><span class="tag">预告</span><strong>Jack Clark 预告非典型科幻短文。</strong> 将在下周二的 Import AI 新刊发表一篇风格迥异的虚构故事，传递「AI 变强后人类前景美好」的乐观基调。</div></div>
+</section>
+
+<!-- VOCAB -->
+<div class="section-label">📖 生词预热</div>
+<div class="vocab-search">
+  <span class="ico">🔍</span>
+  <input type="text" id="vocabSearch" placeholder="搜索术语、缩写或中文释义…" aria-label="搜索生词">
+</div>
+<p class="vocab-count" id="vocabCount"></p>
+<div class="vocab-stack" id="vocabStack"></div>
+<p class="no-match" id="noMatch">没有匹配的术语。</p>
+
+<!-- EVIDENCE -->
+<div class="section-label">📋 按用户分组的详细动态</div>
+<nav class="user-jump" id="userJump" aria-label="跳转到用户"></nav>
+<div id="evidence"></div>
+
+<!-- SILENT -->
+<div class="section-label">😴 本期无动态</div>
+<div class="silent">
+  <h3>窗口内未发推（32 位）</h3>
+  <div class="names" id="silentNames"></div>
+</div>
+
+<footer>X 关注动态汇总 · 2026-05-24 · 单文件简报</footer>
+
+<script>
+/* ---------- DATA ---------- */
+const vocab = [
+  ["open source","/ˈoʊpən sɔːrs/","开源（源代码公开、可自由使用修改）"],
+  ["Codex","/ˈkoʊdeks/","OpenAI 的编程智能体 / 代码模型"],
+  ["computer use","","计算机操作能力（AI 像人一样点击、操作图形界面）"],
+  ["simulator","/ˈsɪmjuleɪtər/","模拟器（如 iPhone simulator，无需真机即可运行 iOS App）"],
+  ["bug bash","","集中找 bug、排查缺陷的过程"],
+  ["DSA（DeepSeek Sparse Attention）","","DeepSeek 稀疏注意力，一种降低注意力计算开销的机制"],
+  ["from-scratch implementation","/skrætʃ/","从零实现（不依赖现成库，逐行手写）"],
+  ["fact checker","/fækt ˈtʃekər/","事实核查（工具 / 人）"],
+  ["citation","/saɪˈteɪʃn/","引用、出处标注"],
+  ["nuance","/ˈnuːɑːns/","细微差别、微妙之处"],
+  ["Extended Thinking","","扩展思考（模型投入更多推理步骤的模式）"],
+  ["green card","","绿卡（美国永久居留权）"],
+  ["legal immigration","/ˌɪmɪˈɡreɪʃn/","合法移民"],
+  ["humanoid robot","/ˈhjuːmənɔɪd/","人形机器人"],
+  ["open stack","","开放技术栈（软硬件全部开放）"],
+  ["declining power","/dɪˈklaɪnɪŋ/","衰落中的强国"],
+  ["capricious","/kəˈprɪʃəs/","反复无常的、任性的"],
+  ["Coupe de France","","法国杯（法国足球淘汰赛事）"]
+];
+
+const groups = [
+  {
+    id:"gdb", name:"Greg Brockman", cn:"格雷格·布罗克曼 /ɡreɡ ˈbrɒkmən/",
+    bio:"OpenAI 联合创始人兼总裁",
+    tweets:[
+      {claim:"Codex 是开源的，这点被低估了", rt:"引用转推",
+       body:"博主评论：「很少有人意识到（under appreciated），Codex 是开源（open source）的。」",
+       quoted:"@ah20im：「每次我告诉别人 Codex 是开源的，很多人都很惊讶。」",
+       links:[["评论","gdb","2058381548383096994"],["被引用原文","ah20im","2058372463478907116"]]},
+      {claim:"Codex 端到端构建并调试 iPhone 模拟器", rt:"引用转推",
+       body:"博主评论：「用 Codex 端到端（end to end）构建并调试一个 iPhone 模拟器（simulator）。」",
+       quoted:"@JustinBleuel：「Codex 用计算机操作（computer use）能力，全程驾驭 iPhone 模拟器，对它刚构建好的功能做 bug bash。」（附演示视频）",
+       links:[["评论","gdb","2058232892266836141"],["被引用原文","JustinBleuel","2058228412158758950"]]},
+      {claim:"「是个适合建设的好地方」", rt:"引用转推",
+       body:"博主评论：「good location to build（好的建设地点）。」",
+       quoted:"@Dimillian：「Codex & Pool（Codex 与泳池）」（配图：边写代码边在泳池边）",
+       links:[["评论","gdb","2058223176027439439"],["被引用原文","Dimillian","2058181477943083193"]]}
+    ]
+  },
+  {
+    id:"emollick", name:"Ethan Mollick", cn:"伊森·莫利克 /ˈiːθən ˈmɒlɪk/",
+    bio:"沃顿商学院教授，研究 AI 对工作与教育影响的知名学者",
+    note:"同一话题的连续推文（thread）",
+    tweets:[
+      {claim:"向不常用 AI 的人展示进步的最简单方法",
+       body:"「让那些久未使用 AI 的记者和学者，把自己熟悉的内容丢进 Pro（或扩展思考 Extended Thinking）模式，让它做一次事实核查（fact check）。靠着引用出处（citations）与批判的深度（depth of critique），真的能改变他们的看法。」",
+       links:[["原文","emollick","2058332276925018310"]]},
+      {claim:"GPT-5.5 Pro 是非常可靠的事实核查器",
+       body:"「GPT-5.5 Pro 是非常扎实的事实核查器（fact checker）。我可以把整章内容丢给它，它会准确追溯每一条关键引用。唯一真正烦人的是它太爱抠细微差别（nuance），所以常返回『大方向对，但你没考虑到某个微小细节 X』。」",
+       links:[["原文","emollick","2058331615525232988"]]}
+    ]
+  },
+  {
+    id:"rasbt", name:"Sebastian Raschka", cn:"塞巴斯蒂安·拉施卡 /sɪˈbæstiən ˈrɑːʃkə/",
+    bio:"知名机器学习教育者，《Build a Large Language Model (From Scratch)》作者",
+    tweets:[
+      {claim:"新增 DeepSeek 稀疏注意力（DSA）从零实现",
+       body:"「在我的 LLMs-from-scratch 仓库里，新增了一份 DeepSeek 稀疏注意力（DSA）的从零实现（from-scratch implementation），感谢一位读者的精彩贡献。附带动机说明、整体概览，以及 GPT 风格模型的参考实现作为独立示例代码。」",
+       links:[["原文","rasbt","2058206420927951191"]]}
+    ]
+  },
+  {
+    id:"fchollet", name:"François Chollet", cn:"弗朗索瓦·肖莱 /fʁɑ̃swa ʃɔˈlɛ/",
+    bio:"Keras 之父，ARC 智能基准提出者，前 Google 研究员",
+    tweets:[
+      {claim:"关于学习能力的一句箴言",
+       body:"「如果你能学会一件对你真正全新（genuinely novel）的事物，你就能学会任何事。」",
+       links:[["原文","fchollet","2058211474217328853"]]}
+    ]
+  },
+  {
+    id:"jackclark", name:"Jack Clark", cn:"杰克·克拉克 /dʒæk klɑːrk/",
+    bio:"Anthropic 联合创始人，《Import AI》通讯作者，AI 政策专家",
+    tweets:[
+      {claim:"预告 Import AI 新刊的虚构短文",
+       body:"「为下一期《Import AI》写了一篇虚构故事（fictional story），风格与我以往的很不一样。我认为随着 AI 越来越强大，人类前方有美好的事物，我试着在这里捕捉了其中一些。这一刊应该会在周二发布。」",
+       links:[["原文","jackclarkSF","2058102569063391449"]]}
+    ]
+  },
+  {
+    id:"jerryjliu0", name:"Jerry Liu", cn:"杰瑞·刘 /ˈdʒeri ljuː/",
+    bio:"LlamaIndex 联合创始人兼 CEO，文档解析 / RAG 领域代表人物",
+    note:"围绕 LlamaIndex 在旧金山 Caltrain 车站投放数字广告的一组连续推文",
+    tweets:[
+      {claim:"重新上传为 jpg",
+       body:"「重新上传成 jpg（颜色没那么褪色了！）」（配图）",
+       links:[["原文","jerryjliu0","2058299364041523451"]]},
+      {claim:"第二大街朝南可看到我们的招牌",
+       body:"「如果你在第二大街（2nd street）朝南站着，又好奇我们 @llama_index 最近在忙什么，这块招牌也许能帮上忙 🙂」（配图）",
+       links:[["原文","jerryjliu0","2058277618903130177"]]},
+      {claim:"「躲猫猫」", rt:"引用转推",
+       body:"博主评论：「Peekaboo（躲猫猫）」（配图）",
+       quoted:"博主本人早前推文：「如果你在阵亡将士纪念日周末路过旧金山 Caltrain 车站，也许能瞥见我们的数字广告 📺。我们能解析 PDF 及 50+ 种其他文档类型。」",
+       links:[["评论","jerryjliu0","2058277615635664957"],["被引用原文","jerryjliu0","2057983930335383619"]]}
+    ]
+  },
+  {
+    id:"clem", name:"clem 🤗", cn:"克莱芒·德朗格 /kleˈmɑ̃ dəˈlɑ̃ɡ/",
+    bio:"Hugging Face 联合创始人兼 CEO",
+    note:"本期混合了开源 AI / 机器人转推与个人对法甲朗斯队（RC Lens）夺得法国杯的庆祝",
+    tweets:[
+      {claim:"Hugging Face 发布约 2,500 美元可自建的人形机器人", rt:"🔁 转推",
+       body:"被转推原话（@roboticomarket）：「Hugging Face 刚刚发布了 @LeRobotHF —— 一款约 2,500 美元就能自己搭建的人形机器人（humanoid robot）！完整的开放技术栈（open stack），含硬件……」",
+       links:[["被转推原文","roboticomarket","2058353424459043325"],["clem 转推","ClementDelangue","2058353424459043325"]]},
+      {claim:"6 人小团队做出比 OpenAI/Anthropic 快 4-8 倍的专用模型", rt:"🔁 转推",
+       body:"被转推原话（@garrytan）：「一个 6 人团队正在打造任务专用（task-specific）AI 模型，比 OpenAI 或 Anthropic 的任何模型都快 4-8 倍。已有 50 万次下载……」",
+       links:[["被转推原文","garrytan","2058232608861950130"],["clem 转推","ClementDelangue","2058232608861950130"]]},
+      {claim:"朗斯夺法国杯：10 万球迷涌动，城市仅 3.3 万人",
+       body:"「昨天朗斯队赢得法国杯（Coupe de France）决赛：法兰西大球场有 5 万朗斯球迷 + 主场球场 4 万 + 球迷区 1 万 = 共 10 万人。而这座城市只有 33,000 名居民 🤯🤯🤯 世界上还有类似的吗？#rclens」（配图）",
+       links:[["原文","ClementDelangue","2058137056233112024"]]},
+      {claim:"「🏆🔴🟡 LENS LENS LENS 🔴🟡🏆」（庆祝视频）", rt:"🔁 转推",
+       body:"被转推自 @F3nord。",
+       links:[["被转推原文","F3nord","2058252518543499479"],["clem 转推","ClementDelangue","2058252518543499479"]]},
+      {claim:"「朗斯球迷挤满街道，庆祝法国杯夺冠 🏆❤️💛」（配图）", rt:"🔁 转推",
+       body:"被转推自 @brfootball。",
+       links:[["被转推原文","brfootball","2058251867621060902"],["clem 转推","ClementDelangue","2058251867621060902"]]},
+      {claim:"「🇫🇷🏆 5 万朗斯球迷把杯赛决赛变成了主场 🟡🔴🔥」（视频）", rt:"🔁 转推",
+       body:"被转推自 @ultras_clips。",
+       links:[["被转推原文","ultras_clips","2058124058663793032"],["clem 转推","ClementDelangue","2058124058663793032"]]}
+    ]
+  },
+  {
+    id:"ylecun", name:"Yann LeCun", cn:"杨立昆 /jɑːn ləˈkœ̃/",
+    bio:"Meta 首席 AI 科学家，图灵奖得主，卷积神经网络奠基者",
+    note:"本期 LeCun 全部为转推，集中于对 Trump 政府的政治批评与科学议题，无技术内容",
+    tweets:[
+      {claim:"批评 Trump 削弱美国创新引擎", rt:"🔁 转推",
+       body:"被转推原话（@thibauld）：「在第二个任期里，Trump 将砍掉美国两大最强的创新与财富创造引擎（innovation and wealth creation engines）：1. 技术性合法（移民）……」",
+       links:[["被转推原文","thibauld","2058315584966742468"],["LeCun 转推","ylecun","2058315584966742468"]]},
+      {claim:"《Daedalus》AI 与科学新刊", rt:"🔁 转推",
+       body:"被转推原话（@erikbryn）：「美国艺术与科学院期刊《Daedalus》刚发布了关于 AI 与科学（AI and Science）的新一期，由 James Manyika 主编……」",
+       links:[["被转推原文","erikbryn","2058310651940884942"],["LeCun 转推","ylecun","2058310651940884942"]]},
+      {claim:"「连 Trump 当众重击科技右翼都不能终结他们……」", rt:"🔁 转推",
+       body:"被转推原话（@Noahpinion）：「如果连 Trump『当众重击』科技右翼（Tech Right）都不能终结他们，我真不知道还有什么能了。」",
+       links:[["被转推原文","Noahpinion","2058310406595076271"],["LeCun 转推","ylecun","2058310406595076271"]]},
+      {claim:"「他背叛了所有信任他的追随者……」", rt:"🔁 转推",
+       body:"被转推原话（@rodneyabrooks）：「他背叛了所有信任他的追随者，也背叛了我们这些从未信任过他的人，以及他的国家。」",
+       links:[["被转推原文","rodneyabrooks","2058309847444017342"],["LeCun 转推","ylecun","2058309847444017342"]]},
+      {claim:"「如果我们抹去 1 月 6 日，它就没发生过……」", rt:"🔁 转推",
+       body:"被转推原话（@DarrigoMelanie）：「『如果我们抹去 1 月 6 日，它就没发生过』『如果我们不公布某些通胀（inflation）数据，就没有通胀』……」",
+       links:[["被转推原文","DarrigoMelanie","2058309593252438134"],["LeCun 转推","ylecun","2058309593252438134"]]},
+      {claim:"福山论美国为「衰落中的强国」", rt:"🔁 转推",
+       body:"被转推原话（@clashreport）：「弗朗西斯·福山（Francis Fukuyama）谈美国作为衰落中的强国（declining power）：美国的衰落是 Trump 自 2016 年崛起的直接产物……」",
+       links:[["被转推原文","clashreport","2058277510303904012"],["LeCun 转推","ylecun","2058277510303904012"]]},
+      {claim:"新文章：迈向智能的科学", rt:"🔁 转推",
+       body:"被转推原话（@SuryaGanguli）：「我的新文章《迈向智能的科学：统一物理学、神经科学与 AI》（Toward a science of intelligence）已发表……」",
+       links:[["被转推原文","SuryaGanguli","2058275662742368516"],["LeCun 转推","ylecun","2058275662742368516"]]},
+      {claim:"「现在当科学家很艰难……」", rt:"🔁 转推",
+       body:"被转推原话（@simonmaechling）：「现在当科学家很艰难。你花了几十年学习如何正确地测量、如何从噪声中分离信号（separate signal）……」",
+       links:[["被转推原文","simonmaechling","2058275333288145034"],["LeCun 转推","ylecun","2058275333288145034"]]},
+      {claim:"「商务部长开了一张 500 万美元支票……」", rt:"🔁 转推",
+       body:"被转推原话（@MikeLevin）：「这烂到骨子里了。商务部长 Howard Lutnick 给国会领导层（基金）开了一张 500 万美元的支票……」",
+       links:[["被转推原文","MikeLevin","2058271712848843253"],["LeCun 转推","ylecun","2058271712848843253"]]},
+      {claim:"吴恩达批评绿卡新政", rt:"🔁 转推",
+       body:"被转推原话（@AndrewYNg）：「白宫要求绿卡（green card）申请人必须从美国境外提交申请的新政策，是对合法移民（legal immigration）反复无常（capricious）的攻击……」",
+       links:[["被转推原文","AndrewYNg","2058271284467736893"],["LeCun 转推","ylecun","2058271284467736893"]]}
+    ]
+  },
+  {
+    id:"petergyang", name:"Peter Yang", cn:"彼得·杨 /ˈpiːtər jæŋ/",
+    bio:"产品 / 增长领域知名作者，专注 AI 时代的职业与产品建议",
+    tweets:[
+      {claim:"AI 时代的成长建议", rt:"🔁 转推",
+       body:"被转推原话（@Rich_Hillier）：「给 AI 时代的一些好建议。强烈推荐通读，然后把这些应用起来，切实提升自己。」",
+       links:[["被转推原文","Rich_Hillier","2058135357905047986"],["Peter Yang 转推","petergyang","2058135357905047986"]]}
+    ]
+  }
+];
+
+const silent = ["giffmana","karpathy","DarioAmodei","realDonaldTrump","svlevine","tegmark","Figure_robot","ilyasut","demishassabis","DrJimFan","swyx","soumithchintala","ChatGPTapp","andrew__reed","saranormous","stephzhan","sonyatweetybird","simonw","realGeorgeHotz","AnimaAnandkumar","AnthropicAI","drfeifei","paperswithcode","sequoia","AndrewYNg（仅被转推）","zeritna","deepseek_ai","MistralAI","bgurley","sama","jiayq","geoffreyhinton"];
+
+/* ---------- RENDER ---------- */
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+// vocab
+const stack = document.getElementById('vocabStack');
+stack.innerHTML = vocab.map(([t,ipa,def])=>
+  `<div class="vocab-card" data-text="${esc((t+' '+ipa+' '+def).toLowerCase())}">
+    <div><span class="term">${esc(t)}</span>${ipa?`<span class="ipa">${esc(ipa)}</span>`:''}</div>
+    <div class="def">${esc(def)}</div>
+  </div>`).join('');
+const countEl = document.getElementById('vocabCount');
+countEl.textContent = `共 ${vocab.length} 个术语 · 输入即时筛选`;
+
+const search = document.getElementById('vocabSearch');
+const noMatch = document.getElementById('noMatch');
+search.addEventListener('input', e=>{
+  const q = e.target.value.trim().toLowerCase();
+  let shown=0;
+  stack.querySelectorAll('.vocab-card').forEach(c=>{
+    const ok = !q || c.dataset.text.includes(q);
+    c.style.display = ok?'':'none';
+    if(ok) shown++;
+  });
+  noMatch.style.display = shown?'none':'block';
+  countEl.textContent = q ? `匹配 ${shown} / ${vocab.length} 个术语` : `共 ${vocab.length} 个术语 · 输入即时筛选`;
+});
+
+// evidence
+const xurl = (u,id)=>`https://x.com/${u}/status/${id}`;
+const ev = document.getElementById('evidence');
+ev.innerHTML = groups.map(g=>{
+  const tweets = g.tweets.map(t=>{
+    const links = t.links.map(([label,u,id])=>
+      `<a href="${xurl(u,id)}" target="_blank" rel="noopener"><span class="xbird">𝕏</span>${esc(label)}</a>`).join('');
+    return `<div class="tweet">
+      <div class="claim">${t.rt?`<span class="rt">${esc(t.rt)}</span>`:''}<span>${esc(t.claim)}</span></div>
+      <div class="quote-body">${esc(t.body)}</div>
+      ${t.quoted?`<div class="quoted"><span class="qlabel">被引用 / 被转推原文</span>${esc(t.quoted)}</div>`:''}
+      <div class="links">${links}</div>
+    </div>`;
+  }).join('');
+  return `<section class="evidence-group" id="${g.id}">
+    <div class="eg-head"><span class="name">${esc(g.name)}</span><span class="count">${g.tweets.length} 条</span></div>
+    <div class="eg-bio">${esc(g.cn)} — ${esc(g.bio)}</div>
+    ${g.note?`<div class="eg-note">${esc(g.note)}</div>`:''}
+    ${tweets}
+  </section>`;
+}).join('');
+
+// jump nav
+document.getElementById('userJump').innerHTML = groups.map(g=>
+  `<a href="#${g.id}">${esc(g.name)} · ${g.tweets.length}</a>`).join('');
+
+// silent
+document.getElementById('silentNames').innerHTML = silent.map(n=>`<span>${esc(n)}</span>`).join('');
+</script>
+</body>
+</html>
