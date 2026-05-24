@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · Codex 开源，自建 harness 能随便抄吗？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#0b6e9e 0%,#a03b00 100%);
+  --gradient-hero:linear-gradient(135deg,#0b6e9e 0%,#c94c00 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#080b0e; --surface-container-lowest:#11161c; --surface-container-low:#11161c; --surface-container:#192029; --surface-container-high:#212a34;
+    --fg-1:#F8FAFC; --fg-2:#cdd5dd; --fg-muted:#909aa6;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#39424f;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.75rem;line-height:1.26;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.tldr{margin-top:var(--space-lg);font-size:.95rem;color:var(--fg-1);background:var(--primary-fixed);border-radius:var(--radius-md);padding:.7rem 1rem;border-left:3px solid var(--primary-container)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.layers .ly{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-md);align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.layers .ly:last-child{border-bottom:none}
+.layers .nm{font-weight:700;color:var(--fg-1);font-size:.95rem;min-width:9em}
+.layers .ds{color:var(--fg-2);font-size:.86rem}
+.pill{font-family:var(--font-mono);font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--radius-pill);white-space:nowrap}
+.pill.open{background:rgba(16,185,129,.16);color:var(--green)}
+.pill.closed{background:rgba(239,68,68,.16);color:var(--red)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-lg)}
+.dcol{border-radius:var(--radius-lg);padding:var(--space-lg);border:1px solid var(--border)}
+.dcol.yes{background:linear-gradient(180deg,rgba(16,185,129,.1),var(--surface-container-low))}
+.dcol.no{background:linear-gradient(180deg,rgba(239,68,68,.1),var(--surface-container-low))}
+.dcol h4{font-family:var(--font-headline);font-size:1rem;margin-bottom:var(--space-sm)}
+.dcol.yes h4{color:var(--green)}.dcol.no h4{color:var(--red)}
+.dcol .it{font-size:.86rem;color:var(--fg-2);padding:.35rem 0;border-bottom:1px solid var(--border)}
+.dcol .it:last-child{border-bottom:none}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.02rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.96rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.9rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.66rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.fact{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.yes{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.no{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.you{background:rgba(123,64,224,.16);color:var(--purple)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.verdict{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:var(--surface-container-high);border-radius:var(--radius-lg);font-size:.95rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.debate{grid-template-columns:1fr}.layers .ly{grid-template-columns:1fr auto}.layers .ds{display:none}.brief-header h1{font-size:1.38rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 开源 & Agent Harness</div>
+    <h1>Codex 既然开源，<span class="grad">自建 harness 随便抄？</span></h1>
+    <p class="answer-strip">能抄，而且官方欢迎你抄——<b>但抄到的只是「外壳/管道」，不是护城河</b>。模型仍闭源，真正决定成败的是「围绕你任务的 harness 定制 + 知识萃取 + 可靠性层」。</p>
+    <div class="tldr">⚡ <b>一句话</b>：「Codex 开源」= <b>harness/app server 开源（Apache-2.0），模型闭源</b>。抄外壳能快速起步，护城河抄不来。</div>
+    <div class="chips">
+      <span class="useful-chip hot">外壳开源·模型闭源</span>
+      <span class="useful-chip">官方鼓励搬进你的app</span>
+      <span class="useful-chip">外壳=商品·非护城河</span>
+      <span class="useful-chip">定制/知识/可靠性才是壁垒</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>2026-03~05</b></span>
+      <span>承接 harness 系列</span>
+      <span>检索式 <b>10 条</b></span>
+      <span>生成 <b>2026-05-24</b></span>
+    </div>
+  </header>
+
+  <section class="primary-insight">
+    <div class="eyebrow">「Codex 开源」拆层看 · 别混为一谈</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">Codex CLI / harness</div><div class="ds">命令行 agent 外壳</div><div class="pill open">✓ 开源 Apache-2.0</div></div>
+      <div class="ly"><div class="nm">Codex app server</div><div class="ds">应用服务端，可被第三方 app 调用</div><div class="pill open">✓ 开源</div></div>
+      <div class="ly"><div class="nm">Symphony 规范</div><div class="ds">把 issue 看板变 agent 流水线控制面</div><div class="pill open">✓ 开源</div></div>
+      <div class="ly"><div class="nm">Codex 背后的模型</div><div class="ds">权重不公开，仍需付费调 API/订阅</div><div class="pill closed">✗ 闭源</div></div>
+    </div>
+  </section>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 Apache-2.0 / 控制面 / 护城河 …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>⚔️ 护城河之争：外壳是管道还是上限？</h2>
+  <div class="debate">
+    <div class="dcol no">
+      <h4>「外壳是商品 / 会被模型吃掉」</h4>
+      <div class="it">harness 是同一套已知模式，熟了就能搭<span style="color:var(--fg-muted)"> @_colemurray</span></div>
+      <div class="it">模型每次发布吞掉外壳技巧，越做越薄<span style="color:var(--fg-muted)"> @gm_mertd</span></div>
+      <div class="it">harness engineering 可能弊大于利<span style="color:var(--fg-muted)"> @ashpreetbedi</span></div>
+      <div class="it">在真 harness 里训模型已易到当黑客松题<span style="color:var(--fg-muted)"> @willccbb</span></div>
+    </div>
+    <div class="dcol yes">
+      <h4>「harness 决定上限 / 定制才赢」</h4>
+      <div class="it">harness 定义 agent 性能上限，专门化外壳才是护城河<span style="color:var(--fg-muted)"> @JohnCarbrey</span></div>
+      <div class="it">同模型，定制 harness 能超过任何默认组合<span style="color:var(--fg-muted)"> @Vtrivedy10</span></div>
+      <div class="it">多数团队建错了层（一窝蜂堆兜底/编排）<span style="color:var(--fg-muted)"> @suriiiii123</span></div>
+    </div>
+  </div>
+  <div class="verdict">🧭 <b>怎么调和</b>：抄来的「默认外壳」是<b>起点的商品</b>，能让你快速起步；拉开差距的是<b>围绕你任务的定制</b>（prompt/tools/skills/hooks/恢复循环）。「随便抄」抄得到起步，<b>抄不到护城河</b>。</div>
+
+  <h2>🧱 论据与案例（带出处）</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">🔗 点回原推。<span class="tag fact">官方/事实</span><span class="tag yes">能抄/搭在上面</span><span class="tag no">抄≠护城河</span><span class="tag you">对你的启示</span></p>
+  <div id="evidence"></div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <ul class="limit">
+    <li>以英文工程圈观点为主，含立场化的「护城河之争」，并列呈现不下定论。</li>
+    <li>许可证为一般说明，<b>非法律意见</b>；商用嵌入前请核对 Apache-2.0 原文与商标条款。</li>
+    <li>「模型吃外壳」「定制超默认」为实践者经验，未做基准量化。</li>
+    <li>复用前篇结论处已标注；开源边界与官方政策可能变化。</li>
+  </ul>
+  <footer>X 主题深度调研 · bird 采集 + 前篇复用 + 人工综合 · 观点均标注出处<br>生成于 2026-05-24 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["Codex CLI / harness","—","OpenAI 命令行编程 agent 外壳；Apache-2.0 开源（openai/codex）"],
+ ["Codex app server","—","Codex 应用服务端，同样开源；可被第三方 app 调用/嵌入"],
+ ["Apache-2.0","—","宽松开源许可：可自由 fork/改/商用，需保留版权声明、不得用其商标背书"],
+ ["control / data plane","—","控制面协调+持久化状态/身份；数据面真正跑 agent harness"],
+ ["moat（护城河）","/moʊt/","难被复制的竞争壁垒"],
+ ["harness engineering","—","围绕模型做 prompt/工具/技能/钩子/记忆/恢复循环的工程"],
+ ["Critic / eval / 兜底","—","评审/评测/失败回退，可靠性层"],
+ ["知识萃取","—","把散落经验结构化为规则/流程"],
+ ["Symphony","—","OpenAI 开源规范，把 issue 看板变成 agent 流水线的控制面"],
+ ["skills / hooks","—","技能文件/钩子；harness 定制的常见抓手"]
+];
+const SIGNALS=[
+ ["1","<b>官方实锤</b>：OpenAI 开发者关系负责人称「Codex 的 harness 和 app server 都是开源的，你可以让 Codex 帮你把这些体验带进你自己的 app」——主动鼓励你搬。"],
+ ["2","<b>「抄/搭在上面」已成常态</b>：有人在 Codex app server 上做插件（从 Claude Code 调 Codex，3456❤）、做基于它的开源 agent（PwrAgent，接 Telegram/飞书/Discord）。"],
+ ["3","<b>但抄到的是商品化「管道」</b>：「后台 agent 都是同一套模式——控制面+数据面，熟了挺简单」，不是护城河。"],
+ ["4","<b>抄默认拿不到上限</b>：「同一个模型，为特定任务精修 prompt/tools/skills/hooks 的 harness，能超过任何默认组合」——价值在定制不在抄默认。"],
+ ["5","<b>别过度投入</b>：「我不建 harness 了——模型每次发布都把外壳技巧吃进去」。这与「harness 决定上限」是当下最尖锐分歧。"]
+];
+const EVIDENCE=[
+ {h:"官方：开源到什么程度",rows:[
+  {tag:"fact",claim:"Codex harness + app server 开源，OpenAI 鼓励你搬进自己的 app。",q:"We love supporting an open ecosystem… The Codex harness and app server are also open source, so you can ask Codex to help bring these kinds of experiences into your own app.",u:"romainhuet",id:"2058322493144973579"},
+  {tag:"fact",claim:"OpenAI 还开源了 Symphony（把看板变成 agent 流水线控制面）。",q:"OpenAI open-sourced Symphony, a spec that turns your Linear board into an always-on coding agent pipeline.",u:"brainmirrorai",id:"2048998224351101027"}
+ ]},
+ {h:"能抄/搭在上面（实践案例）",rows:[
+  {tag:"yes",claim:"在 Codex app server 上做插件：从 Claude Code 调 Codex。",q:"I built a new plugin! You can now trigger Codex from Claude Code… built on top of the Codex app server so it uses the same open-source [stack].",u:"dkundel",id:"2038670330257109461"},
+  {tag:"yes",claim:"基于 Codex App Server 的开源 agent，加 Telegram/飞书/Discord 渠道（可借鉴你的客服场景）。",q:"PwrAgent! An Open Source coding agent that uses Codex App Server, and gives you access to your threads via Telegram, Feishu/Lark, Discord, Slack.",u:"huntharo",id:"2055854113439576416"},
+  {tag:"no",claim:"外壳是同一套已知模式，熟了就能搭——商品化。",q:"background agent systems all follow the same pattern: a control plane coordinating, persisting state & identity and a data plane running the actual agent harness. fairly easy once you're familiar with the architecture.",u:"_colemurray",id:"2054718585222971395"}
+ ]},
+ {h:"护城河之争",rows:[
+  {tag:"no",claim:"模型会吞掉外壳，别过度投入。",q:"re harnesses: I stopped building mine. Models are gonna eat into it — every release [absorbs harness tricks], getting thinner and thinner.",u:"gm_mertd",id:"2034766530370842765"},
+  {tag:"yes",claim:"反方：harness 决定 agent 性能上限，专门化外壳才是护城河。",q:"Myth: The model is the moat; harnesses are plumbing. Reality: The harness defines the ceiling for agent performance… specialized, decision-centric harnesses become the moat.",u:"JohnCarbrey",id:"2014729085369323677"},
+  {tag:"yes",claim:"同模型，定制 harness 能超过任何默认组合——价值在定制。",q:"You can outperform any default harness+model (including codex & claude code) on pretty much any Task by engineering the harness around it… curate prompts, tools, skills, hooks for that Task.",u:"Vtrivedy10",id:"2052100726608781363"},
+  {tag:"no",claim:"纠偏：多数团队建错了层。",q:"Everyone's talking about Harness. Most teams are building the wrong layer.",u:"suriiiii123",id:"2041402827432669292"}
+ ]},
+ {h:"对你（客服→销售自建）的启示",rows:[
+  {tag:"you",claim:"该抄就抄做起点，但把人力投到抄不来的三件事：①任务定制 ②知识萃取 ③可靠性层。",q:"同一个模型，定制 harness 能超过默认组合（@Vtrivedy10）；自建最大难点是知识萃取（@ddny09）；越不是 Apple 越需要 Critic/eval（@yaqinhei）。",u:"Vtrivedy10",id:"2052100726608781363"}
+ ]}
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+const LBL={fact:'官方/事实',yes:'能抄/搭在上面',no:'抄≠护城河',you:'对你的启示'};
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="h">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.8rem"><div class="claim"><span class="tag ${r.tag}">${LBL[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">@${r.u}</a></div></div>`).join('')+`</div>`).join('');
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{const key=r.u+r.id;if(!seen.has(key)){seen.add(key);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
