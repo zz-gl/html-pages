@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 文档检索 SOTA：技术资产/最佳实践/认知误区</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#0b6e9e 0%,#7b40e0 100%);
+  --gradient-hero:linear-gradient(135deg,#0b6e9e 0%,#7b40e0 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#070a10; --surface-container-lowest:#0f141e; --surface-container-low:#0f141e; --surface-container:#171d2a; --surface-container-high:#1f2634;
+    --fg-1:#F8FAFC; --fg-2:#cbd3df; --fg-muted:#8b95a6;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#37415230;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.72rem;line-height:1.26;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:66ch}
+.ctx{margin-top:var(--space-md);font-size:.8rem;color:var(--fg-muted)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.asset{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-md);align-items:baseline;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.asset:last-child{border-bottom:none}
+.asset .nm{font-weight:700;color:var(--fg-1);font-size:.92rem;min-width:11em}
+.asset .ds{color:var(--fg-2);font-size:.86rem}
+.asset .lk{font-family:var(--font-mono);font-size:.72rem;white-space:nowrap}
+.prac{counter-reset:pr;margin-top:var(--space-lg)}
+.pr{display:flex;gap:var(--space-md);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);margin-bottom:var(--space-sm)}
+.pr::before{counter-increment:pr;content:counter(pr);font-family:var(--font-headline);font-weight:700;color:var(--on-primary);background:var(--primary-container);width:1.7em;height:1.7em;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-size:.9rem}
+.pr .t{font-size:.92rem;color:var(--fg-2)}.pr .t b{color:var(--fg-1)}.pr .t .src{font-family:var(--font-mono);font-size:.7rem}
+.myth{border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.06);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);margin-bottom:var(--space-md)}
+.myth .m{font-weight:700;color:var(--red);font-size:.96rem}
+.myth .fix{font-size:.9rem;color:var(--fg-2);margin-top:.35rem}
+.myth .fix b{color:var(--green)}
+.myth .src{font-family:var(--font-mono);font-size:.72rem;margin-top:.3rem;display:block}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.youbox{margin-top:var(--space-lg);background:var(--primary-fixed);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);font-size:.93rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.asset{grid-template-columns:1fr auto}.asset .ds{display:none}.brief-header h1{font-size:1.35rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 文档检索 SOTA</div>
+    <h1>文档检索 SOTA：<span class="grad">核心技术资产 / 最佳实践 / 认知误区</span></h1>
+    <p class="answer-strip">没有单一 SOTA——真共识是<b>分层组合</b>：词面/grep 管精确符号，语义/向量管换种说法，<b>混合召回 + 重排定质量</b>。最大误区是「以为选对算法就行」——<b>真难点在评测</b>（检索失败是无声的）。</p>
+    <div class="ctx">基于语雀《Jerry Liu 发问"文件检索 SOTA"》做更广更深的 X 调研 · <a href="https://www.yuque.com/oudizuo/x-follows/hfp4gc5n0un0v0l8" target="_blank" rel="noopener">原文 ↗</a></div>
+    <div class="chips">
+      <span class="useful-chip hot">分层组合·非单一SOTA</span>
+      <span class="useful-chip">重排是质量大头</span>
+      <span class="useful-chip">别处处用向量</span>
+      <span class="useful-chip">评测才是真难点</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>2026 近半年</b></span>
+      <span>检索式 <b>12 条</b></span>
+      <span>采集去重 <b>65+ 推</b></span>
+      <span>生成 <b>2026-05-24</b></span>
+    </div>
+  </header>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 BM25 / 重排 / ColBERT …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>🧰 一、核心技术资产（工具箱）</h2>
+  <div id="assets" style="margin-top:var(--space-lg)"></div>
+  <div class="youbox">📌 一句话：资产不是「一个最强算法」，而是「一套可组合的层」——<b>词面层 · 语义层 · 多向量层 · 重排层 · 评测层 · (多模态/agentic)扩展层</b>。</div>
+
+  <h2>🛠️ 二、最佳技术实践</h2>
+  <div class="prac" id="practices"></div>
+
+  <h2>🚫 三、认知误区</h2>
+  <div id="myths"></div>
+
+  <h2>🎯 对你的启示（客服→销售 agent）</h2>
+  <div class="youbox" style="background:var(--surface-container-low)">
+    • 知识库检索<b>别默认纯向量</b>：客户名/订单号/错误码/型号这类<b>精确 token</b> 让 BM25/grep 优先，向量做语义补充，再加<b>重排</b>。<br>
+    • <b>重排是性价比最高的质量杠杆</b>，优先投。<br>
+    • <b>先把知识写好 + 建检索评测</b>（覆盖/多样/相关 + 能观察无声失败），比反复换 embedding 模型更值。<br>
+    • <b>按查询分流</b>：难查询走 agentic search，高频简单查询走 BM25/向量快路。
+  </div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <ul class="limit">
+    <li>偏英文 RAG/IR 工程圈，含厂商/作者自推（embedding 模型、工具）的立场。</li>
+    <li>数字（100M vs 80×、4M 文档、200ms 重排）为推文转述，未独立核实；以论文/基准原文为准。</li>
+    <li><b>未做基准复现</b>，"谁更强"取决于你的语料/查询/任务，需用自己数据 + 评测验证。</li>
+    <li>时效性强：embedding/重排/多向量模型周级迭代，结论反映 2026-05 窗口。</li>
+  </ul>
+  <footer>X 主题深度调研 · 语雀文档为上下文 + bird 采集 + 人工综合 · 观点均标注出处<br>生成于 2026-05-24 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["BM25","/biː em ˌtwenti ˈfaɪv/","经典词频排序（词面检索），30 年零训练，仍是多数生产搜索底座"],
+ ["FTS","—","full-text search，全文检索（如 SQLite FTS5）"],
+ ["dense / embedding","—","稠密检索；把文本压成一个向量按语义找"],
+ ["hybrid search","—","混合检索；词面(BM25)+语义(向量)两路合并"],
+ ["rerank（重排）","/ˌriːˈræŋk/","对召回结果用模型精排；质量提升的主来源"],
+ ["cross-encoder","—","交叉编码器；query 与候选拼一起打分，精度高但慢，重排常用"],
+ ["ColBERT / late interaction","—","后期交互/多向量：保留词级向量逐一比对，而非整段压成一个向量"],
+ ["ColPali / ColQwen","—","把后期交互用到文档截图/多模态的检索模型"],
+ ["recall（召回率）","—","该找到的内容里实际找到了多少；检索质量核心指标"],
+ ["BEIR / MTEB","—","检索/embedding 的标准评测基准"],
+ ["agentic search","—","让 agent 用 grep+工具调用边搜边推理，而非一次性向量召回"],
+ ["RAG","—","Retrieval-Augmented Generation，检索增强生成"],
+ ["silent failure（无声失败）","—","检索漏掉该找的却不报错，难察觉"]
+];
+const SIGNALS=[
+ ["1","没有单一 SOTA，真共识是<b>分层组合</b>：词面/grep 管精确符号，语义/向量管换种说法，混合召回 + 重排定质量。「质量提升大头在重排那一步」。"],
+ ["2","<b>别处处用向量</b>是反复高赞警告——BM25（30 年、零训练）仍驱动 Elasticsearch/OpenSearch 和多数生产搜索。"],
+ ["3","被低估的资产是<b>后期交互/多向量（ColBERT）</b>：100M 的 ColBERTv2 打赢 80× 大的稠密模型——「单向量模型在拖累 IR」。"],
+ ["4","最大误区：以为<b>选对算法就行</b>——真难点是<b>评测</b>。「我们一直测错了：RAG 要覆盖/多样/相关，不是只找第一名」，且检索失败多是<b>无声的</b>。"],
+ ["5","方向之争升级为<b>文件系统/agentic vs 向量检索</b>，被称「新的 MCP vs CLI」——Claude 用 agentic，Notion/Cursor 仍用检索，没谁通杀。"]
+];
+const ASSETS=[
+ ["BM25 / FTS","词面检索基线，30 年零训练、仍是生产底座；精确、可解释、快","akshay_pachaar","2040776999728509414"],
+ ["稠密向量 / embedding","语义检索；模型层在卷（Harrier/SFR/NV-Retriever 硬负例）","JordiRib1","2041550352739164404"],
+ ["后期交互/多向量(ColBERT)","词级向量逐一比对；小模型打赢大稠密；信息密集/多模态强","lateinteraction","2027214531429118128"],
+ ["混合检索(hybrid)","BM25+稠密两路合并，补彼此盲区","emilson_tery","2056536882612203675"],
+ ["重排器(rerank/cross-encoder)","质量提升的主来源；对召回结果精排","DoDataThings","2056554198649754048"],
+ ["agentic/文件系统检索","grep+工具调用边搜边推理；Claude 在用","DhravyaShah","2052452445276848568"],
+ ["评测基准(BEIR/MTEB/Agent Retrieval Bench)","没评测就没 SOTA；ARB=225 真实仓库检索任务","eyuansuMX","2056688435365400954"],
+ ["多模态检索(ColPali/VLM2Vec+MMEB)","直接检索文档截图/图文；通用多模态 embedding","WenhuChen","1844577017930694984"],
+ ["工程范式(Twelve-Factor RAG/semtools)","把 RAG 工程化的方法论与工具","jxnlco","1864681843964170503"]
+];
+const PRAC=[
+ ["默认走<b>「混合召回 + 重排」</b>而非纯向量；质量提升大头在重排。","DoDataThings","2056554198649754048"],
+ ["<b>精确/符号查找让 grep/BM25 优先</b>：4M 文档实测，符号查找向量召回竟不如 grep → grep 优先 + 超 25 条才上 200ms 重排。","baibaida","2056529478457926103"],
+ ["<b>纯方案各有盲区要互补</b>：向量漏精确 token，全文漏换说法 → sqlite-vec + FTS5 + 重排。","emilson_tery","2056536882612203675"],
+ ["<b>按任务选信号</b>：coding agent 检索不只靠向量，PR 意图/评审/失败堆栈各需不同信号。","eyuansuMX","2056688435365400954"],
+ ["<b>认真做评测且测对指标</b>：RAG 要覆盖/多样/相关，不是「找第一名」；BEIR 高分≠真实 RAG 好。","HamelHusain","1944525515366482292"],
+ ["<b>从源头降难度</b>：把知识库文档写好（每目录一 README），比纠结算法更值。","__vilsinho__","2056544511799525621"],
+ ["<b>速度 vs 准确按查询分流</b>：简单快查询用 BM25/向量，难查询用 agentic search。","AmarSVS","2056559000385425896"]
+];
+const MYTHS=[
+ ["❌「向量检索是默认/银弹」","正解：向量是语义补充，不是默认主力；纯向量对精确 token 召回甚至不如 grep。","akshay_pachaar","2040776999728509414"],
+ ["❌「embedding 越大越好」","正解：架构(多向量/后期交互)比堆参数更关键——100M ColBERTv2 打赢 80× 大稠密模型。","lateinteraction","2027214531429118128"],
+ ["❌「RAG 已死，被 agentic+长上下文取代」","正解：别被「X 已死」标题党带走——RAG 没死，在与 agentic/长上下文融合演进。","HamelHusain","1944525497234579645"],
+ ["❌「选对算法就 SOTA」","正解：先建能观察失败的评测再谈算法——检索失败多无声，召回比延迟更难测。","cdiamond","2056669416381620388"],
+ ["❌「能做到零幻觉」","正解：目标应是「可溯源 + 低且可控错误率」，零幻觉不切实际，只能逼近。","adxtyahq","2057410759236386866"],
+ ["❌「检索=向量搜索一件事」","正解：按任务组合多信号(词面/语义/结构/意图/失败轨迹)。","eyuansuMX","2056688435365400954"],
+ ["❌「文件系统 vs 向量必须二选一」","正解：看场景不是站队——各有适用，调研显示文件系统仅以 1 分微弱胜出。","DhravyaShah","2052452445276848568"]
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+document.getElementById('assets').innerHTML=ASSETS.map(([nm,ds,u,id])=>`<div class="asset"><div class="nm">${nm}</div><div class="ds">${ds}</div><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">@${u} ↗</a></div>`).join('');
+document.getElementById('practices').innerHTML=PRAC.map(([t,u,id])=>`<div class="pr"><div class="t">${t} <a class="src" href="${X(u,id)}" target="_blank" rel="noopener">🔗@${u}</a></div></div>`).join('');
+document.getElementById('myths').innerHTML=MYTHS.map(([m,fix,u,id])=>`<div class="myth"><div class="m">${m}</div><div class="fix">${fix}</div><a class="src" href="${X(u,id)}" target="_blank" rel="noopener">🔗 @${u}</a></div>`).join('');
+const SRC=[];const seen=new Set();
+[...ASSETS.map(a=>[a[2],a[3],a[1]]),...PRAC.map(p=>[p[1],p[2],p[0].replace(/<[^>]+>/g,'')]),...MYTHS.map(m=>[m[2],m[3],m[0]+' — '+m[1].replace(/<[^>]+>/g,'')])].forEach(([u,id,g])=>{const key=u+id;if(!seen.has(key)){seen.add(key);SRC.push([u,id,g]);}});
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
