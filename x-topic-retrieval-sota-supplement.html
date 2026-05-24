@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研补充 · 图检索 / 多模态检索 / 无声失败处理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0; --teal:#0d9488;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#7b40e0 0%,#0d9488 100%);
+  --gradient-hero:linear-gradient(135deg,#7b40e0 0%,#0d9488 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#080a0f; --surface-container-lowest:#10141d; --surface-container-low:#10141d; --surface-container:#181d29; --surface-container-high:#202634;
+    --fg-1:#F8FAFC; --fg-2:#cbd3df; --fg-muted:#8b95a6;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#374152;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.45rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md);display:flex;align-items:center;gap:.5rem}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.7rem;line-height:1.26;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.02rem;color:var(--fg-2);max-width:66ch}
+.ctx{margin-top:var(--space-md);font-size:.8rem;color:var(--fg-muted)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.sec{border:1px solid var(--border);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl);margin-top:var(--space-lg);box-shadow:var(--shadow-sm)}
+.sec.graph{border-top:3px solid var(--purple)}.sec.mm{border-top:3px solid var(--teal)}.sec.sf{border-top:3px solid var(--red)}
+.keyline{padding:var(--space-md) var(--space-lg);border-radius:var(--radius-md);font-size:.95rem;margin:.6rem 0}
+.keyline.graph{background:rgba(123,64,224,.1);border-left:3px solid var(--purple)}
+.keyline.mm{background:rgba(13,148,136,.1);border-left:3px solid var(--teal)}
+.row{padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.92rem;color:var(--fg-2)}
+.row:last-child{border-bottom:none}.row b{color:var(--fg-1)}
+.row .src{font-family:var(--font-mono);font-size:.72rem;margin-left:.3rem}
+.steps{counter-reset:st;margin-top:var(--space-sm)}
+.st{display:flex;gap:var(--space-md);padding:.6rem 0;border-bottom:1px solid var(--border)}
+.st:last-child{border-bottom:none}
+.st::before{counter-increment:st;content:counter(st);font-family:var(--font-headline);font-weight:700;color:var(--on-primary);background:var(--red);width:1.6em;height:1.6em;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-size:.85rem}
+.st .t{font-size:.92rem;color:var(--fg-2)}.st .t b{color:var(--fg-1)}.st .t .src{font-family:var(--font-mono);font-size:.7rem}
+.tldr{margin-top:var(--space-2xl);background:var(--primary-fixed);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);font-size:.93rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.tldr b{color:var(--primary-container)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.brief-header h1{font-size:1.35rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X 主题调研（补充）· 检索 SOTA 续</div>
+    <h1><span class="grad">图检索 · 多模态检索 · 无声失败</span>怎么处理</h1>
+    <p class="answer-strip"><b>图检索</b>（GraphRAG）：关系型/全局/多跳强，「聪明但慢」，是补充非替代。<b>多模态检索</b>：富版面/图表/扫描件别再切块，V-RAG/ColPali 把整页当图像。<b>无声失败</b>：核心是「让失败可见、可测、可回溯」——黄金集 + context recall/faithfulness + Ragas/LLM-judge + 强制引用 + 目标规模复测。</p>
+    <div class="ctx">承接《文档检索 SOTA》主篇 · <a href="https://www.yuque.com/oudizuo/x-follows/x-sota-2026-05-24-1779612074" target="_blank" rel="noopener">主篇 ↗</a></div>
+    <div class="chips">
+      <span class="useful-chip hot">GraphRAG 聪明但慢</span>
+      <span class="useful-chip">视觉RAG 别切块</span>
+      <span class="useful-chip">答案像对≠对</span>
+      <span class="useful-chip">让失败可见可测</span>
+    </div>
+    <div class="meta-row">
+      <span>检索式 <b>16 条</b></span>
+      <span>采集 <b>80+ 推</b></span>
+      <span>生成 <b>2026-05-24</b></span>
+    </div>
+  </header>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 GraphRAG / ColPali / context recall …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🕸️ 一、图检索（GraphRAG / 知识图谱）</h2>
+  <div class="sec graph">
+    <div class="keyline graph">⚖️ 核心权衡：<b>「NaiveRAG 快但笨；GraphRAG 聪明但慢」</b>——强在关系/全局，代价是构图成本、延迟、复杂度。<span class="src">🔗@akshay_pachaar</span></div>
+    <div class="row"><b>是什么</b>：传统 RAG 把文档当孤立块；GraphRAG 抽成「实体-关系」图，按图结构检索/推理，答关系型与跨文档全局问题。<span class="src">🔗@pvergadia</span></div>
+    <div class="row"><b>✅ 适用</b>：跨文档关联/全局总结/多跳推理、强可解释与降幻觉的合规场景（如 ISO/IEC 合规）。<span class="src">🔗@TheYotg</span></div>
+    <div class="row"><b>⚠️ 慎用</b>：简单事实查、低延迟高频查——构图维护不划算，回到混合检索即可。</div>
+    <div class="row"><b>进展</b>：Deep GraphRAG（分层检索+自适应重排，蚂蚁+浙大）、不依赖图数据库的 Graph RAG、多 Agent（向量+图+混合）、Weak-to-Strong GraphRAG(ICLR'26)、首篇综述。<span class="src">🔗@TheYotg @dair_ai @omarsar0</span></div>
+    <div class="row"><b>🚫 误区</b>：GraphRAG 不是银弹——「一年多前是最热话题」，热度退去后回归理性，是补充非替代。构图依赖 LLM 抽取，抽错就检索错。<span class="src">🔗@TheYotg</span></div>
+  </div>
+
+  <h2>🖼️ 二、多模态检索（深入）</h2>
+  <div class="sec mm">
+    <div class="keyline mm">🔄 范式转变：从「切块」到「看整页」——<b>视觉 RAG（V-RAG/VisRAG）直接把整页当图像索引</b>，用多模态模型同时理解文本+视觉，更接近人类看文档的方式。<span class="src">🔗@shao__meng</span></div>
+    <div class="row"><b>为何需要</b>：传统切块处理图片/图表/表格吃力，还丢标题/字号/版面等视觉线索。<span class="src">🔗@shao__meng</span></div>
+    <div class="row"><b>关键资产</b>：ColPali/ColQwen（后期交互+多模态，把 ColBERT 多向量用到页面图像）；VisRAG（多模态文档视觉 RAG）；MegaRAG（从视觉文档自动建知识图谱）。<span class="src">🔗@victorialslocum @kalyan_kpl @TheYotg</span></div>
+    <div class="row"><b>✅ 适用</b>：扫描件/PDF/富版面/图表表格密集（财报、合同、手册、票据）——传统文本分块丢信息最严重处。<b>代价</b>：图像索引存储/算力更高。</div>
+  </div>
+
+  <h2>🔇 三、无声失败（silent failure）怎么处理</h2>
+  <div class="sec sf">
+    <div class="keyline" style="background:rgba(239,68,68,.1);border-left:3px solid var(--red)">⚠️ 最危险处：<b>答案「听起来对」≠ 对，而失败不报错</b>。「你的 RAG 可能在自信地犯错，而你毫不知情。」<span class="src">🔗@Umesh__digital · @cdiamond</span></div>
+    <div class="steps">
+      <div class="st"><div class="t"><b>建黄金集 + 测对指标</b>：弃 BLEU，测 context recall / precision / faithfulness / coverage·diversity，而非「找第一名」。<span class="src">🔗@DataScienceDojo @HamelHusain</span></div></div>
+      <div class="st"><div class="t"><b>Ragas + 追踪平台（LangSmith 等）</b>做离线+在线评测，量化每次检索/回答。<span class="src">🔗@CobusGreylingZA</span></div></div>
+      <div class="st"><div class="t"><b>LLM-as-judge</b>：大模型当裁判批量打分「召回相关吗/答案有据吗」，把无声失败变可见。<span class="src">🔗@DataScienceDojo</span></div></div>
+      <div class="st"><div class="t"><b>强制引用/溯源</b>：答案必须指回检索源；无源头 = 疑似幻觉。</div></div>
+      <div class="st"><div class="t"><b>在目标规模上评测</b>：「5k 文档 90%，扩到 500k 就掉」——小数据成绩会骗你。<span class="src">🔗@akshay_pachaar</span></div></div>
+      <div class="st"><div class="t"><b>线上行为当代理信号</b>：重问/转人工/点踩/追问 = 检索没召回到，接监控。</div></div>
+      <div class="st"><div class="t"><b>「不知道」兜底 + 置信阈值</b>：召回不足宁可说没找到，别强答。</div></div>
+      <div class="st"><div class="t"><b>端到端 tracing</b>：记录 查询→召回哪些块→用了哪些→答案，失败可回溯。</div></div>
+    </div>
+  </div>
+
+  <div class="tldr">🧭 <b>三块速记</b>：<b>图检索</b>=关系/全局/多跳/合规上 GraphRAG（聪明但慢，补充非替代）；<b>多模态</b>=富版面/扫描件用 V-RAG/ColPali 把整页当图像别切块；<b>无声失败</b>=黄金集+context recall/faithfulness+Ragas/LLM-judge+强制引用+目标规模复测+「不知道」兜底+全链路 tracing，核心是<b>让失败可见、可测、可回溯</b>。</div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <ul class="limit">
+    <li>偏英文 RAG/IR 工程圈与论文推介，含厂商/作者自推（框架、模型、课程）。</li>
+    <li>GraphRAG/多模态多为论文与开源预告，<b>未做生产复现</b>；适用性取决于你的语料与查询。</li>
+    <li>「无声失败处理」综合实践经验与评测框架，<b>具体指标阈值需按你的业务标注与调</b>。</li>
+    <li>时效性强，模型/框架周级迭代，结论反映 2026-05 窗口。</li>
+  </ul>
+  <footer>X 主题深度调研（补充） · bird 采集 + 人工综合 · 观点均标注出处 · 承接检索 SOTA 主篇<br>生成于 2026-05-24 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["GraphRAG","—","用知识图谱增强的 RAG：先把文档抽成实体-关系图，再沿图结构检索/推理"],
+ ["knowledge graph（知识图谱）","—","把概念建成节点+边的结构化网络"],
+ ["entity / relation","—","图里的节点（人/物/概念）与连边（谁和谁有什么关系）"],
+ ["global vs local query","—","全局问题（跨文档总结）vs 局部问题（某具体事实）；GraphRAG 擅长前者"],
+ ["multimodal retrieval","—","跨文本/图像/表格/图表/版面检索"],
+ ["ColPali / ColQwen","—","把整页文档当图像索引、用多模态后期交互检索的模型"],
+ ["V-RAG / VisRAG","—","视觉 RAG：不做文本分块，直接把页面当图像索引、用视觉模型理解"],
+ ["chunking（分块）","—","把文档切成小块再索引；传统 RAG 做法，易丢版面/图表"],
+ ["silent failure（无声失败）","—","检索漏掉该找的却不报错；答案「听起来对」≠对"],
+ ["context recall / precision","—","该召回的召回了多少 / 召回的有多少真相关"],
+ ["faithfulness / groundedness","—","答案是否忠于检索到的证据（防幻觉）"],
+ ["LLM-as-judge","—","用大模型当裁判给检索/回答打分"],
+ ["Ragas / golden set","—","RAG 评测框架 / 人工标注的标准答案评测集"]
+];
+const SRC=[
+ ["akshay_pachaar","1998007894458155100","图检索：NaiveRAG 快但笨，GraphRAG 聪明但慢"],
+ ["pvergadia","2002204809164677292","GraphRAG cheatsheet：用知识图谱映射实体关系"],
+ ["dair_ai","2004594818429915397","第一篇 GraphRAG 综述"],
+ ["omarsar0","1999881513220100336","Weak-to-Strong GraphRAG (ICLR 2026)"],
+ ["TheYotg","2051246211546452131","Deep GraphRAG：分层图检索+自适应重排（蚂蚁+浙大）"],
+ ["TheYotg","1958123598738268172","GraphRAG 热度从巅峰回落、回归理性"],
+ ["aigclink","1934535719302975907","graph-rag-agent：向量+图+混合多 Agent"],
+ ["shao__meng","1853231518883451064","V-RAG 视觉 RAG：万物皆视觉，整页当图像"],
+ ["kalyan_kpl","1862821309308452993","VisRAG：多模态文档的视觉 RAG"],
+ ["victorialslocum","2029222636006326367","ColBERT/ColPali/ColQwen 对信息密集/多模态是 game changer"],
+ ["TheYotg","2033510021116432514","MegaRAG：从视觉文档自动建知识图谱"],
+ ["Umesh__digital","2036399979787591865","RAG 可能自信地错而你不知道；没评测很危险"],
+ ["cdiamond","2056669416381620388","检索失败多无声，召回比延迟更难测"],
+ ["HamelHusain","1944525515366482292","我们一直测错了：RAG 要覆盖/多样/相关非 top-1"],
+ ["DataScienceDojo","1937239247158714375","评 RAG 不能用 BLEU，老 NLP 指标不适配"],
+ ["CobusGreylingZA","1699148288845291950","Ragas + LangSmith 做 RAG 评测"],
+ ["akshay_pachaar","2052371239520629243","5k 文档 90%，扩到 500k 准确率就掉——目标规模复测"]
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
