@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 自建 harness 的案例/优势/代价/劣势</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#0b7a52 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0a0b0e; --surface-container-lowest:#13161c; --surface-container-low:#13161c; --surface-container:#1b1f28; --surface-container-high:#232834;
+    --fg-1:#F8FAFC; --fg-2:#cdd3dd; --fg-muted:#909aa8;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#3a4150;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.7rem;line-height:1.28;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.disclaimer{margin-top:var(--space-lg);font-size:.82rem;color:var(--fg-muted);background:var(--surface-container-high);border-radius:var(--radius-md);padding:.6rem .9rem;border-left:3px solid var(--yellow)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.scenario{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.srow{display:grid;grid-template-columns:1fr 1.3fr;gap:var(--space-md);padding:.7rem 0;border-bottom:1px solid var(--border);font-size:.9rem}
+.srow:last-child{border-bottom:none}
+.srow .a{font-weight:600;color:var(--fg-1)}
+.srow .b{color:var(--fg-2)}
+.srow .b b{color:var(--primary-container)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-md);margin-top:var(--space-lg)}
+.col3{border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);background:var(--surface-container-lowest)}
+.col3.adv{border-top:3px solid var(--green)}.col3.cost{border-top:3px solid var(--yellow)}.col3.dis{border-top:3px solid var(--red)}
+.col3 h4{font-family:var(--font-headline);font-size:1rem;margin-bottom:var(--space-sm)}
+.col3.adv h4{color:var(--green)}.col3.cost h4{color:var(--yellow)}.col3.dis h4{color:var(--red)}
+.col3 .it{font-size:.86rem;color:var(--fg-2);padding:.35rem 0;border-bottom:1px solid var(--border)}
+.col3 .it:last-child{border-bottom:none}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.02rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.96rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.9rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.66rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.case{background:rgba(123,64,224,.16);color:var(--purple)}
+.tag.adv{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.cost{background:rgba(245,158,11,.16);color:var(--yellow)}
+.tag.dis{background:rgba(239,68,68,.16);color:var(--red)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.verdict{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:var(--primary-fixed);border-radius:var(--radius-lg);font-size:.95rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.cols3{grid-template-columns:1fr}.srow{grid-template-columns:1fr}.brief-header h1{font-size:1.35rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 自建 Agent Harness</div>
+    <h1>自建 harness：<span class="grad">案例 / 优势 / 代价 / 劣势</span><br><span style="font-size:1.05rem;font-weight:500;color:var(--fg-muted)">结合你的「智能客服→销售运营」自建场景</span></h1>
+    <p class="answer-strip">主流姿势是<b>站在 SDK 肩上做自己的外壳</b>（不从零写）。优势＝定制贴合+省托管费+不锁定；代价＝<b>你接管全部管道、维护会反噬</b>；要「开箱即用、不让业务养护」，<b>就必须自建 Critic/监控/兜底/eval</b>。真护城河是<b>知识萃取</b>，不是外壳本身。</p>
+    <div class="disclaimer">ℹ️ 综合 X 可信实践者复盘 + 你的场景，<b>非定制工程方案</b>。X 上「带成本数字的公开自建案例」稀少，金额/倍数均为转述未核实。承接 05-22《自建 vs OpenClaw》一篇。</div>
+    <div class="chips">
+      <span class="useful-chip hot">薄外壳·厚知识·厚可靠性</span>
+      <span class="useful-chip">省托管费成立但算 TCO</span>
+      <span class="useful-chip">别跳过 Critic/eval</span>
+      <span class="useful-chip">知识萃取才是护城河</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>2026-04~05</b></span>
+      <span>承接首篇 <b>210推</b></span>
+      <span>本篇补案例/成本</span>
+      <span>生成 <b>2026-05-24</b></span>
+    </div>
+  </header>
+
+  <section class="scenario">
+    <div class="eyebrow">针对你的四个出发点 · 速查</div>
+    <div class="srow"><div class="a">💰 托管成本太高</div><div class="b">自托管+caching 降本✓，但 token 随模型变贵、运维是新成本 → <b>按 TCO 比，别只比单价</b></div></div>
+    <div class="srow"><div class="a">🔧 在既有客服平台升级</div><div class="b">「站在已有资产上做外壳」正是主流✓ → <b>增量定制业务层，模型层做成可换</b></div></div>
+    <div class="srow"><div class="a">🎯 针对销售运营定制</div><div class="b">定制是自建最大优势✓ → <b>知识萃取 + 多 agent 编排闭环</b>比做外壳更值钱</div></div>
+    <div class="srow"><div class="a">📦 开箱即用·不让业务养护</div><div class="b">这恰恰要求你 <b>自建可靠性层（Critic/监控/兜底/eval）</b> → 最易低估、却最贵的一块</div></div>
+  </section>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 harness / Critic / 知识萃取 …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>⚖️ 优势 / 代价 / 劣势（三栏速览）</h2>
+  <div class="cols3">
+    <div class="col3 adv">
+      <h4>✅ 优势</h4>
+      <div class="it">为业务量身定制，贴销售流程</div>
+      <div class="it">省托管费、成本可控（+caching）</div>
+      <div class="it">不被锁定、模型可换</div>
+      <div class="it">复用既有客服平台资产</div>
+      <div class="it">数据主权在自己手里</div>
+      <div class="it">可内建「自我改进」省长期人力</div>
+    </div>
+    <div class="col3 cost">
+      <h4>💸 代价</h4>
+      <div class="it">接管全部「管道」维护</div>
+      <div class="it">模型/SDK 升级要持续跟</div>
+      <div class="it">要自建 Critic/监控/兜底/eval</div>
+      <div class="it">「开箱即用」打磨成本全归你</div>
+      <div class="it">token 未必降 + 算力是真钱</div>
+    </div>
+    <div class="col3 dis">
+      <h4>⛔ 劣势</h4>
+      <div class="it">过度工程风险（外壳堆太多）</div>
+      <div class="it">维护反噬 → 退居二线</div>
+      <div class="it">缺社区生态红利（插件/技能）</div>
+      <div class="it">用例越宽越不划算</div>
+    </div>
+  </div>
+
+  <h2>🧱 具体案例与论据（带出处）</h2>
+  <p style="font-size:.88rem;color:var(--fg-muted)">🔗 点回原推。<span class="tag case">案例</span><span class="tag adv">优势</span><span class="tag cost">代价</span><span class="tag dis">劣势</span></p>
+  <div id="evidence"></div>
+
+  <div class="verdict"><b>一句话综合判断：</b>你的场景（垂直、定制、有既有平台、要降托管费）<b>自建是合理选择</b>——但成败不在「外壳本身」，而在两件事：①<b>知识萃取</b>够不够深（决定业务价值）；②<b>可靠性层</b>投得够不够（决定能否真正「开箱即用、不让业务养护」）。把 harness 做薄做稳，把这两件做厚。</div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索关键词…" aria-label="搜索出处">
+    <div id="srclist"></div>
+    <div class="nores" id="snores" hidden>没有匹配的出处。</div>
+  </div>
+
+  <h2>🧪 方法与局限</h2>
+  <ul class="limit">
+    <li><b>X 上「带成本数字的公开自建案例」稀少</b>，多为经验帖；金额/倍数（8×、8 美分、+54%）为转述未核实。</li>
+    <li>样本偏个人/小团队与技术圈，缺企业级智能客服的系统化公开复盘。</li>
+    <li><b>非定制工程方案</b>：你的真实 TCO、合规、数据规模决定结论，请用自己的数据验证。</li>
+    <li>承接首篇结论处已标注；首篇本身亦有英文圈/营销噪声偏差。</li>
+  </ul>
+  <footer>X 主题深度调研 · bird 采集 + 首篇复用 + 人工综合 · 观点均标注出处 · 非定制方案<br>生成于 2026-05-24 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["harness","/ˈhɑːrnɪs/","套在大模型外、负责规划-调用工具-多步循环-管理记忆与环境的代理外壳/脚手架"],
+ ["scaffold（脚手架）","—","同 harness 近义，agent 的外层支撑代码与提示工程"],
+ ["SDK","—","软件开发工具包；自建常「站在 SDK 肩上」（Claude Agent SDK、OpenCode SDK）"],
+ ["managed agents（托管代理）","—","厂商托管运行的 agent，按用量/会话计费"],
+ ["self-host（自托管）","—","跑在自己机器/私有云，省托管费但要自担运维"],
+ ["Critic / eval / 兜底","—","评审层/评测/失败回退；让 agent 可靠到「业务人员不用盯」的关键"],
+ ["知识萃取","—","把散落在聊天/语音/文档里的隐性经验，结构化为规则/流程"],
+ ["编排（orchestration）","—","多个 agent 间的上下文共享与决策协同"],
+ ["prompt caching","—","复用提示前缀以降本提速（可大幅降 token 成本）"],
+ ["TCO","—","Total Cost of Ownership，总拥有成本（含开发+运维+迭代+算力）"],
+ ["lock-in（锁定）","—","被某平台/模型绑死、难迁移"]
+];
+const SIGNALS=[
+ ["1","「自建」主流姿势 = <b>站在 SDK 肩上做自己的外壳</b>，而非从零写。你在既有客服平台升级正是这条路。"],
+ ["2","最大优势＝<b>定制+省托管费+不锁定</b>；最大代价＝<b>维护反噬、你接管全部管道</b>。现成 wrapper 省的管道时间，自建后全压给你团队。"],
+ ["3","<b>托管成本随规模爆炸</b>（8 美分/会话小时、7×24 累积快）——支持你的出发点；自托管+caching 降本，但更聪明模型 token 用量更高（+54%）。"],
+ ["4","「不让业务养护」的真难点是<b>你必须自建 Critic/监控/兜底/eval</b>——「越不是 Apple 越需要，跳过是最贵的误会」。"],
+ ["5","销售定制的真护城河是<b>知识萃取</b>（把销售/客服经验结构化成规则流程），「比智能客服有用 10 倍」，不是外壳本身。"]
+];
+const EVIDENCE=[
+ {h:"案例 A · 自建团队 harness（带成本/提速）",rows:[
+  {tag:"case",claim:"看板+Hermes(Codex)+记忆+自我改进流水线；约 2 个月手工活 AI 一周搞定（≈8×）。",q:"My estimate that all this work is about 2 months of hand work. It took me 1 week with an AI. I've been building software for 20+ years.",u:"valentinmihov",id:"2055756459850207548"},
+  {tag:"adv",claim:"自我改进流水线让 harness 后期不额外费力就持续变好。",q:"The self improvement pipeline is what makes the whole harness keep getting better without extra work later on.",u:"decklabs_io",id:"2055762987261051185"},
+  {tag:"cost",claim:"代价：高度定制不可开源 + 调好几轮 + 2.0 出了又得升级。",q:"At the moment it's very tightly tailored for the needs of my team, so not very open-sourcable… it definitely took several iterations until I got it right… 2.0 just came out, so I had to also do an upgrade.",u:"valentinmihov",id:"2055948863786111220"}
+ ]},
+ {h:"案例 B/C · 站在 SDK 上自建 vs 维护反噬",rows:[
+  {tag:"case",claim:"主流做法：在 Copilot/CC/OpenCode SDK 上造自己的 claw；OpenClaw 价值是示范能力。",q:"everyone should build their own \"claw\" on top of their harness of choice (Copilot SDK, CC SDK, OpenCode SDK). The magic of OpenClaw is that it shows what an agent can do.",u:"burkeholland",id:"2046222141859758517"},
+  {tag:"dis",claim:"反面：自造 bespoke agent 维护量爆炸，最后不再是主力。",q:"I started off by building my own bespoke agent, the maintenance became a lot, so it's no longer my primary AI employee.",u:"Cha0tikDino",id:"2056366098946445371"}
+ ]},
+ {h:"案例 D/E · 销售场景：知识萃取 + 多 agent 编排",rows:[
+  {tag:"case",claim:"自建最大难点是知识萃取：把碎片变成标准化报价规则+流程，比智能客服有用 10 倍。",q:"自建 AI 最大的难点不是技术，而是知识萃取……把这些碎片变成标准化报价规则 + 变更处理流程。这比智能客服有用 10 倍。",u:"ddny09",id:"2057694584919257517"},
+  {tag:"case",claim:"多 agent 编排闭环：营销→产品调价→客服发邮件，效率跃升。",q:"营销 Agent 发现转化下降 → 自动通知产品 Agent 调价，同时触发客服 Agent 发维护邮件。闭环效率可跃升。",u:"skyrain888",id:"2058146013668594011"}
+ ]},
+ {h:"劣势/争议 · harness 该做厚还是薄",rows:[
+  {tag:"dis",claim:"资深观点：harness engineering 可能弊大于利，根本能力来自模型。",q:"Maybe I'm missing something, but \"harness engineering\" might be doing more harm than good… the fundamental capability comes from the model.",u:"ashpreetbedi",id:"2040841492860735634"},
+  {tag:"adv",claim:"但对没有大厂基建预算的团队，harness 框架恰恰隔离了你能掌控的变量。",q:"the harness framing is a mental model for builders who don't have Anthropic's infra budget… it isolates the variables you can actually control.",u:"Agentdailyai",id:"2040902422067896739"},
+  {tag:"dis",claim:"「不让业务养护」要靠 Critic/监控/eval：越不是 Apple 越需要，跳过是最贵的误会。",q:"老板给我的智能客服 Agent Critic 设计打了个 B……我认为这是 AI Agent 落地最贵的一个误会。逻辑完全反了——你公司越不是 Apple，越需要 Critic、监控、兜底、eval。",u:"yaqinhei",id:"2057749124360159522"}
+ ]},
+ {h:"代价 · 成本与决策法则",rows:[
+  {tag:"cost",claim:"托管按会话累积快（支持降本动机）。",q:"managed agents are great for cloud but the \"8 cents per session hour\" adds up fast when you're running 24/7 scanners.",u:"MoonDevOnYT",id:"2047064865710444670"},
+  {tag:"dis",claim:"决策法则：单一你极熟的工作流→自建；用例面宽→用生态。",q:"If you have one workflow you know really well, roll your own. But if you have a wide range, use the community ecosystem.",u:"Rigario",id:"2056368414189564031"}
+ ]}
+];
+const X=(u,id)=>`https://x.com/${u}/status/${id}`;
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+const LBL={case:'案例',adv:'优势',cost:'代价',dis:'劣势'};
+document.getElementById('evidence').innerHTML=EVIDENCE.map(sec=>`<div class="ev"><div class="h">${sec.h}</div>`+
+ sec.rows.map(r=>`<div style="margin-top:.8rem"><div class="claim"><span class="tag ${r.tag}">${LBL[r.tag]}</span>${r.claim}</div>`+
+  `<div class="quote">「${r.q}」<br><a class="src" href="${X(r.u,r.id)}" target="_blank" rel="noopener">@${r.u}</a></div></div>`).join('')+`</div>`).join('');
+const SRC=[];const seen=new Set();
+EVIDENCE.forEach(s=>s.rows.forEach(r=>{const key=r.u+r.id;if(!seen.has(key)){seen.add(key);SRC.push([r.u,r.id,r.claim.replace(/<[^>]+>/g,'')]);}}));
+const srclist=document.getElementById('srclist');
+function renderS(f=""){const k=f.trim().toLowerCase();srclist.innerHTML="";let n=0;
+ SRC.forEach(([u,id,g])=>{if(k&&!(u.toLowerCase().includes(k)||g.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='src-row';
+  d.innerHTML=`<span class="hh">@${u}</span><span class="g">${g}</span><a class="lk" href="${X(u,id)}" target="_blank" rel="noopener">看原推 ↗</a>`;srclist.appendChild(d);});
+ document.getElementById('snores').hidden=n>0;}
+renderS();document.getElementById('ssearch').addEventListener('input',e=>renderS(e.target.value));
+</script>
+</body>
+</html>
