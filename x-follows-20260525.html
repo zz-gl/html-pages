@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-05-25</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #a03b00;
+  --primary-container: #c94c00;
+  --primary-fixed: #ffdbcd;
+  --primary-fixed-dim: #ffb597;
+  --on-primary: #ffffff;
+  --accent-glow: #E8400D;
+  --secondary: #d5baff;
+  --secondary-container: #7b40e0;
+  --tertiary: #4d44e3;
+  --accent-cyan: #00D4FF;
+  --bg: #fff8f6;
+  --surface: #fff8f6;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #fbf2ef;
+  --surface-container: #f5ece9;
+  --surface-container-high: #efe6e3;
+  --fg-1: #1e1b19;
+  --fg-2: #594138;
+  --fg-muted: #8d7166;
+  --border: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --outline-variant: #e1bfb2;
+  --green: #10b981;
+  --blue: #3b82f6;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --font-headline: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'Menlo', ui-monospace, monospace;
+  --space-xs: 4px; --space-sm: 8px; --space-md: 12px;
+  --space-lg: 16px; --space-xl: 20px; --space-2xl: 24px;
+  --space-3xl: 32px; --space-4xl: 48px; --space-5xl: 64px;
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  --radius-xl: 20px; --radius-2xl: 28px; --radius-pill: 9999px;
+  --shadow-sm: 0 1px 2px rgba(30, 27, 25, 0.04);
+  --shadow-md: 0 4px 12px rgba(30, 27, 25, 0.08);
+  --shadow-lg: 0 8px 24px rgba(30, 27, 25, 0.12);
+  --shadow-accent: 0 8px 24px rgba(160, 59, 0, 0.15);
+  --gradient-hero: linear-gradient(135deg, #a03b00 0%, #7b40e0 100%);
+  --gradient-text: linear-gradient(135deg, #a03b00 0%, #7b40e0 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #060B18;
+    --surface: #0B1426;
+    --surface-container-lowest: #101D35;
+    --surface-container-low: #101D35;
+    --surface-container: #162544;
+    --surface-container-high: #1c2d52;
+    --fg-1: #F8FAFC;
+    --fg-2: #CBD5E1;
+    --fg-muted: #94A3B8;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --outline-variant: #2c3e63;
+    --primary: #FF6B35;
+    --primary-fixed: #3a1d10;
+    --primary-fixed-dim: #5c2e18;
+    --accent-glow: #00D4FF;
+    --secondary-container: #a98bff;
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-accent: 0 8px 24px rgba(255, 107, 53, 0.18);
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding: var(--space-lg);
+}
+.wrap { max-width: 880px; margin: 0 auto; }
+
+/* ---- Header ---- */
+.brief-header {
+  padding: var(--space-2xl) 0 var(--space-xl);
+}
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.brief-header h1 {
+  font-family: var(--font-headline);
+  font-size: clamp(26px, 6vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: var(--space-sm) 0 var(--space-md);
+}
+.brief-header .lead {
+  color: var(--fg-2);
+  font-size: 16px;
+  max-width: 60ch;
+}
+.answer-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+.useful-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  background: var(--surface-container);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 6px var(--space-md);
+  font-size: 13px;
+  color: var(--fg-2);
+}
+.useful-chip b {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--fg-1);
+  font-size: 14px;
+}
+
+/* ---- Section headings ---- */
+.section { margin-top: var(--space-4xl); }
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-headline);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: var(--space-lg);
+}
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-strong);
+}
+
+/* ---- Primary insight: key signals ---- */
+.primary-insight {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.primary-insight::before {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 4px;
+  background: var(--gradient-hero);
+}
+.primary-insight h2 {
+  font-family: var(--font-headline);
+  font-size: 20px;
+  font-weight: 700;
+  display: flex; align-items: center; gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+.signal {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--border);
+}
+.signal:first-of-type { border-top: none; padding-top: var(--space-sm); }
+.signal .num {
+  flex: none;
+  width: 28px; height: 28px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-hero);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 14px;
+  display: grid; place-items: center;
+}
+.signal .body { flex: 1; }
+.signal .body strong { color: var(--fg-1); font-weight: 600; }
+.signal .body { color: var(--fg-2); font-size: 14.5px; }
+
+/* ---- Vocab cards ---- */
+.vocab-tools {
+  display: flex; flex-wrap: wrap; gap: var(--space-sm);
+  align-items: center; margin-bottom: var(--space-lg);
+}
+.search-box {
+  flex: 1; min-width: 200px;
+  position: relative;
+}
+.search-box input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 11px var(--space-lg) 11px 38px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-container-lowest);
+  color: var(--fg-1);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.search-box input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-fixed);
+}
+.search-box svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--fg-muted); }
+.vocab-count { font-size: 13px; color: var(--fg-muted); font-family: var(--font-mono); white-space: nowrap; }
+.vocab-stack { display: flex; flex-direction: column; gap: var(--space-sm); }
+.vocab-card {
+  background: var(--surface-container-low);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary-fixed-dim);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+}
+.vocab-card .term {
+  font-family: var(--font-headline);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--fg-1);
+}
+.vocab-card .ipa {
+  font-family: var(--font-mono);
+  color: var(--primary);
+  font-size: 13.5px;
+  margin-left: 6px;
+}
+.vocab-card .def { color: var(--fg-2); font-size: 14px; margin-top: 2px; }
+.vocab-empty { color: var(--fg-muted); font-size: 14px; padding: var(--space-lg); text-align: center; }
+mark { background: var(--primary-fixed); color: var(--fg-1); border-radius: 3px; padding: 0 2px; }
+
+/* ---- Evidence stack: users ---- */
+.user-nav {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: var(--space-xl);
+}
+.user-nav a {
+  font-size: 12.5px;
+  color: var(--fg-2);
+  text-decoration: none;
+  background: var(--surface-container);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 5px 11px;
+  transition: background .15s, color .15s;
+}
+.user-nav a:hover { background: var(--primary); color: #fff; }
+.user-nav a b { font-family: var(--font-mono); font-weight: 600; }
+
+.user-block {
+  margin-bottom: var(--space-2xl);
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  scroll-margin-top: var(--space-lg);
+}
+.user-head { margin-bottom: var(--space-md); }
+.user-head h3 {
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.user-head .handle {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--primary);
+  font-weight: 500;
+}
+.user-bio {
+  color: var(--fg-muted);
+  font-size: 13.5px;
+  font-style: italic;
+  border-left: 2px solid var(--outline-variant);
+  padding-left: var(--space-md);
+  margin: var(--space-sm) 0 var(--space-lg);
+}
+.tweet {
+  border-top: 1px solid var(--border);
+  padding: var(--space-lg) 0;
+}
+.tweet:last-child { padding-bottom: 0; }
+.tweet .tw-body { font-size: 14.5px; color: var(--fg-1); }
+.tweet .tw-body .sub { color: var(--fg-2); }
+.rt-tag {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  background: var(--surface-container-high);
+  color: var(--secondary-container);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  margin-right: 6px;
+}
+.tweet ul { margin: var(--space-sm) 0 0; padding-left: var(--space-xl); }
+.tweet ul li { margin: 4px 0; color: var(--fg-2); font-size: 14px; }
+.quote {
+  background: var(--surface-container-low);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  margin-top: var(--space-sm);
+  font-size: 13.5px;
+  color: var(--fg-2);
+  border-left: 2px solid var(--outline-variant);
+}
+.tw-links {
+  display: flex; flex-wrap: wrap; gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+.tw-links a {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  text-decoration: none;
+  color: var(--fg-2);
+  background: var(--surface-container);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px 11px;
+  transition: all .15s;
+}
+.tw-links a:hover { color: var(--primary); border-color: var(--primary); }
+.tw-links a svg { width: 12px; height: 12px; }
+.tw-links a.rt-src { color: var(--fg-muted); }
+
+/* ---- Quiet section: no activity ---- */
+.quiet {
+  background: var(--surface-container-low);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg) var(--space-xl);
+  color: var(--fg-muted);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+.quiet .quiet-handles { color: var(--fg-2); font-family: var(--font-mono); font-size: 12.5px; }
+
+footer {
+  margin: var(--space-4xl) 0 var(--space-2xl);
+  text-align: center;
+  color: var(--fg-muted);
+  font-size: 12.5px;
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 560px) {
+  body { padding: var(--space-md); }
+  .primary-insight, .user-block { padding: var(--space-lg); }
+  .vocab-count { width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HEADER ============ -->
+  <header class="brief-header">
+    <div class="kicker">X / Twitter 关注动态 · Insight Brief</div>
+    <h1>关注列表 24 小时动态汇总</h1>
+    <p class="lead">本期主线：「AI 单人公司」叙事升温、本地模型生成速度突破、以及对网络「AI 味」与 WiFi 人体识别的两场冷思考。</p>
+    <div class="answer-strip">
+      <span class="useful-chip">时间窗口 <b>近 24h</b></span>
+      <span class="useful-chip">关注总数 <b>41</b></span>
+      <span class="useful-chip">有动态 <b>12</b></span>
+      <span class="useful-chip">推文 <b>31</b></span>
+      <span class="useful-chip">截止 <b>05-25 04:50 UTC</b></span>
+    </div>
+  </header>
+
+  <!-- ============ PRIMARY INSIGHT: KEY SIGNALS ============ -->
+  <section class="section" id="signals" style="margin-top:var(--space-2xl)">
+    <div class="primary-insight">
+      <h2>🎯 关键信号总结</h2>
+      <div class="signal"><div class="num">1</div><div class="body"><strong>「AI 单人公司」叙事升温</strong>：Peter Yang 的播客与多位投资人/创始人围绕“先搭建造 MVP 的系统，再造 MVP”“把 agent 当真员工招进来”展开讨论；Aaron Levie 则泼冷水，指出 CEO 因远离最后一公里的执行最易陷入“AI 幻觉”。</div></div>
+      <div class="signal"><div class="num">2</div><div class="body"><strong>本地模型加速突破</strong>：Hugging Face 的 Clément 连发多条——llama.cpp 支持 MTP 后本地稠密模型 Qwen3.6-27B 生成速度提升 78%（25→45 tok/s），有人日均消耗 1700 万 token，本地 AI 正在“爆发”。</div></div>
+      <div class="signal"><div class="num">3</div><div class="body"><strong>GPT-5.5 Pro 成事实核查利器</strong>：Greg Brockman 引用 Ethan Mollick，称其能逐条精准核查整章引用，“唯一的小烦恼是它太爱抠细节”。</div></div>
+      <div class="signal"><div class="num">4</div><div class="body"><strong>“AI 味”正在反噬网络内容</strong>：Ethan Mollick 警告，随着越来越多人识破 AI 写作的“破绽”，会意识到这个平台（及博客、文章、论文）有多少已是 AI 生成。</div></div>
+      <div class="signal"><div class="num">5</div><div class="body"><strong>WiFi 无设备人体识别引热议</strong>：Lucas Beyer 对“普通路由器近乎 100% 识别个人”的热帖泼冷水——十多年前 MIT 就有隔墙追踪人的论文并演示给奥巴马看，此事并不新鲜。</div></div>
+    </div>
+  </section>
+
+  <!-- ============ VOCAB CARDS ============ -->
+  <section class="section" id="vocab">
+    <div class="section-label">📖 生词预热</div>
+    <div class="vocab-tools">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="vocabSearch" placeholder="搜索术语 / 中文 / 缩写…" aria-label="搜索术语">
+      </div>
+      <span class="vocab-count" id="vocabCount"></span>
+    </div>
+    <div class="vocab-stack" id="vocabStack"></div>
+    <div class="vocab-empty" id="vocabEmpty" hidden>未找到匹配的术语</div>
+  </section>
+
+  <!-- ============ EVIDENCE STACK: USERS ============ -->
+  <section class="section" id="feed">
+    <div class="section-label">🧵 按用户分组的详细动态</div>
+    <nav class="user-nav" id="userNav"></nav>
+    <div id="userStack"></div>
+  </section>
+
+  <!-- ============ QUIET ============ -->
+  <section class="section" id="quiet">
+    <div class="section-label">😴 无动态用户</div>
+    <div class="quiet">
+      本期以下 <b>29</b> 位无动态：<span class="quiet-handles">DrJimFan、AnthropicAI、MistralAI、stephzhan、jackclarkSF、geoffreyhinton、karpathy、DarioAmodei、ilyasut、AnimaAnandkumar、fchollet、paperswithcode、realGeorgeHotz、ChatGPTapp、svlevine、sonyatweetybird、saranormous、Figure_robot、sequoia、jiayq、rasbt、deepseek_ai、realDonaldTrump、zeritna、demishassabis、sama、AndrewYNg、tegmark、drfeifei</span>。
+    </div>
+  </section>
+
+  <footer>x-follows · 抓取于 2026-05-25 04:50 UTC · 单文件 Insight Brief</footer>
+</div>
+
+<script>
+// ---------- DATA ----------
+const VOCAB = [
+  {t:"GTM", ipa:"", d:"Go-To-Market，进入市场（产品如何触达并赢得客户的策略）"},
+  {t:"MVP", ipa:"", d:"Minimum Viable Product，最小可行产品"},
+  {t:"fact checker", ipa:"/fækt ˈtʃekər/", d:"事实核查者 / 核查工具"},
+  {t:"nuance", ipa:"/ˈnuːɑːns/", d:"细微差别，微妙之处"},
+  {t:"canned query", ipa:"/kænd ˈkwɪəri/", d:"预设查询（Datasette 里事先写好、可直接调用的 SQL 查询）"},
+  {t:"hook", ipa:"/hʊk/", d:"钩子（让插件挂载、扩展功能的接入点）"},
+  {t:"token burn", ipa:"", d:"token 消耗量（“烧” token，指模型推理用量）"},
+  {t:"MTP", ipa:"", d:"Multi-Token Prediction，多 token 预测（一次预测多个 token 以加速生成）"},
+  {t:"dense (model)", ipa:"/dens/", d:"稠密模型（相对稀疏 MoE 而言，推理时全部参数都激活）"},
+  {t:"tok/s", ipa:"", d:"tokens per second，每秒生成的 token 数（生成速度指标）"},
+  {t:"daily driver", ipa:"", d:"日常主力工具（口语，原指每天开的车）"},
+  {t:"sim-ready", ipa:"", d:"仿真就绪（生成的资产可直接用于物理仿真）"},
+  {t:"deformable", ipa:"/dɪˈfɔːrməbl/", d:"可形变的"},
+  {t:"beamforming", ipa:"/ˈbiːmˌfɔːrmɪŋ/", d:"波束成形（WiFi 等无线设备的定向信号技术）"},
+  {t:"K-shaped recovery", ipa:"", d:"K 型复苏（经济学术语，指复苏中不同群体走势分化）"},
+  {t:"psychosis", ipa:"/saɪˈkoʊsɪs/", d:"精神错乱（此处 “AI psychosis” 为调侃高管对 AI 的不切实际幻想）"},
+  {t:"counterparty", ipa:"/ˈkaʊntərˌpɑːrti/", d:"交易对手方"},
+  {t:"learning recession", ipa:"", d:"学习衰退（学生成绩持续下滑现象）"},
+  {t:"magnet for talent", ipa:"", d:"人才磁石（吸引人才之地）"},
+  {t:"seed round", ipa:"/siːd raʊnd/", d:"种子轮（创业公司早期融资）"}
+];
+
+const USERS = [
+  {
+    name:"Peter Yang", zh:"彼得·杨 /ˈpiːtər jæŋ/", handle:"petergyang",
+    role:"产品增长博主、播客主理人，前 Reddit/Twitch 产品负责人",
+    bio:"长期分享 AI 产品、增长与职业成长内容",
+    tweets:[
+      {rt:true, body:'Ryan Carson 自述“造完了整个产品、摸清了基本的进入市场（GTM）打法、签下首个 B2B 客户——员工只有我一人，<i>快得多</i>是因为……”（原文被截断）。',
+        links:[{l:"原文 @ryancarson", u:"https://x.com/ryancarson/status/2058764505639948711", src:true},{l:"转推 @petergyang", u:"https://x.com/petergyang/status/2058764505639948711"}]},
+      {rt:true, body:'Peter 自己早前的播客预告——“过去我们说去造 MVP，现在你应该先造那个能造 MVP 的系统（system that builds the MVP）。”与 @ryancarson 的新一期节目。',
+        links:[{l:"原文", u:"https://x.com/petergyang/status/2058555226479866312", src:true},{l:"转推", u:"https://x.com/petergyang/status/2058737388420260152"}]},
+      {body:'新播客上线：与 @ryancarson 聊他如何用 AI agent 单人运营创业公司——',
+        list:["<b>OpenClaw</b> 当 AI 幕僚长（chief of staff），负责筛邮件、订会议、做销售触达；","<b>Codex</b> 和 <b>Devin</b> 当 AI 工程团队，在他睡觉时把功能上线（ship features while he sleeps）。","金句：“前期花大量时间设置好你的技能与文档，然后你就突然解锁了 10 个人的产出。”“把 agent 当成真员工——给它真实邮箱、日历权限和 GitHub 账号。”“花钱请设计师搭好设计系统和品牌，之后就能用 AI 生成符合品牌调性的素材。”"],
+        links:[{l:"@petergyang", u:"https://x.com/petergyang/status/2058555226479866312"}]},
+      {body:'节目分发渠道补充（Spotify / Apple / Newsletter）。',
+        links:[{l:"@petergyang", u:"https://x.com/petergyang/status/2058555238500724744"}]},
+      {body:'引用转推：引用 Ryan 的播客片段并配文——',
+        quote:'“我融了 200 万美元（$2M）种子轮（seed round），但短期内不打算招人。作为创始人，你想先理解每一份工作、亲自做一遍、感受其中的痛苦，再去招人。现实是 agent 上手（onboard）快得多，而且训练成果会全部留存，你可以持续打磨它。”',
+        links:[{l:"@petergyang", u:"https://x.com/petergyang/status/2058609058714968194"}]}
+    ]
+  },
+  {
+    name:"clem 🤗", zh:"克莱门特·德朗格 /kleˈmɑ̃ dəˈlɑ̃ɡ/，Clément Delangue", handle:"ClementDelangue",
+    role:"Hugging Face 联合创始人兼 CEO",
+    bio:"全球最大开源 AI 模型与数据社区掌门人",
+    tweets:[
+      {rt:true, body:'Ziqi Huang 介绍物理 AI（Physical AI）新作 <b>PhysX-Omni</b>——首个面向刚体（rigid）、可形变（deformable）等物体的统一<b>仿真就绪（sim-ready）生成框架</b>。',
+        links:[{l:"原文 @ziqi_huang_", u:"https://x.com/ziqi_huang_/status/2058763646398873871", src:true},{l:"转推", u:"https://x.com/ClementDelangue/status/2058763646398873871"}]},
+      {rt:true, body:'0xSero——“我每天平均烧掉 1700 万本地模型 token（local model token burn）。它们已经变得极其有用。”',
+        links:[{l:"原文 @0xSero", u:"https://x.com/0xSero/status/2058705154300334241", src:true},{l:"转推", u:"https://x.com/ClementDelangue/status/2058705154300334241"}]},
+      {rt:true, body:'adityarohit9——“这就是 AI 界的‘伍德斯托克音乐节’（Woodstock of AI）……超过 5000 人……”（赞 Hugging Face 线下活动）。',
+        links:[{l:"原文 @adityarohit9", u:"https://x.com/adityarohit9/status/2058704135457849767", src:true},{l:"转推", u:"https://x.com/ClementDelangue/status/2058704135457849767"}]},
+      {body:'<b>本地模型提速</b>：llama.cpp 加入 MTP（Multi-Token Prediction）支持后，本地模型快到足以当日常主力（daily drivers）🚀。在 A10G 上，Qwen3.6-27B 稠密模型（dense）生成速度从 25 tok/s 提到 45 tok/s（+78%）！',
+        links:[{l:"@ClementDelangue", u:"https://x.com/ClementDelangue/status/2058672394865111544"}]},
+      {rt:true, body:'David Sacks——“问：为何软件工程师的招聘岗位在 AI agent 自动化编码的同时还在快速增长？答：因为还有远比……（更多需求）”（原文被截断）。',
+        links:[{l:"原文 @DavidSacks", u:"https://x.com/DavidSacks/status/2058669391642841164", src:true},{l:"转推", u:"https://x.com/ClementDelangue/status/2058669391642841164"}]},
+      {body:'30 万 AI 开发者填写了 Hugging Face 的硬件资料（hardware profile），现公布结果——期待在本地 AI 爆发的背景下它未来几个月如何演变。',
+        links:[{l:"@ClementDelangue", u:"https://x.com/ClementDelangue/status/2058592962708144170"}]}
+    ]
+  },
+  {
+    name:"Greg Brockman", zh:"格雷格·布罗克曼 /ɡreɡ ˈbrɑːkmən/", handle:"gdb",
+    role:"OpenAI 联合创始人兼总裁",
+    bio:"ChatGPT 背后核心人物之一",
+    tweets:[
+      {body:'引用转推：转发 Ethan Mollick 对 <b>GPT-5.5 Pro</b> 用于事实核查（fact checking）的评价，仅配文“GPT-5.5 Pro for fact checking:”。',
+        quote:'被引用原文：GPT-5.5 Pro 是非常扎实的事实核查工具，“我能把整章内容丢给它，它会准确揪出每一处关键引用。唯一真正的小烦恼是它太爱抠细微差别（nuance），总返回‘大方向对，但你没考虑到 X 这个小细节’。”',
+        links:[{l:"@gdb", u:"https://x.com/gdb/status/2058750645394649410"}]}
+    ]
+  },
+  {
+    name:"Simon Willison", zh:"西蒙·威利森 /ˈsaɪmən ˈwɪlɪsən/", handle:"simonw",
+    role:"Datasette 作者、Django 联合创始人，知名独立开发者",
+    bio:"数据探索工具与 LLM 应用领域的高产实践者",
+    tweets:[
+      {body:'<b>Datasette 1.0a30 新功能</b>：新增“跳转到（jump to）”菜单，按 <code>/</code> 快捷键即可输入跳转到某个数据库、表或预设查询（canned query）；并提供钩子（hook）让插件扩展其内容。',
+        links:[{l:"@simonw", u:"https://x.com/simonw/status/2058704797612785849"}]},
+      {body:'补充：更多细节见 Datasette 博客。',
+        links:[{l:"@simonw", u:"https://x.com/simonw/status/2058705030262530055"}]},
+      {body:'补充：插件还能改变新菜单的空状态——最新的 datasette-agent 加了一个表单用于启动新的 agent 对话，可在站点用 GitHub 登录后看实时 demo。',
+        links:[{l:"@simonw", u:"https://x.com/simonw/status/2058705477266244056"}]}
+    ]
+  },
+  {
+    name:"Ethan Mollick", zh:"伊森·莫利克 /ˈiːθən ˈmɑːlɪk/", handle:"emollick",
+    role:"沃顿商学院教授，研究 AI 对工作与教育影响",
+    bio:"畅销书《Co-Intelligence》作者",
+    tweets:[
+      {body:'<b>关于“AI 味”的连发（thread）</b>：',
+        list:[
+          "“随着越来越多人学会识别 AI 的破绽（tells of AI）——这大多发生在你大量使用 AI 之后——遮眼的鳞片会从他们眼上脱落，他们会意识到我们中一些人早已看到的：这个平台（以及博客、文章、论文）有多少现在已是 AI 生成的。”",
+          "“这让许多线上空间变得难以忍受。如果我想跟 ChatGPT 或 Claude 说话，我直接去跟它们说就好，不需要跟一个在 X 上假装成 DoofWarrior123、用平庸提示词的 ChatGPT 和 Claude 对话。”",
+          "“你可以用 AI 来辅助写作，但你得真的动笔写点东西，它才帮得上忙。‘给我写一篇关于〔某主题〕的帖子，写得特别好特别有意思’——这是行不通的。”"
+        ],
+        links:[{l:"#1", u:"https://x.com/emollick/status/2058675767727325397"},{l:"#2", u:"https://x.com/emollick/status/2058676413863993800"},{l:"#3", u:"https://x.com/emollick/status/2058677167408533726"}]}
+    ]
+  },
+  {
+    name:"Yann LeCun", zh:"杨立昆 /jɑːn ləˈkœ̃/", handle:"ylecun",
+    role:"Meta 首席 AI 科学家，图灵奖得主，卷积网络奠基人",
+    bio:"深度学习三巨头之一，世界模型倡导者",
+    tweets:[
+      {body:'仅发链接一条（无正文）。',
+        links:[{l:"@ylecun", u:"https://x.com/ylecun/status/2058676921110589664"}]},
+      {rt:true, body:'mjfree——“就这样，它从媒体上彻底消失了。一位现任国会议员 Ted Lieu 曾公开表态 Epstein 文件……”（政治话题，原文被截断）。',
+        links:[{l:"原文 @mjfree", u:"https://x.com/mjfree/status/2058618693152625134", src:true},{l:"转推", u:"https://x.com/ylecun/status/2058618693152625134"}]},
+      {rt:true, body:'erikbryn（Erik Brynjolfsson）——“历史上，美国一直是地球上最强的人才磁石（magnet for talent）。这是否会延续下去并非必然……”（原文被截断）。',
+        links:[{l:"原文 @erikbryn", u:"https://x.com/erikbryn/status/2058617625698009477", src:true},{l:"转推", u:"https://x.com/ylecun/status/2058617625698009477"}]},
+      {rt:true, body:'Dovydas44444——“🇺🇸🇪🇺 美国新英格兰医学杂志（New England Journal of Medicine）的一项新研究发现，美国人在所有收入层级都死得更早……”（原文被截断）。',
+        links:[{l:"原文 @Dovydas44444", u:"https://x.com/Dovydas44444/status/2058602152214278156", src:true},{l:"转推", u:"https://x.com/ylecun/status/2058602152214278156"}]}
+    ]
+  },
+  {
+    name:"Jerry Liu", zh:"杰瑞·刘 /ˈdʒeri liːuː/", handle:"jerryjliu0",
+    role:"LlamaIndex 联合创始人兼 CEO",
+    bio:"RAG 与 LLM 应用开发框架领域的代表人物",
+    tweets:[
+      {body:'引用转推：引用 signüll“‘出门’竟成了一种负面信号，挺有意思”的帖子并配文——“看在上帝的份上别把这当真。出去玩、找点乐子、交朋友、接接地气（touch some grass）。等回来你想多拼都行。”',
+        links:[{l:"@jerryjliu0", u:"https://x.com/jerryjliu0/status/2058645812750741806"}]},
+      {body:'引用转推：引用 Aaron Levie 关于“CEO 尤其容易陷入 AI 幻觉（AI psychosis），因为他们离最后一公里的实际工作太远……只看到 happy path”的长帖，配文自嘲——“我问工程团队能不能让我把代码上线到生产环境（prod），他们说不行 💀。”',
+        quote:'被引用原文要点：CEO 应大量使用 AI，理解 agent 在企业中的真实影响，既看到上行空间也看到背后真正的工作量（比如代码上线前要审查修 bug、合同发给对手方（counterparty）前要核对所有条款）。',
+        links:[{l:"@jerryjliu0", u:"https://x.com/jerryjliu0/status/2058645209651830900"}]},
+      {rt:true, body:'NasdaqExchange——“我们专注于提供一流的文档理解与 OCR 技术。”（与 Wing 合作，疑似 LlamaIndex 相关报道）。',
+        links:[{l:"原文 @NasdaqExchange", u:"https://x.com/NasdaqExchange/status/2058565344571326766", src:true},{l:"转推", u:"https://x.com/jerryjliu0/status/2058565344571326766"}]}
+    ]
+  },
+  {
+    name:"Bill Gurley", zh:"比尔·格利 /bɪl ˈɡɜːrli/", handle:"bgurley",
+    role:"Benchmark 知名风险投资人",
+    bio:"互联网时代多家巨头早期投资者，犀利的行业评论者",
+    tweets:[
+      {body:'引用转推：转发 PBS News 关于美国 K-12 教育“学习衰退（learning recession）”的报道，配文——“值得一看。哈佛的 Thomas Kane 在做了不起的工作，收集年度数据以推动美国 K-12 教育改善。问题很多，也有一些亮点。”',
+        quote:'被引用原文要点：自 2013 年（智能手机与社交媒体兴起）起学生数学/阅读成绩持续下滑；与十年前相比 70% 学区数学分数下降、83% 学区阅读分数下降；8 年级阅读分数已降至 1990 年以来最低。',
+        links:[{l:"@bgurley", u:"https://x.com/bgurley/status/2058632343888228572"}]},
+      {rt:true, body:'ckwitt3——“与 @bgurley 和马修·麦康纳（Matthew McConaughey）的精彩对谈。他 2019 年的 UT 演讲 + 新书是最好的职业资源……”（原文被截断）。',
+        links:[{l:"原文 @ckwitt3", u:"https://x.com/ckwitt3/status/2058602152554050049", src:true},{l:"转推", u:"https://x.com/bgurley/status/2058602152554050049"}]}
+    ]
+  },
+  {
+    name:"Lucas Beyer", zh:"卢卡斯·拜尔 /ˈluːkəs ˈbaɪər/，bl16", handle:"giffmana",
+    role:"AI 研究员，前 Google DeepMind，现 OpenAI",
+    bio:"视觉 Transformer（ViT）等多项重要工作的作者",
+    tweets:[
+      {body:'引用转推：对一条“普通 WiFi 路由器可近乎 100% 识别个人（无需手机、无需特殊硬件、无需视线）”的热帖泼冷水——“诶，这并不新鲜。我记得十多年前就有论文用 WiFi 信号隔墙追踪人，人身上无需任何设备。该技术甚至演示给了奥巴马看。两位作者如今都是 MIT 教授。”',
+        quote:'被引用原文要点：德国 KIT 研究者称可借设备广播的未加密波束成形（beamforming）反馈识别个人，197 名受试者识别率近 100%，“监控基础设施不是正在被建造，而是早已装在你走过的每家咖啡馆、机场和办公室里”。',
+        links:[{l:"@giffmana", u:"https://x.com/giffmana/status/2058618799000055885"}]}
+    ]
+  },
+  {
+    name:"Andrew Reed", zh:"安德鲁·里德 /ˈændruː riːd/", handle:"andrew__reed",
+    role:"Hugging Face 机器学习工程师",
+    bio:"专注于 AI 模型与开发者工具",
+    tweets:[
+      {body:'“K 型复苏（K-shaped recovery）——献给周日早上‘兄弟出游’宿醉的哥们们。”（轻松调侃帖）',
+        links:[{l:"@andrew__reed", u:"https://x.com/andrew__reed/status/2058610716052164655"}]}
+    ]
+  },
+  {
+    name:"swyx", zh:"肖恩·王 /ʃɔːn wɑːŋ/，Shawn Wang", handle:"swyx",
+    role:"AI 工程师社区 Latent Space / AI Engineer 大会主理人",
+    bio:"“AI Engineer”概念提出者，开发者生态推动者",
+    tweets:[
+      {rt:true, body:'aiDotEngineer——“大多数 agent 跑几秒就死了。@AnthropicAI 的工作坊展示了如何构建能运行数小时的 agent。完整 75 分钟……”（大会议程预告，原文被截断）。',
+        links:[{l:"原文 @aiDotEngineer", u:"https://x.com/aiDotEngineer/status/2058572093571355068", src:true},{l:"转推", u:"https://x.com/swyx/status/2058572093571355068"}]}
+    ]
+  },
+  {
+    name:"Soumith Chintala", zh:"苏米特·钦塔拉 /ˈsuːmɪt tʃɪnˈtɑːlə/", handle:"soumithchintala",
+    role:"PyTorch 联合创始人，Meta AI",
+    bio:"深度学习框架 PyTorch 的核心缔造者",
+    tweets:[
+      {rt:true, body:'Garry Tan——“Thinking Machines 令人印象深刻。今天下午我几小时内就微调（fine tune）出了自己的 Qwen3.5-397B 模型。又快又好用……”（原文被截断）。',
+        links:[{l:"原文 @garrytan", u:"https://x.com/garrytan/status/2058527819789959673", src:true},{l:"转推", u:"https://x.com/soumithchintala/status/2058527819789959673"}]}
+    ]
+  }
+];
+
+// ---------- RENDER VOCAB ----------
+const vStack = document.getElementById('vocabStack');
+const vCount = document.getElementById('vocabCount');
+const vEmpty = document.getElementById('vocabEmpty');
+const vSearch = document.getElementById('vocabSearch');
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function hl(text, q){
+  if(!q) return text;
+  try{
+    return text.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');
+  }catch(e){return text;}
+}
+
+function renderVocab(q){
+  q = (q||'').trim().toLowerCase();
+  let shown = 0;
+  vStack.innerHTML = '';
+  VOCAB.forEach(v=>{
+    const hay = (v.t+' '+v.ipa+' '+v.d).toLowerCase();
+    if(q && hay.indexOf(q)===-1) return;
+    shown++;
+    const card = document.createElement('div');
+    card.className = 'vocab-card';
+    card.innerHTML = '<span class="term">'+hl(esc(v.t),q)+'</span>'+
+      (v.ipa?'<span class="ipa">'+hl(esc(v.ipa),q)+'</span>':'')+
+      '<div class="def">'+hl(esc(v.d),q)+'</div>';
+    vStack.appendChild(card);
+  });
+  vEmpty.hidden = shown!==0;
+  vStack.hidden = shown===0;
+  vCount.textContent = q ? (shown+' / '+VOCAB.length) : (VOCAB.length+' 个术语');
+}
+vSearch.addEventListener('input', e=>renderVocab(e.target.value));
+renderVocab('');
+
+// ---------- RENDER USERS ----------
+const uStack = document.getElementById('userStack');
+const uNav = document.getElementById('userNav');
+const linkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.8 1.8"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.8-1.8"/></svg>';
+
+USERS.forEach((u,i)=>{
+  const id = 'u'+i;
+  const nav = document.createElement('a');
+  nav.href = '#'+id;
+  nav.innerHTML = u.name+' <b>·'+u.tweets.length+'</b>';
+  uNav.appendChild(nav);
+
+  const block = document.createElement('section');
+  block.className = 'user-block';
+  block.id = id;
+  let html = '<div class="user-head"><h3>'+esc(u.name)+'　<span class="handle">@'+u.handle+'</span></h3>'+
+    '<div style="font-size:13px;color:var(--fg-2);margin-top:2px">'+esc(u.zh)+' — '+esc(u.role)+'</div></div>'+
+    '<div class="user-bio">'+esc(u.bio)+'</div>';
+  u.tweets.forEach(tw=>{
+    html += '<div class="tweet"><div class="tw-body">'+
+      (tw.rt?'<span class="rt-tag">🔁 转推</span>':'')+ tw.body +'</div>';
+    if(tw.list){ html += '<ul>'; tw.list.forEach(li=> html += '<li>'+li+'</li>'); html += '</ul>'; }
+    if(tw.quote){ html += '<div class="quote">'+tw.quote+'</div>'; }
+    if(tw.links){
+      html += '<div class="tw-links">';
+      tw.links.forEach(lk=> html += '<a href="'+lk.u+'" target="_blank" rel="noopener"'+(lk.src?' class="rt-src"':'')+'>'+linkSvg+esc(lk.l)+'</a>');
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+  block.innerHTML = html;
+  uStack.appendChild(block);
+});
+</script>
+</body>
+</html>
