@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · Agent 不可能三角有正式出处吗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#3b82f6 100%);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#3b82f6 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0a0b10; --surface-container-lowest:#11141e; --surface-container-low:#11141e; --surface-container:#181d2a; --surface-container-high:#202636;
+    --fg-1:#F8FAFC; --fg-2:#cbd3df; --fg-muted:#8b95a6;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#374152;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.45rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.7rem;line-height:1.26;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.verdict-top{margin-top:var(--space-md);font-size:1rem;color:var(--fg-1);background:var(--primary-fixed);border-radius:var(--radius-md);padding:.7rem 1rem;border-left:3px solid var(--primary-container)}
+.verdict-top b{color:var(--primary-container)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.tri{margin:var(--space-2xl) auto 0;max-width:520px}
+.tri svg{width:100%;height:auto;display:block}
+.tri .cap{text-align:center;font-size:.8rem;color:var(--fg-muted);margin-top:var(--space-sm)}
+.src-paper{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.src-paper .tt{font-family:var(--font-headline);font-weight:700;font-size:1.05rem}
+.src-paper .au{font-size:.85rem;color:var(--fg-muted);margin:.2rem 0 var(--space-md)}
+.src-paper blockquote{margin:var(--space-md) 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--primary-container);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.93rem;color:var(--fg-2)}
+.map{display:grid;grid-template-columns:1fr auto 1fr;gap:.5rem var(--space-md);align-items:center;margin-top:var(--space-md);font-size:.9rem}
+.map .a{font-weight:600;color:var(--fg-1);text-align:right}.map .arr{color:var(--primary-container);font-family:var(--font-mono)}.map .b{color:var(--fg-2)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.5rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.95rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.pick{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.pk{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-lg) var(--space-xl)}
+.pk .h{font-weight:700;color:var(--fg-1)}
+.pk .d{font-size:.9rem;color:var(--fg-2);margin-top:.2rem}
+.pk .lose{font-family:var(--font-mono);font-size:.74rem;color:var(--red)}
+.src-list{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap;min-width:9em}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.youbox{margin-top:var(--space-lg);background:var(--surface-container-low);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl);font-size:.93rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.brief-header h1{font-size:1.32rem}.wrap{padding:var(--space-lg)}.map{grid-template-columns:1fr}.map .a{text-align:left}.map .arr{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X 主题调研 · 概念考证</div>
+    <h1>Agent「不可能三角」<span class="grad">有正式定义/出处吗？</span></h1>
+    <div class="verdict-top">⚡ <b>结论</b>：没有「官方命名」的 Agent 不可能三角（X 上零相关命中）；但底层三难真实存在，<b>最接近的正式出处是 arXiv 2605.10907（AI Workflow Store）的 robustness×generality×cost 三难</b>，且机制几乎与你的三轴一一对应。</div>
+    <div class="chips">
+      <span class="useful-chip hot">无官方命名术语</span>
+      <span class="useful-chip">最接近=AI Workflow Store</span>
+      <span class="useful-chip">是工程权衡非定理</span>
+      <span class="useful-chip">你的垂直定制是合理一角</span>
+    </div>
+    <div class="meta-row">
+      <span>查证 <b>X + arXiv</b></span>
+      <span>X 相关命中 <b>≈0</b></span>
+      <span>生成 <b>2026-05-24</b></span>
+    </div>
+  </header>
+
+  <div class="tri">
+    <svg viewBox="0 0 520 300" role="img" aria-label="Agent 不可能三角">
+      <polygon points="260,30 40,270 480,270" fill="none" stroke="var(--primary-container)" stroke-width="2"/>
+      <circle cx="260" cy="30" r="5" fill="var(--green)"/>
+      <text x="260" y="20" text-anchor="middle" font-family="var(--font-headline)" font-weight="700" font-size="15" fill="var(--fg-1)">效果可靠性</text>
+      <text x="260" y="300" text-anchor="middle" font-size="11" fill="var(--fg-muted)">reliability / robustness</text>
+      <circle cx="40" cy="270" r="5" fill="var(--blue)"/>
+      <text x="40" y="290" text-anchor="middle" font-family="var(--font-headline)" font-weight="700" font-size="15" fill="var(--fg-1)">harness 通用性</text>
+      <circle cx="480" cy="270" r="5" fill="var(--purple)"/>
+      <text x="480" y="290" text-anchor="middle" font-family="var(--font-headline)" font-weight="700" font-size="15" fill="var(--fg-1)">低提示成本</text>
+      <text x="260" y="165" text-anchor="middle" font-family="var(--font-headline)" font-weight="700" font-size="14" fill="var(--primary-container)">三选二</text>
+    </svg>
+    <div class="cap">用户提示成本 × 效果可靠性 × harness 通用性 —— 最多同时满足两个</div>
+  </div>
+
+  <details class="glossary" open>
+    <summary>📖 术语预热 <span class="hint">竖排可搜索 · 点击折叠</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，例如 trilemma / 铁三角 / robustness …" aria-label="搜索术语">
+      <div id="glist"></div>
+      <div class="nores" id="gnores" hidden>没有匹配的术语。</div>
+    </div>
+  </details>
+
+  <h2>🔑 关键信号</h2>
+  <div class="signals" id="signals"></div>
+
+  <h2>📄 最接近的正式出处（推荐引用这篇）</h2>
+  <div class="src-paper">
+    <div class="tt">Engineering Robustness into Personal Agents with the AI Workflow Store</div>
+    <div class="au">Roxana Geambasu, Mariana Raykova, Pierre Tholoniat, Trishita Tiwari, Lillian Tsai, Wen Zhang · <a href="https://arxiv.org/html/2605.10907" target="_blank" rel="noopener">arXiv: 2605.10907 ↗</a>（§3.1）</div>
+    <blockquote>三个属性「<b>fundamentally at odds</b>（根本互斥）」：把工作流表示成<b>「精确且经审核的代码」→ 可靠性最高但通用性受限</b>；表示成<b>「自然语言指令」→ 通用性强但牺牲可靠性</b>。</blockquote>
+    <div style="font-size:.88rem;color:var(--fg-muted);margin-bottom:.3rem">论文三轴 → 你的三轴 映射：</div>
+    <div class="map">
+      <div class="a">Robustness（可靠/安全）</div><div class="arr">≈</div><div class="b">效果可靠性</div>
+      <div class="a">Generality（通用、摊薄成本）</div><div class="arr">≈</div><div class="b">harness 通用性</div>
+      <div class="a">NL 指令 vs 精确代码</div><div class="arr">≈</div><div class="b">用户提示成本（高↔低）</div>
+    </div>
+  </div>
+
+  <h2>🧩 其他正式「Agent 三难」框架（轴略不同·佐证）</h2>
+  <div class="src-list" id="otherframes"></div>
+
+  <h2>🛠️ 为什么这个三角成立（对外讲清的机制）</h2>
+  <div class="youbox">一套<b>通用 harness 无法把「任务特定的可靠性」预先内建</b>；要拿到可靠性，要么 (a) <b>收窄到具体领域</b>（牺牲通用性），要么 (b) <b>把更多结构/约束推给用户提示</b>（抬高提示成本）。三者只能取其二。</div>
+  <div class="pick">
+    <div class="pk"><div class="h">通用 + 省提示</div><div class="d">自然语言松散驱动 → <span class="lose">可靠性掉</span>（AI Workflow Store 的「NL 指令」象限）</div></div>
+    <div class="pk"><div class="h">可靠 + 省提示</div><div class="d">流程写成精确代码/固化模板 → <span class="lose">通用性掉</span>（= 你做的销售运营垂直定制）</div></div>
+    <div class="pk"><div class="h">可靠 + 通用</div><div class="d">需用户给大量精确提示/约束/示例 → <span class="lose">提示成本高</span>（让业务人员"养"它，与"开箱即用"矛盾）</div></div>
+  </div>
+  <div class="youbox" style="border-left-color:var(--green)">🎯 <b>对你</b>：「开箱即用 + 不让业务养护」= 想要「省提示 + 可靠」→ <b>必须牺牲通用性</b>。所以你针对销售运营做<b>垂直定制</b>，正是这个三角里完全合理的一角。</div>
+
+  <h2>🔎 出处浏览器</h2>
+  <div class="src-list" id="srcbrowser"></div>
+
+  <h2>🧪 方法与局限</h2>
+  <ul class="limit">
+    <li><b>不存在唯一权威定义</b>：本报告给「最接近 + 多源佐证」，非唯一正解；轴有多版本（robustness/generality/cost、performance/efficiency/cost、reliability/control）。</li>
+    <li>论文多用「fundamentally at odds / tradeoff」，<b>非「impossible」</b>——更准确说是<b>强权衡/设计三难</b>，可用路由/Pareto 优化缓解，别当已证明的定理。</li>
+    <li>「为什么成立」的机制是综合解释，非论文逐字结论。</li>
+    <li>相关论文为 2026 年新作，命名与共识仍在形成中。</li>
+  </ul>
+  <footer>X 主题调研（概念考证） · bird 查证 + arXiv/web · 观点均标注出处<br>生成于 2026-05-24 · 同步语雀知识库 oudizuo/x-follows</footer>
+</div>
+<script>
+const GLOSSARY=[
+ ["trilemma（三难）","/traɪˈlemə/","三个目标最多同时满足两个的权衡；CAP 定理是经典例"],
+ ["iron triangle（铁三角）","—","项目管理经典「又快、又好、又便宜，三选二」"],
+ ["robustness / reliability","—","鲁棒性/可靠性；agent 产出稳定正确的程度"],
+ ["generality（通用性）","—","一套 harness/工作流能覆盖多少种请求"],
+ ["harness","—","套在模型外的代理外壳/脚手架"],
+ ["prompt cost / effort","—","用户为获得好结果需付出的提示/约束成本"],
+ ["specialization vs generalism","—","专精 vs 通用"],
+ ["amortization（成本摊薄）","—","通用性越高，单次请求的工程成本越被摊薄"]
+];
+const SIGNALS=[
+ ["1","<b>没有「官方命名」的 Agent 不可能三角</b>：X 上用 impossibility triangle/trilemma/三轴关键词搜，几乎零相关命中；中文「不可能三角」多是套经典铁三角「又快又准又便宜」的营销梗。"],
+ ["2","<b>但三难真实存在、有论文表述</b>。最接近的是 arXiv 2605.10907（AI Workflow Store）§3.1：robustness×generality×cost「fundamentally at odds」。"],
+ ["3","<b>机制几乎与你的三轴一一对应</b>：精确代码=可靠但不通用；自然语言指令=通用但牺牲可靠——正是「提示成本/可靠性/通用性」的内核。"],
+ ["4","<b>它是工程权衡（设计三难），不是已证明的定理</b>——论文用「at odds/tradeoff」而非「impossible」；可用路由/Pareto 优化缓解。"],
+ ["5","<b>对你</b>：选「垂直定制 + 开箱即用」= 放弃通用性换「可靠 + 低提示成本」，是三角里完全合理的一角。"]
+];
+const OTHER=[
+ ["Agent System Trilemma","性能 × 效率 × 成本（EvoRoute，用 Pareto 路由缓解）","arxiv.org/pdf/2601.02695"],
+ ["Reliability × Control（两轴）","给 agent 越多自由越通用但越不可靠，越约束越可靠越死板","medium.com — Why AI Agents Fail"],
+ ["The Defense Trilemma","防注入 wrapper 也逃不开三难（安全味）","arxiv.org/html/2604.06436v1"],
+ ["Specialization vs Generalism","通用实验室 vs 专精的张力（X 讨论）","x.com/aki1770/status/2026997323239510425"],
+ ["根源类比","项目管理铁三角(快/好/省三选二) + CAP 定理迁移到 agent","—"]
+];
+const SRC=[
+ ["AI Workflow Store","https://arxiv.org/html/2605.10907","最接近：robustness×generality×cost 三难（§3.1）"],
+ ["EvoRoute","https://arxiv.org/pdf/2601.02695","Agent System Trilemma：性能/效率/成本"],
+ ["Why AI Agents Fail","https://medium.com/@20011002nimeth/why-ai-agents-fail-the-hidden-tradeoff-between-reliability-and-control-ef3dc4d2f0da","Reliability × Control 两轴权衡"],
+ ["Defense Trilemma","https://arxiv.org/html/2604.06436v1","防注入 wrapper 的三难"],
+ ["@aki1770","https://x.com/aki1770/status/2026997323239510425","Specialization vs Generalism 张力"]
+];
+const glist=document.getElementById('glist');
+function renderG(f=""){const k=f.trim().toLowerCase();glist.innerHTML="";let n=0;
+ GLOSSARY.forEach(([w,ipa,def])=>{if(k&&!(w.toLowerCase().includes(k)||def.toLowerCase().includes(k)))return;n++;
+  const d=document.createElement('div');d.className='term';
+  d.innerHTML=`<span class="w">${w}</span>${ipa!=="—"?`<span class="ipa">${ipa}</span>`:""}<span class="def">${def}</span>`;glist.appendChild(d);});
+ document.getElementById('gnores').hidden=n>0;}
+renderG();document.getElementById('gsearch').addEventListener('input',e=>renderG(e.target.value));
+document.getElementById('signals').innerHTML=SIGNALS.map(([n,t])=>`<div class="signal"><div class="n">${n}</div><div class="t">${t}</div></div>`).join('');
+document.getElementById('otherframes').innerHTML=OTHER.map(([n,d,s])=>`<div class="src-row"><span class="hh">${n}</span><span class="g">${d}</span><span class="lk" style="color:var(--fg-muted)">${s.startsWith('http')?`<a href="${s.startsWith('http')?(s.includes('://')?s:'https://'+s):'#'}" target="_blank" rel="noopener">链接 ↗</a>`:s}</span></div>`).join('');
+document.getElementById('srcbrowser').innerHTML=SRC.map(([n,u,g])=>`<div class="src-row"><span class="hh">${n}</span><span class="g">${g}</span><a class="lk" href="${u}" target="_blank" rel="noopener">打开 ↗</a></div>`).join('');
+</script>
+</body>
+</html>
