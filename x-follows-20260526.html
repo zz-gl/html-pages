@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-05-26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #a03b00;
+  --primary-container: #c94c00;
+  --primary-fixed: #ffdbcd;
+  --on-primary: #ffffff;
+  --accent-glow: #E8400D;
+  --secondary: #d5baff;
+  --secondary-container: #7b40e0;
+  --tertiary: #4d44e3;
+  --accent-cyan: #00D4FF;
+  --bg: #fff8f6;
+  --surface: #fff8f6;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #fbf2ef;
+  --surface-container: #f5ece9;
+  --surface-container-high: #efe6e3;
+  --fg-1: #1e1b19;
+  --fg-2: #594138;
+  --fg-muted: #8d7166;
+  --border: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --outline-variant: #e1bfb2;
+  --green: #10b981;
+  --blue: #3b82f6;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --font-headline: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: 'SF Mono', 'Menlo', ui-monospace, monospace;
+  --space-xs: 4px; --space-sm: 8px; --space-md: 12px;
+  --space-lg: 16px; --space-xl: 20px; --space-2xl: 24px;
+  --space-3xl: 32px; --space-4xl: 48px; --space-5xl: 64px;
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  --radius-xl: 20px; --radius-2xl: 28px; --radius-pill: 9999px;
+  --shadow-sm: 0 1px 2px rgba(30, 27, 25, 0.04);
+  --shadow-md: 0 4px 12px rgba(30, 27, 25, 0.08);
+  --shadow-lg: 0 8px 24px rgba(30, 27, 25, 0.12);
+  --shadow-accent: 0 8px 24px rgba(160, 59, 0, 0.15);
+  --gradient-hero: linear-gradient(135deg, #a03b00 0%, #7b40e0 100%);
+  --gradient-text: linear-gradient(135deg, #a03b00 0%, #7b40e0 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #060B18;
+    --surface: #0B1426;
+    --surface-container-lowest: #101D35;
+    --surface-container-low: #101D35;
+    --surface-container: #162544;
+    --surface-container-high: #1c2d52;
+    --fg-1: #F8FAFC;
+    --fg-2: #CBD5E1;
+    --fg-muted: #94a3b8;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --outline-variant: #2c3e63;
+    --primary: #FF6B35;
+    --primary-fixed: #3a1d0e;
+    --accent-glow: #00D4FF;
+    --secondary-container: #a584ff;
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-accent: 0 8px 24px rgba(0,0,0,0.5);
+    --gradient-text: linear-gradient(135deg, #FF6B35 0%, #a584ff 100%);
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  padding: var(--space-2xl) var(--space-lg) var(--space-5xl);
+}
+.wrap { max-width: 880px; margin: 0 auto; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-sm); }
+
+/* ---- Header ---- */
+.brief-header { margin-bottom: var(--space-3xl); }
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+}
+.brief-header h1 {
+  font-family: var(--font-headline);
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  margin: var(--space-sm) 0 var(--space-md);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.lede { color: var(--fg-2); font-size: 16px; max-width: 60ch; }
+.answer-strip {
+  display: flex; flex-wrap: wrap; gap: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+.useful-chip {
+  display: inline-flex; align-items: baseline; gap: var(--space-xs);
+  background: var(--surface-container);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 13.5px;
+  color: var(--fg-2);
+}
+.useful-chip b {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* ---- Section scaffolding ---- */
+section { margin-top: var(--space-4xl); }
+.section-label {
+  display: flex; align-items: center; gap: var(--space-sm);
+  font-family: var(--font-headline);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: var(--space-lg);
+}
+.section-label::after {
+  content: ""; flex: 1; height: 1px; background: var(--border-strong);
+}
+
+/* ---- Primary insight: key signals ---- */
+.primary-insight {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.primary-insight::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 4px;
+  background: var(--gradient-hero);
+}
+.signal {
+  display: flex; gap: var(--space-lg);
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--border);
+}
+.signal:last-child { border-bottom: none; padding-bottom: 0; }
+.signal:first-child { padding-top: 0; }
+.signal-num {
+  flex: 0 0 auto;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--primary-fixed);
+  color: var(--primary);
+  font-family: var(--font-mono); font-weight: 700; font-size: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  .signal-num { background: var(--primary-fixed); color: var(--primary); }
+}
+.signal-body { flex: 1; }
+.signal-body strong { color: var(--fg-1); }
+.signal-body { color: var(--fg-2); font-size: 15px; }
+
+/* ---- Vocab search cards ---- */
+.vocab-search {
+  position: relative; margin-bottom: var(--space-lg);
+}
+.vocab-search input {
+  width: 100%;
+  font-family: var(--font-body); font-size: 15px;
+  padding: var(--space-md) var(--space-lg) var(--space-md) 42px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-container-lowest);
+  color: var(--fg-1);
+}
+.vocab-search input::placeholder { color: var(--fg-muted); }
+.vocab-search svg {
+  position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px; stroke: var(--fg-muted); fill: none;
+}
+.vocab-grid { display: flex; flex-direction: column; gap: var(--space-sm); }
+.vocab-card {
+  background: var(--surface-container-low);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+}
+.vocab-card .term {
+  font-family: var(--font-headline);
+  font-weight: 600; font-size: 16px;
+  color: var(--fg-1);
+}
+.vocab-card .ipa {
+  font-family: var(--font-mono);
+  color: var(--secondary-container);
+  font-size: 13.5px;
+  margin-left: var(--space-sm);
+}
+.vocab-card .gloss {
+  display: block; color: var(--fg-2); font-size: 14.5px; margin-top: 2px;
+}
+.vocab-empty { color: var(--fg-muted); padding: var(--space-lg); text-align: center; display: none; }
+
+/* ---- Evidence stack ---- */
+.user-filter {
+  display: flex; flex-wrap: wrap; gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+.filter-btn {
+  font-family: var(--font-body); font-size: 13px;
+  padding: 6px var(--space-md);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-container-lowest);
+  color: var(--fg-2); cursor: pointer;
+  transition: all .15s ease;
+}
+.filter-btn:hover { border-color: var(--primary); }
+.filter-btn.active { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+
+.user-block {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+.user-head { margin-bottom: var(--space-lg); }
+.user-head h3 {
+  font-family: var(--font-headline);
+  font-size: 19px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--fg-1);
+}
+.user-bio { color: var(--fg-muted); font-size: 13.5px; margin-top: 3px; }
+
+.tweet {
+  border-left: 2px solid var(--outline-variant);
+  padding: 2px 0 2px var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+.tweet:last-child { margin-bottom: 0; }
+.tweet-title {
+  font-weight: 600; color: var(--fg-1); font-size: 15.5px;
+  margin-bottom: var(--space-xs);
+}
+.tweet-body { color: var(--fg-2); font-size: 15px; }
+.rt-tag {
+  display: inline-block;
+  font-size: 11.5px; font-weight: 600;
+  font-family: var(--font-mono);
+  background: var(--surface-container-high);
+  color: var(--secondary-container);
+  border-radius: var(--radius-sm);
+  padding: 1px 7px; margin-right: 6px;
+  vertical-align: middle;
+}
+.links { display: flex; flex-direction: column; gap: 3px; margin-top: var(--space-sm); }
+.links a {
+  font-size: 12.5px; font-family: var(--font-mono);
+  color: var(--fg-muted);
+  display: inline-flex; align-items: center; gap: 5px;
+  width: fit-content;
+}
+.links a:hover { color: var(--primary); }
+.links a::before { content: "↳"; color: var(--outline-variant); }
+.links a.primary-link { color: var(--primary); }
+
+/* ---- Quiet appendix ---- */
+.quiet {
+  margin-top: var(--space-3xl);
+  background: var(--surface-container-low);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg) var(--space-xl);
+  color: var(--fg-muted);
+  font-size: 13.5px;
+}
+.quiet b { color: var(--fg-2); }
+.quiet code {
+  font-family: var(--font-mono); font-size: 12.5px;
+  color: var(--fg-2);
+}
+footer {
+  margin-top: var(--space-4xl);
+  text-align: center;
+  color: var(--fg-muted);
+  font-size: 12.5px;
+}
+@media (max-width: 600px) {
+  body { padding: var(--space-lg) var(--space-md) var(--space-4xl); }
+  .primary-insight { padding: var(--space-lg); }
+  .user-block { padding: var(--space-lg); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 关注动态汇总</div>
+    <h1>教宗 AI 通谕同框科技圈，<br>编码智能体继续主导讨论</h1>
+    <p class="lede">近 24 小时，41 位关注账号中 14 位有新动态。今日两条主线：教宗 Leo XIV 的 AI 通谕《Magnifica humanitas》引来跨界解读，以及围绕 Codex / Claude 编码智能体的工作流之争。</p>
+    <div class="answer-strip">
+      <span class="useful-chip"><b>41</b> 关注总数</span>
+      <span class="useful-chip"><b>14</b> 有动态用户</span>
+      <span class="useful-chip"><b>32</b> 窗口内动态</span>
+      <span class="useful-chip"><b>24h</b> 时间窗口</span>
+    </div>
+    <p style="color:var(--fg-muted);font-size:13px;font-family:var(--font-mono);margin-top:var(--space-md);">2026-05-25 04:50 → 2026-05-26 04:50 UTC</p>
+  </header>
+
+  <!-- ===== KEY SIGNALS ===== -->
+  <section id="signals">
+    <div class="section-label">🔑 关键信号总结</div>
+    <div class="primary-insight">
+      <div class="signal">
+        <div class="signal-num">1</div>
+        <div class="signal-body"><strong>教宗 AI 通谕成为今日最大焦点。</strong>教宗 Leo XIV 发布通谕《Magnifica humanitas》，强调 AI 必须服务人的尊严、反对用超级智能「取代或超越」人类。Anthropic 联合创始人 Chris Olah 受邀在发布会发言（点赞近 3000），Max Tegmark、Simon Willison、Sonya Huang、clem 等多位博主从不同立场转发解读，科技圈与宗教训导罕见同框。</div>
+      </div>
+      <div class="signal">
+        <div class="signal-num">2</div>
+        <div class="signal-body"><strong>编码智能体（coding agents）持续主导技术讨论。</strong>Codex 与 Claude 的能力对比（Codex 擅长自测、Claude 在前端/设计更强）、是否让 agent 自带自动化测试（TDD）、「先建系统再造 MVP」的新工作流——多位博主聚焦如何用 AI agent 把一个人变成「十个人的产出」。</div>
+      </div>
+      <div class="signal">
+        <div class="signal-num">3</div>
+        <div class="signal-body"><strong>AI 生产力研究存在空白。</strong>Ethan Mollick 指出，2025 年底自主编码工具爆发后，业界几乎没有可靠的生产力实证研究，现有论文都早于「Claude Code/Codex 革命」，认知盲区很大。</div>
+      </div>
+      <div class="signal">
+        <div class="signal-num">4</div>
+        <div class="signal-body"><strong>AI 攻克研究级数学。</strong>Demis Hassabis 转发 Google DeepMind 的 <strong>AlphaProof Nexus</strong>——一个推进研究级数学的智能体框架。但 Mollick 提醒：数学之外，我们更缺工程、经济、物理、生物等领域的「高难度问题库」与评判标准。</div>
+      </div>
+      <div class="signal">
+        <div class="signal-num">5</div>
+        <div class="signal-body"><strong>开源模型势头不减。</strong>Kimi K2.6 登顶 Design Arena 3D 设计榜首、MiMo V2.5-Coder 发布（128GB 内存可本地跑），开源生态继续在榜单上发力。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VOCAB ===== -->
+  <section id="vocab">
+    <div class="section-label">📖 生词预热</div>
+    <div class="vocab-search">
+      <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="vocabInput" placeholder="搜索术语、缩写或中文释义…" aria-label="搜索生词">
+    </div>
+    <div class="vocab-grid" id="vocabGrid"></div>
+    <div class="vocab-empty" id="vocabEmpty">没有匹配的术语</div>
+  </section>
+
+  <!-- ===== EVIDENCE STACK ===== -->
+  <section id="evidence">
+    <div class="section-label">📋 按用户分组的详细动态</div>
+    <div class="user-filter" id="userFilter"></div>
+    <div id="userStack"></div>
+  </section>
+
+  <!-- ===== QUIET APPENDIX ===== -->
+  <div class="quiet">
+    <b>😴 无动态用户（27 位）：</b>
+    <code>soumithchintala · sama · saranormous · rasbt · svlevine · swyx · paperswithcode · geoffreyhinton · sequoia · DarioAmodei · jiayq · giffmana · drfeifei · zeritna · ilyasut · MistralAI · realDonaldTrump · andrew__reed · stephzhan · AnimaAnandkumar · DrJimFan · deepseek_ai · realGeorgeHotz · ChatGPTapp · Figure_robot · bgurley · karpathy</code>
+  </div>
+
+  <footer>由 x-follows-24h 生成 · 时间窗口 2026-05-25 → 2026-05-26 (UTC) · 共 32 条动态</footer>
+
+</div>
+
+<script>
+const VOCAB = [
+  {t:"encyclical", ipa:"/ɪnˈsɪklɪkl/", g:"（天主教教宗的）通谕，教宗发给全体教会的正式训导文件"},
+  {t:"dignity", ipa:"/ˈdɪɡnəti/", g:"尊严"},
+  {t:"dehumanization", ipa:"/ˌdiːhjuːmənaɪˈzeɪʃn/", g:"去人性化、非人化"},
+  {t:"superintelligence", ipa:"/ˌsuːpərɪnˈtelɪdʒəns/", g:"超级智能"},
+  {t:'encyclical "Magnifica humanitas"', ipa:"", g:"（拉丁语）「壮丽的人性」，本期教宗 AI 通谕的标题"},
+  {t:"TDD", ipa:"", g:"Test-Driven Development，测试驱动开发；red/green TDD 指「先写失败测试(红)→实现到通过(绿)」的循环"},
+  {t:"MVP", ipa:"", g:"Minimum Viable Product，最小可行产品"},
+  {t:"RAG", ipa:"", g:"Retrieval-Augmented Generation，检索增强生成"},
+  {t:"reranking", ipa:"/ˌriːˈræŋkɪŋ/", g:"重排序（对检索结果二次排序提升相关性）"},
+  {t:"query-rewriting", ipa:"", g:"查询改写（把用户问题改写得更利于检索）"},
+  {t:"agentic", ipa:"/eɪˈdʒentɪk/", g:"智能体式的、具备自主行动能力的"},
+  {t:"parsing", ipa:"/ˈpɑːrsɪŋ/", g:"解析（把文档转成结构化数据）"},
+  {t:"autonomous", ipa:"/ɔːˈtɒnəməs/", g:"自主的"},
+  {t:"procrastination", ipa:"/prəˌkræstɪˈneɪʃn/", g:"拖延"},
+  {t:"cognitive offloading", ipa:"/ˈkɒɡnətɪv/", g:"认知卸载（把思考外包给工具/AI）"},
+  {t:"constraints", ipa:"/kənˈstreɪnts/", g:"约束、限制条件"},
+  {t:"tokenmaxxing", ipa:"", g:"（网络生造词）「token 最大化」，趁包月不限量套餐拼命多用 AI"},
+  {t:"METR", ipa:"", g:"Model Evaluation & Threat Research，一家评测 AI 能力与风险的机构"},
+  {t:"leaderboard", ipa:"/ˈliːdərbɔːrd/", g:"排行榜"},
+  {t:"reproducibility", ipa:"/ˌriːprəˌdjuːsəˈbɪləti/", g:"可复现性"}
+];
+
+const USERS = [
+  {name:"Jerry Liu", bio:"杰瑞·刘 /ˈdʒeri ljuː/ — LlamaIndex 创始人兼 CEO，RAG 与文档智能领域代表人物", tweets:[
+    {rt:"转推", title:"LlamaParse 现已原生解析 HEIC 文件", body:"HEIC 是苹果默认图片格式，遍布企业文件中，新增原生支持。", links:[["被转推原文","https://x.com/llama_index/status/2059132020899692978"],["转推","https://x.com/jerryjliu0/status/2059132020899692978"]]},
+    {title:"分享 116 页 RAG 演进幻灯片（2023→2026）", body:"@hexapode 在新加坡 @aiDotEngineer 做了 90 分钟工作坊，梳理检索、智能体循环、文档理解三年来的演变。要点：朴素 RAG 的 12 个痛点、重排序与查询改写的重要性、模型变强后越来越多逻辑被卸载到智能体循环里（反而让检索层变简单）、检索成为瓶颈、为何文档解析至今仍是极难问题、从 markdown 到 chunk 到结构化 JSON 的解析输出。", links:[["原文","https://x.com/jerryjliu0/status/2058953208782074127",1]]},
+    {rt:"转推", title:"播客上线", body:"与 @gracegongGG 的对谈已在 Spotify / Apple 上线。", links:[["被转推原文","https://x.com/gracegongGG/status/2058935649647108241"],["转推","https://x.com/jerryjliu0/status/2058935649647108241"]]}
+  ]},
+  {name:"Ethan Mollick", bio:"伊森·莫里克 /ˈiːθən ˈmɒlɪk/ — 沃顿商学院教授，研究 AI 对工作与组织的影响，《Co-Intelligence》作者", tweets:[
+    {title:"AI 生产力研究的巨大空白", body:"据他所知，目前没有针对 2025 年底涌现的自主编码工具的可靠生产力测试。所有现存论文都早于「Claude Code/Codex 革命」，这是我们对编码领域认知的一大空白。续推：最接近的是 METR 在 2026 年 2 月的初步更新，但数据质量不足以说明什么——高风险问题、数据极少，却有大量推测性的 Substack 长文。", links:[["原文","https://x.com/emollick/status/2059118330472972331",1],["续推","https://x.com/emollick/status/2059118797642936829"]]},
+    {title:"不要把难题都局限在 Erdős（埃尔德什）问题上", body:"这些数学难题很酷，但我们真正需要的是覆盖更多领域的「高难度问题库」——复杂工程问题、经济/物理/生物的大数据集——并配套「如何评判」的规范。数学是最容易做「可验证工作」的领域，但它对日常生活的直接影响也最不明确。", links:[["原文","https://x.com/emollick/status/2059012803009151444",1]]}
+  ]},
+  {name:"Peter Yang", bio:"彼得·杨 /ˈpiːtər jæŋ/ — 产品负责人、内容创作者，专注 AI 产品与创作者经济", tweets:[
+    {title:"Codex vs Claude", body:"Codex 非常强，尤其是它会用浏览器测试自己的工作，令人印象深刻。但任何设计/前端相关任务，Claude 仍然更胜一筹。", links:[["原文","https://x.com/petergyang/status/2059099566377693305",1]]},
+    {rt:"引用转推", title:"「先建系统，再造 MVP」", body:"来自 @ryancarson 的第一课——过去说「做 MVP 就够，别花时间搭系统」，现在彻底反过来了。要花大量时间搭建文档、用 skill 文件做成 cron 定时任务，突然就能做到 10 个人的活。被引用原文是 Peter 自己的播客预告：@ryancarson 如何用 AI agent 单人运营创业公司——用 OpenClaw 当 AI 幕僚长分流邮件/约会议/做销售，用 Codex 和 Devin 当工程团队边睡边出活。", links:[["评论","https://x.com/petergyang/status/2059029752858775581",1],["被引用原文","https://x.com/petergyang/status/2058555226479866312"]]},
+    {title:"「tokenmaxxing 就像在自助餐吃帝王蟹腿」", body:"包月不限量的 AI 套餐不会永远存在，趁还能吃赶紧多吃。", links:[["原文","https://x.com/petergyang/status/2059070818798465330",1]]},
+    {title:"生活动态", body:"感谢 @david__booth 邀请去太浩湖（Tahoe），见到了一群很棒的人，还和女儿一起划了皮划艇。", links:[["原文","https://x.com/petergyang/status/2059026107069010083",1]]}
+  ]},
+  {name:"François Chollet", bio:"弗朗索瓦·肖莱 /frɑːnˈswɑː ʃɒˈleɪ/ — Keras 之父，前 Google 研究员，ARC-AGI 基准提出者", tweets:[
+    {title:"「创造力以约束为食」（Creativity feeds on constraints）", body:"一句关于约束激发创造力的格言。", links:[["原文","https://x.com/fchollet/status/2059078037371793739",1]]},
+    {rt:"引用转推", title:"AI 不是旧工作流的「生产力加速器」", body:"把 AI 当成对既有工作流的提速是错误框架。和此前每一波计算机化/软件化浪潮一样，AI 是让你以新方式做新事情的工具。被引用原文是一篇论文《人机交互中的认知卸载与提速错觉》。", links:[["评论","https://x.com/fchollet/status/2058982905368773040",1],["被引用原文","https://x.com/WGOV/status/2058862099602813266"]]}
+  ]},
+  {name:"Simon Willison", bio:"西蒙·威利森 /ˈsaɪmən ˈwɪlɪsn/ — Django 联合创始人，独立开发者，知名 AI 博主", tweets:[
+    {title:"教宗 AI 通谕笔记", body:"「今早醒来没想到今天会花一堆时间熟悉天主教神学，但事已至此。」分享了关于教宗 Leo XIV 的 AI 通谕的笔记。续推附上 Oxide and Friends 2026 年 1 月预测节目的文字片段——很离奇，当时就预测会发生类似的事。", links:[["原文","https://x.com/simonw/status/2059065719086792804",1],["续推","https://x.com/simonw/status/2059069282844381654"]]},
+    {title:"关于编码 agent 与测试", body:"提问「你会让编码 agent 为它写的代码附带自动化测试吗？」续推：我坚定站「红/绿 TDD」队——喜欢有一套测试集，保护老功能不被新改动搞坏。", links:[["原文","https://x.com/simonw/status/2058992461381562382",1],["续推","https://x.com/simonw/status/2058992972734341445"]]},
+    {rt:"引用转推", title:"呼吁 OpenAI 公开 GPT-4 架构", body:"那个广为流传的「每封 AI 邮件耗一瓶水」的耗水估算，很多来自对 GPT-4 架构的猜测。如今这个三年前、已退役的模型，OpenAI 很有理由公开它的架构。被引用原文来自 @AndyMasley。", links:[["评论","https://x.com/simonw/status/2058877314004627690",1],["被引用原文","https://x.com/AndyMasley/status/2058862527400788273"]]}
+  ]},
+  {name:"clem 🤗", bio:"克莱门特·德朗格 /kleˈmɑ̃ dəˈlɑ̃ɡ/ — Hugging Face 联合创始人兼 CEO", tweets:[
+    {title:"了解编码助手如何提及 HF 产品", body:"今天在研究 coding assistant 怎样提到 Hugging Face 的产品，做法是跑大量查询并用 @DAKlingbeil 的工具分析答案。问大家有没有更好的方法。", links:[["原文","https://x.com/ClementDelangue/status/2058993082100539402",1]]},
+    {title:"「这算广告吗？」（配图）", body:"对某条内容是否构成广告的发问。", links:[["原文","https://x.com/ClementDelangue/status/2058986184198537408",1]]},
+    {rt:"转推", title:"给娃买了 Reachy Mini", body:"@foxcamel 称 Hugging Face 的 Reachy Mini 是目前桌面陪伴机器人里「地表最强」——配件做工好、IDE 与开发者生态好、支持 Agentic 编程，10 岁以下小朋友配 codex 就能给它加功能。", links:[["被转推原文","https://x.com/foxcamel/status/2059045688147677353"],["转推","https://x.com/ClementDelangue/status/2059045688147677353"]]},
+    {rt:"转推", title:"关于教宗通谕的 AI 治理观点", body:"@DavidSacks 称教宗正确警告 AI 必须服务人的尊严、不能成为支配或排斥的工具，但若把治理权交出去……（原文截断）。", links:[["被转推原文","https://x.com/DavidSacks/status/2058949062917845436"],["转推","https://x.com/ClementDelangue/status/2058949062917845436"]]},
+    {rt:"转推", title:"Kimi K2.6 登顶 3D 设计榜", body:"@Designarena 称一个开源模型重返 Design Arena 3D 设计排行榜第一，Kimi K2.6 登顶。", links:[["被转推原文","https://x.com/Designarena/status/2058933784213389630"],["转推","https://x.com/ClementDelangue/status/2058933784213389630"]]},
+    {rt:"转推", title:"MiMo V2.5-Coder 发布", body:"@jedisct1 称刚发布 MiMo V2.5-Coder，若有 128GB 内存，这是本地可运行的最佳模型之一，又快又……（原文截断）。", links:[["被转推原文","https://x.com/jedisct1/status/2058926691888582768"],["转推","https://x.com/ClementDelangue/status/2058926691888582768"]]}
+  ]},
+  {name:"Greg Brockman", bio:"格雷格·布罗克曼 /ɡreɡ ˈbrɒkmən/ — OpenAI 联合创始人兼总裁", tweets:[
+    {rt:"引用转推", title:"「Codex 帮你在笔记本上找空间」", body:"转发用户用 Codex 全盘只读分析 MacBook 存储、找出可省 500GB 空间的案例（其中一个 codex-tui.log 日志文件竟有 116GB）。被引用原文来自 @KingBootoshi。", links:[["评论","https://x.com/gdb/status/2059034161739182453",1],["被引用原文","https://x.com/KingBootoshi/status/2058943762207006959"]]}
+  ]},
+  {name:"Andrew Ng", bio:"吴恩达 /ˈændruː ŋ/ — DeepLearning.AI 创始人，Coursera 联合创始人，斯坦福教授", tweets:[
+    {title:"阵亡将士纪念日（Memorial Day）", body:"今天纪念那些为捍卫民主献出一切的人。民主并非理所当然，而是需要我们持续守护的珍贵遗产。🇺🇸", links:[["原文","https://x.com/AndrewYNg/status/2059006941012295935",1]]}
+  ]},
+  {name:"Max Tegmark", bio:"马克斯·泰格马克 /mæks ˈtɛɡmɑːrk/ — MIT 物理学家，Future of Life Institute 创始人，《Life 3.0》作者", tweets:[
+    {title:"解读教宗通谕", body:"虽然教宗 Leo XIV 的通谕没有明确提到 AI 公司口中竞逐的超级智能，但其反对态度、支持可控 AI 工具的立场很清楚：「人性——以其全部的壮丽与创伤——绝不应被取代或超越。」", links:[["原文","https://x.com/tegmark/status/2058984025209925660",1]]}
+  ]},
+  {name:"Anthropic", bio:"安th由人公司 /ænˈθrɒpɪk/ — Claude 模型开发商，AI 安全研究公司", tweets:[
+    {title:"联合创始人 Chris Olah 受邀在教宗通谕发布会发言", body:"分享了他在教宗 Leo XIV 通谕《Magnifica humanitas》发布会上的完整发言全文。（本期互动最高：点赞近 3000、转发 460）", links:[["原文","https://x.com/AnthropicAI/status/2058983299092009421",1]]}
+  ]},
+  {name:"Sonya Huang 🐥", bio:"黄硕妍 /ˈsɒnjə hwɑːŋ/ — 红杉资本（Sequoia）合伙人，专注 AI 投资", tweets:[
+    {rt:"转推", title:"转发教宗本人推文", body:"@Pontifex（教宗官方账号）称，在人工智能时代、当人类尊严受到新型去人性化威胁时，我们肩负紧迫的……（原文截断）。（被转推原文转发量近万）", links:[["被转推原文","https://x.com/Pontifex/status/2058974517649924542"],["转推","https://x.com/sonyatweetybird/status/2058974517649924542"]]}
+  ]},
+  {name:"Demis Hassabis", bio:"戴密斯·哈萨比斯 /ˈdɛmɪs həˈsæbɪs/ — Google DeepMind 联合创始人兼 CEO，诺贝尔化学奖得主", tweets:[
+    {rt:"转推", title:"AlphaProof Nexus", body:"@pushmeet 称 AI 智能体正在推进研究级数学，激动地分享 Google DeepMind 的 AlphaProof Nexus——一个智能体框架。", links:[["被转推原文","https://x.com/pushmeet/status/2058945928011124826"],["转推","https://x.com/demishassabis/status/2058945928011124826"]]},
+    {rt:"转推", title:"Google Omni 演示", body:"@folaoftech 称「Google Omni 可能太强了 🫥」（配视频）。", links:[["被转推原文","https://x.com/folaoftech/status/2058954852315656663"],["转推","https://x.com/demishassabis/status/2058954852315656663"]]}
+  ]},
+  {name:"Jack Clark", bio:"杰克·克拉克 /dʒæk klɑːrk/ — Anthropic 联合创始人兼政策负责人，《Import AI》通讯作者", tweets:[
+    {rt:"转推", title:"转发 Chris Olah 的推文", body:"转发 @ch402（Chris Olah）的一条推文（仅含链接，无正文）。", links:[["被转推原文","https://x.com/ch402/status/2058950937549685030"],["转推","https://x.com/jackclarkSF/status/2058950937549685030"]]}
+  ]},
+  {name:"Yann LeCun", bio:"杨立昆 /jæn ləˈkɜːn/ — Meta 首席 AI 科学家，图灵奖得主，卷积神经网络先驱", tweets:[
+    {rt:"转推", title:"JEPA-WM 研究获 TMLR 接收", body:"@BasileTerv987 称其 JEPA-WM 研究（arXiv:2512.24497）的 v2 版本被 TMLR 接收，并获可复现性认证 🏅，含新数据……（原文截断）。", links:[["被转推原文","https://x.com/BasileTerv987/status/2058913653672255881"],["转推","https://x.com/ylecun/status/2058913653672255881"]]}
+  ]}
+];
+
+// ---- Render vocab ----
+const vGrid = document.getElementById('vocabGrid');
+function renderVocab(filter="") {
+  const f = filter.trim().toLowerCase();
+  let shown = 0;
+  vGrid.innerHTML = "";
+  VOCAB.forEach(v => {
+    const hay = (v.t + " " + v.ipa + " " + v.g).toLowerCase();
+    if (f && !hay.includes(f)) return;
+    shown++;
+    const card = document.createElement('div');
+    card.className = 'vocab-card';
+    card.innerHTML = `<span class="term">${v.t}</span>${v.ipa?`<span class="ipa">${v.ipa}</span>`:''}<span class="gloss">${v.g}</span>`;
+    vGrid.appendChild(card);
+  });
+  document.getElementById('vocabEmpty').style.display = shown ? 'none' : 'block';
+}
+renderVocab();
+document.getElementById('vocabInput').addEventListener('input', e => renderVocab(e.target.value));
+
+// ---- Render users ----
+const stack = document.getElementById('userStack');
+function esc(s){return s;}
+USERS.forEach((u, i) => {
+  const block = document.createElement('div');
+  block.className = 'user-block';
+  block.dataset.idx = i;
+  let html = `<div class="user-head"><h3>${u.name}</h3><div class="user-bio">${u.bio}</div></div>`;
+  u.tweets.forEach(t => {
+    html += `<div class="tweet">`;
+    html += `<div class="tweet-title">${t.rt?`<span class="rt-tag">🔁 ${t.rt}</span>`:''}${t.title}</div>`;
+    html += `<div class="tweet-body">${t.body}</div>`;
+    html += `<div class="links">`;
+    t.links.forEach(l => {
+      html += `<a href="${l[1]}" target="_blank" rel="noopener" class="${l[2]?'primary-link':''}">${l[0]}</a>`;
+    });
+    html += `</div></div>`;
+  });
+  block.innerHTML = html;
+  stack.appendChild(block);
+});
+
+// ---- User filter chips ----
+const filterWrap = document.getElementById('userFilter');
+const allBtn = document.createElement('button');
+allBtn.className = 'filter-btn active';
+allBtn.textContent = '全部 ('+USERS.length+')';
+allBtn.dataset.idx = 'all';
+filterWrap.appendChild(allBtn);
+USERS.forEach((u,i) => {
+  const b = document.createElement('button');
+  b.className = 'filter-btn';
+  b.textContent = u.name;
+  b.dataset.idx = i;
+  filterWrap.appendChild(b);
+});
+filterWrap.addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  filterWrap.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+  btn.classList.add('active');
+  const idx = btn.dataset.idx;
+  stack.querySelectorAll('.user-block').forEach(bl => {
+    bl.style.display = (idx === 'all' || bl.dataset.idx === idx) ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>
