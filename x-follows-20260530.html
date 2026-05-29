@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-05-30</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --primary-fixed-dim:#ffb597;
+  --on-primary:#ffffff; --accent-glow:#E8400D;
+  --secondary:#d5baff; --secondary-container:#7b40e0; --tertiary:#4d44e3; --accent-cyan:#00D4FF;
+  --bg:#fff8f6; --surface:#fff8f6; --surface-container-lowest:#ffffff; --surface-container-low:#fbf2ef;
+  --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,0.06); --border-strong:rgba(0,0,0,0.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px;
+  --space-3xl:32px; --space-4xl:48px; --space-5xl:64px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,0.04); --shadow-md:0 4px 12px rgba(30,27,25,0.08);
+  --shadow-lg:0 8px 24px rgba(30,27,25,0.12); --shadow-accent:0 8px 24px rgba(160,59,0,0.15);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#060B18; --surface:#0B1426; --surface-container-lowest:#101D35; --surface-container-low:#101D35;
+    --surface-container:#162544; --surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC; --fg-2:#CBD5E1; --fg-muted:#94a3b8;
+    --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14); --outline-variant:#2c3f63;
+    --primary:#FF6B35; --primary-fixed:#3a2418; --primary-fixed-dim:#5a3826; --accent-glow:#00D4FF;
+    --shadow-md:0 4px 12px rgba(0,0,0,0.4); --shadow-lg:0 8px 24px rgba(0,0,0,0.5);
+    --shadow-accent:0 8px 24px rgba(0,0,0,0.5);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--fg-1); font-family:var(--font-body);
+  font-size:15.5px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.wrap{max-width:920px; margin:0 auto; padding:var(--space-2xl) var(--space-lg) var(--space-5xl);}
+a{color:var(--primary-container); text-decoration:none}
+@media (prefers-color-scheme:dark){a{color:var(--primary)}}
+a:hover{text-decoration:underline}
+.ipa{font-family:var(--font-mono); font-size:0.86em; color:var(--fg-muted); font-style:normal}
+
+/* ---------- header ---------- */
+.brief-header{
+  position:relative; padding:var(--space-3xl) var(--space-2xl);
+  border-radius:var(--radius-2xl); overflow:hidden;
+  background:var(--surface-container-low); border:1px solid var(--border);
+  box-shadow:var(--shadow-md);
+}
+.brief-header::before{
+  content:""; position:absolute; inset:0; opacity:.10;
+  background:var(--gradient-hero); pointer-events:none;
+}
+.kicker{font-family:var(--font-mono); font-size:12px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--primary-container); position:relative}
+@media (prefers-color-scheme:dark){.kicker{color:var(--primary)}}
+.brief-header h1{
+  font-family:var(--font-headline); font-weight:700; letter-spacing:-0.01em;
+  font-size:clamp(26px,5.4vw,40px); line-height:1.12; margin:var(--space-md) 0 var(--space-lg);
+  position:relative;
+}
+.answer-strip{
+  font-size:16px; color:var(--fg-2); max-width:62ch; position:relative;
+  border-left:3px solid var(--primary-container); padding-left:var(--space-lg);
+}
+.answer-strip strong{color:var(--fg-1)}
+.chips{display:flex; flex-wrap:wrap; gap:var(--space-sm); margin-top:var(--space-xl); position:relative}
+.useful-chip{
+  display:inline-flex; align-items:baseline; gap:6px; padding:7px 14px;
+  background:var(--surface-container-lowest); border:1px solid var(--border-strong);
+  border-radius:var(--radius-pill); font-size:13px; color:var(--fg-2);
+}
+.useful-chip b{font-family:var(--font-headline); font-weight:700; color:var(--primary-container); font-size:15px}
+@media (prefers-color-scheme:dark){.useful-chip b{color:var(--primary)}}
+
+/* ---------- section heading ---------- */
+.sec{margin-top:var(--space-4xl)}
+.sec-head{display:flex; align-items:center; gap:var(--space-md); margin-bottom:var(--space-lg)}
+.sec-head h2{font-family:var(--font-headline); font-weight:600; letter-spacing:-0.01em;
+  font-size:clamp(19px,3.4vw,24px)}
+.sec-head .dot{width:10px;height:10px;border-radius:50%;background:var(--primary-container);flex:none}
+.sec-sub{color:var(--fg-muted); font-size:14px; margin-top:-8px; margin-bottom:var(--space-lg)}
+
+/* ---------- primary insight: key signals ---------- */
+.primary-insight{
+  background:var(--surface-container-lowest); border:1px solid var(--border-strong);
+  border-radius:var(--radius-xl); padding:var(--space-sm) 0; box-shadow:var(--shadow-lg);
+  overflow:hidden;
+}
+.signal{display:flex; gap:var(--space-lg); padding:var(--space-xl) var(--space-2xl);
+  border-bottom:1px solid var(--border);}
+.signal:last-child{border-bottom:none}
+.signal .num{
+  font-family:var(--font-headline); font-weight:700; font-size:18px; flex:none;
+  width:34px; height:34px; border-radius:var(--radius-pill); display:grid; place-items:center;
+  background:var(--primary-fixed); color:var(--primary); border:1px solid var(--outline-variant);
+}
+.signal .body{font-size:15px; color:var(--fg-2)}
+.signal .body b{color:var(--fg-1)}
+
+/* ---------- vocab cards ---------- */
+.searchbar{position:relative; margin-bottom:var(--space-lg)}
+.searchbar input{
+  width:100%; padding:13px 16px 13px 42px; font-family:var(--font-body); font-size:15px;
+  color:var(--fg-1); background:var(--surface-container-lowest);
+  border:1px solid var(--border-strong); border-radius:var(--radius-pill); outline:none;
+}
+.searchbar input:focus{border-color:var(--primary-container); box-shadow:0 0 0 3px var(--primary-fixed)}
+.searchbar svg{position:absolute; left:15px; top:50%; transform:translateY(-50%); color:var(--fg-muted)}
+.vocab-stack{display:flex; flex-direction:column; gap:var(--space-sm)}
+.term-card{
+  background:var(--surface-container-low); border:1px solid var(--border);
+  border-left:3px solid var(--secondary-container);
+  border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg);
+}
+.term-card .t-top{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px}
+.term-card .term{font-family:var(--font-headline); font-weight:600; color:var(--fg-1); font-size:15.5px}
+.term-card .def{color:var(--fg-2); font-size:14.5px; margin-top:3px}
+.no-result{color:var(--fg-muted); font-size:14px; padding:var(--space-lg); text-align:center; display:none}
+
+/* ---------- evidence stack (users) ---------- */
+.toolbar{display:flex; flex-wrap:wrap; gap:var(--space-sm); margin-bottom:var(--space-xl)}
+.filter-chip{
+  padding:6px 13px; font-size:13px; font-family:var(--font-body); cursor:pointer;
+  background:var(--surface-container-low); color:var(--fg-2);
+  border:1px solid var(--border-strong); border-radius:var(--radius-pill); transition:.15s;
+}
+.filter-chip[aria-pressed="true"]{background:var(--primary-container); color:var(--on-primary); border-color:var(--primary-container)}
+.evidence-stack{display:flex; flex-direction:column; gap:var(--space-2xl)}
+.user-group{
+  background:var(--surface-container-low); border:1px solid var(--border);
+  border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-sm);
+}
+.user-head{padding:var(--space-xl) var(--space-2xl) var(--space-lg);
+  border-bottom:1px solid var(--border); background:var(--surface-container);}
+.user-head .uname{font-family:var(--font-headline); font-weight:700; font-size:18px; letter-spacing:-0.01em;
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.user-head .count{font-family:var(--font-mono); font-size:11px; color:var(--primary-container);
+  background:var(--primary-fixed); border:1px solid var(--outline-variant);
+  padding:2px 9px; border-radius:var(--radius-pill); font-weight:500}
+@media (prefers-color-scheme:dark){.user-head .count{color:var(--primary)}}
+.user-head .bio{color:var(--fg-muted); font-size:13.5px; margin-top:6px; line-height:1.5}
+.user-head .note{color:var(--fg-2); font-size:13.5px; margin-top:8px; font-style:italic;
+  border-left:2px solid var(--outline-variant); padding-left:10px}
+.items{padding:var(--space-md) var(--space-2xl) var(--space-xl)}
+.item{padding:var(--space-lg) 0; border-bottom:1px dashed var(--border)}
+.item:last-child{border-bottom:none}
+.item .lead{font-size:15px; color:var(--fg-1)}
+.item .lead .tag-rt{
+  display:inline-block; font-size:11px; font-family:var(--font-mono); font-weight:600;
+  color:var(--secondary-container); background:rgba(123,64,224,.10);
+  border:1px solid rgba(123,64,224,.3); padding:1px 7px; border-radius:var(--radius-sm); margin-right:6px;
+}
+@media (prefers-color-scheme:dark){.item .lead .tag-rt{color:var(--secondary)}}
+.item .lead b{font-weight:700}
+.item .detail{font-size:14px; color:var(--fg-2); margin-top:6px}
+.subs{margin-top:8px; display:flex; flex-direction:column; gap:7px}
+.sub{font-size:13.5px; color:var(--fg-2); padding-left:14px; position:relative; line-height:1.55}
+.sub::before{content:"›"; position:absolute; left:0; color:var(--primary-container); font-weight:700}
+.links{display:flex; flex-wrap:wrap; gap:6px; margin-top:9px}
+.src-link{
+  display:inline-flex; align-items:center; gap:5px; font-size:12px; font-family:var(--font-mono);
+  color:var(--fg-2); background:var(--surface-container-lowest); border:1px solid var(--border-strong);
+  padding:3px 10px; border-radius:var(--radius-pill); transition:.15s;
+}
+.src-link:hover{border-color:var(--primary-container); color:var(--primary-container); text-decoration:none}
+.src-link svg{flex:none}
+
+/* ---------- quiet section ---------- */
+.quiet{
+  margin-top:var(--space-3xl); background:var(--surface-container-low); border:1px dashed var(--border-strong);
+  border-radius:var(--radius-lg); padding:var(--space-lg) var(--space-xl); color:var(--fg-muted); font-size:13.5px;
+}
+.quiet b{color:var(--fg-2); font-weight:600}
+.quiet code{font-family:var(--font-mono); font-size:12.5px; color:var(--fg-2)}
+footer{margin-top:var(--space-4xl); text-align:center; color:var(--fg-muted); font-size:12.5px; line-height:1.7}
+.toTop{position:fixed; right:18px; bottom:18px; width:44px; height:44px; border-radius:50%;
+  background:var(--primary-container); color:var(--on-primary); border:none; cursor:pointer;
+  display:grid; place-items:center; box-shadow:var(--shadow-lg); opacity:0; pointer-events:none; transition:.2s; z-index:50}
+.toTop.show{opacity:1; pointer-events:auto}
+@media (max-width:560px){
+  .wrap{padding:var(--space-lg) var(--space-md) var(--space-4xl)}
+  .brief-header{padding:var(--space-2xl) var(--space-lg)}
+  .signal{padding:var(--space-lg)}
+  .items,.user-head{padding-left:var(--space-lg); padding-right:var(--space-lg)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ========== ANSWER HEADER ========== -->
+  <header class="brief-header">
+    <div class="kicker">X / Twitter 关注动态 · 每日汇总</div>
+    <h1>Anthropic「三连核弹」刷屏：Opus 4.8 + 650 亿融资 + 470 亿年化收入</h1>
+    <p class="answer-strip">
+      本期主线极其集中：<strong>Anthropic 同日发布 Claude Opus 4.8、宣布 650 亿美元 H 轮融资（投后估值 9650 亿美元）、并披露年化收入冲到 470 亿美元</strong>，几乎所有博主都在围绕这三件事讨论；其次是 Google Gemini Omni 视频生成、开源/开放权重生态、文档解析（LiteParse / ParseBench）等。
+    </p>
+    <div class="chips">
+      <span class="useful-chip">时间窗口 <b>近 24h</b></span>
+      <span class="useful-chip">关注总数 <b>41</b></span>
+      <span class="useful-chip">有动态 <b>18</b></span>
+      <span class="useful-chip">动态条数 <b>80</b></span>
+      <span class="useful-chip">窗口 <b>05-28 → 05-29 UTC</b></span>
+    </div>
+  </header>
+
+  <!-- ========== PRIMARY INSIGHT: KEY SIGNALS ========== -->
+  <section class="sec" id="signals">
+    <div class="sec-head"><span class="dot"></span><h2>🔑 关键信号总结</h2></div>
+    <div class="primary-insight" id="signal-list"></div>
+  </section>
+
+  <!-- ========== VOCAB CARDS ========== -->
+  <section class="sec" id="vocab">
+    <div class="sec-head"><span class="dot"></span><h2>📖 生词预热</h2></div>
+    <p class="sec-sub">正文里出现的术语 / 缩写 / 生词，读前预习。可搜索（中英文 / 缩写均可）。</p>
+    <div class="searchbar">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+      <input type="text" id="vocab-search" placeholder="搜索术语，如 RL、open-weights、推理…" aria-label="搜索术语">
+    </div>
+    <div class="vocab-stack" id="vocab-stack"></div>
+    <div class="no-result" id="vocab-empty">没有匹配的术语</div>
+  </section>
+
+  <!-- ========== EVIDENCE STACK: USERS ========== -->
+  <section class="sec" id="feed">
+    <div class="sec-head"><span class="dot"></span><h2>📋 按用户分组的详细动态</h2></div>
+    <p class="sec-sub">每条推文均附原文出处，点击链接可回到 x.com。</p>
+    <div class="toolbar" id="user-filter"></div>
+    <div class="evidence-stack" id="evidence-stack"></div>
+  </section>
+
+  <!-- ========== QUIET ========== -->
+  <section class="quiet" id="silent">
+    <b>😴 无动态用户（23）</b><br>
+    本时间窗口内无新动态：<code>svlevine、realGeorgeHotz、ilyasut、sama、DarioAmodei、jackclarkSF、paperswithcode、drfeifei、Figure_robot、rasbt、jiayq、realDonaldTrump、deepseek_ai、DrJimFan、ChatGPTapp、MistralAI、zeritna、soumithchintala、karpathy、geoffreyhinton、stephzhan、AndrewYNg、fchollet</code>。
+  </section>
+
+  <footer>
+    数据来源 · X / Twitter 关注列表 · 窗口 2026-05-28 16:10 → 2026-05-29 16:10 UTC<br>
+    中文摘要由 x-follows-24h 生成 · 单文件交互页面（除字体外无外部依赖）
+  </footer>
+</div>
+
+<button class="toTop" id="toTop" aria-label="回到顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+/* ============ DATA ============ */
+const SIGNALS = [
+  '<b>Opus 4.8 与 650 亿融资双重「核弹」</b>：Anthropic 同日推出 Claude Opus 4.8（同价、判断力更强、能更诚实评估自身进度、可更长时间自主工作），并完成 650 亿美元 H 轮融资、投后估值 9650 亿美元，同时披露年化收入已突破 470 亿美元。Simon Willison 引用 Axios 评价称「找不到任何行业、任何时代能以这种体量如此快速增长有机收入的公司」。',
+  '<b>Opus 4.8 实测口碑两极但整体惊艳</b>：Ethan Mollick 用它在 Claude Code 里一镜到底写学术论文、做 RPG 游戏、生成可视化网站；但 Jerry Liu 的 ParseBench 显示它在视觉文档理解上<b>未专门微调</b>——表格/排版略有提升，内容忠实度反而略降。Mollick 同时强调 <b>GPT-5.5 Pro 仍是最强的「单发攻坚」与审稿模型</b>。',
+  '<b>开源 / 开放权重叙事走强</b>：Clement Delangue（Hugging Face）连发多条——HF 上 50% 模型/数据集是私有的、Factory 的开源模型用量月增 3 倍、并转发「美国的开源前沿模型公司在哪」的灵魂拷问；同时 HF 发布关于多轮 RL「Token-In Token-Out」训练陷阱的深度技术文。',
+  '<b>Google Gemini Omni 视频生成刷屏</b>：Demis Hassabis 连转两条 Omni 演示（草图相机路径生成无人机视角、Omni 提示词），社区反响热烈（单条转发近 400）。',
+  '<b>「烧 token」成行业热议</b>：围绕 Axios 报道「某公司一个月在 Claude 上烧掉 5 亿美元」，Mollick 与 Simon 都表示高度存疑并溯源；Mollick 认为没有任何采用 AI 的组织在撤退，智能体编程才刚起步几个月。'
+];
+
+const VOCAB = [
+  ['run-rate revenue','/rʌn reɪt ˈrevənjuː/','年化收入（按当前月度收入 ×12 推算的运营节奏收入）'],
+  ['post-money valuation','/poʊst ˈmʌni ˌvæljuˈeɪʃn/','投后估值（融资到账后的公司估值）'],
+  ['Series H','','H 轮融资（按字母排序的第 8 轮主要股权融资）'],
+  ['ARR','','Annual Recurring Revenue，年度经常性收入'],
+  ['frontier model','/ˈfrʌntɪr/','前沿模型（能力处于最前沿的大模型）'],
+  ['open-weights','/ˈoʊpən weɪts/','开放权重（公开模型参数，可下载自部署）'],
+  ['agentic','/eɪˈdʒentɪk/','智能体式的（让模型自主调用工具、多步执行）'],
+  ['rollout','/ˈroʊlaʊt/','此处指 RL 训练中模型生成的一整段交互轨迹'],
+  ['RL','','Reinforcement Learning，强化学习'],
+  ['tokenize / re-tokenize','/ˈtoʊkənaɪz/','（重新）分词，把文本切成模型的最小输入单元 token'],
+  ['gradient','/ˈɡreɪdiənt/','梯度（神经网络反向传播中用于更新参数的导数信号）'],
+  ['shader','/ˈʃeɪdər/','着色器（GPU 上用数学公式实时绘制画面的小程序）'],
+  ['content faithfulness','/ˈfeɪθflnəs/','内容忠实度（解析/生成结果对原文的还原准确度）'],
+  ['OCR','','Optical Character Recognition，光学字符识别'],
+  ['veil of ignorance','/veɪl əv ˈɪɡnərəns/','「无知之幕」，罗尔斯的伦理思想实验'],
+  ['quasi-experimental','/ˈkweɪzaɪ/','准实验（介于观察性研究与随机实验之间的因果识别方法）'],
+  ['FNO','','Fourier Neural Operator，傅里叶神经算子（用频域学习偏微分方程解的网络）'],
+  ['extrapolation','/ɪkˌstræpəˈleɪʃn/','外推（在训练数据范围之外预测）'],
+  ['JEPA','','Joint-Embedding Predictive Architecture，联合嵌入预测架构（LeCun 主张的世界模型路线）'],
+  ['formalization','/ˌfɔːrməlaɪˈzeɪʃn/','形式化（把数学证明翻译成机器可验证的语言）'],
+  ['dubbing','/ˈdʌbɪŋ/','配音（影视译制配音）']
+];
+
+// helper to build a single link object
+const L = (label,url) => ({label,url});
+
+const USERS = [
+  {
+    name:'Ethan Mollick', zh:'伊森·莫里克', ipa:'/ˈiːθən ˈmɒlɪk/',
+    bio:'沃顿商学院教授，AI 在教育与工作中应用的知名研究者与畅销书作者',
+    note:'本期最高产，密集实测 Opus 4.8 并对比 GPT-5.5 Pro。',
+    items:[
+      {lead:'<b>Opus 4.8 一镜到底写学术论文</b>：用 Claude Code 让 Opus 4.8 从多年前数百份去标识化研究文件中写出一篇虽小但严谨的学术论文。他不得不用 GPT-5.5 Pro 当审稿人，后者发现一处重大错误和一些小问题，Opus 已修正。',
+       links:[L('emollick/2060098885561778341','https://x.com/emollick/status/2060098885561778341')],
+       subs:[
+         {text:'补充：Opus 4.8 预先提出假设、做数据清洗、查文献、跑分析、做稳健性检验，并以 LaTeX 风格输出全文；GPT-5.5 发现一处幻觉结果及其他建设性反馈。', links:[L('原文','https://x.com/emollick/status/2060110650337112181')]},
+         {text:'「Claude 真能扮演经济学家」：贴出 Claude 做完稳健性检验后的自评——「在 1–10 的因果识别量表上，我现在给约 4.5 分（之前会给 3.5），但远未达准实验（~7 分）水平……我不该宣称因果识别。」称赞其诚实校准。', links:[L('原文','https://x.com/emollick/status/2060168513176658003')]}
+       ]},
+      {lead:'<b>GPT-5 Pro 系列仍是单发攻坚之王</b>：自去年夏天起，GPT-5 Pro 系列一直是最难问题「单发尝试」的最佳模型，至今没有真正竞争者。',
+       links:[L('emollick/2060164072071454857','https://x.com/emollick/status/2060164072071454857')],
+       subs:[{text:'续：GPT-5.5 Pro 正是产出大量新数学证明的模型，也是你审任何技术/学术论文找漏洞时该用的模型。', links:[L('原文','https://x.com/emollick/status/2060164976539578639')]}]},
+      {lead:'<b>Opus 4.8 自主造 RPG 游戏</b>：让 Opus 4.8 在 Claude Code 里构建并试玩一款全新 RPG，含 3 份 PDF 手册与冒险剧本、试玩笔记、网站和一个可玩的单人冒险，再全部部署到 Netlify——全程零反馈。',
+       links:[L('emollick/2060045063275573723','https://x.com/emollick/status/2060045063275573723')],
+       subs:[{text:'补充：图片由 GPT-Imagegen-1.5 经 API 生成，提示词等都由模型自己完成。', links:[L('原文','https://x.com/emollick/status/2060068351200690620')]}]},
+      {lead:'<b>Opus 4.8 shader 一镜到底</b>：让 Opus 4.8 一次生成一个可在 twigl 运行的「半淹没在风暴海洋中的无限新哥特式塔楼之城」着色器，全靠数学绘制。称早期试用印象深刻。',
+       links:[L('emollick/2060042738637148470','https://x.com/emollick/status/2060042738637148470')]},
+      {lead:'<b>「全人类可视化」实验</b>：用 Opus 4.8 在 Claude Code 里做了一个「曾经活过的所有人类」可视化，既好看又是对 AI 综合「研究+编码+设计+统计」能力的有趣测试。',
+       links:[L('emollick/2060165879908749490','https://x.com/emollick/status/2060165879908749490')],
+       subs:[
+         {text:'公开了逐字提示词（含「无知之幕」式问题、做成带地图与时间滑块的交互网站、修正法属圭亚那被误归为欧洲等）。', links:[L('原文','https://x.com/emollick/status/2060220482519962033')]},
+         {text:'「想改进/使用的人请自取」（附源码链接）。', links:[L('原文','https://x.com/emollick/status/2060377091456008580')]}
+       ]},
+      {lead:'<b>关于「烧 token」的连续讨论</b>（引用 Tracy Alloway 转述 Axios：某公司因未给员工 Claude 许可设上限，单月烧掉 5 亿美元）：「这真发生了吗？非常可疑。」',
+       links:[L('emollick/2060147060821680145','https://x.com/emollick/status/2060147060821680145')],
+       subs:[{text:'续：「我接触过很多公司几个月就烧光全年 token 预算，但单月 5 亿美元用于内部员工使用？」', links:[L('原文','https://x.com/emollick/status/2060147510052598221')]}]},
+      {lead:'<b>重构软件工程</b>：围绕 AI 重构软件工程需要工作量。组织理想上把 token 花在两件事——①真正造东西 ②做实验摸索最佳实践（必然含失败）。',
+       links:[L('emollick/2060357604044358108','https://x.com/emollick/status/2060357604044358108')],
+       subs:[{text:'续：关于 token 用量的「绞手」是真实的，但没看到任何已采用 AI 的组织在编码上撤退；智能体编程才几个月，大家都在试验如何平衡采用与效率。', links:[L('原文','https://x.com/emollick/status/2060359850861719563')]}]}
+    ]
+  },
+  {
+    name:'clem 🤗 / Clement Delangue', zh:'克莱门特·德朗格', ipa:'/kleˈmɒ̃ dəˈlɑːŋ/',
+    bio:'Hugging Face 联合创始人兼 CEO，开源 AI 社区核心推动者',
+    note:'本期围绕「开源/开放权重 vs 前沿闭源」密集发声并大量转发。',
+    items:[
+      {lead:'<b>多轮 RL 训练的隐形陷阱</b>：很多人在用 RL 训练智能体 LLM，却有一个静默损坏的训练循环而不自知。陷阱在于——每次解析模型输出检测工具调用、再把更新后的对话重新分词，就是在「掷骰子」：往返通常给回相同 token，偶尔不同，于是梯度落在模型从未真正采样过的序列上，不崩溃但数学悄悄出错。修复只有一条规则：<b>绝不重新编码已解码的 token</b>——即「Token-In, Token-Out」。HF 团队发了深度文并审计了主流开放权重模型族。',
+       links:[L('ClementDelangue/2060175330665508917','https://x.com/ClementDelangue/status/2060175330665508917')]},
+      {lead:'<b>HF 上 50% 的模型/数据集是私有的</b>：多数人只知道 HF 的公开模型/数据集，但少有人意识到一半是私有的。随着 buckets（HF 的 S3 替代品）推出，这一数字还在涨——企业越来越多地自己造 AI 而非外包给 API。',
+       links:[L('ClementDelangue/2060378354931388837','https://x.com/ClementDelangue/status/2060378354931388837')]},
+      {lead:'<b>关于「选模型」的思考</b>（引用 Lovable 的 Anton Osika：多数人不想在 AI 模型间做选择，只想要好结果）：赞同！这也是为何价值大量沉淀到前沿模型——若没有切换模型的心智负担，人们就会默认用被营销成「前沿」的那个，即便对多数任务不是最优性价比。',
+       links:[L('ClementDelangue/2060391199018541332','https://x.com/ClementDelangue/status/2060391199018541332')]},
+      {lead:'<b>「你按模型卡片选 AI 模型，为何不用模型卡选人」</b>：调侃式分享，恭喜 Noah。',
+       links:[L('ClementDelangue/2060386629693386825','https://x.com/ClementDelangue/status/2060386629693386825')]},
+      {rt:true, lead:'转推 @Jason：「美国的开源前沿模型公司在哪？」',
+       links:[L('原文 Jason','https://x.com/Jason/status/2060100959498342740'),L('转推','https://x.com/ClementDelangue/status/2060100959498342740')]},
+      {rt:true, lead:'转推 @matanSF：「叙事被打破：过去一个月 Factory 里的开源模型用量相对闭源模型增长超 3 倍（按总量计）。」',
+       links:[L('原文 matanSF','https://x.com/matanSF/status/2060062619487072624'),L('转推','https://x.com/ClementDelangue/status/2060062619487072624')]},
+      {rt:true, lead:'转推 @Pontifex（教宗账号）：「人工智能不会经历体验、没有身体、不感受喜悦或痛苦、不通过关系成熟……」（转发量超 2.5 万）',
+       links:[L('原文 Pontifex','https://x.com/Pontifex/status/2060380844036968580'),L('转推','https://x.com/ClementDelangue/status/2060380844036968580')]},
+      {rt:true, lead:'转推 @mr_r0b0t：NVIDIA 官方 GLM5.1-NVFP4 现身 Hugging Face。',
+       links:[L('原文 mr_r0b0t','https://x.com/mr_r0b0t/status/2060130769490641356'),L('转推','https://x.com/ClementDelangue/status/2060130769490641356')]},
+      {rt:true, lead:'转推 @LottoLabs：面向「GPU 穷人」的酷模型（8b a1b，超大 token 量训练，超快）。',
+       links:[L('原文 LottoLabs','https://x.com/LottoLabs/status/2060115083917656341'),L('转推','https://x.com/ClementDelangue/status/2060115083917656341')]},
+      {rt:true, lead:'转推 @ivanfioravanti：本地 Reachy Mini 无线对话「像魔法一样」。',
+       links:[L('原文 ivanfioravanti','https://x.com/ivanfioravanti/status/2060112323402952729'),L('转推','https://x.com/ClementDelangue/status/2060112323402952729')]},
+      {rt:true, lead:'转推 @julien_c：HF 越来越看好进入数据基础设施业务，克隆了 68 TB 数据。',
+       links:[L('原文 julien_c','https://x.com/julien_c/status/2060093364670706168'),L('转推','https://x.com/ClementDelangue/status/2060093364670706168')]},
+      {rt:true, lead:'转推 @CChadebec：新发布 MONET 🌸 数据集（Apache2.0、去重并重新加注的 1.05 亿样本）。',
+       links:[L('原文 CChadebec','https://x.com/CChadebec/status/2060060493448921177'),L('转推','https://x.com/ClementDelangue/status/2060060493448921177')]},
+      {rt:true, lead:'转推 @bidhan：发布 Paris 2.0——号称世界首个去中心化训练的视频生成模型。',
+       links:[L('原文 bidhan','https://x.com/bidhan/status/2060059343580471311'),L('转推','https://x.com/ClementDelangue/status/2060059343580471311')]},
+      {rt:true, lead:'转推 @bidhan：选择性开放 Paris 2.0 权重，与对扩散式视频感兴趣的研究者/团队合作。',
+       links:[L('原文 bidhan','https://x.com/bidhan/status/2060059328850043307'),L('转推','https://x.com/ClementDelangue/status/2060059328850043307')]},
+      {rt:true, lead:'转推 @dzhulgakov：感谢点名，Fireworks AI 一直在用……（博客启发了社区）。',
+       links:[L('原文 dzhulgakov','https://x.com/dzhulgakov/status/2060177620130517017'),L('转推','https://x.com/ClementDelangue/status/2060177620130517017')]}
+    ]
+  },
+  {
+    name:'Simon Willison', zh:'西蒙·威利森', ipa:'/ˈsaɪmən ˈwɪlɪsn/',
+    bio:'Django 联合创始人，知名独立开发者与 AI 工具评测博主',
+    note:'持续追踪 Opus 4.8 发布与 Anthropic 财务数据，并对「烧钱」传闻做事实核查。',
+    items:[
+      {lead:'<b>Opus 4.8 评测笔记</b>：发布关于 Claude Opus 4.8 的笔记，附上五种不同「思考强度」各自画的「骑自行车的鹈鹕」——这是他的招牌基准测试。',
+       links:[L('simonw/2060153712119885867','https://x.com/simonw/status/2060153712119885867')]},
+      {lead:'<b>Anthropic 收入增速惊人</b>：Axios 的 JimVandeHei 说在 Anthropic 处于 300 亿美元时就「找不到任何公司——任何行业、任何时代——能以这种体量如此快速增长有机收入」，如今他们已到 470 亿美元！',
+       links:[L('simonw/2060170727433830536','https://x.com/simonw/status/2060170727433830536')]},
+      {lead:'<b>质疑 Uber「AI 预算翻车」故事</b>：「我怀疑那个关于 Uber 烧光 AI 预算、对结果失望的整个故事——我深挖后发现它建立在非常不牢靠的基础上。」',
+       links:[L('simonw/2060209010486493500','https://x.com/simonw/status/2060209010486493500')],
+       subs:[
+         {text:'续：贴出含 Andrew Macdonald 称该交易「更难自圆其说」片段的扩展引文，并给出完整未删节文字稿链接。', links:[L('原文','https://x.com/simonw/status/2060353804625977772')]},
+         {text:'续：「我后悔漏掉了原引文里『更难自圆其说』那句……我本该更用心编辑。」', links:[L('原文','https://x.com/simonw/status/2060354196772413551')]}
+       ]}
+    ]
+  },
+  {
+    name:'Jerry Liu', zh:'杰瑞·刘', ipa:'/ˈdʒeri ljuː/',
+    bio:'LlamaIndex 联合创始人兼 CEO，RAG 与文档智能赛道代表人物',
+    note:'围绕新发布的文档解析器 LiteParse 与 Opus 4.8 的文档理解基准。',
+    items:[
+      {lead:'<b>ParseBench：Opus 4.8 未专门微调文档理解</b>：全面基准测试 Opus 4.8 的文档理解并对比 4.7。很明显 4.8 没有针对视觉文档理解专门做后训练——在表格/语义排版/版面上略好，但内容忠实度等更差。',
+       links:[L('jerryjliu0/2060196252642648427','https://x.com/jerryjliu0/status/2060196252642648427')],
+       subs:[{text:'引用 LlamaIndex 官号小结：表格/语义格式/版面略升，图表/内容忠实度略降，每页价格略增；教 LLM 像人一样读文档仍有大量「alpha」可挖，LlamaParse 仍是最佳文档摄取 API。', links:[]}]},
+      {rt:true, lead:'转推 @llama_index：同上 ParseBench 结果。',
+       links:[L('原文 llama_index','https://x.com/llama_index/status/2060165358569337102'),L('转推','https://x.com/jerryjliu0/status/2060168428934312415')]},
+      {lead:'<b>LiteParse：最快且最准的开源无模型 PDF 解析器</b>：用 Rust 重写、支持 50+ 文档类型。对所有开源、无模型 PDF 解析器（PyPDF、PyMuPDF、Markitdown 等）在 LLM 问答任务上做了基准——准确度约并列第一（与 pdftotext）。还支持 .docx/.pptx/.xlsx 及 OCR、截图工具。',
+       links:[L('jerryjliu0/2060036120524820846','https://x.com/jerryjliu0/status/2060036120524820846')]},
+      {rt:true, lead:'转推 @adityakabra：今天试了 liteparse 网页版转 PDF 为文本，速度震惊。',
+       links:[L('原文 adityakabra','https://x.com/adityakabra/status/2060040317437657554'),L('转推','https://x.com/jerryjliu0/status/2060040317437657554')]},
+      {lead:'<b>对 Anthropic 650 亿融资的调侃</b>（引用 AnthropicAI 公告）：「如果把 billions 换成 millions，这听起来就跟任何高增长创业公司的融资公告没两样 😉」',
+       links:[L('jerryjliu0/2060068247773614238','https://x.com/jerryjliu0/status/2060068247773614238')]},
+      {lead:'<b>Opus 4.8 发布日</b>（引用 @claudeai 发布帖）：「谁先上？」',
+       links:[L('jerryjliu0/2060047944792096960','https://x.com/jerryjliu0/status/2060047944792096960')]},
+      {rt:true, lead:'转推 @itsclelia：在柏林 techeurope 应用 AI 大会做了关于构建文档智能体的演讲。',
+       links:[L('原文 itsclelia','https://x.com/itsclelia/status/2060393617123160176'),L('转推','https://x.com/jerryjliu0/status/2060393617123160176')]}
+    ]
+  },
+  {
+    name:'swyx (Shawn Wang)', zh:'肖恩·王', ipa:'/ʃɔːn wɑːŋ/',
+    bio:'AI Engineer 大会创办人，Latent Space 播客主理人，「AI 工程师」概念提出者',
+    note:'关注 AI Engineer World\'s Fair 筹备与 Opus 4.8 的 API 细节。',
+    items:[
+      {lead:'<b>Opus 4.8 可中途改指令而不破坏缓存</b>（引用 @claudeai 发布帖）：「『开发者可在任务中途更新 Claude 的指令，而不破坏 prompt cache、也不必把更新走一次用户回合』——wtf？怎么做到的？？」',
+       links:[L('swyx/2060044644193624253','https://x.com/swyx/status/2060044644193624253')]},
+      {lead:'<b>与 ACM 主席会面</b>：在 CAISconf 颁发 Industry Spotlights，所有海报与 OpEx 演讲下月将在 AI Engineer 大会展示；畅想「AI 工程界的图灵奖」会是什么样。',
+       links:[L('swyx/2060148078754267426','https://x.com/swyx/status/2060148078754267426')]},
+      {lead:'回复 @HamiltonMusical：「这东西要起飞了 RSI WTF」（RSI 指收入/指标快速上扬）。',
+       links:[L('swyx/2060111215226237380','https://x.com/swyx/status/2060111215226237380')]},
+      {rt:true, lead:'转推 @helloiamleonie：受 vboykis 启发把人生第一次演讲改写成博客文，谈智能体的角色。',
+       links:[L('原文 helloiamleonie','https://x.com/helloiamleonie/status/2060343770840002626'),L('转推','https://x.com/swyx/status/2060343770840002626')]},
+      {rt:true, lead:'转推 @Beccalytics：「谁会在 AI Engineer World\'s Fair 见到我？太激动了！」',
+       links:[L('原文 Beccalytics','https://x.com/Beccalytics/status/2060214646091686080'),L('转推','https://x.com/swyx/status/2060214646091686080')]},
+      {rt:true, lead:'转推 @walden_yan：若你在构建自己的云端智能体（如 Devin、Ramp Inspect），这里有很多关于配置 VM 的好细节。',
+       links:[L('原文 walden_yan','https://x.com/walden_yan/status/2060119937243639958'),L('转推','https://x.com/swyx/status/2060119937243639958')]},
+      {rt:true, lead:'转推 @eisokant：喜欢 Latent Space 播客对 Laguna M.1/XS.2 技术报告的拆解，论文俱乐部做了深度讨论。',
+       links:[L('原文 eisokant','https://x.com/eisokant/status/2060099961258422353'),L('转推','https://x.com/swyx/status/2060099961258422353')]}
+    ]
+  },
+  {
+    name:'Anthropic', zh:'安特罗匹克', ipa:'/ˌænθrəˈpɪk/',
+    bio:'Claude 系列模型的研发公司，OpenAI 主要竞争者',
+    note:'同日宣布发布 Opus 4.8、完成 650 亿融资、年化收入破 470 亿。',
+    items:[
+      {lead:'<b>650 亿美元 H 轮融资</b>：以 9650 亿美元投后估值完成 650 亿美元 H 轮融资，由 Altimeter、Dragoneer、Greenoaks、红杉领投，用于推进研究、扩充满足 Claude 需求的产能。',
+       links:[L('AnthropicAI/2060061347522433422','https://x.com/AnthropicAI/status/2060061347522433422')],
+       subs:[{text:'续：本月早些时候年化收入已突破 470 亿美元，由各行业组织把 Claude 部署进核心运营、以及越来越多人日常使用驱动。', links:[L('原文','https://x.com/AnthropicAI/status/2060061348818518493')]}]},
+      {rt:true, lead:'转推 @claudeai：介绍 Claude Opus 4.8——在 4.7 基础上判断更敏锐、对自身进度更诚实、能比前代更长时间自主工作，同价上线。',
+       links:[L('原文 claudeai','https://x.com/claudeai/status/2060042702150930686'),L('转推','https://x.com/AnthropicAI/status/2060042792399770030')]},
+      {rt:true, lead:'转推 @claudeai：「在发布新模型前，这些团队会试着把它弄坏」——用它构建、推到极限并反馈短板。',
+       links:[L('原文 claudeai','https://x.com/claudeai/status/2060075590581948519'),L('转推','https://x.com/AnthropicAI/status/2060075590581948519')]}
+    ]
+  },
+  {
+    name:'Peter Yang', zh:'彼得·杨', ipa:'/ˈpiːtər jæŋ/',
+    bio:'产品经理、AI 与产品成长类知名 newsletter 作者',
+    items:[
+      {lead:'<b>Google 免费 5 天 AI 智能体课程回归</b>：这次主题是「与智能体一起 vibe coding」，上一期有 150 万学员。Day1 智能体+vibe coding、Day2 工具与互操作、Day3 记忆与上下文、Day4 质量与安全、Day5 从原型到生产。每天 1-2 小时，Google 工程师授课，免费。',
+       links:[L('petergyang/2060149158615609474','https://x.com/petergyang/status/2060149158615609474')],
+       subs:[{text:'续：喜欢的话免费订阅他的 newsletter（11 万+ 订阅者）。', links:[L('原文','https://x.com/petergyang/status/2060254968968569062')]}]},
+      {rt:true, lead:'转推 @petergyang：（同上 Google 5 天 AI 智能体课程）。',
+       links:[L('原文','https://x.com/petergyang/status/2060149158615609474'),L('转推','https://x.com/petergyang/status/2060330880863011081')]},
+      {lead:'<b>求助 YouTuber 设备</b>：菜鸟 YouTuber 问题——如何摆放提词器（elgato）和显示器以便录制时来回看？湾区有擅长家庭录影棚布置的人吗？',
+       links:[L('petergyang/2060212719916384290','https://x.com/petergyang/status/2060212719916384290')]}
+    ]
+  },
+  {
+    name:'Demis Hassabis', zh:'戴密斯·哈萨比斯', ipa:'/ˈdemɪs həˈsæbɪs/',
+    bio:'Google DeepMind 联合创始人兼 CEO，2024 年诺贝尔化学奖得主',
+    items:[
+      {rt:true, lead:'转推 @alexanderchen：Gemini Omni 🐦（附提示词与视频）。',
+       links:[L('原文 alexanderchen','https://x.com/alexanderchen/status/2060389752491143170'),L('转推','https://x.com/demishassabis/status/2060389752491143170')]},
+      {rt:true, lead:'转推 @bilawalsidhu：给 google omni 一条手绘相机路径，让它生成无人机视角画面（转发近 400）。',
+       links:[L('原文 bilawalsidhu','https://x.com/bilawalsidhu/status/2060101819133550676'),L('转推','https://x.com/demishassabis/status/2060101819133550676')]},
+      {rt:true, lead:'转推 @polynoamial：AlphaGo 之后人类围棋棋手水平明显提升，我猜数学领域也会出现类似模式（转发近 900）。',
+       links:[L('原文 polynoamial','https://x.com/polynoamial/status/2060044400923668663'),L('转推','https://x.com/demishassabis/status/2060044400923668663')]}
+    ]
+  },
+  {
+    name:'Andrew Reed', zh:'安德鲁·里德', ipa:'/ˈændruː riːd/',
+    bio:'Hugging Face 机器学习工程师',
+    items:[
+      {lead:'<b>韩语版语音上线</b> 🇰🇷（引用自己的印地语版本帖）：分享多语种语音 demo。',
+       links:[L('andrew__reed/2060098072466894908','https://x.com/andrew__reed/status/2060098072466894908')],
+       subs:[{text:'引用源：「终于，你可以听到我的印地语 🇮🇳 声音了」（引用 ElevenLabs 的 Mati：推出革命性新配音模型，源于对波兰译制片「一个声音配所有角色」的不满，同时保留原片情感）。', links:[L('原文','https://x.com/andrew__reed/status/2060061202705944758')]}]},
+      {lead:'「哈哈，ChatGPT 太强了」（附图）。',
+       links:[L('andrew__reed/2060109248475156707','https://x.com/andrew__reed/status/2060109248475156707')],
+       subs:[{text:'续：「不错，但远没那么好笑。」', links:[L('原文','https://x.com/andrew__reed/status/2060110256823554388')]}]}
+    ]
+  },
+  {
+    name:'Yann LeCun', zh:'杨立昆', ipa:'/jɑːn ləˈkœ̃/',
+    bio:'Meta 首席 AI 科学家，图灵奖得主，世界模型/JEPA 路线倡导者',
+    items:[
+      {rt:true, lead:'转推 @arnal_charles：Meta AI 团队宣布 ATLAS——迄今最大规模的自动形式化工作之一。',
+       links:[L('原文 arnal_charles','https://x.com/arnal_charles/status/2060090463701365200'),L('转推','https://x.com/ylecun/status/2060090463701365200')]},
+      {rt:true, lead:'转推 @lucasmaes_：想轻松加入 JEPA 与世界模型研究吗？经过一整年努力，我们很兴奋地……（转发 229）。',
+       links:[L('原文 lucasmaes_','https://x.com/lucasmaes_/status/2060091576555057295'),L('转推','https://x.com/ylecun/status/2060091576555057295')]},
+      {rt:true, lead:'转推 @logic_int：Aleph Prover 已形式化 OpenAI 对 Paul Erdős 平面单位距离问题反证的证明，现发布形式化成果。',
+       links:[L('原文 logic_int','https://x.com/logic_int/status/2060101758165123472'),L('转推','https://x.com/ylecun/status/2060101758165123472')]},
+      {rt:true, lead:'转推 @GavinNewsom：（美国政治内容，转发超 1.4 万）。',
+       links:[L('原文 GavinNewsom','https://x.com/GavinNewsom/status/2060092233701802064'),L('转推','https://x.com/ylecun/status/2060092233701802064')]}
+    ]
+  },
+  {
+    name:'Sonya Huang 🐥', zh:'黄之莹', ipa:'/ˈsɒnjə hwɑːŋ/',
+    bio:'红杉资本合伙人，专注 AI 领域投资',
+    items:[
+      {rt:true, lead:'转推 @AnthropicAI：650 亿美元 H 轮融资、9650 亿美元投后估值。',
+       links:[L('原文 AnthropicAI','https://x.com/AnthropicAI/status/2060061347522433422'),L('转推','https://x.com/sonyatweetybird/status/2060064262878568590')]},
+      {rt:true, lead:'转推 @emollick：早期试用 Opus 4.8 印象深刻（neo-gothic 塔楼 shader）。',
+       links:[L('原文 emollick','https://x.com/emollick/status/2060042738637148470'),L('转推','https://x.com/sonyatweetybird/status/2060064192628207953')]},
+      {rt:true, lead:'转推 @jainarvind：Glean 年度经常性收入（ARR）突破 3 亿美元，跨过 2 亿仅五个月、过去一年增长约 3 倍。',
+       links:[L('原文 jainarvind','https://x.com/jainarvind/status/2060088244172472386'),L('转推','https://x.com/sonyatweetybird/status/2060088244172472386')]}
+    ]
+  },
+  {
+    name:'Lucas Beyer', zh:'卢卡斯·拜尔', ipa:'/ˈluːkəs ˈbaɪər/',
+    bio:'知名计算机视觉/多模态研究员（前 Google DeepMind，现 OpenAI）',
+    items:[
+      {lead:'<b>天气和实验结果一样好时</b>（配图）。',
+       links:[L('giffmana/2060278672490168749','https://x.com/giffmana/status/2060278672490168749')]},
+      {lead:'<b>评 Mistral 发布</b>（引用 Mistral AI 在卢浮宫 AI Now 峰会宣布面向航空航天/汽车/能源/物理的 AI 方案，已在空客、宝马、法国电力等生产部署）：「不太确定这公告到底意味着什么……但他们的设计师厉害（cooked）！」',
+       links:[L('giffmana/2060072625569681684','https://x.com/giffmana/status/2060072625569681684')]}
+    ]
+  },
+  {
+    name:'Max Tegmark', zh:'马克斯·泰格马克', ipa:'/mæks ˈtɛɡmɑːrk/',
+    bio:'MIT 物理学家，生命未来研究所（FLI）创始人，AI 安全倡导者',
+    items:[
+      {lead:'<b>AI 研究者的道德自查清单</b>：「你当然有道德原则——但你用得够多吗？我们写了这份 6 步清单，帮助锻炼你的『道德肌肉』，专为善意的 AI 研究者定制。」',
+       links:[L('tegmark/2060381278575182244','https://x.com/tegmark/status/2060381278575182244')]},
+      {rt:true, lead:'转推 @_ChristopherM：Ronny Chieng 的哈佛毕业演讲堪称经典（含 #FuckAI 等标签，附视频）。',
+       links:[L('原文 _ChristopherM','https://x.com/_ChristopherM/status/2060366233359302892'),L('转推','https://x.com/tegmark/status/2060366233359302892')]}
+    ]
+  },
+  {
+    name:'Greg Brockman', zh:'格雷格·布罗克曼', ipa:'/ɡreɡ ˈbrɒkmən/',
+    bio:'OpenAI 联合创始人兼总裁',
+    items:[
+      {lead:'<b>OpenAI 与 CGR 合作提升赛车运动表现</b>（引用 OpenAI「R&D Part 1: Here to Win」视频）：介绍 Chip Ganassi Racing 如何与 OpenAI 协作改进 motorsports 性能。',
+       links:[L('gdb/2060045957463724372','https://x.com/gdb/status/2060045957463724372')]}
+    ]
+  },
+  {
+    name:'Prof. Anima Anandkumar', zh:'阿尼玛·阿南德库马尔', ipa:'/əˈnɪmə əˈnʌndkʊmɑːr/',
+    bio:'加州理工教授，前 NVIDIA 机器学习研究总监，神经算子（Neural Operator）领域代表学者',
+    items:[
+      {lead:'<b>FNO 外推成功</b>（引用 PRX Quantum：傅里叶神经算子通过捕捉频域时间相关性，实现对周期驱动量子系统的物理忠实建模，并能外推到训练数据之外的动力学）：「很高兴看到 FNO 的外推成功。」',
+       links:[L('AnimaAnandkumar/2060134092793123248','https://x.com/AnimaAnandkumar/status/2060134092793123248')]}
+    ]
+  },
+  {
+    name:'Sequoia Capital', zh:'红杉资本', ipa:'/sɪˈkwɔɪə/',
+    bio:'全球顶级风险投资机构',
+    items:[
+      {rt:true, lead:'转推 @jainarvind：Glean 年度经常性收入（ARR）突破 3 亿美元，跨过 2 亿仅五个月、过去一年增长约 3 倍。',
+       links:[L('原文 jainarvind','https://x.com/jainarvind/status/2060118501902504151'),L('转推','https://x.com/sequoia/status/2060118501902504151')]}
+    ]
+  },
+  {
+    name:'Bill Gurley', zh:'比尔·格利', ipa:'/bɪl ˈɡɜːrli/',
+    bio:'Benchmark 知名风险投资人，科技与市场评论者',
+    items:[
+      {rt:true, lead:'转推 @vladtenev：上线当天，TrumpAccounts app 登顶金融榜第 1、总榜第 4，是 AI 之外增长最快的 app（转发 167）。',
+       links:[L('原文 vladtenev','https://x.com/vladtenev/status/2060235789716373969'),L('转推','https://x.com/bgurley/status/2060235789716373969')]}
+    ]
+  },
+  {
+    name:'sarah guo', zh:'郭莎拉', ipa:'/ˈsɛərə ɡwoʊ/',
+    bio:'Conviction 创始人，No Priors 播客主理人，AI 投资人',
+    items:[
+      {rt:true, lead:'转推 @NoPriorsPod：新一期播客——某联合创始人兼 CEO 谈为何我们需要对 AI 的独立理解与治理（governance）。',
+       links:[L('原文 NoPriorsPod','https://x.com/NoPriorsPod/status/2060056963384316268'),L('转推','https://x.com/saranormous/status/2060056963384316268')]}
+    ]
+  }
+];
+
+/* ============ RENDER ============ */
+const linkIcon = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>';
+
+// signals
+document.getElementById('signal-list').innerHTML = SIGNALS.map((s,i)=>
+  `<div class="signal"><div class="num">${i+1}</div><div class="body">${s}</div></div>`).join('');
+
+// vocab
+const vstack = document.getElementById('vocab-stack');
+vstack.innerHTML = VOCAB.map(([t,ipa,def])=>{
+  const search = (t+' '+def).toLowerCase();
+  return `<div class="term-card" data-search="${search.replace(/"/g,'')}">
+    <div class="t-top"><span class="term">${t}</span>${ipa?`<span class="ipa">${ipa}</span>`:''}</div>
+    <div class="def">${def}</div></div>`;
+}).join('');
+
+const vsearch = document.getElementById('vocab-search');
+const vempty = document.getElementById('vocab-empty');
+vsearch.addEventListener('input', ()=>{
+  const q = vsearch.value.trim().toLowerCase();
+  let shown = 0;
+  vstack.querySelectorAll('.term-card').forEach(c=>{
+    const m = !q || c.dataset.search.includes(q);
+    c.style.display = m ? '' : 'none';
+    if(m) shown++;
+  });
+  vempty.style.display = shown ? 'none' : 'block';
+});
+
+// users / evidence stack
+function renderItem(it){
+  const links = (it.links||[]).map(l=>
+    `<a class="src-link" href="${l.url}" target="_blank" rel="noopener">${linkIcon}${l.label}</a>`).join('');
+  const subs = (it.subs||[]).map(s=>{
+    const sl = (s.links||[]).map(l=>`<a class="src-link" href="${l.url}" target="_blank" rel="noopener">${linkIcon}${l.label}</a>`).join('');
+    return `<div class="sub">${s.text}${sl?`<div class="links">${sl}</div>`:''}</div>`;
+  }).join('');
+  const tag = it.rt ? '<span class="tag-rt">🔁 转推</span>' : '';
+  return `<div class="item">
+    <div class="lead">${tag}${it.lead}</div>
+    ${links?`<div class="links">${links}</div>`:''}
+    ${subs?`<div class="subs">${subs}</div>`:''}
+  </div>`;
+}
+
+const estack = document.getElementById('evidence-stack');
+estack.innerHTML = USERS.map((u,idx)=>{
+  const search = (u.name+' '+u.zh+' '+u.bio+' '+u.items.map(i=>i.lead+(i.subs||[]).map(s=>s.text).join(' ')).join(' ')).toLowerCase();
+  return `<div class="user-group" id="u${idx}" data-search="${search.replace(/"/g,'')}">
+    <div class="user-head">
+      <div class="uname">${u.name} <span class="ipa">${u.ipa}</span> <span class="count">${u.items.length} 条</span></div>
+      <div class="bio">${u.zh} — ${u.bio}</div>
+      ${u.note?`<div class="note">${u.note}</div>`:''}
+    </div>
+    <div class="items">${u.items.map(renderItem).join('')}</div>
+  </div>`;
+}).join('');
+
+// user quick-filter chips
+const ufilter = document.getElementById('user-filter');
+ufilter.innerHTML = `<button class="filter-chip" aria-pressed="true" data-all="1">全部 (${USERS.length})</button>` +
+  USERS.map((u,i)=>`<button class="filter-chip" data-target="u${i}">${u.name.split(' ')[0].replace('🤗','').replace('🐥','').trim()}</button>`).join('');
+ufilter.addEventListener('click', e=>{
+  const btn = e.target.closest('.filter-chip'); if(!btn) return;
+  ufilter.querySelectorAll('.filter-chip').forEach(b=>b.setAttribute('aria-pressed','false'));
+  btn.setAttribute('aria-pressed','true');
+  if(btn.dataset.all){
+    estack.querySelectorAll('.user-group').forEach(g=>g.style.display='');
+  } else {
+    const id = btn.dataset.target;
+    estack.querySelectorAll('.user-group').forEach(g=>g.style.display = g.id===id ? '' : 'none');
+    document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+  }
+});
+
+// to-top
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', ()=>{ toTop.classList.toggle('show', window.scrollY>600); });
+toTop.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>
