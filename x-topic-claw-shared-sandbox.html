@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>让一堆 claw 共享底座 — agent 沙箱的密度与隔离</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9;--panel:#ffffff;--ink:#15181d;--sub:#5b6470;--line:#e6e9ee;
+  --accent:#0e7c86;--accent2:#7c3aed;--good:#138a5e;--warn:#c2410c;--chip:#eef1f6;
+  --shadow:0 1px 2px rgba(20,24,33,.04),0 8px 24px rgba(20,24,33,.06);
+  --mono:"Space Grotesk",ui-monospace,monospace;--sans:"Plus Jakarta Sans","Noto Sans SC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{--bg:#0d0f12;--panel:#161a20;--ink:#e9edf3;--sub:#9aa4b2;--line:#252b34;--accent:#2dd4bf;--accent2:#a78bfa;--good:#34d399;--warn:#fb923c;--chip:#1d232c;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.45);}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:24px 18px 80px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--mono);font-weight:700;font-size:clamp(23px,5vw,36px);line-height:1.18;margin:.3em 0 .2em}
+.lede{color:var(--sub);font-size:16px;margin:.4em 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.meta span{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:12.5px;color:var(--sub);font-family:var(--mono)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:18px 0;box-shadow:var(--shadow)}
+.tldr{border-left:3px solid var(--accent)}.tldr b{color:var(--accent)}
+h2{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub);margin:34px 0 4px;font-weight:600}
+h3{font-size:18px;margin:20px 0 6px;font-weight:700}
+p{margin:.55em 0}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+ul{margin:.4em 0;padding-left:1.2em}li{margin:.3em 0}
+.gl{display:grid;gap:8px}
+.gl .row{background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14.5px}
+.gl .w{font-family:var(--mono);font-weight:600}.gl .ipa{font-family:var(--mono);color:var(--accent2);font-size:13px;margin-left:6px}
+.sig{counter-reset:s;display:grid;gap:10px}
+.sig .row{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.sig .n{counter-increment:s;font-family:var(--mono);font-weight:700;color:var(--accent);min-width:22px}
+.sig .n::before{content:counter(s)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--chip);font-family:var(--mono);font-weight:600;font-size:12px}
+.q{background:var(--chip);border-left:3px solid var(--accent2);border-radius:0 10px 10px 0;padding:12px 15px;margin:12px 0;font-size:15px}
+.q cite{display:block;margin-top:8px;font-style:normal}
+.pain{border-top:3px solid var(--accent)}
+.good{color:var(--good);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;background:var(--chip);border:1px solid var(--line);color:var(--sub);margin-right:6px}
+.src{display:grid;gap:8px}
+.src a{display:block;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.5px;color:var(--ink)}
+.src a:hover{border-color:var(--accent)}.src .h{font-family:var(--mono);color:var(--accent);font-weight:600}.src .t{color:var(--sub);display:block;margin-top:2px}
+.route{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 9%,transparent),color-mix(in srgb,var(--accent2) 9%,transparent));border:1px solid var(--line)}
+.three{display:grid;gap:10px;margin:10px 0}
+.three .c{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 15px}
+.three .c b{color:var(--accent)}
+.foot{color:var(--sub);font-size:13px;border-top:1px solid var(--line);margin-top:36px;padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="kicker">X 主题调研 · 补充 · Insight Brief</div>
+<h1>让一堆 claw 共享底座<br>agent 沙箱的密度与隔离</h1>
+<p class="lede">把部署模式从「一个 claw 独占一个容器」改成「一堆 claw 通过分布式文件夹 + 沙箱共享底座」降本——方向对吗、业界怎么做、怎么选型、坑在哪。这是「自建 harness」痛点①（部署密度，非自托管模型）的专项展开。</p>
+<div class="meta"><span>2026-05-30</span><span>bird · 12 检索式</span><span>下钻 3 串</span><span>承接 harness 篇</span></div>
+
+<div class="panel tldr">
+<b>先给结论：</b>方向对，但别简化成「全部共享」。正确姿势是 <b>按威胁模型分层隔离（tier）+ 用 COW/快照/池化把闲置成本压没</b>，而不是「一 claw 一容器 24h 常驻」。你的销售运营是 <b>第一方、跑自己的 skill</b>（非陌生人代码），可用 <b>高密度的轻隔离（共享内核 + gVisor）</b>，把 microVM 留给真要跑不可信代码的场景。
+</div>
+
+<h2>📖 生词预热</h2>
+<div class="gl">
+  <div class="row"><span class="w">sandbox</span><span class="ipa">/ˈsændbɒks/</span> — 沙箱：受限执行环境，限制 agent 跑代码的「爆炸半径」</div>
+  <div class="row"><span class="w">blast radius</span><span class="ipa">/blæst ˈreɪdiəs/</span> — 爆炸半径：出事波及范围；隔离就是压小它</div>
+  <div class="row"><span class="w">microVM</span><span class="ipa">/ˈmaɪkroʊ viː em/</span> — 微型虚拟机（Firecracker）：启动快、开销小，又有 VM 级硬隔离</div>
+  <div class="row"><span class="w">Firecracker</span><span class="ipa">/ˈfaɪərkrækər/</span> — AWS 开源 microVM 引擎，Lambda 多租户隔离底座</div>
+  <div class="row"><span class="w">gVisor / runsc</span><span class="ipa">/ˈdʒiːvaɪzər/</span> — Google 用户态内核沙箱，进程级、比 VM 轻，隔离强于普通容器</div>
+  <div class="row"><span class="w">Kata Containers</span><span class="ipa">/ˈkɑːtə/</span> — 用轻量 VM 包住容器，兼顾兼容性与隔离</div>
+  <div class="row"><span class="w">shared-kernel container</span> — 共享内核容器（Docker 默认）：密度最高最便宜，但<b>不是真正的安全边界</b></div>
+  <div class="row"><span class="w">multi-tenancy</span><span class="ipa">/ˌmʌltiˈtenənsi/</span> — 多租户：多个互不信任的负载共享同一底座</div>
+  <div class="row"><span class="w">overlayfs</span><span class="ipa">/ˈoʊvərleɪ ef es/</span> — 联合文件系统：基础层只读共享、每实例只写增量层，省存储</div>
+  <div class="row"><span class="w">copy-on-write (COW)</span><span class="ipa">/ˈkɒpi ɒn raɪt/</span> — 写时复制：使「分叉/丢弃」近乎免费</div>
+  <div class="row"><span class="w">CRIU</span><span class="ipa">/ˈkriːuː/</span> — Checkpoint/Restore In Userspace，给进程「存档/读档」</div>
+  <div class="row"><span class="w">warm pool</span><span class="ipa">/wɔːrm puːl/</span> — 预热池：预开一批沙箱待命，省冷启动</div>
+  <div class="row"><span class="w">fork</span><span class="ipa">/fɔːrk/</span> — 从基础实例分叉新实例，共享内存/文件，启动极快</div>
+  <div class="row"><span class="w">egress filtering</span><span class="ipa">/ˈiːɡres/</span> — 出网过滤：限制沙箱能访问的网络端点，防外泄</div>
+  <div class="row"><span class="w">agentfs</span> — agent 专用虚拟文件系统（Turso 等），让多沙箱共享文件层</div>
+  <div class="row"><span class="w">HITL</span> — Human-In-The-Loop，人工在回路审批高风险动作</div>
+</div>
+
+<h2>关键信号 · 先看这 5 条</h2>
+<div class="sig">
+  <div class="row"><span class="n"></span><div><b>共享内核容器从来不是安全边界</b>——「只是我们集体假装是墙的便利边界。agent 栈在用十年前 Lambda 就解决过的方式重新发现多租户隔离。」降密度前先想清威胁模型。</div></div>
+  <div class="row"><span class="n"></span><div><b>microVM ≠ 万能沙箱</b>：「单靠它的隔离不够，把 agent 关进 microVM 也可能越狱。」隔离是系统工程，不是套层 VM 就完事。</div></div>
+  <div class="row"><span class="n"></span><div><b>分层隔离是业界范式</b>：Anthropic 三产品三隔离（gVisor / OS 沙箱+人审 / 完整 VM），原则「<b>先做环境隔离、再谈模型层引导</b>」「隔离强度匹配用户能力」。</div></div>
+  <div class="row"><span class="n"></span><div><b>密度可以很高且不必上 SaaS</b>：「每个沙箱进程作为独立 gVisor 线程，和现有 k8s pod 同节点跑，自动扩。不需要外部 Sandbox SaaS。」</div></div>
+  <div class="row"><span class="n"></span><div><b>降本关键是别让闲置实例空转</b>：CRIU+overlayfs 亚 500ms 快照恢复、COW 每任务分叉、生命周期绑定 scope 用完即毁——而非一 claw 一容器常驻。</div></div>
+</div>
+
+<h2>一 · 为什么「一 claw 一容器」默认但贵</h2>
+<div class="panel">
+<p>独占容器隔离最省心，但代价是：<b>闲置空转</b>（claw 多数时间在等模型/等人，容器却 24h 占资源）、<b>冷启动浪费</b>（频繁拉起/销毁）、<b>存储重复</b>（N 个 claw = N 份镜像）。</p>
+<div class="q">「编码 agent 不该因为弄坏测试环境就等 Docker 重启 3 秒。」——这种等待和重复就是密度低的直接成本。
+<cite>— <a href="https://x.com/JainishP8/status/2059735413858713970">@JainishP8</a></cite></div>
+<p>你的直觉（共享底座降本）是对的，问题只在 <b>怎么共享才既省又安全</b>。</p>
+</div>
+
+<h2>二 · 隔离技术光谱：密度↔隔离是一条曲线</h2>
+<div class="panel">
+<div class="q">「sandbox 只是『隐含安全的隔离』，没规定实现——可以是容器（gVisor），也可以是 VM（Firecracker）。」
+<cite>— <a href="https://x.com/yegle/status/2060143576013828410">@yegle</a></cite></div>
+<table>
+<tr><th>档位</th><th>技术</th><th>密度/成本</th><th>隔离</th><th>适用</th></tr>
+<tr><td>共享内核容器</td><td>Docker/namespace</td><td class="good">最高最便宜</td><td class="warn">弱（非安全边界）</td><td>全第一方可信负载</td></tr>
+<tr><td>用户态内核沙箱</td><td><b>gVisor/runsc</b></td><td class="good">高</td><td>中-强</td><td>服务端半可信（claude.ai）</td></tr>
+<tr><td>微型虚拟机</td><td><b>Firecracker/Kata</b></td><td>中（仍轻量）</td><td class="good">强（Lambda 级）</td><td>多租户/不可信代码</td></tr>
+<tr><td>OS 沙箱</td><td>Seatbelt/bubblewrap</td><td>看宿主</td><td>中（+人审）</td><td>跑在用户机（Claude Code）</td></tr>
+</table>
+<p><b>两条刻进脑子的警告</b>：</p>
+<ul>
+<li>共享内核容器<b>便宜但不是安全墙</b>——claw 互不信任或跑外部代码时别只靠它。<a href="https://x.com/0xToxSec/status/2060404753117647024">@0xToxSec</a></li>
+<li>即便 microVM/Kata 也有逃逸 CVE，要配 <b>egress 过滤 + 凭证不进 VM + 策略 chokepoint</b> 才完整。<a href="https://x.com/iximiuz/status/2060059208779726896">@iximiuz</a> · <a href="https://x.com/Techstrongai/status/2059363968125149187">@Techstrongai</a></li>
+</ul>
+</div>
+
+<h2>三 · 共享底座的三件套（降本的实处）</h2>
+<div class="three">
+<div class="c"><b>3.1 分布式/虚拟文件系统</b>（你说的「分布式文件夹」）：基础镜像只读共享一份，每 claw 只持增量写层（overlayfs/COW），省存储且「丢弃一个 claw」近乎免费。
+<div class="q" style="margin:8px 0 0">「写时复制让 claude-code 工作流真正安全：<b>每任务一分支</b>，测破坏性迁移，出岔子就扔掉。」业界已有 agent 专用虚拟 FS：chay2u 用 <b>Turso 的 agentfs</b>（受 Cloudflare vibesdk 启发）。
+<cite>— <a href="https://x.com/trevorlasn/status/2059404071950225427">@trevorlasn</a> · <a href="https://x.com/chay2u/status/2058513356940837252">@chay2u</a></cite></div></div>
+<div class="c"><b>3.2 快照 / fork / 预热池</b>（杀掉空转与冷启动）：不让闲置 claw 常驻，冻结成快照、秒级恢复，或预开基础实例 fork。
+<div class="q" style="margin:8px 0 0">「用 <b>CRIU + overlayfs</b> 把 Checkpoint/Restore 做到<b>亚 500ms</b>。」赢家级 harness 的标准是「<b>持久化会话、干净 fork、重启不清空上下文</b>」。
+<cite>— <a href="https://x.com/JainishP8/status/2059735413858713970">@JainishP8</a> · <a href="https://x.com/m13v_/status/2060575492898709556">@m13v_</a></cite></div></div>
+<div class="c"><b>3.3 生命周期绑定</b>（杜绝僵尸实例漏成本）：
+<div class="q" style="margin:8px 0 0">「沙箱生命周期<b>绑定到 scope，scope 关闭即销毁——没有悬挂实例、没有泄漏</b>。」
+<cite>— <a href="https://x.com/janschultecom/status/2060013710156984324">@janschultecom</a></cite></div></div>
+</div>
+<div class="panel"><p>三件套合起来 = <b>共享只读基础层（省存储）+ 快照/池化（省闲置与冷启动）+ 用完即毁（不漏成本）</b>。这才是「一堆 claw 共享底座、成本低」的工程实现。</p></div>
+
+<h2>四 · 选型：按威胁模型分 Tier（别一刀切）</h2>
+<div class="panel pain">
+<div class="q">Anthropic 三产品三隔离 +「<b>先做环境隔离、模型层引导次之</b>」「隔离强度匹配用户技术能力」。Cloudflare 也按用例分不同「执行 Tier」。
+<cite>— <a href="https://x.com/buzea200/status/2059626501293720044">@buzea200 转 Anthropic 工程博客</a> · <a href="https://x.com/_bgiori/status/2060125246821425158">@_bgiori</a></cite></div>
+<p><b>落到你的销售运营 claw</b>：</p>
+<ul>
+<li>claw 是<b>第一方</b>、跑<b>你平台的 skill</b>（非陌生人任意代码）→ 威胁温和 → <span class="good">高密度轻隔离</span>：共享内核 + gVisor 进程级，一节点塞很多 claw（参照 <a href="https://x.com/christopherwxyz/status/2059042168237379621">@christopherwxyz</a> 的 GKE+gVisor 样板）。</li>
+<li><b>只有</b>开放「业务自建 skill 跑任意代码 / 跑用户上传脚本」这类<span class="warn">不可信执行</span>时，对那部分 claw 才升级到 <b>microVM</b> + egress 过滤。</li>
+<li>接上篇治理提醒：<b>长尾自建 skill = 引入不可信执行面</b>，单独划到强隔离 tier。</li>
+</ul>
+</div>
+
+<h2>五 · 别过度工程化 + 租 vs 自建</h2>
+<div class="panel">
+<div class="q">「研究 agent 沙箱架构好几个月、找了一堆做 Firecracker 的团队，<b>结果发现我们大多数人在解决根本不存在的问题</b>。」
+<cite>— <a href="https://x.com/chay2u/status/2058513356940837252">@chay2u</a></cite></div>
+<ul>
+<li><b>先按真实威胁模型定 tier，再选技术</b>，别上来就 Firecracker 全家桶。</li>
+<li><b>能租就租</b>（呼应上篇「运行时租」）：<a href="https://x.com/vercel_dev/status/2060443240902627388">Vercel Sandbox</a>（Docker-in-sandbox、跨会话持久化）、<a href="https://x.com/NasdaqExchange/status/2058593874294026653">E2B</a>、Modal、Daytona、Fly Machines、<a href="https://x.com/PrateekJainDev/status/2058923106325209353">Docker 官方 microVM 沙箱</a>。</li>
+<li><b>自建的理由</b>：若已有 k8s 底座、要的就是密度，自己上 gVisor 层「不需要外部 Sandbox SaaS」性价比高。<a href="https://x.com/christopherwxyz/status/2059042168237379621">@christopherwxyz</a></li>
+</ul>
+</div>
+
+<h2>给你的落地建议</h2>
+<div class="panel route">
+<p><b>一句话：</b>把「一 claw 一容器常驻」换成「<b>共享只读基础层（overlayfs/agentfs）+ gVisor 轻隔离塞高密度 + CRIU 快照/warm pool 干掉空转 + 用完即毁</b>」；按威胁模型分 tier，温和内场景走高密度轻隔离，跑不可信代码才上 microVM。</p>
+<ul>
+<li><b>定 tier</b>：内场景跑自家 skill → 共享内核+gVisor；跑不可信代码 → Firecracker+egress 过滤。</li>
+<li><b>共享文件层</b>：基础镜像 overlayfs 只读共享，每 claw 只写增量层；评估 Turso agentfs。</li>
+<li><b>干掉空转</b>：CRIU+overlayfs 秒级快照恢复 + warm pool；闲置冻结而非常驻。</li>
+<li><b>生命周期绑 scope</b>：会话结束即销毁，杜绝僵尸；但保留「持久化会话 + 干净 fork」，重启不丢上下文。</li>
+<li><b>隔离配套</b>：凭证不进沙箱、egress 过滤、工具调用走统一鉴权/日志 chokepoint。</li>
+<li><b>先租后建</b>：先用 E2B/Vercel Sandbox/Modal 验证形态与成本；已有 k8s 且追密度再自建 gVisor 层。</li>
+<li><b>别过度工程化</b>：威胁温和就别上 Firecracker 全家桶。</li>
+</ul>
+</div>
+
+<h2>信源浏览器 · 可点回 x.com</h2>
+<div class="src">
+<a href="https://x.com/0xToxSec/status/2060404753117647024"><span class="h">@0xToxSec</span><span class="t">共享内核容器从来不是安全边界；Lambda 十年前已解决多租户隔离</span></a>
+<a href="https://x.com/iximiuz/status/2060059208779726896"><span class="h">@iximiuz</span><span class="t">microVM ≠ 沙箱；单靠它隔离不够，可能越狱</span></a>
+<a href="https://x.com/buzea200/status/2059626501293720044"><span class="h">@buzea200 / Anthropic</span><span class="t">三产品三隔离：环境隔离优先、强度匹配用户能力</span></a>
+<a href="https://x.com/christopherwxyz/status/2059042168237379621"><span class="h">@christopherwxyz</span><span class="t">gVisor 线程与 k8s pod 同节点跑，密度高、不需 SaaS</span></a>
+<a href="https://x.com/JainishP8/status/2059735413858713970"><span class="h">@JainishP8</span><span class="t">CRIU+overlayfs 亚 500ms 快照恢复（teleport-env）</span></a>
+<a href="https://x.com/trevorlasn/status/2059404071950225427"><span class="h">@trevorlasn</span><span class="t">COW 每任务分支，出错就扔；claude-code 工作流</span></a>
+<a href="https://x.com/janschultecom/status/2060013710156984324"><span class="h">@janschultecom</span><span class="t">沙箱生命周期绑 scope，关闭即毁，无悬挂无泄漏</span></a>
+<a href="https://x.com/m13v_/status/2060575492898709556"><span class="h">@m13v_</span><span class="t">赢家 harness：持久化会话 + 干净 fork，重启不清空</span></a>
+<a href="https://x.com/chay2u/status/2058513356940837252"><span class="h">@chay2u</span><span class="t">研究数月发现多数人在解决不存在的问题；agentfs/Turso</span></a>
+<a href="https://x.com/vercel_dev/status/2060443240902627388"><span class="h">@vercel_dev</span><span class="t">Vercel Sandbox：Docker-in-sandbox，跨会话持久化</span></a>
+<a href="https://x.com/yegle/status/2060143576013828410"><span class="h">@yegle</span><span class="t">sandbox 是隔离语义，可由容器或 VM 实现</span></a>
+<a href="https://x.com/Techstrongai/status/2059363968125149187"><span class="h">@Techstrongai</span><span class="t">Docker：microVM + 统一鉴权/日志 chokepoint 治理</span></a>
+</div>
+
+<div class="foot">
+<p><b>方法与局限</b>：bird 两批 12 检索式 + 下钻 3 串。「sandbox」一词噪声极大（《Destiny 2》武器 sandbox 刷屏），已二次过滤。多为基础设施工程师短贴 + 厂商发布（E2B/Vercel/Docker/Turso/Cloudflare 含自荐），少量日/俄语二手转述 Anthropic 博客，结论以英文一手与官博为准。分层 tier/三件套为综合归纳，具体阈值需按你的负载实测。时效 2026-05。</p>
+<p>承接：<a href="https://zz-gl.github.io/html-pages/x-topic-vertical-vs-general-harness.html">垂直 vs 通用 Harness 自建路线</a> · 语雀全文：<a href="https://www.yuque.com/oudizuo/x-follows/x-claw-agent-2026-05-30-1780115959">claw 共享沙箱</a></p>
+</div>
+
+</div>
+</body>
+</html>
