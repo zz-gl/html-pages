@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>垂直 Harness vs 通用 Harness — 自建该走什么路线</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#ffffff; --ink:#15181d; --sub:#5b6470; --line:#e6e9ee;
+  --accent:#2f6df0; --accent2:#7c3aed; --good:#138a5e; --warn:#c2410c; --chip:#eef1f6;
+  --shadow:0 1px 2px rgba(20,24,33,.04),0 8px 24px rgba(20,24,33,.06);
+  --mono:"Space Grotesk",ui-monospace,monospace;
+  --sans:"Plus Jakarta Sans","Noto Sans SC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0d0f12;--panel:#161a20;--ink:#e9edf3;--sub:#9aa4b2;--line:#252b34;
+  --accent:#5b8dff;--accent2:#a78bfa;--good:#34d399;--warn:#fb923c;--chip:#1d232c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.45);}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:24px 18px 80px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--mono);font-weight:700;font-size:clamp(24px,5vw,38px);line-height:1.18;margin:.3em 0 .2em}
+.lede{color:var(--sub);font-size:16px;margin:.4em 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.meta span{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:12.5px;color:var(--sub);font-family:var(--mono)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:18px 0;box-shadow:var(--shadow)}
+.tldr{border-left:3px solid var(--accent)}
+.tldr b{color:var(--accent)}
+h2{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub);margin:34px 0 4px;font-weight:600}
+h3{font-size:18px;margin:22px 0 6px;font-weight:700}
+p{margin:.55em 0}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+ul{margin:.4em 0;padding-left:1.2em}
+li{margin:.3em 0}
+.gl{display:grid;gap:8px}
+.gl .row{background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14.5px}
+.gl .w{font-family:var(--mono);font-weight:600;color:var(--ink)}
+.gl .ipa{font-family:var(--mono);color:var(--accent2);font-size:13px;margin-left:6px}
+.sig{counter-reset:s;display:grid;gap:10px}
+.sig .row{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.sig .n{counter-increment:s;font-family:var(--mono);font-weight:700;color:var(--accent);min-width:22px}
+.sig .n::before{content:counter(s)}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--chip);font-family:var(--mono);font-weight:600;font-size:12.5px}
+.q{background:var(--chip);border-left:3px solid var(--accent2);border-radius:0 10px 10px 0;padding:12px 15px;margin:12px 0;font-size:15px}
+.q .o{display:block;color:var(--sub);font-style:italic;font-size:13px;margin-top:6px}
+.q cite{display:block;margin-top:8px;font-style:normal}
+.pain{border-top:3px solid var(--warn)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:999px;background:var(--chip);border:1px solid var(--line);color:var(--sub);margin-right:6px}
+.good{color:var(--good);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.src{display:grid;gap:8px}
+.src a{display:block;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.5px;color:var(--ink);border-bottom:1px solid var(--line)}
+.src a:hover{border-color:var(--accent)}
+.src .h{font-family:var(--mono);color:var(--accent);font-weight:600}
+.src .t{color:var(--sub);display:block;margin-top:2px}
+details{margin:10px 0}summary{cursor:pointer;font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:600}
+.foot{color:var(--sub);font-size:13px;border-top:1px solid var(--line);margin-top:36px;padding-top:16px}
+.route{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 9%,transparent),color-mix(in srgb,var(--accent2) 9%,transparent));border:1px solid var(--line)}
+.phase{display:flex;gap:12px;margin:10px 0;align-items:flex-start}
+.phase .b{font-family:var(--mono);font-weight:700;color:var(--accent2);min-width:64px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="kicker">X 主题调研 · Insight Brief</div>
+<h1>垂直 Harness vs 通用 Harness<br>自建该走什么路线？</h1>
+<p class="lede">针对四个痛点——部署成本高、养护成本高、销售运营开箱即用＋长尾自建 skill、灵活性太高/不稳定——把 X 上的工程共识与你的「Agent 不可能三角」研究拼成一条可落地的自建路线。</p>
+<div class="meta">
+  <span>2026-05-30</span><span>bird · 24 检索式</span><span>下钻 4 串+回复</span><span>承接 不可能三角篇</span>
+</div>
+
+<div class="panel tldr">
+<b>先给结论：</b>走「<b>垂直优先 + 半确定性内核 + 长尾 skill 外挂</b>」路线——<b>运行时/编排租，领域资产（memory/state + 分类器 + skill 库）自建</b>。主场景固化做到开箱即用，长尾下放给业务用 skill 自建，全程靠<b>闭环真值 + 失败三分 + 分阶段重试</b>把养护与不稳定压下去。
+</div>
+
+<h2>📖 生词预热</h2>
+<div class="gl">
+  <div class="row"><span class="w">harness</span><span class="ipa">/ˈhɑːrnɪs/</span> — 套在模型外的「脚手架」：工具集＋提示模板＋重试逻辑＋检索流程＋编排循环。Agent = 模型权重 + harness</div>
+  <div class="row"><span class="w">scaffold</span><span class="ipa">/ˈskæfəld/</span> — 脚手架，harness 的同义说法</div>
+  <div class="row"><span class="w">vertical AI</span><span class="ipa">/ˈvɜːrtɪkl/</span> — 垂直（领域专用）AI，只干一类活、深耕一个场景</div>
+  <div class="row"><span class="w">generalist</span><span class="ipa">/ˈdʒenrəlɪst/</span> — 通用型，什么都能接但都不深</div>
+  <div class="row"><span class="w">closed-loop</span><span class="ipa">/kloʊzd luːp/</span> — 闭环：输出有明确对错判定（如「约到会没」），可自动校验</div>
+  <div class="row"><span class="w">ground-truth</span><span class="ipa">/ɡraʊnd truːθ/</span> — 真值/标准答案，判断 agent 做对没</div>
+  <div class="row"><span class="w">semi-deterministic</span><span class="ipa">/ˈsemi dɪˌtɜːrmɪˈnɪstɪk/</span> — 半确定性：流程框死到可测试，又留口子让模型应对脏输入</div>
+  <div class="row"><span class="w">guardrails</span><span class="ipa">/ˈɡɑːrdreɪlz/</span> — 护栏：限制 agent 行为边界的约束</div>
+  <div class="row"><span class="w">per-phase retry cap</span><span class="ipa">/pɜːr feɪz ˈriːtraɪ kæp/</span> — 分阶段重试上限，防止无限打转</div>
+  <div class="row"><span class="w">failure classifier</span><span class="ipa">/ˈfeɪljər ˈklæsɪfaɪər/</span> — 失败分类器：错误分「暂时/确定/永久」分别处理</div>
+  <div class="row"><span class="w">orchestration</span><span class="ipa">/ˌɔːrkɪˈstreɪʃn/</span> — 编排：把多步/多工具/多 agent 串起来的调度</div>
+  <div class="row"><span class="w">state / memory</span><span class="ipa">/steɪt/ /ˈmeməri/</span> — 状态/记忆：跨轮累积的上下文，决定你能不能换框架</div>
+  <div class="row"><span class="w">per-GPU-hour</span> — 按 GPU 小时计费（自托管口径），对应托管的按调用/按分钟计费</div>
+  <div class="row"><span class="w">MCP</span> — Model Context Protocol，模型调外部工具/数据的标准协议</div>
+  <div class="row"><span class="w">moat</span><span class="ipa">/moʊt/</span> — 护城河，竞争壁垒</div>
+</div>
+
+<h2>关键信号 · 先看这 5 条</h2>
+<div class="sig">
+  <div class="row"><span class="n"></span><div><b>harness 拆法已清晰</b>：Agent = 模型权重 + harness；harness = 工具＋提示＋重试逻辑＋检索流程。改 harness 不动权重，是你能做的那一半。</div></div>
+  <div class="row"><span class="n"></span><div><b>「窄域＋单职责」是最被信任的可靠性配方</b>——因为能形成<b>闭环、可对真值</b>，把无声失败变可测。通用 agent 的死穴恰恰是失败不可验证。</div></div>
+  <div class="row"><span class="n"></span><div><b>自建 vs 租的分界在「资产」不在「编排」</b>：loop/tool-call/编排可租；<b>memory/state、领域分类器、skill 必须自建</b>——这是护城河，也决定你能否离开框架。</div></div>
+  <div class="row"><span class="n"></span><div><b>部署成本有「调用量阈值」</b>：自托管把账从「按分钟」变「按 GPU 小时」，隐性成本是常驻＋并发；过了地板线才划算，否则托管更便宜。</div></div>
+  <div class="row"><span class="n"></span><div><b>灵活性别拉满，走「半确定性」</b>：流程约束到<b>可测试</b>，又留口子让模型处理脏输入——稳定性与灵活性的最优折中。</div></div>
+</div>
+
+<h2>一 · 垂直与通用 harness 差在哪</h2>
+<div class="panel">
+<div class="q">「每个 Agent 由两大组件构成——<b>模型权重</b>与 <b>harness</b>。改 harness 流派让元-agent 重写任务专用 agent 的<b>脚手架（工具、提示、重试逻辑、搜索流程）</b>，权重不动。」
+<span class="o">"Every Agent is composed of two main components - Model Weights & Harness… rewrites the scaffold (tools, prompts, retry logic, search procedure) while weights are held fixed."</span>
+<cite>— <a href="https://x.com/kunalbhatia91/status/2060013237538820533">@kunalbhatia91</a></cite></div>
+
+<table>
+<tr><th>维度</th><th>通用 harness</th><th>垂直 harness</th></tr>
+<tr><td>覆盖面</td><td>啥都能接</td><td>只干一类活（你的销售运营主场景）</td></tr>
+<tr><td>可靠性</td><td class="warn">低 · 失败不可枚举、无声失败多</td><td class="good">高 · 可枚举、可对真值</td></tr>
+<tr><td>失败可测</td><td class="warn">难（没标准答案）</td><td class="good">易（闭环、有真值）</td></tr>
+<tr><td>提示成本</td><td class="warn">高</td><td class="good">低（开箱即用）</td></tr>
+<tr><td>养护成本</td><td class="warn">高</td><td class="good">低（可写测试）</td></tr>
+<tr><td>灵活性</td><td>拉满但脆</td><td>适中、稳定</td></tr>
+</table>
+<p>这正是你前序「<b>Agent 不可能三角</b>」（robustness × generality × cost，arXiv 2605.10907）的落地版：<b>通用性、可靠性、低提示成本三者只能取其二</b>。你要「开箱即用＋可靠」，就<b>必须放弃通用性</b>——走垂直不是妥协，是三角里唯一自洽的一角。</p>
+
+<div class="q">「<b>窄域＋单职责，是我现在唯一信任的 agent 论</b>。冷外呼→约会也是干净闭环，容易对真值。我们跑『暂时性/确定性/永久性』失败三分 + 每阶段重试上限。」
+<span class="o">"vertical narrow + one job is the only agent thesis i trust rn… we run a transient/deterministic/permanent split + per-phase retry caps."</span>
+<cite>— <a href="https://x.com/harjjotsinghh/status/2060305795959713913">@harjjotsinghh</a></cite></div>
+<p>两个可直接抄的抓手：<b>① 闭环可对真值</b>（每场景能自动判「做对没」）；<b>② 失败三分＋分阶段重试上限</b>（暂时→重试 / 确定→换策略 / 永久→转人工，每阶段封顶）——这就是把灵活性约束成稳定性的具体手段。</p>
+<p class="pill">反方</p>有人主张会<b>自我改进</b>的通用 agent（SIA）能跑赢专用 agent，但需「改权重」能力且未生产验证，不在你「只改 harness」射程内。<a href="https://x.com/kunalbhatia91/status/2060013249370955784">@kunalbhatia91</a>
+</div>
+
+<h2>二 · 自建 vs 租 — 分界在「资产」</h2>
+<div class="panel">
+<div class="q">「框架做 <b>loop、工具调用、编排</b>挺好。我自己攥在手里的是 <b>memory 和 state</b>——这部分会累积，决定你<b>到底能不能离开框架</b>。」
+<span class="o">"frameworks are fine for the loop, tool calls, orchestration. the piece i keep in my own hands is memory and state… decides whether you can ever leave the framework."</span>
+<cite>— <a href="https://x.com/val__greg/status/2060276695538585831">@val__greg</a></cite></div>
+<div class="q">「你的领域专长 + 我们的 agent 基建（模型、harness、上下文、治理）。工程精力转移到你真正有差异化的地方。」Zscaler SRE：「我建了<b>分类器、错误码映射、探针逻辑</b>，Resolve 负责跑调查。」
+<cite>— <a href="https://x.com/resolveai/status/2059668213470777489">@resolveai</a></cite></div>
+<p><b>对你是模板级启示：</b></p>
+<ul>
+<li><span class="good">租掉</span>：模型、运行时、编排循环、基础治理/权限。</li>
+<li><span class="good">自建（护城河）</span>：销售运营的分类器、流程映射、探针/校验逻辑、memory/state、skill 库。</li>
+<li>你在「原有智能客服平台升级」——平台就是 harness 底座，<b>别重写底座，要在上面长出领域资产</b>。</li>
+</ul>
+<details><summary>两种声音 + 一个代价提醒</summary>
+<p>偏租：「几乎总是该找框架而非自己写代码。」<a href="https://x.com/OneSeaElephant/status/2060436438152274292">@OneSeaElephant</a><br>
+偏自建：框架的品味/迭代速度和你不一致时会很难受。<a href="https://x.com/ryanlrlr/status/2060432241600381268">@ryanlrlr</a><br>
+代价：闭源模型「用同一套 production harness 做 RL，模型为那套 harness 定制」——自建拿不到这层协同红利，得靠工程补。<a href="https://x.com/scottstts/status/2060333403807887592">@scottstts</a></p>
+</details>
+</div>
+
+<h2>三 · 逐个击破你的四个痛点</h2>
+
+<div class="panel pain">
+<h3>① 部署/托管成本高</h3>
+<div class="q">「自托管把问题从『<b>按分钟</b>』变成『<b>按 GPU 小时</b>』。隐性成本是<b>保持模型常驻 + 24/7 并发</b>。<b>过了某个调用量地板线</b>自托管才划算；之下，~$0.10/分钟托管反而更便宜。」
+<cite>— <a href="https://x.com/wellheardai/status/2060515541454934441">@wellheardai</a></cite></div>
+<ul>
+<li><b>别一上来自托管模型</b>：先托管 API 算清「调用量×单价」，稳定高过盈亏点 + 有延迟/合规硬约束时再迁。</li>
+<li>用 <b>Value = return / cost</b> 看账，警惕 token 浪费（「开满产线却扔掉一半成品」）。<a href="https://x.com/chadwahl/status/2060467254048002208">@chadwahl</a></li>
+<li>垂直天然省钱：上下文短、工具少、可缓存、可小模型兜底。</li>
+</ul>
+</div>
+
+<div class="panel pain">
+<h3>② 养护（babysitting）成本高</h3>
+<p>根源是<b>面太广 + 失败不可测</b>，垂直化本身就是最大减负。</p>
+<ul>
+<li><b>把人移出回路靠「可自动校验」</b>：有闭环真值就能写回归/离线评测，而非人盯。</li>
+<li><b>失败三分 + 分阶段重试上限</b>：自处理暂时性错误、自动转人工处理永久性错误。<a href="https://x.com/harjjotsinghh/status/2060305795959713913">@harjjotsinghh</a></li>
+<li>好的 auto 模式让你「<b>不用再手把手牵它过 API 认证迷宫</b>」。<a href="https://x.com/YotamBlu/status/2060569285668352120">@YotamBlu</a></li>
+<li>配端到端 <b>tracing</b>：养护从「人肉巡检」变「看 dashboard」。</li>
+</ul>
+</div>
+
+<div class="panel pain">
+<h3>③ 销售运营开箱即用 + 长尾自建 skill</h3>
+<p><b>双层架构</b>：主场景固化（开箱即用）+ 长尾 skill 外挂（业务自建）。</p>
+<div class="q">「<b>先规划、要你确认、再开干</b>，横跨 Workspace/Slack/GitHub 和任意自定义连接器；<b>可复用 skill</b>，每步可见。」
+<cite>— <a href="https://x.com/mistralvibe/status/2059985190856823287">@mistralvibe（Mistral Vibe 工作模式）</a></cite></div>
+<div class="q">「我现在<b>工作里每件事都写成 agent skill</b>——高度具体、单一目的，每周省好几个钟头。」例：博客→官方社媒风格，为不同平台写不同帖、知道怎么 @ 公司、再上传到排期工具。
+<cite>— <a href="https://x.com/ctnicholasdev/status/2059626449137770909">@ctnicholasdev</a></cite></div>
+<p>给销售运营提供「<b>skill 模板 + 录制/捏制入口</b>」，把长尾流程沉淀成窄、专、可复用的 skill。进阶：agent 甚至能<b>自己造 skill</b>（大重构里自动给子 agent 写工具）。<a href="https://x.com/poteto/status/2059870196559700428">@poteto</a></p>
+<p class="warn">⚠️ 治理：开放业务自建 = 灵活性下放给非技术用户，必须配<b>沙箱、权限范围、审核</b>，否则脏 skill 污染主流程。</p>
+</div>
+
+<div class="panel pain">
+<h3>④ harness 灵活性太高 / 不稳定</h3>
+<div class="q">「<b>半确定性 harness 是个好方向</b>：工作流<b>约束到足够可测试</b>，又<b>留出灵活性让模型应对脏输入</b>。」
+<span class="o">"Semi-deterministic harnesses… constrained enough to test, but flexible enough for the model to handle messy inputs."</span>
+<cite>— <a href="https://x.com/Gsdata5566/status/2060575125452226707">@Gsdata5566</a></cite></div>
+<ul>
+<li><b>骨架确定、关节柔性</b>：主流程写成确定性状态机（可测可回归），只在「理解脏输入/生成措辞」处放模型自由度。</li>
+<li><b>护栏 + 分阶段重试上限</b>：超限即降级/转人工，杜绝无限打转。</li>
+<li><b>闭环校验兜底</b>：每步有真值检查，跑偏立即可见。</li>
+</ul>
+</div>
+
+<h2>四 · 给你的自建路线（分期）</h2>
+<div class="panel route">
+<p><b>一句话：</b>垂直优先做主场景的半确定性 harness，租运行时/编排、自建领域资产，主场景开箱即用、长尾下放 skill，靠闭环真值＋失败三分＋分阶段重试压住养护与不稳定。</p>
+<div class="phase"><span class="b">第一期</span><div><b>稳住主场景</b>：选 1–2 个高频闭环（线索跟进→约访 / 工单分类→回填），确定性骨架 + 模型关节 + 真值校验 + 回归测试。先托管 API，不自托管。</div></div>
+<div class="phase"><span class="b">第二期</span><div><b>开箱即用 + 可观测</b>：plan→确认→执行的交互壳 + 步骤可见 + tracing dashboard，业务零提示跑通主流程，养护转看板。</div></div>
+<div class="phase"><span class="b">第三期</span><div><b>长尾 skill 平台</b>：给业务 skill 模板 + 捏制入口 + 沙箱/权限/审核，把长尾沉淀成可复用 skill；skill 库 + 领域分类器即护城河。</div></div>
+<div class="phase"><span class="b">持续</span><div>盯调用量是否过自托管盈亏线；通用化呼声出现时回「不可能三角」自检——是否在拿可靠性/低提示成本换不该要的通用性。</div></div>
+</div>
+
+<h2>信源浏览器 · 可点回 x.com</h2>
+<div class="src">
+<a href="https://x.com/kunalbhatia91/status/2060013237538820533"><span class="h">@kunalbhatia91</span><span class="t">Agent = 权重 + harness；harness = 工具/提示/重试/搜索流程</span></a>
+<a href="https://x.com/harjjotsinghh/status/2060305795959713913"><span class="h">@harjjotsinghh</span><span class="t">窄域+单职责唯一可信；闭环对真值 + 失败三分 + 分阶段重试</span></a>
+<a href="https://x.com/AshwiniNK21/status/2060296549855568044"><span class="h">@AshwiniNK21</span><span class="t">SalesRobot/Kuron：垂直销售 agent，单职责，从冷外呼约会</span></a>
+<a href="https://x.com/val__greg/status/2060276695538585831"><span class="h">@val__greg</span><span class="t">框架管编排，memory/state 自己攥——决定能否离开框架</span></a>
+<a href="https://x.com/resolveai/status/2059668213470777489"><span class="h">@resolveai</span><span class="t">租基建（模型/harness/治理）+ 自建领域分类器/探针</span></a>
+<a href="https://x.com/wellheardai/status/2060515541454934441"><span class="h">@wellheardai</span><span class="t">自托管 = 按 GPU 小时；过调用量地板线才划算</span></a>
+<a href="https://x.com/Gsdata5566/status/2060575125452226707"><span class="h">@Gsdata5566</span><span class="t">半确定性 harness：约束到可测 + 留灵活应对脏输入</span></a>
+<a href="https://x.com/ctnicholasdev/status/2059626449137770909"><span class="h">@ctnicholasdev</span><span class="t">高度具体、单一目的的定制 skill，每周省数小时</span></a>
+<a href="https://x.com/mistralvibe/status/2059985190856823287"><span class="h">@mistralvibe</span><span class="t">工作模式：plan→确认→执行，可复用 skill，步骤可见</span></a>
+<a href="https://x.com/scottstts/status/2060333403807887592"><span class="h">@scottstts</span><span class="t">闭源模型为同一 production harness 做 RL，自建吃亏</span></a>
+<a href="https://x.com/poteto/status/2059870196559700428"><span class="h">@poteto</span><span class="t">大重构里 agent 自动给子 agent 写工具/定制 skill</span></a>
+<a href="https://x.com/chadwahl/status/2060467254048002208"><span class="h">@chadwahl</span><span class="t">Value = return / cost；警惕 token 浪费</span></a>
+</div>
+
+<div class="foot">
+<p><b>方法与局限</b>：bird 三批 24 检索式 + 下钻 4 串/回复。本主题在 X 信噪比低（泛词召回政治/游戏/币圈/SEO 噪声，已二次过滤），高质量讨论偏少且多为从业者短贴——结论靠零散信号 + 你前序研究（不可能三角、AI Workflow Store 论文）拼成，非单一权威定论。部分账号为产品方自荐（Resolve/Mistral/SalesRobot/Hexo），含营销成分。「自建路线」为综合工程建议，阈值需按你真实调用量与场景标定。时效 2026-05。</p>
+<p>承接：<a href="https://www.yuque.com/oudizuo/x-follows/x-agent-2026-05-24-1779768269">Agent 不可能三角考证</a> · 语雀全文：<a href="https://www.yuque.com/oudizuo/x-follows/x-harness-vs-harness-2026-05-30-1780114922">harness-vs-harness</a></p>
+</div>
+
+</div>
+</body>
+</html>
