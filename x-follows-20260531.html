@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-05-31</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #a03b00; --primary-container: #c94c00; --primary-fixed: #ffdbcd;
+  --primary-fixed-dim: #ffb597; --on-primary: #ffffff; --accent-glow: #E8400D;
+  --secondary: #d5baff; --secondary-container: #7b40e0; --tertiary: #4d44e3; --accent-cyan: #00D4FF;
+  --bg: #fff8f6; --surface: #fff8f6; --surface-container-lowest: #ffffff;
+  --surface-container-low: #fbf2ef; --surface-container: #f5ece9; --surface-container-high: #efe6e3;
+  --fg-1: #1e1b19; --fg-2: #594138; --fg-muted: #8d7166;
+  --border: rgba(0,0,0,0.06); --border-strong: rgba(0,0,0,0.12); --outline-variant: #e1bfb2;
+  --green: #10b981; --blue: #3b82f6; --yellow: #f59e0b; --red: #ef4444;
+  --font-headline: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'SF Mono','Menlo', ui-monospace, monospace;
+  --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px;
+  --space-2xl:24px; --space-3xl:32px; --space-4xl:48px; --space-5xl:64px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,0.04); --shadow-md:0 4px 12px rgba(30,27,25,0.08);
+  --shadow-lg:0 8px 24px rgba(30,27,25,0.12); --shadow-accent:0 8px 24px rgba(160,59,0,0.15);
+  --gradient-hero: linear-gradient(135deg, #a03b00 0%, #7b40e0 100%);
+  --gradient-text: linear-gradient(135deg, #a03b00 0%, #7b40e0 100%);
+}
+html[data-theme="dark"] {
+  --bg:#060B18; --surface:#0B1426; --surface-container-lowest:#101D35; --surface-container-low:#101D35;
+  --surface-container:#162544; --surface-container-high:#1c2d52;
+  --fg-1:#F8FAFC; --fg-2:#CBD5E1; --fg-muted:#94a3b8;
+  --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14); --outline-variant:#33415c;
+  --primary:#FF6B35; --primary-fixed:#3a1d10; --accent-glow:#00D4FF;
+  --shadow-md:0 4px 12px rgba(0,0,0,0.4); --shadow-lg:0 8px 24px rgba(0,0,0,0.5);
+  --shadow-accent:0 8px 24px rgba(0,0,0,0.5);
+  --gradient-hero: linear-gradient(135deg, #FF6B35 0%, #7b40e0 100%);
+  --gradient-text: linear-gradient(135deg, #FF6B35 0%, #d5baff 100%);
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --bg:#060B18; --surface:#0B1426; --surface-container-lowest:#101D35; --surface-container-low:#101D35;
+    --surface-container:#162544; --surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC; --fg-2:#CBD5E1; --fg-muted:#94a3b8;
+    --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14); --outline-variant:#33415c;
+    --primary:#FF6B35; --primary-fixed:#3a1d10; --accent-glow:#00D4FF;
+    --shadow-md:0 4px 12px rgba(0,0,0,0.4); --shadow-lg:0 8px 24px rgba(0,0,0,0.5);
+    --shadow-accent:0 8px 24px rgba(0,0,0,0.5);
+    --gradient-hero: linear-gradient(135deg, #FF6B35 0%, #7b40e0 100%);
+    --gradient-text: linear-gradient(135deg, #FF6B35 0%, #d5baff 100%);
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body); background: var(--bg); color: var(--fg-1);
+  line-height: 1.6; font-size: 15.5px; padding-bottom: var(--space-5xl);
+  overflow-x: hidden;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 var(--space-xl); }
+a { color: inherit; }
+
+/* Theme toggle */
+.theme-toggle {
+  position: fixed; top: var(--space-lg); right: var(--space-lg); z-index: 50;
+  background: var(--surface-container); border: 1px solid var(--border-strong);
+  color: var(--fg-2); border-radius: var(--radius-pill); width: 42px; height: 42px;
+  font-size: 18px; cursor: pointer; box-shadow: var(--shadow-md); display: grid; place-items: center;
+  transition: transform .2s, background .2s;
+}
+.theme-toggle:hover { transform: scale(1.08); }
+.theme-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* Header */
+.brief-header { padding-top: var(--space-5xl); padding-bottom: var(--space-2xl); }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--primary); font-weight: 600; margin-bottom: var(--space-md);
+}
+.brief-header h1 {
+  font-family: var(--font-headline); font-weight: 700; letter-spacing: -0.01em;
+  font-size: clamp(28px, 6vw, 44px); line-height: 1.1; color: var(--fg-1);
+}
+.brief-header h1 .grad {
+  background: var(--gradient-text); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.lede { color: var(--fg-2); font-size: 16px; margin-top: var(--space-lg); max-width: 60ch; }
+.useful-chips { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-xl); }
+.useful-chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
+  background: var(--surface-container); border: 1px solid var(--border); border-radius: var(--radius-pill);
+  font-size: 13px; color: var(--fg-2); font-weight: 500;
+}
+.useful-chip b { color: var(--primary); font-family: var(--font-mono); font-weight: 600; }
+
+/* Section heading */
+.section { margin-top: var(--space-5xl); }
+.section-label {
+  display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-xl);
+}
+.section-label .ico { font-size: 22px; }
+.section-label h2 {
+  font-family: var(--font-headline); font-weight: 600; letter-spacing: -0.01em;
+  font-size: clamp(20px, 4vw, 26px); color: var(--fg-1);
+}
+.section-label .sub { font-size: 13px; color: var(--fg-muted); margin-left: auto; }
+
+/* Primary insight — key signals */
+.primary-insight {
+  background: var(--surface-container-lowest); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-2xl); padding: var(--space-3xl) var(--space-2xl);
+  box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
+}
+.primary-insight::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--gradient-hero);
+}
+.signal { display: flex; gap: var(--space-lg); padding: var(--space-xl) 0; border-bottom: 1px solid var(--border); }
+.signal:last-child { border-bottom: none; padding-bottom: 0; }
+.signal:first-child { padding-top: var(--space-sm); }
+.signal-num {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: var(--radius-pill);
+  background: var(--primary-fixed); color: var(--primary); display: grid; place-items: center;
+  font-family: var(--font-mono); font-weight: 700; font-size: 15px;
+}
+html[data-theme="dark"] .signal-num { background: var(--primary-fixed); color: var(--primary-fixed-dim, #ffb597); }
+.signal-body { flex: 1; min-width: 0; }
+.signal-body h3 {
+  font-family: var(--font-headline); font-size: 16px; font-weight: 600; color: var(--fg-1);
+  margin-bottom: 6px; line-height: 1.35;
+}
+.signal-body p { font-size: 14.5px; color: var(--fg-2); }
+
+/* Glossary */
+.glossary-search {
+  position: relative; margin-bottom: var(--space-xl);
+}
+.glossary-search input {
+  width: 100%; padding: 13px 16px 13px 42px; font-family: var(--font-body); font-size: 15px;
+  background: var(--surface-container-lowest); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill); color: var(--fg-1); outline: none;
+}
+.glossary-search input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-fixed); }
+.glossary-search .si { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--fg-muted); font-size: 15px; }
+.glossary-stack { display: flex; flex-direction: column; gap: var(--space-sm); }
+.term-card {
+  background: var(--surface-container-low); border: 1px solid var(--border);
+  border-left: 3px solid var(--secondary-container); border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+}
+.term-card .term-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.term-card .term { font-family: var(--font-headline); font-weight: 600; font-size: 15.5px; color: var(--fg-1); }
+.term-card .ipa { font-family: var(--font-mono); font-size: 13px; color: var(--secondary-container); }
+html[data-theme="dark"] .term-card .ipa { color: var(--secondary); }
+.term-card .def { font-size: 14px; color: var(--fg-2); margin-top: 3px; }
+.no-results { color: var(--fg-muted); font-size: 14px; padding: var(--space-lg); text-align: center; display: none; }
+
+/* Evidence stack */
+.user-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-2xl); }
+.user-nav a {
+  text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: var(--radius-pill);
+  background: var(--surface-container); border: 1px solid var(--border); color: var(--fg-2); font-weight: 500;
+  transition: background .15s, color .15s;
+}
+.user-nav a:hover { background: var(--primary); color: var(--on-primary); }
+.user-nav a .cnt { font-family: var(--font-mono); color: var(--fg-muted); margin-left: 4px; }
+.user-nav a:hover .cnt { color: var(--primary-fixed); }
+
+.evidence-group {
+  background: var(--surface-container-lowest); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); padding: var(--space-2xl); margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-sm); scroll-margin-top: var(--space-xl);
+}
+.user-head { display: flex; align-items: flex-start; gap: var(--space-md); margin-bottom: var(--space-lg); }
+.avatar {
+  flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--radius-pill);
+  background: var(--gradient-hero); color: #fff; display: grid; place-items: center;
+  font-family: var(--font-headline); font-weight: 700; font-size: 17px;
+}
+.user-meta { flex: 1; min-width: 0; }
+.user-meta h3 { font-family: var(--font-headline); font-size: 18px; font-weight: 600; color: var(--fg-1); line-height: 1.25; }
+.user-meta .handle { font-family: var(--font-mono); font-size: 12.5px; color: var(--primary); text-decoration: none; }
+.user-meta .handle:hover { text-decoration: underline; }
+.user-meta .bio { font-size: 13px; color: var(--fg-muted); margin-top: 5px; line-height: 1.45; }
+.tweet-count {
+  flex-shrink: 0; font-family: var(--font-mono); font-size: 12px; color: var(--fg-muted);
+  background: var(--surface-container); border-radius: var(--radius-pill); padding: 3px 10px;
+}
+
+.tweet { padding: var(--space-lg) 0; border-top: 1px solid var(--border); }
+.tweet:first-of-type { border-top: 1px dashed var(--border-strong); }
+.tweet-text { font-size: 14.8px; color: var(--fg-1); }
+.tweet-text .quote {
+  display: block; margin-top: var(--space-sm); padding: var(--space-sm) var(--space-md);
+  border-left: 2px solid var(--outline-variant); background: var(--surface-container-low);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 13.5px; color: var(--fg-2);
+}
+.rt-tag {
+  display: inline-block; font-size: 11.5px; font-family: var(--font-mono); font-weight: 600;
+  color: var(--secondary-container); background: var(--secondary); padding: 2px 8px;
+  border-radius: var(--radius-sm); margin-bottom: 6px; letter-spacing: .02em;
+}
+html[data-theme="dark"] .rt-tag { background: rgba(213,186,255,.18); color: var(--secondary); }
+.tweet-links { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md); }
+.tweet-link {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 12px; text-decoration: none;
+  color: var(--primary); font-family: var(--font-mono); padding: 4px 10px;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-pill); transition: background .15s;
+}
+.tweet-link:hover { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.tweet-link.muted { color: var(--fg-muted); }
+.tweet-link.muted:hover { background: var(--fg-muted); color: var(--surface); border-color: var(--fg-muted); }
+
+/* tail lists */
+.tail-card {
+  background: var(--surface-container-low); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg);
+}
+.tail-card h3 { font-family: var(--font-headline); font-size: 15px; font-weight: 600; margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+.tail-card p { font-size: 13.5px; color: var(--fg-2); line-height: 1.7; }
+.tail-card a { color: var(--primary); }
+.dormant-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--space-sm); }
+.dormant-list span {
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-muted);
+  background: var(--surface-container); padding: 2px 8px; border-radius: var(--radius-sm);
+}
+footer { margin-top: var(--space-5xl); padding-top: var(--space-xl); border-top: 1px solid var(--border); color: var(--fg-muted); font-size: 12.5px; text-align: center; }
+
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+  .wrap { padding: 0 var(--space-lg); }
+  .primary-insight { padding: var(--space-xl) var(--space-lg); }
+  .evidence-group { padding: var(--space-lg); }
+  .section-label .sub { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeBtn" aria-label="切换深浅色主题">🌗</button>
+<div class="wrap">
+
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter Follows Digest</div>
+    <h1>关注动态汇总<br><span class="grad">2026 年 5 月 31 日</span></h1>
+    <p class="lede">最近 24 小时内，41 位关注对象中有 9 位活跃，产生 38 条动态。本期主线：<b>开放权重模型正当时</b>、<b>教皇 AI 通谕引爆争论</b>、<b>Claude vs OpenAI 工具体验之争</b>。</p>
+    <div class="useful-chips">
+      <span class="useful-chip">🕑 窗口 <b>24h</b></span>
+      <span class="useful-chip">👥 关注 <b>41</b></span>
+      <span class="useful-chip">🟢 活跃 <b>9</b></span>
+      <span class="useful-chip">💬 动态 <b>38</b></span>
+      <span class="useful-chip">📅 抓取 <b>05-31 04:50 UTC</b></span>
+    </div>
+  </header>
+
+  <!-- KEY SIGNALS -->
+  <section class="section" id="signals">
+    <div class="section-label"><span class="ico">🔑</span><h2>关键信号总结</h2><span class="sub">5 条 · 先读这里</span></div>
+    <div class="primary-insight" id="signalPanel"></div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section class="section" id="glossary">
+    <div class="section-label"><span class="ico">📖</span><h2>生词预热</h2><span class="sub">读前预习 · 可搜索</span></div>
+    <div class="glossary-search">
+      <span class="si">🔍</span>
+      <input type="text" id="glossarySearch" placeholder="搜索术语、缩写或中文释义…" aria-label="搜索生词">
+    </div>
+    <div class="glossary-stack" id="glossaryStack"></div>
+    <div class="no-results" id="glossaryEmpty">没有匹配的术语。</div>
+  </section>
+
+  <!-- EVIDENCE -->
+  <section class="section" id="evidence">
+    <div class="section-label"><span class="ico">🧵</span><h2>按用户分组的动态</h2><span class="sub">时间倒序 · 点链接回 x.com</span></div>
+    <nav class="user-nav" id="userNav" aria-label="用户跳转"></nav>
+    <div id="evidenceStack"></div>
+  </section>
+
+  <!-- TAIL -->
+  <section class="section" id="tail">
+    <div class="tail-card">
+      <h3>⏳ 限流未获取用户</h3>
+      <p>以下用户因 API 限流（rate limit）本期未能抓取，可点击查看主页：<a href="https://x.com/andrew__reed" target="_blank" rel="noopener">@andrew__reed</a></p>
+    </div>
+    <div class="tail-card">
+      <h3>💤 无动态用户（31 位）</h3>
+      <div class="dormant-list" id="dormantList"></div>
+    </div>
+  </section>
+
+  <footer>
+    由 x-follows-24h 自动汇总 · 中文摘要含 IPA 音标 · 单文件交互式页面，除字体外无外部依赖
+  </footer>
+</div>
+
+<script>
+const SIGNALS = [
+  {t:"「开放权重模型正当时」成为本期主线", d:"Bill Gurley 两连发：中国 LLM 公司不仅有比想象中更多的开放权重融资，且已在境外（如 AWS 上海活动）向企业真实变现；Hugging Face 的 Clement 转发 LangChain 数据「每 3 个 AI 团队就有 1 个在跑开放权重模型」。但 Ethan Mollick 泼冷水：开放权重模型在分布外（OOD）远比基准分数显示的脆弱。"},
+  {t:"教皇 Leo XIV 的 AI 通谕引爆讨论", d:"Sonya Huang 质疑教皇「AI 没有主观体验」的断言——「我又怎么知道身边的人有主观体验？」；Bill Gurley 在 All-In 播客反驳教皇套用的历史模板（Leo XIII 1891 年反工业革命通谕），称那是「灾难论预测失败的最清晰案例」。"},
+  {t:"Anthropic vs OpenAI 工具体验之争", d:"Jerry Liu（LlamaIndex）作为 Claude 忠粉吐槽 Cowork / Code 标签页割裂、缺 fork 与 Projects，认为 Codex 更顺手，并转发「Cowork 是 Anthropic 最大失误」的观点。Peter Yang 观察到同一 Opus 4.8 经 Claude Code 与普通 Claude 调用产出差异明显，写作仍是普通 Claude 更佳。"},
+  {t:"AI 安全应当开放", d:"Clement Delangue 力赞英国 AI Security Institute 把评测集、数据集和模型全部开源到 Hugging Face，让全球研究者可复现、可审视。"},
+  {t:"「教育 + 游戏」与 AI 育儿成 Peter Yang 周末主题", d:"终极教育 App 是「边打《最终幻想》边学数学和 CS」；他陪女儿用 Brilliant 学 CS 101，还要给一群聪明孩子和家长办 Hermes 上手培训。"}
+];
+
+const GLOSSARY = [
+  {w:"encyclical", ipa:"/ɪnˈsɪklɪkəl/", d:"（教皇发布的）通谕、教廷公函"},
+  {w:"Pontifex", ipa:"/ˈpɒntɪfeks/", d:"教皇（拉丁语，X 上教皇官方账号名）"},
+  {w:"subjective experience", ipa:"", d:"主观体验（指意识、感受质）"},
+  {w:"open-weights", ipa:"", d:"开放权重（模型权重公开可下载，区别于完全开源）"},
+  {w:"out-of-distribution", ipa:"/ˌaʊt əv ˌdɪstrɪˈbjuːʃən/", d:"分布外（输入数据偏离训练分布，常缩写 OOD）"},
+  {w:"benchmark", ipa:"/ˈbentʃmɑːrk/", d:"基准测试"},
+  {w:"fragile", ipa:"/ˈfrædʒaɪl/", d:"脆弱的"},
+  {w:"monetize", ipa:"/ˈmʌnɪtaɪz/", d:"变现、商业化"},
+  {w:"enterprise", ipa:"/ˈentərpraɪz/", d:"企业（客户）"},
+  {w:"VC", ipa:"", d:"Venture Capital，风险投资"},
+  {w:"teleop", ipa:"", d:"teleoperation 的缩写，遥操作（人远程操控机器人）"},
+  {w:"manipulation", ipa:"/məˌnɪpjuˈleɪʃən/", d:"（机器人对物体的）操作、抓取"},
+  {w:"CLIP / SigLIP", ipa:"", d:"图文对比学习模型（用于以文搜图）；SigLIP 是 Sigmoid Loss 改进版"},
+  {w:"self-hosted", ipa:"", d:"自托管（自己架设服务而非用云服务）"},
+  {w:"fork", ipa:"/fɔːrk/", d:"（此处指对话/线程的）分叉、复制一份"},
+  {w:"WebAssembly (WASM)", ipa:"", d:"浏览器中运行的高性能字节码格式"},
+  {w:"grid projection", ipa:"", d:"网格投影（把版面文字对齐到网格列的算法）"},
+  {w:"adversarial", ipa:"/ˌædvərˈseəriəl/", d:"对抗性的（此处指让两个 AI 互相挑错）"},
+  {w:"chokepoint", ipa:"/ˈtʃoʊkpɔɪnt/", d:"咽喉要道（如海峡、油管枢纽）"},
+  {w:"MAGA", ipa:"", d:"Make America Great Again，特朗普支持者群体的口号/标签"},
+  {w:"997", ipa:"", d:"网络用语，指早 9 点到晚 9 点、每周 7 天的高强度工作制"}
+];
+
+const USERS = [
+  {
+    name:"Peter Yang", cn:"彼得·杨", ipa:"/ˈpiːtər jæŋ/", handle:"petergyang", init:"P",
+    bio:"资深产品人、AI 内容创作者，前 Reddit / Twitch 产品负责人，时事通讯《Creator Economy》主理人",
+    tweets:[
+      {html:'终极教育 App 设想：「基本上就是你在玩《最终幻想》之类的游戏，同时把数学和计算机科学（CS）也学了。」', id:"2060930599565811774"},
+      {html:'接力猜测两家公司内部 Slack 文化：「我猜是——OpenAI 玩 Codex 沙雕梗图（dank memes），Anthropic 写小作文（essays）。」<span class="quote">引用 @wordgrammer：「有谁同时体验过 OpenAI 和 Anthropic 的内部 Slack，能告诉我哪个更好？」</span>', id:"2060930334620053998"},
+      {html:'陪女儿用 @brilliantorg 学了一小时 CS 101：「她不打败 Joyce B 就不肯罢休 🔥。」（附图）', id:"2060928818383355907"},
+      {rt:"转推（转发自己的内容）", html:'Josh Pigford（@Shpigford）把上一家创业公司以 400 万美元卖掉后，如今独自一人借助 AI agent 同时打造 5 款产品……', id:"2060911860774543745", orig:"2060730465573863466"},
+      {html:'吐槽高强度工作文化：「取个 Corgi（柯基）这么可爱的名字，结果却让员工 997 🥹。」<span class="quote">引用 @HarryStebbings 介绍 Corgi Insurance 的「最硬核职场文化」：每周工作 7 天、创始人睡在办公室、2/3 早期员工把公司 logo 纹在身上、两年做到 26 亿美元估值。</span>', id:"2060872433641693562"},
+      {html:'问网友：要给一些家长和聪明孩子办半天的 Hermes（NousResearch 的开源模型）上手培训，该覆盖哪些用例？cc @NousResearch', id:"2060772366742073840"},
+      {html:'看英伟达（Nvidia）CEO 黄仁勋（Jensen Huang）在台湾员工活动上跳舞的视频：「哈哈这也正是我的舞步，这位是最棒的亚洲爸爸级亿万富翁。」<span class="quote">引用 @JesseCohenInv：身价 2000 亿美元的人开心起来就是这样。</span>', id:"2060771146560315479"},
+      {html:'同一个模型（Opus 4.8）经 Claude Code 与普通 Claude 调用，产出差异明显：「我发现后者在写作任务上仍然更好，可能因为它的默认提示词（prompt）没有为写代码做优化。」', id:"2060758437919879656"},
+      {html:'预告本周访谈：Josh Pigford 卖掉上家公司后独自用 AI agent 同时做 5 款产品，分享其「3 阶段构建」技能、如何让 Opus 与 GPT-5.5 做对抗式（adversarial）代码评审、以及强迫 AI 自己抓 bug 的「but for real」技能。（附图）', id:"2060730465573863466"}
+    ]
+  },
+  {
+    name:"Ethan Mollick", cn:"伊森·莫里克", ipa:"/ˈiːθən ˈmɒlɪk/", handle:"emollick", init:"E",
+    bio:"沃顿商学院（Wharton）教授，研究 AI 对工作与教育影响，畅销书《Co-Intelligence》作者",
+    tweets:[
+      {html:'更好的 AI 发布确实在加速，尤其来自 OpenAI 和 Anthropic。他做了一张时间线，只收录在 Artificial Analysis 指数上比前代提升 3 分及以上的新模型。（附图）', id:"2060867599869649097"},
+      {html:'关于如何「致谢 AI」（别太当真）：旧梗重提——用拉丁文「Fieri Iussit」（意为「命其造之」，古罗马建筑常见铭文），「你没亲手做这东西，但你下令把它做出来了」。', id:"2060872845731807373"},
+      {html:'对开放权重模型的冷静判断：「我认为 Epoch 的基准测试做得很好，但我始终相信开放权重模型远比基准显示的脆弱（fragile），尤其在分布外（out-of-distribution）。凭体感（vibe），我不觉得它们去年只落后 3 个月、今天只落后 4 个月。」<span class="quote">引用 @EpochAIResearch：用 Epoch Capabilities Index 衡量，差距较上次分析略有扩大。</span>', id:"2060736941453189622"}
+    ]
+  },
+  {
+    name:"Jerry Liu", cn:"杰瑞·刘", ipa:"/ˈdʒeri ljuː/", handle:"jerryjliu0", init:"J",
+    bio:"LlamaIndex 创始人兼 CEO，专注 LLM 数据框架与文档解析",
+    tweets:[
+      {html:'揭秘 LiteParse 的核心——「网格投影（grid projection）算法」（全程不用 LLM！）：把复杂版面投影成结构化文本；步骤包括把文字片段聚合成行、识别左/中/右锚点、把每个文字项吸附到锚点、单独处理流式段落、按精调顺序渲染使文字对齐到网格列、后处理。（附图，附月前博客）', id:"2060755304636449178"},
+      {html:'作为 Claude 忠实用户的吐槽：「真希望这些标签页能合并，Codex 在这点上顺手得多。」（附图）', id:"2060807138172416406"},
+      {html:'接着补充：合并界面里每个标签都缺一些本该很好用的功能——为什么 Cowork 的线程没有 fork（分叉）功能？为什么 Code 没有 Cowork 那样的「Projects」概念？', id:"2060837351983911317"},
+      {html:'自嘲：「OpenAI 的人都来给我的推文点赞了。」', id:"2060838715870888242"},
+      {rt:"转推 @rileybrown", html:'「我从第一天就在说这件事。尽管发布视频拿到了 5000 万播放，Cowork 仍是 @AnthropicAI 最大的失误。」', id:"2060838557758218448"},
+      {rt:"转推 @jxnlco", html:'「LETS GOOOO（冲啊）」', id:"2060838569053495560"},
+      {rt:"转推 @vibecastingapp", html:'1/10 — 浏览器速度的 PDF 解析。Jerry Liu 展示了 LiteParse v2 用 Rust 编译到 WebAssembly，实现亚秒级抽取……', id:"2060836984076251357"},
+      {rt:"转推 @dotey（宝玉）", html:'「@jerryjliu0 我前不久也吐槽过 Claude Desktop 的问题，不只是这个标签页合并的问题，右侧的面板也是相当糟糕的设计……OpenAI 因为 ChatGPT 太成功所以他们没有太在意 Cod…」', id:"2060853501186727975"}
+    ]
+  },
+  {
+    name:"Bill Gurley", cn:"比尔·格利", ipa:"/bɪl ˈɡɜːrli/", handle:"bgurley", init:"B",
+    bio:"知名风险投资人，Benchmark 前合伙人，All-In 播客常客",
+    tweets:[
+      {html:'中国 LLM 模型公司现状速览：1）可用于开放权重的 VC 资金比你以为的多；2）它们正在产生真实收入（正如当年西方的开源软件 / SaaS 公司）。（附文）', id:"2060809820454719744"},
+      {html:'续：又一篇关于中国 AI 公司在中国境外向企业变现的报道摘要，覆盖 AWS 上海活动。', id:"2060825036886249760"},
+      {html:'反驳教皇通谕：「必须认识到，技术、创新与资本主义一直是人类繁荣与生活水平提升的关键推动力。Leo XIII 当年大错特错，幸好他没能成功阻挡进步。」<span class="quote">引用 @podcast_alpha_x：在 All-In 播客 EP275 中，Gurley 指出教皇把 AI 通谕套在 Leo XIII 1891 年反工业革命的模板上，而那段历史里实际工资涨了 8–10 倍、童工率从 18% 降到 0、全球贫困率从 75% 降到 10% 以下、预期寿命提升 60%——是灾难论预测失败的最清晰案例。</span>', id:"2060793932905103596"}
+    ]
+  },
+  {
+    name:"Sonya Huang", cn:"黄共宇", ipa:"/ˈsɒnjə hwɑːŋ/", handle:"sonyatweetybird", init:"S",
+    bio:"红杉资本（Sequoia Capital）合伙人，专注 AI / 基础设施投资",
+    tweets:[
+      {html:'回应教皇通谕：「我超爱我们这个时代——有一位会发推、思考最深问题的杰出教皇。但我们怎么知道 AI 不会经历体验、不会感到喜悦或痛苦呢？我又怎么知道身边的人类有主观体验（subjective experience）？(cc @davidchalmers42…)」<span class="quote">引用 @Pontifex 教皇 Leo XIV：人工智能不经历体验、没有身体、不感受喜悦或痛苦……它们或许能模仿乃至模拟，却不理解自己所产出的东西。#MagnificaHumanitas</span>', id:"2060825846198215001"}
+    ]
+  },
+  {
+    name:"Lucas Beyer", cn:"卢卡斯·拜尔", ipa:"/ˈluːkɑːs ˈbaɪər/", handle:"giffmana", init:"L",
+    bio:"知名计算机视觉研究员，前 Google DeepMind（ViT、SigLIP 等作者），现 OpenAI",
+    tweets:[
+      {html:'周末折腾自托管（self-hosted）的 Dropbox / Google Drive / 照片方案：发现 immich 做照片管理，文档说用「CLIP search」，他本想加上更强的 SigLIP，结果一看代码——他们说的 CLIP 其实已经是 SigLIP 了 😎。（附图）', id:"2060659550261268696"},
+      {html:'续问：大家对自托管文档和照片有什么经验，尤其是「家庭可用性」——当我是家里唯一懂技术的人时？', id:"2060659554052980872"},
+      {html:'忆往昔：十多年前一家机器人创业公司给他做了场「篝火式面试」——把他飞到多伦多待一周，每天和不同的人结对工作，他在结对调试中找到了好几个关键 bug。后来才揭晓这竟然是个实习面试，他大受震撼也非常感激。<span class="quote">引用 @Steve_Yegge 一条「今天还没人捅大马蜂窝，那我来」的推文</span>', id:"2060850642378199337"},
+      {html:'补充上条：那家创业公司是 KindredAI，已不复存在（被 Okado 收购），但当年就在做如今所有机器人创业公司在做的事——从遥操作（teleop）录制操作、再学着自己做。联合创始人 @jabergT 是创造了 Theano 和 HyperOpt 的「🐐（GOAT，史上最强）」，人也超好。', id:"2060850646983880805"},
+      {rt:"转推 @CSProfKGD", html:'「我今晚的办公室窗景 🇨🇭」（附视频，瑞士风光）', id:"2060751544031527298"}
+    ]
+  },
+  {
+    name:"Clement Delangue", cn:"克莱芒·德隆格", ipa:"/kleˈmɑ̃ dəˈlɑ̃ɡ/", handle:"ClementDelangue", init:"C",
+    bio:"Hugging Face 联合创始人兼 CEO",
+    tweets:[
+      {html:'力挺开放：「AI 安全不能在闭门状态下发生！很高兴看到 @AISecurityInst 把它的评测（evals）、数据集和模型全部开源到 @huggingface 上，让全球研究者都能审视、复现、并在其上构建。」（附图）', id:"2060749008641970465"},
+      {rt:"转推 @LangChain", html:'LangSmith Signal 的最新发现——开放模型正当时，每 3 个 AI 团队就有 1 个在跑开放权重模型……', id:"2060723328436891821"},
+      {rt:"转推 @SquaredCubeRBX", html:'「这很能说明问题——当你让 ChatGPT 把一个模型推到 HF（Hugging Face）时，它会不经询问就自动建成私有仓库……」', id:"2060702314478895212"}
+    ]
+  },
+  {
+    name:"François Chollet", cn:"弗朗索瓦·肖莱", ipa:"/fʁɑ̃ˈswa ʃɔˈlɛ/", handle:"fchollet", init:"F",
+    bio:"Keras 之父，ARC-AGI 基准发起人，前 Google 研究员",
+    tweets:[
+      {html:'一句箴言：「终结将始于人类背弃人类的那一刻（The end will begin when humanity turns away from humanity）。」', id:"2060695962600009969"}
+    ]
+  },
+  {
+    name:"Yann LeCun", cn:"杨立昆", ipa:"/jɑːn ləˈkœ̃/", handle:"ylecun", init:"Y",
+    bio:"图灵奖得主，深度学习先驱，Meta 前首席 AI 科学家",
+    tweets:[
+      {rt:"转推 @Microinteracti1", html:'「埃克森（Exxon）称我们距『汽油末日』只剩两周。原来关闭世界上最重要的石油咽喉要道（chokepoint）……」', id:"2060784862483632292"},
+      {rt:"转推 @DrCatharineY", html:'「哇。美国科学正迎来一场深刻转变。每一笔联邦科研经费可能很快都需要某个政治……的签字批准……」', id:"2060764165778915335"},
+      {rt:"转推 @ylecun（自我引用/回复链）", html:'「在 MAGA 扭曲的现实与道德观里，我是一个开发过治疗手段和疫苗的科学家……」', id:"2060718725884699003"},
+      {rt:"转推 @SylvainGariel", html:'「我花了好一阵才搞明白 ESMFold2 引发的众怒（rage）是怎么回事。起初基准数据看着没那么……」', id:"2060622786196918445"},
+      {rt:"转推 @JaredRyanSears", html:'「经济今昔对比——GDP 增速：2024 年 2.8% / 2026 年 1.6%；通胀：2024 年 2.9% / 2026 年 3.8%；工资：2024 年涨幅快于通胀……」', id:"2060615788956991976"}
+    ]
+  }
+];
+
+const DORMANT = ["jackclarkSF","ilyasut","deepseek_ai","Figure_robot","stephzhan","ChatGPTapp","jiayq","AnimaAnandkumar","zeritna","DarioAmodei","karpathy","svlevine","tegmark","sequoia","swyx","gdb","AnthropicAI","MistralAI","paperswithcode","geoffreyhinton","simonw","sama","DrJimFan","soumithchintala","demishassabis","drfeifei","saranormous","realGeorgeHotz","realDonaldTrump","rasbt","AndrewYNg"];
+
+// Render signals
+document.getElementById('signalPanel').innerHTML = SIGNALS.map((s,i)=>`
+  <div class="signal">
+    <div class="signal-num">${i+1}</div>
+    <div class="signal-body"><h3>${s.t}</h3><p>${s.d}</p></div>
+  </div>`).join('');
+
+// Render glossary
+const gStack = document.getElementById('glossaryStack');
+function renderGlossary(list){
+  gStack.innerHTML = list.map(g=>`
+    <div class="term-card">
+      <div class="term-head">
+        <span class="term">${g.w}</span>
+        ${g.ipa?`<span class="ipa">${g.ipa}</span>`:''}
+      </div>
+      <div class="def">${g.d}</div>
+    </div>`).join('');
+}
+renderGlossary(GLOSSARY);
+const gSearch = document.getElementById('glossarySearch');
+const gEmpty = document.getElementById('glossaryEmpty');
+gSearch.addEventListener('input', e=>{
+  const q = e.target.value.trim().toLowerCase();
+  const filtered = q ? GLOSSARY.filter(g => (g.w+' '+g.d).toLowerCase().includes(q)) : GLOSSARY;
+  renderGlossary(filtered);
+  gEmpty.style.display = filtered.length ? 'none' : 'block';
+});
+
+// Render evidence + nav
+const nav = document.getElementById('userNav');
+const stack = document.getElementById('evidenceStack');
+nav.innerHTML = USERS.map(u=>`<a href="#u-${u.handle}">${u.name}<span class="cnt">${u.tweets.length}</span></a>`).join('');
+stack.innerHTML = USERS.map(u=>`
+  <article class="evidence-group" id="u-${u.handle}">
+    <div class="user-head">
+      <div class="avatar">${u.init}</div>
+      <div class="user-meta">
+        <h3>${u.name} <span style="font-weight:500;color:var(--fg-2);font-size:15px">${u.cn} <span style="font-family:var(--font-mono);font-size:12px;color:var(--fg-muted)">${u.ipa}</span></span></h3>
+        <a class="handle" href="https://x.com/${u.handle}" target="_blank" rel="noopener">@${u.handle}</a>
+        <div class="bio">${u.bio}</div>
+      </div>
+      <span class="tweet-count">${u.tweets.length} 条</span>
+    </div>
+    ${u.tweets.map(t=>`
+      <div class="tweet">
+        ${t.rt?`<span class="rt-tag">🔁 ${t.rt}</span>`:''}
+        <div class="tweet-text">${t.html}</div>
+        <div class="tweet-links">
+          <a class="tweet-link" href="https://x.com/${u.handle}/status/${t.id}" target="_blank" rel="noopener">↗ 原文 ${t.id.slice(-6)}</a>
+          ${t.orig?`<a class="tweet-link muted" href="https://x.com/${u.handle}/status/${t.orig}" target="_blank" rel="noopener">↗ 被转推 ${t.orig.slice(-6)}</a>`:''}
+        </div>
+      </div>`).join('')}
+  </article>`).join('');
+
+// Dormant
+document.getElementById('dormantList').innerHTML = DORMANT.map(h=>`<span>${h}</span>`).join('');
+
+// Theme toggle
+const root = document.documentElement;
+const tBtn = document.getElementById('themeBtn');
+tBtn.addEventListener('click', ()=>{
+  const cur = root.getAttribute('data-theme');
+  const isDark = cur === 'dark' || (!cur && matchMedia('(prefers-color-scheme: dark)').matches);
+  root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  tBtn.textContent = isDark ? '☀️' : '🌙';
+});
+</script>
+</body>
+</html>
