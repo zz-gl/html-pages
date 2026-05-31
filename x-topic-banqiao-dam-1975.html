@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>板桥水库「75·8」溃坝（1975）— 史实调研</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f6f8;--panel:#ffffff;--ink:#16181c;--sub:#586070;--line:#e4e7ec;
+  --accent:#1d6fa5;--accent2:#9a3412;--good:#15803d;--warn:#b91c1c;--chip:#eef1f5;
+  --shadow:0 1px 2px rgba(16,18,28,.04),0 8px 24px rgba(16,18,28,.06);
+  --mono:"Space Grotesk",ui-monospace,monospace;--sans:"Plus Jakarta Sans","Noto Sans SC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{--bg:#0c0e11;--panel:#15181d;--ink:#e8ecf2;--sub:#98a2b2;--line:#242a33;--accent:#5ba3d0;--accent2:#f59e6b;--good:#4ade80;--warn:#f87171;--chip:#1c222b;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.45);}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:24px 18px 80px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--mono);font-weight:700;font-size:clamp(23px,5vw,36px);line-height:1.2;margin:.3em 0 .2em}
+.lede{color:var(--sub);font-size:16px;margin:.4em 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.meta span{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:12.5px;color:var(--sub);font-family:var(--mono)}
+.note{background:color-mix(in srgb,var(--warn) 10%,transparent);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:12px;padding:12px 15px;margin:14px 0;font-size:14px}
+.note b{color:var(--warn)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:18px 0;box-shadow:var(--shadow)}
+.tldr{border-left:3px solid var(--accent)}.tldr b{color:var(--accent)}
+h2{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin:34px 0 4px;font-weight:600}
+h3{font-size:18px;margin:20px 0 6px;font-weight:700}
+p{margin:.55em 0}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+ul{margin:.4em 0;padding-left:1.2em}li{margin:.32em 0}
+.gl{display:grid;gap:8px}
+.gl .row{background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14.5px}
+.gl .w{font-family:var(--mono);font-weight:600}.gl .ipa{font-family:var(--mono);color:var(--accent2);font-size:13px;margin-left:6px}
+.sig{counter-reset:s;display:grid;gap:10px}
+.sig .row{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.sig .n{counter-increment:s;font-family:var(--mono);font-weight:700;color:var(--accent);min-width:22px}
+.sig .n::before{content:counter(s)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--chip);font-family:var(--mono);font-weight:600;font-size:12px}
+.big{font-family:var(--mono);font-weight:700}
+.t-line{display:flex;gap:12px;margin:8px 0;align-items:flex-start}
+.t-line .d{font-family:var(--mono);font-weight:700;color:var(--accent2);min-width:78px;font-size:13px}
+.warn{color:var(--warn);font-weight:600}.good{color:var(--good);font-weight:600}
+.src{display:grid;gap:8px}
+.src a{display:block;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.5px;color:var(--ink)}
+.src a:hover{border-color:var(--accent)}.src .h{font-family:var(--mono);color:var(--accent);font-weight:600}.src .t{color:var(--sub);display:block;margin-top:2px}
+.foot{color:var(--sub);font-size:13px;border-top:1px solid var(--line);margin-top:36px;padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="kicker">X 主题调研 · 史实梳理 · Insight Brief</div>
+<h1>板桥水库「75·8」溃坝<br>1975 · 河南</h1>
+<p class="lede">人类史上最致命的溃坝/洪灾之一：超强台风 Nina 滞留河南，板桥、石漫滩等 62 座水库连锁溃决。本篇梳理来龙去脉、死亡人数争议、技术原因、级联与善后、信息封锁与教训。</p>
+<div class="meta"><span>2026-05-31</span><span>web 权威源交叉核对</span><span>官方/独立口径并列</span></div>
+
+<div class="note"><b>⚠️ 关于本次「X 调研」</b>：在 X 用 8 条中英文检索式查证，<b>几乎零有效信号</b>——英文宽词召回无关时事，中文仅匹配到广告刷屏。该事件为 1975 年历史事件，X 上无实质舆情。故按既定方法转<b>权威 web 源</b>（Britannica / 英中维基 / HRW / Discovery / CDT 404文库 等），并对各方数字<b>分别标注来源</b>，不替读者下唯一结论。</div>
+
+<div class="panel tldr">
+<b>一句话：</b>1975 年 8 月，台风 Nina 带来<b>万年一遇级暴雨</b>，板桥水库因<b>设计标准偏低 + 泄洪闸淤堵锈死 + 来水远超泄流 + 无预警</b>于 8 月 8 日凌晨漫顶溃决，引发 <b>62 座水库连锁溃坝</b>。死亡人数官方修订口径<b>约 2.6 万</b>、独立估计<b>达 23–24 万</b>（含次生饥荒瘟疫），是<b>天灾引爆人祸</b>的典型，信息被封锁至 1990 年代。
+</div>
+
+<h2>📖 生词预热</h2>
+<div class="gl">
+  <div class="row"><span class="w">cascade failure</span><span class="ipa">/kæˈskeɪd/</span> — 级联溃坝：一座垮引发连锁多座坝接连失效</div>
+  <div class="row"><span class="w">overtopping</span><span class="ipa">/ˌoʊvərˈtɒpɪŋ/</span> — 漫顶：水位超坝顶漫溢，土坝漫顶极易溃决</div>
+  <div class="row"><span class="w">spillway</span><span class="ipa">/ˈspɪlweɪ/</span> — 溢洪道：超额洪水的泄流通道</div>
+  <div class="row"><span class="w">sluice gate</span><span class="ipa">/sluːs ɡeɪt/</span> — 泄洪闸门</div>
+  <div class="row"><span class="w">discharge capacity</span><span class="ipa">/ˈdɪstʃɑːrdʒ/</span> — 泄流能力（m³/s 立方米每秒）</div>
+  <div class="row"><span class="w">"1,000-year flood" / return period</span> — 千年一遇洪水/重现期：统计上平均千年一次的洪水标准</div>
+  <div class="row"><span class="w">siltation</span><span class="ipa">/sɪlˈteɪʃn/</span> — 泥沙淤积（抬高库底、堵塞闸门）</div>
+  <div class="row"><span class="w">earth dam</span><span class="ipa">/ɜːrθ dæm/</span> — 土石坝（板桥即黏土均质坝）</div>
+  <div class="row"><span class="w">epidemic</span><span class="ipa">/ˌepɪˈdemɪk/</span> — 疫病流行（溃后痢疾/伤寒/疟疾）</div>
+  <div class="row"><span class="w">declassify</span><span class="ipa">/diːˈklæsɪfaɪ/</span> — 解密（档案）</div>
+</div>
+
+<h2>关键信号 · 先看这 5 条</h2>
+<div class="sig">
+  <div class="row"><span class="n"></span><div><b>史上最致命溃坝之一</b>：台风 Nina（7503）滞留河南，引发<b>板桥、石漫滩等共 62 座水库连锁溃决</b>。</div></div>
+  <div class="row"><span class="n"></span><div><b>死亡人数是最大争议</b>：官方修订<b>约 2.6 万</b>（直接溺亡）vs 政协委员/HRW/Discovery 独立估计<b>23–24 万</b>（含饥荒瘟疫约 14 万）。差近十倍。</div></div>
+  <div class="row"><span class="n"></span><div><b>天灾叠加人祸</b>：设计仅防千年一遇 + 泄洪闸淤堵锈死、泄流远小于来水 + 无预警无撤离 + 通信中断。</div></div>
+  <div class="row"><span class="n"></span><div><b>总工程师陈惺早有预警</b>却被打成「右倾」撤职——他反对当年「以蓄为主、多建坝」的治水路线。</div></div>
+  <div class="row"><span class="n"></span><div><b>信息长期封锁</b>，至 1990 年代中后期（1995《河南日报》、HRW 报告）才广为人知，<b>2005 官方档案解密</b>。</div></div>
+</div>
+
+<h2>一 · 溃坝时间线（1975 年 8 月）</h2>
+<div class="panel">
+<div class="t-line"><span class="d">8/4 起</span><div>久旱后暴雨突至，台风 Nina 北上后<b>滞留河南</b>。确山三日降雨 1,100mm；台风中心单日 1,060mm（超当地年均约 800mm）。中文资料常引暴雨中心<b>林庄 24 小时 1,631mm</b>。</div></div>
+<div class="t-line"><span class="d">8/5–7</span><div>上游小水库相继满溢，板桥镇进水；<b>坝区与上游通信中断</b>，开闸请求先拒后准、但电报送不到操作员。</div></div>
+<div class="t-line"><span class="d">8/8 ~1:00</span><div>板桥在水位 <b>117.94m</b>（高出防浪墙 0.3m）<b>漫顶溃决</b>。遂平形成<b>宽约 10km、高 3–7m、时速近 50km</b> 的水墙，<b>6 小时下泄 7.01 亿 m³</b>。</div></div>
+<div class="t-line"><span class="d">8/13–17</span><div><b>逾百万人被围困</b>（上蔡尤甚），空投食物半数落水；汝南 50 万居民 32 万人需就医（痢疾/伤寒/疟疾）。</div></div>
+<div class="t-line"><span class="d">两周后</span><div>洪水退去。全灾约 <b>596 万间房屋倒塌、逾 1,100 万人受灾</b>。</div></div>
+</div>
+
+<h2>二 · 死亡人数：多口径并列（最大争议）</h2>
+<div class="panel">
+<table>
+<tr><th>口径</th><th>数字</th><th>来源/性质</th></tr>
+<tr><td>1975.8 河南省委初步</td><td class="big">85,600</td><td>当时内部初步数（河南；连外省不超 10 万）</td></tr>
+<tr><td>官方修订(1990s)</td><td class="big good">≈26,000</td><td>《中国历史大洪水》直接溺亡口径</td></tr>
+<tr><td>全国政协委员联名</td><td class="big warn">≈230,000</td><td>乔培新、孙越崎等</td></tr>
+<tr><td>Human Rights Watch(1995)</td><td class="big warn">≈230,000</td><td>国际人权组织报告</td></tr>
+<tr><td>Discovery「终极十大」(2005)</td><td class="big warn">240,000+</td><td>含约 140,000 死于饥荒/感染/瘟疫</td></tr>
+<tr><td>长江委某负责人(1994)</td><td class="big">「不超 1 万」</td><td>官方个人表态</td></tr>
+</table>
+<p>关键分歧在<b>统计口径</b>：官方 2.6 万多指<b>直接溺亡</b>；23–24 万叠加了<b>溃后两周饥饿与瘟疫致死</b>。一个被质疑的辩护：1994 年有官员以「死那么多国际媒体早报了」压低数字——但当时中国<b>正封锁信息</b>，国际媒体无从知晓。</p>
+<div class="note"><b>信源提示</b>：23 万一说亦见于<b>大纪元</b>等有特定政治立场的媒体，但<b>同一数字同时见于 HRW、政协委员、Discovery</b>，非孤证；官方 2.6 万亦应并看。读者宜自行权衡。</div>
+</div>
+
+<h2>三 · 技术原因：设计低 + 闸门失效 + 来水碾压</h2>
+<div class="panel">
+<ul>
+<li><b>设计标准过低</b>：仅防「千年一遇」（日 306mm / 三日 530mm），实际达<b>万年一遇级</b>。</li>
+<li><b>泄流被碾压</b>：最大泄流约 <b>1,740 m³/s</b>，洪峰入库约 <b>13,000 m³/s</b>——根本来不及放。</li>
+<li><b>闸门淤堵锈死</b>：泄洪闸自 1950s 扩建后长期未用未检修，<b>17 孔多数锈死、紧急仅开 5 孔</b>；上游面又淤满泥沙。</li>
+<li><b>漫顶即溃</b>：泄不出去 → 水位漫过坝顶 → <b>均质土坝漫顶溃决</b>。</li>
+<li><b>预警缺失</b>：无早期预警、无撤离预案、通信中断，急剧放大灾难。</li>
+</ul>
+</div>
+
+<h2>四 · 级联溃坝与「炸坝泄洪」</h2>
+<div class="panel">
+<ul>
+<li><b>62 座水库同日垮塌</b>：板桥之外，第二大的<b>石漫滩水库</b>亦溃，连锁波及 60 座中小水库。</li>
+<li><b>人工炸坝分洪</b>：为给下游减压、把洪水导向预定方向，当局<b>空袭炸毁若干水坝/分洪闸</b>；<b>班台泄洪闸被炸开</b>，迫使在「淹安徽阜阳」与「加重河南伤亡」间取舍，又<b>影响安徽约 150 万居民</b>。</li>
+<li>装机最大的<b>宿鸭湖水库（蓄水 12 亿 m³）</b>靠炸其他坝分洪才保全。</li>
+</ul>
+</div>
+
+<h2>五 · 封锁、解密与教训</h2>
+<div class="panel">
+<ul>
+<li><b>当即封锁</b>：事发后官方对公众长期沉默、不许报道，国际社会几乎无从知晓。</li>
+<li><b>逐步揭开</b>：1987 河南日报记者著书；<b>1995《河南日报》披露</b> + <b>HRW 报告</b>（《大坝之龙 The River Dragon Has Come》）；1990s《中国历史大洪水》收录（前水利部长钱正英作序）；<b>2005 官方档案解密</b>。</li>
+<li><b>官方定性</b>：钱正英称这是「建国以来损失最惨重、死亡人数最多的水利灾害，水利工作最惨痛的教训」。</li>
+<li><b>重建</b>：板桥于 1986–1993 原址重建，按更高标准设防。</li>
+</ul>
+</div>
+
+<h2>争议与开放问题</h2>
+<div class="panel">
+<ul>
+<li><b>死亡人数</b>：2.6 万 vs 23 万的鸿沟，本质是<b>直接溺亡口径 vs 含次生灾害口径</b>，加早期封锁使原始统计难复核——恐无精确定论。</li>
+<li><b>天灾 vs 人祸权重</b>：极端暴雨是触发，但设计、失修、过度筑坝、预警缺失被广泛视为放大器；陈惺预警与被整肃是「人祸」论核心。</li>
+<li><b>对今日大坝安全的镜鉴</b>：常被援引讨论三峡及大型水库的极端洪水设防、泥沙、应急与信息透明，但跨案例类比需谨慎。</li>
+</ul>
+</div>
+
+<h2>信源 · web 权威源（X 无信号）</h2>
+<div class="src">
+<a href="https://www.britannica.com/event/Typhoon-Nina-Banqiao-dam-failure"><span class="h">Britannica</span><span class="t">Typhoon Nina–Banqiao dam failure 词条</span></a>
+<a href="https://en.wikipedia.org/wiki/1975_Banqiao_Dam_failure"><span class="h">English Wikipedia</span><span class="t">1975 Banqiao Dam failure（时间线/级联/炸坝/死亡口径）</span></a>
+<a href="https://zh.wikipedia.org/zh-hans/河南%2275·8%22水库溃坝"><span class="h">中文维基</span><span class="t">河南「75·8」水库溃坝（含林庄雨量等中文资料）</span></a>
+<a href="https://damfailures.org/case-study/banqiao-dam-china-1975"><span class="h">ASDSO Dam Failures</span><span class="t">工程视角案例与教训</span></a>
+<a href="https://chinadigitaltimes.net/chinese/668517.html"><span class="h">中国数字时代 404文库</span><span class="t">事件梳理与官方表态引述</span></a>
+<a href="https://www.epochtimes.com/gb/21/9/13/n13231576.htm"><span class="h">大纪元</span><span class="t">23 万一说（注：特定政治立场，仅作多源之一）</span></a>
+</div>
+
+<div class="foot">
+<p><b>方法与局限</b>：X(bird) 8 条中英文检索式几乎零有效信号（历史事件无舆情），故转 web 权威源交叉核对。死亡人数等关键数字争议大，以「多口径并列 + 标注来源」处理，非单一定论；官方、国际组织、境外异见媒体、纪录片立场各异，已尽量交叉标注，读者宜自行权衡。个别极端雨量数值中外资料略有出入，已注明。时效 2026-05。</p>
+<p>语雀全文：<a href="https://www.yuque.com/oudizuo/x-follows/x-75-8-1975-2026-05-31-1780234091">板桥水库「75·8」溃坝</a></p>
+</div>
+
+</div>
+</body>
+</html>
