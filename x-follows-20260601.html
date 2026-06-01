@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-06-01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --primary-fixed-dim:#ffb597;
+  --on-primary:#ffffff; --accent-glow:#E8400D;
+  --secondary:#d5baff; --secondary-container:#7b40e0; --tertiary:#4d44e3; --accent-cyan:#00D4FF;
+  --bg:#fff8f6; --surface:#fff8f6; --surface-container-lowest:#ffffff; --surface-container-low:#fbf2ef;
+  --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,0.06); --border-strong:rgba(0,0,0,0.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px;
+  --space-2xl:24px; --space-3xl:32px; --space-4xl:48px; --space-5xl:64px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,0.04);
+  --shadow-md:0 4px 12px rgba(30,27,25,0.08);
+  --shadow-lg:0 8px 24px rgba(30,27,25,0.12);
+  --shadow-accent:0 8px 24px rgba(160,59,0,0.15);
+  --gradient-primary:linear-gradient(135deg,#a03b00 0%,#c94c00 100%);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#060B18; --surface:#0B1426; --surface-container-lowest:#101D35; --surface-container-low:#101D35;
+    --surface-container:#162544; --surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC; --fg-2:#CBD5E1; --fg-muted:#94a3b8;
+    --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14); --outline-variant:#33415c;
+    --primary:#FF6B35; --primary-fixed:#3a1e10; --primary-fixed-dim:#5a2e18; --accent-glow:#00D4FF;
+    --shadow-md:0 4px 12px rgba(0,0,0,0.4); --shadow-lg:0 8px 24px rgba(0,0,0,0.5);
+    --shadow-accent:0 8px 24px rgba(255,107,53,0.18);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body); background:var(--bg); color:var(--fg-1);
+  line-height:1.6; font-size:15.5px; -webkit-font-smoothing:antialiased;
+  padding:0; overflow-x:hidden;
+}
+.wrap{max-width:880px; margin:0 auto; padding:var(--space-2xl) var(--space-lg) var(--space-5xl);}
+a{color:var(--primary-container); text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:2px solid var(--primary-container); outline-offset:2px; border-radius:var(--radius-sm);}
+
+/* ===== Header ===== */
+.brief-header{margin-bottom:var(--space-3xl);}
+.kicker{font-family:var(--font-mono); font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--fg-muted); margin-bottom:var(--space-md);}
+.brief-header h1{font-family:var(--font-headline); font-weight:700; letter-spacing:-0.02em;
+  font-size:clamp(28px,6vw,42px); line-height:1.1; margin-bottom:var(--space-md);
+  background:var(--gradient-text); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.lede{color:var(--fg-2); font-size:16px; max-width:60ch; margin-bottom:var(--space-lg);}
+.answer-strip{display:flex; flex-wrap:wrap; gap:var(--space-sm);}
+.useful-chip{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600;
+  padding:7px 13px; border-radius:var(--radius-pill); background:var(--surface-container);
+  border:1px solid var(--border-strong); color:var(--fg-2);}
+.useful-chip b{font-family:var(--font-mono); color:var(--primary-container); font-size:14px;}
+
+/* ===== Section heads ===== */
+.section{margin-top:var(--space-4xl);}
+.section-head{display:flex; align-items:baseline; gap:var(--space-md); margin-bottom:var(--space-lg);
+  flex-wrap:wrap;}
+.section-head h2{font-family:var(--font-headline); font-weight:600; letter-spacing:-0.01em;
+  font-size:22px;}
+.section-head .count{font-family:var(--font-mono); font-size:13px; color:var(--fg-muted);}
+
+/* ===== Primary insight: key signals ===== */
+.primary-insight{background:var(--surface-container-low); border:1px solid var(--border-strong);
+  border-radius:var(--radius-xl); padding:var(--space-2xl); box-shadow:var(--shadow-md);
+  border-left:4px solid var(--primary-container);}
+.signal{display:flex; gap:var(--space-lg); padding:var(--space-lg) 0; border-top:1px solid var(--border);}
+.signal:first-child{border-top:none; padding-top:0;}
+.signal:last-child{padding-bottom:0;}
+.signal .num{flex:0 0 auto; width:30px; height:30px; border-radius:var(--radius-pill);
+  background:var(--gradient-primary); color:#fff; font-family:var(--font-headline); font-weight:700;
+  font-size:14px; display:grid; place-items:center; box-shadow:var(--shadow-accent);}
+.signal .txt{flex:1; font-size:15px; color:var(--fg-2);}
+.signal .txt b{color:var(--fg-1); font-weight:700;}
+
+/* ===== Vocab cards ===== */
+.vocab-tools{margin-bottom:var(--space-lg);}
+.search-box{position:relative; max-width:420px;}
+.search-box input{width:100%; font-family:var(--font-body); font-size:15px; color:var(--fg-1);
+  padding:12px 14px 12px 40px; border-radius:var(--radius-pill); border:1px solid var(--border-strong);
+  background:var(--surface-container-lowest); transition:border-color .15s,box-shadow .15s;}
+.search-box input:focus{outline:none; border-color:var(--primary-container);
+  box-shadow:0 0 0 3px var(--primary-fixed);}
+.search-box svg{position:absolute; left:13px; top:50%; transform:translateY(-50%);
+  width:18px; height:18px; color:var(--fg-muted);}
+.search-meta{font-family:var(--font-mono); font-size:12px; color:var(--fg-muted);
+  margin-top:var(--space-sm); min-height:16px;}
+.vocab-stack{display:flex; flex-direction:column; gap:var(--space-sm);}
+.vocab-card{background:var(--surface-container-lowest); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg); box-shadow:var(--shadow-sm);
+  transition:transform .12s,box-shadow .12s,border-color .12s;}
+.vocab-card:hover{box-shadow:var(--shadow-md); border-color:var(--border-strong);}
+.vocab-card .term{font-family:var(--font-headline); font-weight:600; font-size:16px; color:var(--fg-1);}
+.vocab-card .ipa{font-family:var(--font-mono); font-size:13px; color:var(--primary-container);
+  margin-left:8px;}
+.vocab-card .gloss{display:block; color:var(--fg-2); font-size:14.5px; margin-top:3px;}
+.vocab-card.hidden{display:none;}
+.no-result{color:var(--fg-muted); font-size:14px; padding:var(--space-md) 0; display:none;}
+
+/* ===== User filter ===== */
+.user-filter{display:flex; flex-wrap:wrap; gap:var(--space-xs); margin-bottom:var(--space-xl);}
+.user-pill{font-size:13px; font-weight:600; padding:6px 12px; border-radius:var(--radius-pill);
+  background:var(--surface-container); border:1px solid var(--border); color:var(--fg-2);
+  cursor:pointer; transition:all .12s; font-family:var(--font-body);}
+.user-pill:hover{border-color:var(--primary-container); color:var(--fg-1);}
+.user-pill.active{background:var(--gradient-primary); color:#fff; border-color:transparent;
+  box-shadow:var(--shadow-accent);}
+
+/* ===== Evidence stack (users) ===== */
+.evidence-stack{display:flex; flex-direction:column; gap:var(--space-2xl);}
+.user-block{background:var(--surface-container-low); border:1px solid var(--border);
+  border-radius:var(--radius-xl); overflow:hidden; box-shadow:var(--shadow-sm);}
+.user-block.hidden{display:none;}
+.user-block > summary{list-style:none; cursor:pointer; padding:var(--space-xl) var(--space-2xl);
+  display:flex; align-items:flex-start; gap:var(--space-md);}
+.user-block > summary::-webkit-details-marker{display:none;}
+.user-block .chevron{flex:0 0 auto; margin-top:4px; transition:transform .2s; color:var(--fg-muted);}
+.user-block[open] .chevron{transform:rotate(90deg);}
+.user-id{flex:1; min-width:0;}
+.user-id .name{font-family:var(--font-headline); font-weight:700; font-size:19px; color:var(--fg-1);
+  display:flex; align-items:center; gap:var(--space-sm); flex-wrap:wrap;}
+.user-id .badge{font-family:var(--font-mono); font-size:11px; font-weight:600; padding:2px 8px;
+  border-radius:var(--radius-pill); background:var(--primary-fixed); color:var(--primary);}
+.user-id .bio{color:var(--fg-muted); font-size:13.5px; margin-top:5px; line-height:1.5;}
+.user-id .bio .ipa{font-family:var(--font-mono); color:var(--primary-container);}
+.tweets{padding:0 var(--space-2xl) var(--space-xl) var(--space-2xl);}
+.tweet{position:relative; padding:var(--space-lg) 0 var(--space-lg) var(--space-xl);
+  border-top:1px solid var(--border);}
+.tweet::before{content:""; position:absolute; left:5px; top:var(--space-xl); width:7px; height:7px;
+  border-radius:50%; background:var(--primary-container);}
+.tweet::after{content:""; position:absolute; left:8px; top:calc(var(--space-xl) + 12px); bottom:0;
+  width:1px; background:var(--border-strong);}
+.tweet:last-child::after{display:none;}
+.tweet .body{font-size:15px; color:var(--fg-2); line-height:1.62;}
+.tweet .body b{color:var(--fg-1);}
+.tag-rt{display:inline-block; font-family:var(--font-mono); font-size:11px; font-weight:600;
+  padding:2px 7px; border-radius:var(--radius-sm); margin-right:6px; vertical-align:1px;
+  background:var(--secondary-container); color:#fff;}
+.tag-quote{display:inline-block; font-family:var(--font-mono); font-size:11px; font-weight:600;
+  padding:2px 7px; border-radius:var(--radius-sm); margin-right:6px; vertical-align:1px;
+  background:var(--tertiary); color:#fff;}
+.tag-thread{display:inline-block; font-family:var(--font-mono); font-size:11px; font-weight:600;
+  padding:2px 7px; border-radius:var(--radius-sm); margin-right:6px; vertical-align:1px;
+  background:var(--surface-container-high); color:var(--fg-2); border:1px solid var(--border-strong);}
+.links{margin-top:var(--space-sm); display:flex; flex-direction:column; gap:3px;}
+.links a{font-family:var(--font-mono); font-size:12.5px; display:inline-flex; align-items:center; gap:5px;
+  color:var(--primary-container); word-break:break-all;}
+.links a .lbl{color:var(--fg-muted); flex:0 0 auto;}
+.links a svg{width:12px; height:12px; flex:0 0 auto;}
+.subtweets{margin-top:var(--space-md); padding-left:var(--space-md);
+  border-left:2px solid var(--outline-variant); display:flex; flex-direction:column; gap:var(--space-md);}
+.subtweet .body{font-size:14.5px;}
+
+/* ===== Quiet (no activity) ===== */
+.quiet{background:var(--surface-container); border:1px dashed var(--border-strong);
+  border-radius:var(--radius-lg); padding:var(--space-xl); font-size:14px; color:var(--fg-muted);
+  line-height:1.8;}
+.quiet b{color:var(--fg-2); font-family:var(--font-headline); font-size:15px;}
+.quiet .names{margin-top:var(--space-sm);}
+
+footer{margin-top:var(--space-5xl); padding-top:var(--space-xl); border-top:1px solid var(--border);
+  font-family:var(--font-mono); font-size:12px; color:var(--fg-muted); text-align:center; line-height:1.8;}
+
+@media (max-width:560px){
+  .wrap{padding:var(--space-xl) var(--space-md) var(--space-4xl);}
+  .user-block > summary,.tweets{padding-left:var(--space-lg); padding-right:var(--space-lg);}
+  .primary-insight{padding:var(--space-lg);}
+  .signal{gap:var(--space-md);}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== Answer header ===== -->
+  <header class="brief-header">
+    <div class="kicker">X / Twitter 关注动态 · 每日汇总</div>
+    <h1>关注圈 24 小时动态</h1>
+    <p class="lede">OpenAI 三线扩张（机器人 / 生物防御 / Agent 操作）、AI 编程工作流热议、世界模型路线之争与中国 AI 力量，是这一窗口最值得关注的几条主线。</p>
+    <div class="answer-strip">
+      <span class="useful-chip">时间窗口 <b>近 24h</b></span>
+      <span class="useful-chip">关注 <b>41</b> 人</span>
+      <span class="useful-chip">有动态 <b>14</b> 人</span>
+      <span class="useful-chip">动态 <b>44</b> 条</span>
+      <span class="useful-chip">抓取 <b>06-01 04:50 UTC</b></span>
+    </div>
+  </header>
+
+  <!-- ===== Primary insight: key signals ===== -->
+  <section class="section" id="signals">
+    <div class="section-head"><h2>🔑 关键信号总结</h2><span class="count">5 条 · 最重要的先看</span></div>
+    <div class="primary-insight">
+      <div class="signal"><div class="num">1</div><div class="txt"><b>OpenAI 全力扩张机器人与生物防御。</b>Sam Altman 宣布「世界模拟」研究项目已升级为 <b>OpenAI Robotics</b> 并大规模招聘，同时推出帮助世界提前布局<b>生物防御</b>的项目；Greg Brockman 连发两条力推 <b>codex computer use</b> 与 <b>GPT-Realtime 2</b> 的语音/电脑操作能力。OpenAI 正同时向具身智能、生物安全、Agent 操作三线推进。</div></div>
+      <div class="signal"><div class="num">2</div><div class="txt"><b>AI 编程工作流成为热议焦点。</b>Peter Yang 与 swyx 围绕 AI 编程技能（<code>/but-for-real</code>、<code>/adversarial-code-review</code>）、Codex 与 Claude Code 的定时任务对比展开讨论；Simon Willison 因 Codex Desktop 误删「导出 Markdown」功能引发热帖，OpenAI 工程师当场回应将修复——AI 工具的日常体验细节正被高度关注。</div></div>
+      <div class="signal"><div class="num">3</div><div class="txt"><b>「996/997」奋斗文化遭群嘲。</b>Peter Yang 转引 Corgi Insurance「一周工作 7 天、睡在办公室」的创业文化，以「Tokenmax、睡办公室、30 under 30」反讽 AI 创业圈的极端内卷。</div></div>
+      <div class="signal"><div class="num">4</div><div class="txt"><b>世界模型 vs. 通用智能之争。</b>Yann LeCun 高频转推，转发对「世界模型」定义的解读、对 Anthropic「在造神」的批评，以及 AI 加速派/安全派/怀疑派的研究观察，延续其对主流大模型路线的质疑立场。</div></div>
+      <div class="signal"><div class="num">5</div><div class="txt"><b>中国 AI 力量受关注。</b>Bill Gurley 转推「中国前五大纯 LLM 公司总估值达 2260 亿美元（约 Anthropic 的 1/4）」，并转发宇树 CEO 王兴兴谈全球人形机器人市场的播客翻译。</div></div>
+    </div>
+  </section>
+
+  <!-- ===== Vocab cards ===== -->
+  <section class="section" id="vocab">
+    <div class="section-head"><h2>📖 生词预热</h2><span class="count">27 个术语 · 可搜索</span></div>
+    <div class="vocab-tools">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" id="vocabSearch" placeholder="搜索术语、中文或音标…" aria-label="搜索生词">
+      </div>
+      <div class="search-meta" id="vocabMeta"></div>
+    </div>
+    <div class="vocab-stack" id="vocabStack">
+      <div class="vocab-card"><span class="term">imposter</span><span class="ipa">/ɪmˈpɒstə/</span><span class="gloss">冒名顶替者；冒充者</span></div>
+      <div class="vocab-card"><span class="term">sponsors-only</span><span class="gloss">仅限赞助者（订阅付费用户）</span></div>
+      <div class="vocab-card"><span class="term">newsletter</span><span class="ipa">/ˈnjuːzletə/</span><span class="gloss">邮件通讯、订阅简报</span></div>
+      <div class="vocab-card"><span class="term">excursion</span><span class="ipa">/ɪkˈskɜːʃn/</span><span class="gloss">短途出击、远征（此处讽指军事行动）</span></div>
+      <div class="vocab-card"><span class="term">JCPOA</span><span class="gloss">Joint Comprehensive Plan of Action，伊朗核问题《联合全面行动计划》（2015 年伊核协议）</span></div>
+      <div class="vocab-card"><span class="term">enriched uranium</span><span class="ipa">/ɪnˈrɪtʃt jʊˈreɪniəm/</span><span class="gloss">浓缩铀</span></div>
+      <div class="vocab-card"><span class="term">accelerationist</span><span class="ipa">/əkˌseləˈreɪʃənɪst/</span><span class="gloss">加速主义者（主张加速 AI 发展）</span></div>
+      <div class="vocab-card"><span class="term">safetyist</span><span class="ipa">/ˈseɪftiɪst/</span><span class="gloss">安全主义者（强调 AI 安全管控）</span></div>
+      <div class="vocab-card"><span class="term">narcissism</span><span class="ipa">/ˈnɑːsɪsɪzəm/</span><span class="gloss">自恋</span></div>
+      <div class="vocab-card"><span class="term">delusion of grandeur</span><span class="ipa">/dɪˈluːʒn əv ˈɡrɑːndʒə/</span><span class="gloss">妄自尊大、夸大妄想</span></div>
+      <div class="vocab-card"><span class="term">cron job</span><span class="ipa">/krɒn dʒɒb/</span><span class="gloss">定时任务（按计划自动执行的程序）</span></div>
+      <div class="vocab-card"><span class="term">vibe shift</span><span class="gloss">风向/氛围转变</span></div>
+      <div class="vocab-card"><span class="term">vibecoded</span><span class="gloss">「凭感觉编程」（用 AI 自然语言生成代码，几乎不手写）</span></div>
+      <div class="vocab-card"><span class="term">wrapper</span><span class="ipa">/ˈræpə/</span><span class="gloss">封装层、套壳应用</span></div>
+      <div class="vocab-card"><span class="term">continual learning</span><span class="gloss">持续学习（模型上线后不断从新数据学习）</span></div>
+      <div class="vocab-card"><span class="term">eval(uation)</span><span class="ipa">/ɪˌvæljuˈeɪʃn/</span><span class="gloss">评测、评估（衡量模型表现）</span></div>
+      <div class="vocab-card"><span class="term">transcript</span><span class="ipa">/ˈtrænskrɪpt/</span><span class="gloss">文字记录、对话全文</span></div>
+      <div class="vocab-card"><span class="term">hotfix</span><span class="ipa">/ˈhɒtfɪks/</span><span class="gloss">紧急修补补丁</span></div>
+      <div class="vocab-card"><span class="term">reasoning</span><span class="ipa">/ˈriːzənɪŋ/</span><span class="gloss">推理</span></div>
+      <div class="vocab-card"><span class="term">parameter</span><span class="ipa">/pəˈræmɪtə/</span><span class="gloss">参数（模型规模单位，1B = 10 亿参数）</span></div>
+      <div class="vocab-card"><span class="term">biodefense</span><span class="ipa">/ˈbaɪoʊdɪfens/</span><span class="gloss">生物防御（防范生物威胁/疫情）</span></div>
+      <div class="vocab-card"><span class="term">Wolbachia</span><span class="ipa">/wɒlˈbækiə/</span><span class="gloss">沃尔巴克氏体（一种使蚊子不育的细菌）</span></div>
+      <div class="vocab-card"><span class="term">dengue</span><span class="ipa">/ˈdeŋɡeɪ/</span><span class="gloss">登革热</span></div>
+      <div class="vocab-card"><span class="term">humanoid robot</span><span class="ipa">/ˈhjuːmənɔɪd/</span><span class="gloss">人形机器人</span></div>
+      <div class="vocab-card"><span class="term">co-design</span><span class="gloss">协同设计（软硬件一起设计优化）</span></div>
+      <div class="vocab-card"><span class="term">computer use</span><span class="gloss">（AI 的）「电脑操作」能力，能像人一样控制鼠标键盘</span></div>
+    </div>
+    <div class="no-result" id="vocabNoResult">没有匹配的术语。</div>
+  </section>
+
+  <!-- ===== Evidence stack ===== -->
+  <section class="section" id="feed">
+    <div class="section-head"><h2>🧵 详细动态</h2><span class="count">按用户分组 · 时间倒序 · 点击展开/收起</span></div>
+    <div class="user-filter" id="userFilter" role="group" aria-label="按用户筛选"></div>
+    <div class="evidence-stack" id="evidenceStack">
+
+      <details class="user-block" open data-user="Yann LeCun">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Yann LeCun <span class="badge">6 条</span></div>
+            <div class="bio">杨立昆 <span class="ipa">/jɑːn ləˈkʌn/</span> — 图灵奖得主，Meta 首席 AI 科学家，卷积神经网络与「世界模型」路线的主要倡导者</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @antibearthesis</span>「『七巨头（Magnificent 7）』里混进了一个冒牌货。」（配图）</div>
+            <div class="links"><a href="https://x.com/antibearthesis/status/2061310030129799210" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/antibearthesis/…799210 ↗</a><a href="https://x.com/ylecun/status/2061310030129799210" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/ylecun/…799210 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @KenRoth</span>「特朗普对伊朗的『小小远征』被普遍视为一场失败。几乎不论结果如何——最有可能是……」（评论中东局势）</div>
+            <div class="links"><a href="https://x.com/KenRoth/status/2061295158709096494" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/KenRoth/…096494 ↗</a><a href="https://x.com/ylecun/status/2061295158709096494" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/ylecun/…096494 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @JaredRyanSears</span>「伊朗战争时间线：🔸2015：达成 JCPOA（伊核协议）。伊朗交出大部分浓缩铀（enriched uranium），仅保留有限……」</div>
+            <div class="links"><a href="https://x.com/JaredRyanSears/status/2061294113023029515" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/JaredRyanSears/…029515 ↗</a><a href="https://x.com/ylecun/status/2061294113023029515" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/ylecun/…029515 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @jsnover</span>「在哈佛的研究员项目中，我研究 AI 加速主义者（accelerationist）、安全主义者（safetyist）与怀疑派的观点。我逐渐意识到……」</div>
+            <div class="links"><a href="https://x.com/jsnover/status/2061280839489515882" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/jsnover/…515882 ↗</a><a href="https://x.com/ylecun/status/2061280839489515882" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/ylecun/…515882 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @theallinpod</span>「Bill Gurley：Anthropic 自以为在造神。@Jason：认为自己能造出比人类更聪明的存在，是终极的自恋（narcissism）与妄自尊大（delusion of grandeur）……」</div>
+            <div class="links"><a href="https://x.com/theallinpod/status/2061278918561206302" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/theallinpod/…206302 ↗</a><a href="https://x.com/ylecun/status/2061278918561206302" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/ylecun/…206302 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @CSProfKGD</span>「@ylecun 对『什么是世界模型（world model）』的定义。」（配图）</div>
+            <div class="links"><a href="https://x.com/CSProfKGD/status/2061179160626610371" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/CSProfKGD/…610371 ↗</a><a href="https://x.com/ylecun/status/2061179160626610371" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/ylecun/…610371 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Simon Willison">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Simon Willison <span class="badge">3 条</span></div>
+            <div class="bio">西蒙·威利森 <span class="ipa">/ˈsaɪmən ˈwɪlɪsn/</span> — Django 框架联合创始人，知名独立开发者与 AI 工具博主，datasette 作者</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body">发布 5 月的「仅限赞助者」邮件通讯（newsletter）：「为那些没时间每天读我博客、愿意花钱让我少发点内容的人准备。本月内容：……」（配图）</div>
+            <div class="links"><a href="https://x.com/simonw/status/2061309486116266338" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/simonw/…266338 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-thread">🧵 THREAD</span><b>关于 Codex Desktop 误删功能的连续帖。</b>「我对这件事真的很不爽：OpenAI 的 Codex Desktop 原本有个『Copy as Markdown（导出完整对话为 Markdown）』选项，几天前的更新里这功能消失了。这是我认为 Codex 相比 Claude Code 最棒的功能。」
+            <div class="subtweets">
+              <div class="subtweet"><div class="body">「我一直让 Codex Desktop 自动更新，现在我觉得得忍住别升级了，免得它们删掉我依赖的关键功能！」</div>
+                <div class="links"><a href="https://x.com/simonw/status/2061159298575802506" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/simonw/…802506 ↗</a></div></div>
+              <div class="subtweet"><div class="body"><span class="tag-rt">🔁 RT @PhilippSpiess（OpenAI 工程师回应）</span>「@simonw 抱歉！这个按钮是在最近一次菜单重构时被无意中移除的，下个热修复（hotfix）版本会恢复……」</div>
+                <div class="links"><a href="https://x.com/PhilippSpiess/status/2061195413458420092" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/PhilippSpiess/…420092 ↗</a><a href="https://x.com/simonw/status/2061195413458420092" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/simonw/…420092 ↗</a></div></div>
+              <div class="subtweet"><div class="body"><span class="tag-quote">💬 引用</span>「好消息，这是个失误，功能要回来了！」（引用 Philipp Spiess 的解释：按钮将随下个热修复恢复，并可绑定自定义快捷键作为临时方案）</div>
+                <div class="links"><a href="https://x.com/simonw/status/2061195387315404868" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/simonw/…404868 ↗</a></div></div>
+            </div>
+            <div class="links" style="margin-top:var(--space-md)"><a href="https://x.com/simonw/status/2061158636311958005" target="_blank" rel="noopener"><span class="lbl">主帖</span>x.com/simonw/…958005 ↗</a></div></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Andrew Reed">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Andrew Reed <span class="badge">3 条</span></div>
+            <div class="bio">安德鲁·里德 <span class="ipa">/ˈændruː riːd/</span> — Hugging Face 工程师，活跃于开源机器学习社区</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body">「早上好，华沙 🇵🇱」（配图，人在波兰华沙）</div>
+            <div class="links"><a href="https://x.com/andrew__reed/status/2061308277577617655" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/andrew__reed/…617655 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用 @mati</span>（ElevenLabs 联合创始人 Mati Staniszewski 的「回到故乡，超现实！」）：「明天华沙见 ❤️🇵🇱」</div>
+            <div class="links"><a href="https://x.com/andrew__reed/status/2061183832083058875" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/andrew__reed/…058875 ↗</a></div></div>
+          <div class="tweet"><div class="body">「资本一号咖啡馆（Capital One Cafe）先蹚了路，柯基咖啡馆（corgi cafe）才得以起飞。」（玩梗）</div>
+            <div class="links"><a href="https://x.com/andrew__reed/status/2061180078751424532" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/andrew__reed/…424532 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Peter Yang">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Peter Yang <span class="badge">7 条</span></div>
+            <div class="bio">杨彼得 <span class="ipa">/ˈpiːtə jæŋ/</span> — 产品增长专家，前 Reddit/Twitch 产品负责人，AI 产品与创作者经济博主</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body">「Codex 的 automations 和 Claude Code 的 routines 到底有啥区别？哪个更好？我想把所有定时任务（cron job）整合到一个列表里。」</div>
+            <div class="links"><a href="https://x.com/petergyang/status/2061277577785000203" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/petergyang/…000203 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @petergyang（转自己的播客片段）</span>「『发布东西很可怕。我发过几百款产品，每次都在想……万一没人在乎呢？』」</div>
+            <div class="links"><a href="https://x.com/petergyang/status/2061274348598808928" target="_blank" rel="noopener"><span class="lbl">原文/转推</span>x.com/petergyang/…808928 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用 @HarryStebbings</span>（Corgi Insurance「一周 7 天工作、创始人睡办公室、$26 亿估值」的内卷文化）反讽：「你们就是不懂。想赢、真正想赢，你得：1. 工作 997（996 是给失败者的）；2. Tokenmax——花在 token 上的钱要超过公司全部人力预算；3. 睡在办公室；4. 上 Forbes 30 under 30；5. 尽量别进监狱（如果做到第 4 条可能有点难）。」</div>
+            <div class="links"><a href="https://x.com/petergyang/status/2061175114184736792" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/petergyang/…736792 ↗</a></div></div>
+          <div class="tweet"><div class="body">回复 @Shpigford 谈 AI 代码自查技能的玩笑：「『假装这段代码是你最大的死敌写的。』『那个总在 PR 留下自以为是评论的人？就当你是他。』😂」</div>
+            <div class="links"><a href="https://x.com/petergyang/status/2061173405366571251" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/petergyang/…571251 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用自己的播客</span>「我最喜欢 @Shpigford 的这个 <code>/but-for-real</code> 技能，能让 AI 复查自己的工作。经典台词包括：『你刚用一个从没经历过生产事故的初级工程师那种没来由的自信，批量生产了一堆改动……用户只是太礼貌没说破，他们会说 can you try again?——这其实是 你搞砸了，我只是委婉点 的暗号。』」</div>
+            <div class="links"><a href="https://x.com/petergyang/status/2061171582383563222" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/petergyang/…563222 ↗</a></div></div>
+          <div class="tweet"><div class="body">发布播客新一期（嘉宾 @Shpigford，曾以 400 万美元卖掉 Baremetrics，现用 AI agent 同时做 5 款产品）：介绍 <code>/build</code>、<code>/adversarial-code-review</code>（让 GPT 审查 Claude 的代码）、<code>/but-for-real</code> 等 AI 技能。</div>
+            <div class="links"><a href="https://x.com/petergyang/status/2061092939233980762" target="_blank" rel="noopener"><span class="lbl">主帖</span>x.com/petergyang/…980762 ↗</a><a href="https://x.com/petergyang/status/2061092951410028564" target="_blank" rel="noopener"><span class="lbl">平台补充</span>x.com/petergyang/…028564 ↗</a><a href="https://x.com/petergyang/status/2061104829020447061" target="_blank" rel="noopener"><span class="lbl">社区链接</span>x.com/petergyang/…447061 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="swyx">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">swyx <span class="badge">4 条</span></div>
+            <div class="bio">Shawn Wang <span class="ipa">/ʃɔːn wɑːŋ/</span> — Latent Space 播客主理人，AI 工程师社区 organizer，「AI Engineer」概念提出者</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body">回复自己的帖子（附图）。</div>
+            <div class="links"><a href="https://x.com/swyx/status/2061257183250313256" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/swyx/…313256 ↗</a></div></div>
+          <div class="tweet"><div class="body">「关于这波风向转变（vibe shift）稍微拉远点看：2025 年 2 月 @soumithchintala 谈他对个人化、本地、私有 agent 的梦想，多数人不信他。如今 2026 年 6 月，@pewdiepie 刚发布了他 vibecoded 的 @opencode 套壳应用——一套完整的个人 AI 生产力套件，含邮件、文档、日历。登上 HN 榜首，轻松破百万浏览，一天破万 star。如果你的『知识工作 Agent』创业公司连 pewdiepie 都赢不了，那现在也该收摊回家了，他的作品就是 DIY 能达到的标杆。」</div>
+            <div class="links"><a href="https://x.com/swyx/status/2061256096719970337" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/swyx/…970337 ↗</a></div></div>
+          <div class="tweet"><div class="body">「2026 年，每一家做评测/分析（evals/analytics）的创业公司都在经历一次性的代际升级，转型为持续学习（continual learning）平台。很多会失败，但一如既往，有品味的那批会赢。」</div>
+            <div class="links"><a href="https://x.com/swyx/status/2061206120233054327" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/swyx/…054327 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @mstockton</span>「最近这期 @latentspacepod 播客很不错（其实期期都好）。有一段特别有共鸣：他们谈到……」</div>
+            <div class="links"><a href="https://x.com/mstockton/status/2061203343364747739" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/mstockton/…747739 ↗</a><a href="https://x.com/swyx/status/2061203343364747739" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/swyx/…747739 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用 @Gavriel_Cohen</span>（关于新加坡部长 Vivian Balakrishnan 亲自使用 AI 工具、日本议员提议为首相亲授的故事）：「真的太离谱了」</div>
+            <div class="links"><a href="https://x.com/swyx/status/2061167448163013013" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/swyx/…013013 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Jack Clark">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Jack Clark <span class="badge">1 条</span></div>
+            <div class="bio">杰克·克拉克 <span class="ipa">/dʒæk klɑːk/</span> — Anthropic 联合创始人兼政策负责人，知名 AI 简报《Import AI》作者</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body">「周日嘛，写 Import AI 时放松了点。写了一篇 @akorinek 关于『测量 AI 在经济中作用』的有趣新论文，明天第 459 期会讲。」（配图）</div>
+            <div class="links"><a href="https://x.com/jackclarkSF/status/2061241890394247249" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/jackclarkSF/…247249 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Clement Delangue">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">clem 🤗（Clément Delangue）<span class="badge">3 条</span></div>
+            <div class="bio">克莱芒·德朗格 <span class="ipa">/kleˈmɑ̃ dəˈlɑ̃ɡ/</span> — Hugging Face 联合创始人兼 CEO，开源 AI 社区领袖</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @Sapient_Int</span>「隆重推出 HRM-Text。一个超精简的 10 亿参数（1B-parameter）推理语言模型，旨在提供强劲的通用表现……」</div>
+            <div class="links"><a href="https://x.com/Sapient_Int/status/2061228543900565515" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/Sapient_Int/…565515 ↗</a><a href="https://x.com/ClementDelangue/status/2061228543900565515" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/ClementDelangue/…565515 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用 @simonw</span>（Codex「Copy as Markdown」被删一事）：「我们需要更多公开分享的编程与 agent 操作轨迹（traces），来构建数据集、训练更好的开源模型！已经有很多人在贡献了，你也该分享你的！」</div>
+            <div class="links"><a href="https://x.com/ClementDelangue/status/2061196949101932899" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/ClementDelangue/…932899 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @simonw</span>「我对这件事真的很不爽：OpenAI 的 Codex Desktop 原本有个『Copy as Markdown』选项……」</div>
+            <div class="links"><a href="https://x.com/simonw/status/2061158636311958005" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/simonw/…958005 ↗</a><a href="https://x.com/ClementDelangue/status/2061196661494292979" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/ClementDelangue/…292979 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Ethan Mollick">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Ethan Mollick <span class="badge">1 条</span></div>
+            <div class="bio">伊森·莫利克 <span class="ipa">/ˈiːθən ˈmɒlɪk/</span> — 沃顿商学院教授，AI 应用与教育研究者，畅销书《Co-Intelligence》作者</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body">「<code>/goal</code> 这类全自动 AI agent 很酷，但不是『人与 AI 协作的未来工作』的好模型。你真正想要的，是 AI 知道何时该向你问出『好问题』——也许因为它卡住了，也许因为你的品味很重要，也许因为它觉得你会感兴趣。」</div>
+            <div class="links"><a href="https://x.com/emollick/status/2061192810422796321" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/emollick/…796321 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Lucas Beyer">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Lucas Beyer (bl16) <span class="badge">2 条</span></div>
+            <div class="bio">卢卡斯·拜尔 <span class="ipa">/ˈluːkəs ˈbaɪə/</span> — 知名计算机视觉研究员，曾在 Google DeepMind / OpenAI，ViT 等工作作者</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @jjschnyder</span>「纽约地铁广告涂鸦从不让人失望，哈哈」（配图）</div>
+            <div class="links"><a href="https://x.com/jjschnyder/status/2061152569225818601" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/jjschnyder/…818601 ↗</a><a href="https://x.com/giffmana/status/2061152569225818601" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/giffmana/…818601 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用 @BullTheoryio</span>（Google 计划在佛州/加州投放 3200 万只携带沃尔巴克氏体细菌的不育蚊子）：「我差点忘了 Google 最酷的项目：Debug。他们释放大量不育、不叮人的蚊子，几代之内灭绝那些又叮人又带病的同类。上次听说还是多年前的内部演示，很高兴看到它仍在强劲推进。」</div>
+            <div class="links"><a href="https://x.com/giffmana/status/2060995480180388131" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/giffmana/…388131 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Sonya Huang">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Sonya Huang 🐥 <span class="badge">1 条</span></div>
+            <div class="bio">黄如方 <span class="ipa">/ˈsəʊnjə hwɑːŋ/</span> — 红杉资本（Sequoia）合伙人，专注 AI 领域投资</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @sonyatweetybird</span>「@kokoxsu Don Lucas 也是我爸爸的 VC/导师！正是这位激励我有朝一日从事这份工作的人 :)」</div>
+            <div class="links"><a href="https://x.com/sonyatweetybird/status/2061136387848745359" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/sonyatweetybird/…745359 ↗</a><a href="https://x.com/sonyatweetybird/status/2061136387848745359" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/sonyatweetybird/…745359 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Sam Altman">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Sam Altman <span class="badge">3 条</span></div>
+            <div class="bio">萨姆·奥尔特曼 <span class="ipa">/sæm ˈɔːltmən/</span> — OpenAI 联合创始人兼 CEO</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body">「OpenAI Robotics 正在招聘，寻找出色的全栈硬件、运维、系统和 ML 工程师，帮我们编程并制造对社会有用的机器人。AI 应当能在物理世界帮助人类。短期我们聚焦于辅助技术工人建设未来基础设施的机器人；长期我们设想人人都有一个能做任何所需之事的私人机器人。由 Aditya Ramesh 领导的『世界模拟』研究项目，过去一年已演化为 OpenAI Robotics，基于机器人硬件与 ML 研究的协同设计（co-design）。」</div>
+            <div class="links"><a href="https://x.com/sama/status/2061117302528188712" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/sama/…188712 ↗</a></div></div>
+          <div class="tweet"><div class="body">「我们想帮助世界在生物防御（biodefense）上抢得先机：……」</div>
+            <div class="links"><a href="https://x.com/sama/status/2061101875303530871" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/sama/…530871 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @thsottiaux</span>「五百万用户会同意。明早重置额度以示庆祝。该上 <code>/fast</code> 了。」</div>
+            <div class="links"><a href="https://x.com/thsottiaux/status/2061097558819356732" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/thsottiaux/…356732 ↗</a><a href="https://x.com/sama/status/2061097558819356732" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/sama/…356732 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Bill Gurley">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Bill Gurley <span class="badge">3 条</span></div>
+            <div class="bio">比尔·格利 <span class="ipa">/bɪl ˈɡɜːli/</span> — 知名风投，Benchmark 前合伙人，科技与市场评论者</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @CTR_China</span>「宇树（Unitree）CEO 王兴兴播客访谈翻译。他谈到全球人形机器人（humanoid robot）市场现状，以及……」</div>
+            <div class="links"><a href="https://x.com/CTR_China/status/2061108749633294557" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/CTR_China/…294557 ↗</a><a href="https://x.com/bgurley/status/2061108749633294557" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/bgurley/…294557 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用 @readswithravi</span>（费曼的一段话）：「如果这段费曼（Feynman）名言能打动你，我的书就是帮你实现它的行动手册……」（被引原文：「爱上某项活动，去做它！没人能真正搞懂人生是怎么回事，这也无所谓。探索世界，几乎一切只要深入下去都很有趣……别想你想成为什么，想你想做什么。」）</div>
+            <div class="links"><a href="https://x.com/bgurley/status/2061105919329439836" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/bgurley/…439836 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @KSimback</span>「中国的 LLM 公司正以惊人数字融资。前 5 大纯 LLM 公司总估值达 2260 亿美元——约为 Anthropic 的 1/4……」</div>
+            <div class="links"><a href="https://x.com/KSimback/status/2061098967861981314" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/KSimback/…981314 ↗</a><a href="https://x.com/bgurley/status/2061098967861981314" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/bgurley/…981314 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Sarah Guo">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">sarah guo <span class="badge">1 条</span></div>
+            <div class="bio">郭莎拉 <span class="ipa">/ˈseərə ɡwɔː/</span> — 风投机构 Conviction 创始人，AI 播客《No Priors》主持人</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body"><span class="tag-rt">🔁 RT @andrewdfeldman</span>「2019 年，@cerebras 解决了计算机行业最难的问题——却没人在意。我和 @eladgil 坐下来聊了聊……」</div>
+            <div class="links"><a href="https://x.com/andrewdfeldman/status/2061074303559561510" target="_blank" rel="noopener"><span class="lbl">原文</span>x.com/andrewdfeldman/…561510 ↗</a><a href="https://x.com/saranormous/status/2061074303559561510" target="_blank" rel="noopener"><span class="lbl">转推</span>x.com/saranormous/…561510 ↗</a></div></div>
+        </div>
+      </details>
+
+      <details class="user-block" open data-user="Greg Brockman">
+        <summary>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="user-id"><div class="name">Greg Brockman <span class="badge">2 条</span></div>
+            <div class="bio">格雷格·布罗克曼 <span class="ipa">/ɡreɡ ˈbrɒkmən/</span> — OpenAI 联合创始人兼总裁</div></div>
+        </summary>
+        <div class="tweets">
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用 @Nick_Prince12</span>（「看 codex 控制我的浏览器去做它在 harness 里做不到的事，是一次『卧槽』体验」）：「codex 的电脑操作（computer use）能力极具感染力。」</div>
+            <div class="links"><a href="https://x.com/gdb/status/2060978248792907818" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/gdb/…907818 ↗</a></div></div>
+          <div class="tweet"><div class="body"><span class="tag-quote">💬 引用 @FarzaTV</span>（「看我只用语音控制电脑，这就是操作系统的未来。GPT-Realtime 2.0 被严重低估了。」）：「GPT Realtime 2 解锁了一些真正的魔法：」</div>
+            <div class="links"><a href="https://x.com/gdb/status/2060955146952077653" target="_blank" rel="noopener"><span class="lbl">链接</span>x.com/gdb/…077653 ↗</a></div></div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ===== Quiet users ===== -->
+  <section class="section" id="quiet">
+    <div class="section-head"><h2>💤 无动态用户</h2><span class="count">近 24 小时无新动态</span></div>
+    <div class="quiet"><b>27 位</b>关注者在本窗口内静默：
+      <div class="names">DrJimFan、jiayq（贾扬清）、AnimaAnandkumar、zeritna、realGeorgeHotz、stephzhan、paperswithcode、AnthropicAI、ChatGPTapp、sequoia、demishassabis、rasbt、tegmark、svlevine、geoffreyhinton、Figure_robot、DarioAmodei、ilyasut、fchollet、karpathy、soumithchintala、deepseek_ai、drfeifei（李飞飞）、AndrewYNg（吴恩达）、MistralAI、jerryjliu0、realDonaldTrump。</div>
+    </div>
+  </section>
+
+  <footer>
+    X / Twitter 关注动态汇总 · 时间窗口 2026-05-31 04:50 → 2026-06-01 04:50 UTC<br>
+    关注 41 · 有动态 14 · 动态 44 · 抓取于 2026-06-01 04:50 UTC
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  // ---- Vocab search ----
+  var search = document.getElementById('vocabSearch');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('#vocabStack .vocab-card'));
+  var meta = document.getElementById('vocabMeta');
+  var noResult = document.getElementById('vocabNoResult');
+  var total = cards.length;
+  function runSearch(){
+    var q = search.value.trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function(c){
+      var hit = q === '' || c.textContent.toLowerCase().indexOf(q) !== -1;
+      c.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+    });
+    noResult.style.display = shown === 0 ? 'block' : 'none';
+    meta.textContent = q === '' ? (total + ' 个术语') : (shown + ' / ' + total + ' 个匹配');
+  }
+  search.addEventListener('input', runSearch);
+  runSearch();
+
+  // ---- User filter ----
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('#evidenceStack .user-block'));
+  var filterWrap = document.getElementById('userFilter');
+  var users = blocks.map(function(b){ return b.getAttribute('data-user'); });
+  var active = '全部';
+  function makePill(label){
+    var btn = document.createElement('button');
+    btn.className = 'user-pill' + (label === active ? ' active' : '');
+    btn.textContent = label;
+    btn.setAttribute('aria-pressed', label === active ? 'true' : 'false');
+    btn.addEventListener('click', function(){
+      active = label;
+      Array.prototype.forEach.call(filterWrap.children, function(p){
+        var on = p.textContent === active;
+        p.classList.toggle('active', on);
+        p.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      blocks.forEach(function(b){
+        var show = active === '全部' || b.getAttribute('data-user') === active;
+        b.classList.toggle('hidden', !show);
+        if(show && active !== '全部') b.open = true;
+      });
+    });
+    return btn;
+  }
+  filterWrap.appendChild(makePill('全部'));
+  users.forEach(function(u){ filterWrap.appendChild(makePill(u)); });
+})();
+</script>
+</body>
+</html>
