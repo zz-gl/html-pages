@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-06-02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --primary-fixed-dim:#ffb597;
+  --on-primary:#fff; --accent-glow:#E8400D;
+  --secondary:#d5baff; --secondary-container:#7b40e0; --tertiary:#4d44e3; --accent-cyan:#00D4FF;
+  --bg:#fff8f6; --surface:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef;
+  --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px;--space-sm:8px;--space-md:12px;--space-lg:16px;--space-xl:20px;--space-2xl:24px;--space-3xl:32px;--space-4xl:48px;--space-5xl:64px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:28px;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04);--shadow-md:0 4px 12px rgba(30,27,25,.08);--shadow-lg:0 8px 24px rgba(30,27,25,.12);--shadow-accent:0 8px 24px rgba(160,59,0,.15);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#060B18;--surface:#0B1426;--surface-container-lowest:#101D35;--surface-container-low:#101D35;
+    --surface-container:#162544;--surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC;--fg-2:#CBD5E1;--fg-muted:#94a3b8;
+    --border:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.14);--outline-variant:#33415c;
+    --primary:#FF6B35;--accent-glow:#00D4FF;--primary-fixed:#3a2417;--primary-fixed-dim:#5a371f;
+    --shadow-md:0 4px 12px rgba(0,0,0,.4);--shadow-lg:0 8px 24px rgba(0,0,0,.5);--shadow-accent:0 8px 24px rgba(0,0,0,.5);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--fg-1);font-family:var(--font-body);
+  font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding:var(--space-lg);
+}
+.wrap{max-width:880px;margin:0 auto}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ---- header ---- */
+.brief-header{
+  background:var(--surface-container-low);border:1px solid var(--border);
+  border-radius:var(--radius-2xl);padding:var(--space-3xl) var(--space-2xl);
+  box-shadow:var(--shadow-md);position:relative;overflow:hidden;
+}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary)}
+.brief-header h1{
+  font-family:var(--font-headline);font-weight:700;letter-spacing:-.01em;
+  font-size:clamp(26px,5vw,38px);line-height:1.12;margin:var(--space-sm) 0 var(--space-md);
+}
+.lede{color:var(--fg-2);font-size:16px;max-width:60ch}
+.answer-strip{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{
+  display:inline-flex;align-items:center;gap:6px;background:var(--surface-container);
+  border:1px solid var(--border);border-radius:var(--radius-pill);
+  padding:7px 14px;font-size:13px;font-weight:500;color:var(--fg-2);
+}
+.useful-chip b{font-family:var(--font-mono);color:var(--primary);font-weight:600}
+
+/* ---- section heads ---- */
+.sec{margin-top:var(--space-4xl)}
+.sec-head{display:flex;align-items:baseline;gap:var(--space-md);margin-bottom:var(--space-lg);flex-wrap:wrap}
+.sec-head h2{font-family:var(--font-headline);font-weight:600;font-size:22px;letter-spacing:-.01em}
+.sec-head .count{font-family:var(--font-mono);font-size:13px;color:var(--fg-muted)}
+
+/* ---- primary insight: key signals ---- */
+.primary-insight{
+  background:var(--surface-container-lowest);border:1px solid var(--border-strong);
+  border-radius:var(--radius-xl);padding:var(--space-sm);box-shadow:var(--shadow-lg);
+}
+.signal{
+  display:flex;gap:var(--space-lg);padding:var(--space-lg) var(--space-lg);
+  border-bottom:1px solid var(--border);
+}
+.signal:last-child{border-bottom:none}
+.signal .num{
+  flex:0 0 auto;width:30px;height:30px;border-radius:var(--radius-pill);
+  background:var(--gradient-hero);color:#fff;font-family:var(--font-headline);font-weight:700;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+}
+.signal .body strong{color:var(--fg-1);font-weight:700}
+.signal .body{color:var(--fg-2);font-size:15px}
+
+/* ---- vocab cards ---- */
+.vocab-tools{margin-bottom:var(--space-lg)}
+.search{
+  width:100%;background:var(--surface-container-lowest);border:1px solid var(--border-strong);
+  border-radius:var(--radius-pill);padding:12px 18px;font-family:var(--font-body);font-size:15px;
+  color:var(--fg-1);box-shadow:var(--shadow-sm);
+}
+.search:focus{outline:2px solid var(--primary);outline-offset:1px;border-color:transparent}
+.search::placeholder{color:var(--fg-muted)}
+.vocab-stack{display:flex;flex-direction:column;gap:var(--space-sm)}
+.term-card{
+  background:var(--surface-container-low);border:1px solid var(--border);border-left:3px solid var(--primary-fixed-dim);
+  border-radius:var(--radius-md);padding:var(--space-md) var(--space-lg);
+}
+.term-card .head{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px}
+.term-card .term{font-family:var(--font-headline);font-weight:600;font-size:16px;color:var(--fg-1)}
+.term-card .ipa{font-family:var(--font-mono);font-size:13px;color:var(--secondary-container)}
+.term-card .def{color:var(--fg-2);font-size:14.5px;margin-top:3px}
+.no-match{color:var(--fg-muted);font-size:14px;padding:var(--space-md);text-align:center;display:none}
+
+/* ---- evidence stack ---- */
+.filter-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:var(--space-lg)}
+.fbtn{
+  background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-pill);
+  padding:6px 13px;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--fg-2);cursor:pointer;
+  transition:all .15s;
+}
+.fbtn:hover{border-color:var(--primary-fixed-dim)}
+.fbtn.active{background:var(--primary);color:#fff;border-color:transparent}
+.evidence-stack{display:flex;flex-direction:column;gap:var(--space-lg)}
+.user-block{
+  background:var(--surface-container-lowest);border:1px solid var(--border);
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;
+}
+.user-head{padding:var(--space-lg) var(--space-xl);border-bottom:1px solid var(--border);background:var(--surface-container-low)}
+.user-head .uname{font-family:var(--font-headline);font-weight:600;font-size:18px;color:var(--fg-1)}
+.user-head .ubio{color:var(--fg-muted);font-size:13.5px;margin-top:3px}
+.items{padding:var(--space-sm) var(--space-xl) var(--space-lg)}
+.item{padding:var(--space-md) 0;border-bottom:1px dashed var(--border);}
+.item:last-child{border-bottom:none}
+.item .it-title{font-weight:600;color:var(--fg-1);font-size:15px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.rt-tag{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--secondary-container);
+  background:color-mix(in srgb,var(--secondary-container) 12%,transparent);padding:2px 8px;border-radius:var(--radius-sm)}
+.item .it-body{color:var(--fg-2);font-size:14.5px;margin-top:5px}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tw-link{
+  display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:12px;
+  background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-pill);
+  padding:4px 11px;color:var(--fg-2);
+}
+.tw-link:hover{border-color:var(--primary-fixed-dim);color:var(--primary);text-decoration:none}
+.tw-link svg{width:12px;height:12px;flex:0 0 auto;fill:currentColor}
+
+/* ---- tail lists ---- */
+.tail{margin-top:var(--space-2xl);display:flex;flex-direction:column;gap:var(--space-lg)}
+.tail-card{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl)}
+.tail-card h3{font-family:var(--font-headline);font-size:15px;font-weight:600;margin-bottom:6px;display:flex;gap:8px;align-items:center}
+.tail-card p{color:var(--fg-2);font-size:14px;line-height:1.7}
+.handle{font-family:var(--font-mono);font-size:13px;color:var(--fg-muted)}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-lg);border-top:1px solid var(--border);
+  color:var(--fg-muted);font-size:12.5px;font-family:var(--font-mono);text-align:center}
+@media(max-width:600px){
+  body{padding:var(--space-md)}
+  .brief-header{padding:var(--space-2xl) var(--space-lg)}
+  .items,.user-head{padding-left:var(--space-lg);padding-right:var(--space-lg)}
+  .signal{padding:var(--space-md)}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ANSWER HEADER -->
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 关注动态 · 每日汇总</div>
+    <h1>AI 圈这 24 小时：Anthropic 递交 IPO 招股书，OpenAI 落地 AWS</h1>
+    <p class="lede">近 24 小时关注列表的重点：Anthropic 保密提交 S-1、OpenAI 模型登陆 Bedrock、AI 编码 agent 生产力实证、Nvidia 开源攻势，以及 OpenAI 基金会 1.3 亿美元「AI 韧性」计划。</p>
+    <div class="answer-strip">
+      <span class="useful-chip">🕑 窗口 <b>2026-06-01→06-02</b></span>
+      <span class="useful-chip">👥 关注 <b>41</b></span>
+      <span class="useful-chip">📣 有动态 <b>20</b> 人</span>
+      <span class="useful-chip">💬 动态 <b>59</b> 条</span>
+      <span class="useful-chip">⛔ 限流 <b>1</b></span>
+    </div>
+  </header>
+
+  <!-- PRIMARY INSIGHT: KEY SIGNALS -->
+  <section class="sec" id="signals">
+    <div class="sec-head"><h2>🔑 关键信号总结</h2><span class="count">最值得先看的 5 条</span></div>
+    <div class="primary-insight">
+      <div class="signal"><div class="num">1</div><div class="body"><strong>Anthropic 保密提交 IPO 招股书（S-1）</strong>：官方宣布已向 SEC 保密提交 S-1 草案，待审查后保留 IPO 选项——窗口内互动最高的一条（1.9 万赞、2263 转）。</div></div>
+      <div class="signal"><div class="num">2</div><div class="body"><strong>OpenAI 模型登陆 AWS Bedrock</strong>：GPT-5.5、GPT-5.4 与 Codex 在亚马逊 Bedrock 上正式开放（GA），企业可在熟悉的安全/合规环境中调用，Greg Brockman 连发两条强调。</div></div>
+      <div class="signal"><div class="num">3</div><div class="body"><strong>AI 编码 agent 的生产力实证</strong>：一篇基于 GitHub 数据的大论文显示，自动补全（Copilot）让代码量 ×2.2、本地 agent（早期 Claude Code）×7.4、远程编码 agent ×17.3，但受人类发布环节瓶颈所限，实际上线发布「只」增 30%（Ethan Mollick 解读）。</div></div>
+      <div class="signal"><div class="num">4</div><div class="body"><strong>Nvidia 被封「美国开源 AI 之王」</strong>：Hugging Face 公开仓库破 1000、发布 Cosmos 3 世界模型，社区还在传其 550B 开源模型，clem 多次盛赞。</div></div>
+      <div class="signal"><div class="num">5</div><div class="body"><strong>OpenAI 基金会 1.3 亿美元「AI 韧性」计划</strong>：聚焦生物/网络韧性、模型安全与 AI 对青少年影响，Sam Altman 转发并称「让社会对 AI 更有韧性极其重要」。</div></div>
+    </div>
+  </section>
+
+  <!-- VOCAB CARDS -->
+  <section class="sec" id="vocab">
+    <div class="sec-head"><h2>📖 生词预热</h2><span class="count" id="vocab-count"></span></div>
+    <div class="vocab-tools">
+      <input class="search" id="vocab-search" type="search" placeholder="🔍 搜索术语 / 缩写 / 中文释义…" aria-label="搜索术语">
+    </div>
+    <div class="vocab-stack" id="vocab-stack"></div>
+    <div class="no-match" id="vocab-empty">没有匹配的术语</div>
+  </section>
+
+  <!-- EVIDENCE STACK -->
+  <section class="sec" id="feed">
+    <div class="sec-head"><h2>📋 按用户分组的动态</h2><span class="count" id="feed-count"></span></div>
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="evidence-stack" id="evidence-stack"></div>
+  </section>
+
+  <!-- TAIL -->
+  <div class="tail">
+    <div class="tail-card">
+      <h3>⛔ 限流未获取</h3>
+      <p>以下用户因接口限流未能拉取动态，可点击直接查看主页：<a href="https://x.com/ylecun" target="_blank" rel="noopener">@ylecun</a></p>
+    </div>
+    <div class="tail-card">
+      <h3>💤 无动态用户 <span class="handle">（20）</span></h3>
+      <p class="handle">demishassabis、realGeorgeHotz、DrJimFan、svlevine、zeritna、karpathy、AnimaAnandkumar、deepseek_ai、soumithchintala、drfeifei、MistralAI、ilyasut、geoffreyhinton、realDonaldTrump、paperswithcode、rasbt、jiayq、DarioAmodei、tegmark、Figure_robot</p>
+    </div>
+  </div>
+
+  <footer>抓取时间 2026-06-02 04:50 UTC · 时间窗口近 24 小时 · 由 x-follows-24h 汇总生成</footer>
+</div>
+
+<script>
+const VOCAB=[
+ ["S-1","","美国公司 IPO 前向 SEC 提交的首次注册文件（招股说明书草案）"],
+ ["IPO","","Initial Public Offering，首次公开募股（上市）"],
+ ["SEC","","Securities and Exchange Commission，美国证券交易委员会"],
+ ["confidential(ly)","/ˌkɒnfɪˈdenʃəli/","保密地（指保密提交 S-1，审查通过前不公开）"],
+ ["frontier model","/ˈfrʌntɪər/","前沿模型（能力最强的一批大模型）"],
+ ["Bedrock","/ˈbedrɒk/","亚马逊 AWS 的托管大模型服务平台"],
+ ["FDE","","Forward Deployed Engineer，前置部署工程师（派驻到客户现场做定制集成的工程师）"],
+ ["agentic workflow","/eɪˈdʒentɪk/","智能体化工作流（由 AI agent 自主多步执行的流程）"],
+ ["optionality","/ˌɒpʃəˈnæləti/","可选择性（保留将来灵活更换方案的余地）"],
+ ["reflexivity","/ˌriːflekˈsɪvəti/","反身性（市场认知与现实相互强化的索罗斯式概念）"],
+ ["world model","","世界模型（让 AI 在内部模拟物理/视觉世界的模型）"],
+ ["VAE","","Variational Autoencoder，变分自编码器（一种用于压缩/生成的神经网络）"],
+ ["open-weight","","开放权重模型（公开模型参数可下载使用）"],
+ ["SOTA","","State Of The Art，业界最佳水平"],
+ ["ARC-AGI","","François Chollet 设计的通用智能评测基准"],
+ ["repository","/rɪˈpɒzɪtəri/","代码/模型仓库（简称 repo）"],
+ ["dedup","/ˈdiːdʌp/","deduplication，去重（存储优化技术）"],
+ ["bounding box","","边界框（在文档/图像中框出元素位置的坐标）"],
+ ["ROI","","Return On Investment，投资回报率"],
+ ["air-gapped","/ˈeə ɡæpt/","物理隔离的（与公网完全断开的安全网络）"]
+];
+
+// L = links: [label, "user/id"]
+const FEED=[
+ {name:"Ethan Mollick",bio:"伊森·莫里克 /ˈiːθən ˈmɒlɪk/ — 沃顿商学院教授，研究 AI 对工作与组织的影响，《Co-Intelligence》作者",items:[
+   {t:"AI 编码 agent 大论文（thread）",b:"一篇基于 GitHub 等数据的重磅论文显示——自动补全工具（Copilot）带来 2.2 倍代码量，本地 agent（最早的 Claude Code）7.4 倍，当前远程编码 agent 高达 17.3 倍（!）。但因编码中的「人类瓶颈」，实际发布上线「只」增长 30%。他补充论文证实「大变革正在飞快发生」，并对如何从软件开发周期中「抽丝剥茧」找出真实变化很感兴趣。",L:[["原推","emollick/2061659432233161023"],["续推","emollick/2061659858990952727"]]},
+   {t:"企业 AI 价值之争（thread）",b:"他觉得「企业是否觉得 AI 有用」的争论很奇怪。与很多大公司领导团队聊过，几乎一致认为正获得明显而真实的价值；挑战在于从个人使用走向公司级、如何规模化。收益在编码和运营最明显，连保守组织也在快速采用编码 agent。给想看数据的人，他引用 2025 年 10 月沃顿调查（75% 企业已从生成式 AI 获正回报，负回报不足 5%）。",L:[["原推","emollick/2061501989985362340"],["续 2","emollick/2061502728459669523"],["续 3","emollick/2061506696875303083"]]},
+   {t:"「群众/实验室/领导力」框架（thread）",b:"很多公司停留在「鼓励 AI 采用」（教大家用 ChatGPT/Claude，或「token 最大化」），却回避更难的领导力问题：想让人们用 AI 做什么？哪些工作留给人？还需改什么？「光用 AI」（框架里的「群众」）有用，但还需要让人带想法去试的「实验室」，以及做激励与决策的「领导力」。",L:[["原推","emollick/2061483942310477999"],["续推","emollick/2061484580092211706"]]}
+ ]},
+ {name:"swyx",bio:"本名 Shawn Wang，黄轩成 — AI 工程师社区 Latent.Space 主理人、AI Engineer 大会创办人",items:[
+   {tag:"引用",t:"盛赞 WorkOS 在 AIE Europe 演讲",b:"称 @workos 在 AIE Europe 的演讲表现极好，是数周来首个能认真挑战 @mattpocockuk 的，团队在做 A/B 测试。被引原文为 Nick Nisi 宣布其 AIE Europe 演讲已上线。",L:[["评论","swyx/2061658241877397917"],["被引原文","nicknisi/2061509762420813993"]]},
+   {t:"Grace + Blackwell 笔记本",b:"惊呼微软 + 英伟达把 Grace + Blackwell 芯片塞进笔记本，联手挑战苹果芯片（Apple Silicon）六年的统治。",L:[["原推","swyx/2061567877879369953"],["链接合集","swyx/2061654021958762620"]]},
+   {t:"xAI 视频模型播客（thread）",b:"Latent.Space 首期聊 xAI 的播客，嘉宾 Ethan He 深谈如何训练 SOTA 视频生成世界模型：① 为何从视频生成转向 LLM——视频模型智能大多来自 LLM 而非堆视频数据；② 下一前沿是「视频 agent 模型」；③ 为何确定性压缩（如 MP4）无用，而 VAE 压缩才是方向；④「视频最大化」——若真信 AI 的摩尔定律，视频模型将成为万物终极界面。",L:[["原推","swyx/2061479719980425437"],["完整链接","swyx/2061479838817644679"]]},
+   {tag:"转推",t:"@latentspacepod 播客预告",b:"上述 Grok Imagine 视频 agent 时刻的播客预告。",L:[["被转原文","latentspacepod/2061474198523183269"],["转推","swyx/2061474228235563325"]]},
+   {tag:"转推",t:"@EthanHe_42 嘉宾分享",b:"嘉宾本人分享在播客里谈视频生成、世界模型、LLM、agent、持续学习的看法。",L:[["转推","swyx/2061494196469645771"]]},
+   {tag:"转推",t:"@zan2434 盛赞本期播客",b:"称最新一期 Latent.Space 播客极好，Ethan He 把通向 Flipbook 的思路讲透了。",L:[["转推","swyx/2061538625251369256"]]},
+   {tag:"转推",t:"@twistartups xAI 小团队",b:"xAI 小团队如何在 3 个月内做出 SOTA 视频模型（强人才共同目标、每天一次同步…）。",L:[["转推","swyx/2061552992684515589"]]},
+   {tag:"转推",t:"@barrnanas AI 工程调查",b:"又到一年一度填写 AI 工程调查（AI Engineering Survey）的时候，抽奖送好礼。",L:[["转推","swyx/2061559529662525929"]]}
+ ]},
+ {name:"Simon Willison",bio:"西蒙·威利森 /ˈsaɪmən ˈwɪlɪsən/ — Django 框架联合创始人，独立开发者，知名 AI/LLM 博主",items:[
+   {t:"Codex 桌面端修好了",b:"更新 Codex 桌面版后功能回来了，感谢 @PhilippSpiess。",L:[["原推","simonw/2061640879224521081"]]},
+   {t:"付费简报（thread）",b:"发出仅限赞助者的 5 月刊简报，「给没空每天读我博客、愿意付钱让我替他们少发点（精选）的人」。他每月会把上上个月的简报公开——这次是一个月前那期回顾 4 月 LLM 大事的内容。",L:[["原推","simonw/2061309486116266338"],["续推","simonw/2061310011515748741"]]}
+ ]},
+ {name:"Bill Gurley",bio:"比尔·格利 /bɪl ˈɡɜːrli/ — 知名风险投资人，Benchmark 前合伙人",items:[
+   {tag:"转推",t:"@DrTechlash AI 末日福音",b:"AI 末日福音（AI Doom Gospel）里有个有趣趋势——这套无神论式的「AI 神学」如今在寻求宗教合法性……",L:[["转推","bgurley/2061637054232989900"]]},
+   {tag:"转推",t:"@MillieMarconnni 人类摆脱贫困",b:"一位英国生物学家梳理 20 万年人类史，发现人类摆脱贫困的根本原因……（高热转推，1532 转）",L:[["转推","bgurley/2061458288923832827"]]},
+   {tag:"转推",t:"@JCHartzell 推荐毕业礼物书",b:"身为大学校长常被问到毕业礼物，他推荐 Gurley 的书《Runnin' Down a Dream》。",L:[["转推","bgurley/2061489930526769508"]]}
+ ]},
+ {name:"Peter Yang",bio:"彭杨 /ˈpiːtər jæŋ/ — 产品负责人、知名产品与 AI 内容创作者，播客主持",items:[
+   {t:"#1 最常用 skill",b:"晒出自己使用率最高的一个 skill（配图）。",L:[["原推","petergyang/2061586272305795355"]]},
+   {t:"单人用 AI agent 做多产品的 6 条心得（thread）",b:"访谈独立开发者 @Shpigford（Josh）总结——① 即使永远害怕尴尬也要持续发布；② 第一天就收费，养不活的产品果断关停退款；③ 用独立 git worktree 并行开发、防止「上下文腐烂」；④ 让 GPT 审 Claude 的代码、反之亦然（「GPT 总能找出 Opus 漏掉的 3~5 个 bug」）；⑤ 做 /learnings skill，把每次「行不通」蒸馏成新规则；⑥ AI 让人人能发布，但真实经验仍重要（Josh 25 年功底让他用 agent 出活极快）。",L:[["原推","petergyang/2061452068792287622"],["Josh skills 库","petergyang/2061452081572282805"]]},
+   {tag:"转推",t:"@petergyang 转自己",b:"上述 6 条心得的另一版本。",L:[["转推","petergyang/2061634227763073148"]]}
+ ]},
+ {name:"Greg Brockman",bio:"格雷格·布罗克曼 /ɡreɡ ˈbrɒkmən/ — OpenAI 联合创始人兼总裁",items:[
+   {tag:"引用",t:"OpenAI 登陆 Bedrock（企业版）",b:"引用 OpenAI 官方——前沿模型与 Codex 现已在 AWS 上全面可用（GA），企业可借助已有的安全、合规与治理流程在 Bedrock 上构建；这也是 OpenAI 能力在 AWS 上更广扩展的开端（含未来 Daybreak 等网络安全能力）。",L:[["评论","gdb/2061591739350282351"],["被引原文","OpenAI/2061564502160892138"]]},
+   {tag:"引用",t:"OpenAI + Amazon Bedrock",b:"引用 AWS 官方——GPT-5.5、GPT-5.4 与 Codex 在 Bedrock 上正式可用，可构建处理多步编码、数据分析与知识工作的自主 agent，并把所有模型调用按 token 计费路由经 Bedrock。",L:[["评论","gdb/2061603059781054878"],["被引原文","awscloud/2061564484523524302"]]}
+ ]},
+ {name:"Stephanie Zhan",bio:"詹斯蒂芬妮 /ˈstefəni ʒæn/ — 红杉资本（Sequoia）合伙人",items:[
+   {tag:"转推",t:"@ethanrthornton 致谢里程碑",b:"深深感谢帮助促成这一里程碑的所有人，以及 @InfiniteXYZ 和 @RibbitCapital 的支持……",L:[["转推","stephzhan/2061599721047941366"]]}
+ ]},
+ {name:"sarah guo",bio:"郭莎拉 /ˈseərə ɡwɔː/ — Conviction 创始人，AI 早期投资人，播客 No Priors 主持",items:[
+   {t:"反身性",b:"感叹「反身性（reflexivity）！看着所有投资人重新涌回软件赛道。」",L:[["原推","saranormous/2061495839936442835"]]},
+   {tag:"引用",t:"祝贺 schrep 发布首支机构基金",b:"祝贺好友 @schrep 发布首支机构基金，称他是彻头彻尾的技术人、提前布局「实体经济」主题、值得信任且合作极有趣。被引原文：Gigascale Capital 宣布 2.5 亿美元首支机构基金，投早期重建实体经济的创始人。",L:[["评论","saranormous/2061528181488910521"],["被引原文","schrep/2061474431118229932"]]},
+   {tag:"转推",t:"@saranormous 转自己",b:"做难事的秘诀——和那些在艰难时刻依然有趣的人共事。",L:[["转推","saranormous/2061533715361407330"]]},
+   {tag:"转推",t:"@mvernal（仅含链接）",b:"仅含链接。",L:[["转推","saranormous/2061580157463470541"]]}
+ ]},
+ {name:"ChatGPT",bio:"@ChatGPTapp — OpenAI 旗下 ChatGPT 官方账号",items:[
+   {t:"长文写作全屏模式",b:"长文写作需要更大空间，现在可在全屏编辑较长内容，并保存到 Library 稍后再回来。",L:[["原推","ChatGPTapp/2061571468992126982"]]}
+ ]},
+ {name:"Sam Altman",bio:"山姆·奥特曼 /sæm ˈɔːltmən/ — OpenAI 联合创始人兼 CEO",items:[
+   {tag:"引用",t:"AI 韧性",b:"称「OpenAI 基金会正在做很多了不起的事，帮助社会对 AI 变得有韧性将极其重要，后面还有很多！」被引原文：OpenAI 基金会发布「AI 韧性（AI Resilience）」愿景，首批投入逾 1.3 亿美元，覆盖生物韧性、网络韧性、AI 模型安全及 AI 对青少年的影响。",L:[["评论","sama/2061562575322492937"],["被引原文","FoundationOAI/2061463726407155795"]]}
+ ]},
+ {name:"clem 🤗",bio:"Clément Delangue，克莱芒·德朗格 /kleˈmɑ̃ dəˈlɑ̃ɡ/ — Hugging Face 联合创始人兼 CEO",items:[
+   {t:"68TB 数据集秒级克隆",b:"感叹本地只有 4TB 硬盘，却能在不到一分钟内把 68TB 数据集克隆到自己的 HF 私有训练桶，全靠 HF 基础设施优化与 xet 去重（dedup）。",L:[["原推","ClementDelangue/2061427783251759366"]]},
+   {t:"Nvidia 是「美国开源 AI 之王」",b:"盘点英伟达近期成果——HF 公开仓库破 1000（820 模型/249 数据集/57 spaces）、近 6 万粉丝；HF 热门榜第 1（LocateAnything）与第 5（PiD）；采纳 Linux 基金会 OpenMDW 框架；发布 Cosmos 3（全模态世界模型）与 Alphamayo 2 Super（自动驾驶开源模型）；预告 Nemotron 3、研发 Nemotron 4。",L:[["原推","ClementDelangue/2061487081315094906"]]},
+   {t:"HF 成为 AI 学习与资讯重镇",b:"欣慰看到 huggingface 逐渐成为社区学习 AI 与获取资讯的重要来源（@openclaw、@nvidia、@jetbrains、@IBMResearch 等都在发内容），呼吁大家一起让 AI 更公开、开放、协作。",L:[["原推","ClementDelangue/2061560497783382373"]]},
+   {tag:"转推",t:"@scaling01 英伟达 550B 模型",b:"没料到英伟达会发布 550B 模型，他们如今是最强的美国开源实验室。",L:[["转推","ClementDelangue/2061442013401108820"]]},
+   {tag:"转推",t:"@RyanLeeMiniMax MiniMax-M3",b:"MiniMax-M3 将于下周在 HuggingFace 以开放权重发布！",L:[["转推","ClementDelangue/2061445841651405092"]]},
+   {tag:"转推",t:"@maximelabonne 模型登榜",b:"模型登上 HF 热门榜，「老实说我们低估了它——它在 agentic 任务上比我预期能力强得多」。",L:[["转推","ClementDelangue/2061443198963122578"]]},
+   {tag:"转推",t:"@vanstriendaniel HF 与生物医学",b:"Hugging Face 是各领域 AI/ML 之家，含生物医学——美国 NIH 已加入……",L:[["转推","ClementDelangue/2061542080069910980"]]},
+   {tag:"转推",t:"@LysandreJik transformers kernels",b:"transformers 正在采纳 kernels 来处理设备专属优化、量化或便捷安装……",L:[["转推","ClementDelangue/2061475221438112180"]]},
+   {tag:"转推",t:"@julien_c Claude Code 会话留存",b:"今天才知道 Claude Code 会在一个月后删除你的会话记录（session traces）。",L:[["转推","ClementDelangue/2061464306470809868"]]},
+   {tag:"转推",t:"@eliebakouch 硬核图表",b:"这张图很硬核（this plot goes very hard）。",L:[["转推","ClementDelangue/2061434870425854065"]]},
+   {tag:"转推",t:"@huggingface（仅含图片）",b:"仅含图片。",L:[["转推","ClementDelangue/2061501025714835807"]]},
+   {tag:"转推",t:"@NVIDIAAI 我们 💚 开源",b:"我们 💚 开源。",L:[["转推","ClementDelangue/2061500940725694755"]]}
+ ]},
+ {name:"Jerry Liu",bio:"刘杰瑞 /ˈdʒeri ljuː/ — LlamaIndex 联合创始人兼 CEO",items:[
+   {tag:"引用",t:"Liteparse PDF 解析器",b:"上周把 Liteparse 翻新为最快的 PDF 解析器；其被低估之处在于不只给文本，还给边界框（bounding boxes），让编码 agent 能把审计轨迹精确画回原文档。正努力继续改进（如 Markdown 支持）。被引原文：LiteParse v2 用 Rust 重写、支持 50+ 文档类型，号称最快且最准的开源无模型解析器。",L:[["评论","jerryjliu0/2061551110150902060"],["被引原文","jerryjliu0/2059710330016817501"]]},
+   {tag:"转推",t:"@llama_index Snowflake Summit",b:"来 Snowflake Summit 2026 见 LlamaIndex 团队。",L:[["转推","jerryjliu0/2061496942786662574"]]}
+ ]},
+ {name:"François Chollet",bio:"弗朗索瓦·肖莱 /fʁɑ̃ˈswa ʃɔˈlɛ/ — Keras 之父，ARC-AGI 基准提出者，Ndea 联合创始人",items:[
+   {tag:"转推",t:"@arcprize Opus 4.8 刷新 ARC-AGI-3",b:"Anthropic Opus 4.8 成为 ARC-AGI-3 新 SOTA，得分 1.5%、耗资约 1 万美元；分析称 Opus 4.8 能读懂环境……",L:[["转推","fchollet/2061535556937601295"]]}
+ ]},
+ {name:"Sonya Huang 🐥",bio:"黄松雅 /ˈsɒnjə hwɑːŋ/ — 红杉资本（Sequoia）合伙人，专注 AI 投资",items:[
+   {tag:"转推",t:"@Alfred_Lin（仅含链接）",b:"仅含链接。",L:[["转推","sonyatweetybird/2061515110456418589"]]}
+ ]},
+ {name:"Sequoia Capital",bio:"红杉资本 — 全球顶级风险投资机构官方账号",items:[
+   {tag:"转推",t:"@Alfred_Lin（仅含链接，同上）",b:"仅含链接。",L:[["转推","sequoia/2061511959493915036"]]}
+ ]},
+ {name:"Andrew Reed",bio:"安德鲁·里德 /ˈændruː riːd/ — Hugging Face 机器学习工程师",items:[
+   {t:"波兰辅音",b:"吐槽访问波兰的乐趣之一就是会遇到各种新辅音（consonants）。",L:[["原推","andrew__reed/2061489879662354857"]]},
+   {tag:"转推",t:"@mati（仅含链接）",b:"仅含链接。",L:[["转推","andrew__reed/2061394305676148932"]]}
+ ]},
+ {name:"Anthropic",bio:"@AnthropicAI — Claude 大模型研发公司官方账号",items:[
+   {t:"保密提交 IPO 招股书（S-1）",b:"宣布已向美国 SEC 保密提交 S-1 注册文件草案；待 SEC 审查完成后，这将为其保留发起 IPO 的选项。（窗口内最高互动：1.9 万赞、2263 转、804 回复）",L:[["原推","AnthropicAI/2061478052257841495"]]}
+ ]},
+ {name:"Andrew Ng",bio:"吴恩达 /ˈændruː ŋ/ — DeepLearning.AI 创始人，斯坦福教授，Coursera 联合创始人",items:[
+   {t:"AI FDE vs AI 工程师（长文）",b:"硅谷新兴热门岗位「AI 前置部署工程师（FDE）」指被嵌入客户组织、帮其定制方案（如搭建/调优 agentic 工作流）的工程师；OpenAI 与 Anthropic 已组建团队派驻 FDE。该角色二十年前由 Palantir 首创。但吴恩达认为 AI 工程师岗位将远多于 FDE：企业只接纳少数 FDE 却想要大量自家员工做项目，且担心 FDE 难「厂商中立」、会绑死流程、损害「可选择性」。当下对能用 AI 组件与编码 agent（Claude Code、Codex、Antigravity CLI、OpenCode）构建应用的 AI 工程师需求激增，未来会像软件工程师一样分化出 LLMOps、Evals、Harness 等专精方向。",L:[["原推","AndrewYNg/2061477558693384395"]]}
+ ]},
+ {name:"Jack Clark",bio:"杰克·克拉克 /dʒæk klɑːrk/ — Anthropic 联合创始人，政策负责人",items:[
+   {tag:"转推",t:"@mattbotvinick AI 与法治团队",b:"Anthropic 现已成立专注「AI 与法治（rule of law）」的团队，并刚开放首个岗位。",L:[["转推","jackclarkSF/2061475229113917520"]]}
+ ]},
+ {name:"Lucas Beyer (bl16)",bio:"卢卡斯·拜尔 /ˈluːkəs ˈbaɪər/ — 知名计算机视觉研究员，前 Google DeepMind / 现 OpenAI 研究员",items:[
+   {tag:"引用",t:"AR 眼镜版「马里奥赛车」",b:"对一个 AR 眼镜创意大为兴奋——不该只在小地图显示「幽灵分身」，而应像马里奥赛车那样把 3D 幽灵渲染在你面前，再加空中道具箱、绿龟壳射幽灵、香蕉皮陷阱。「这也许能让我开始跑步，要是还没人做，说不定是个新副业项目？」被引原文：Stijn Spanhove 用 Meta Ray-Ban Display 眼镜把跑步游戏化，载入 Strava 的 GPX 与自己的幽灵竞速。",L:[["评论","giffmana/2061383812194398465"],["被引原文","stspanho/2061160116167033329"]]}
+ ]}
+];
+
+const xicon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+
+// vocab render
+const stack=document.getElementById('vocab-stack');
+const vEmpty=document.getElementById('vocab-empty');
+document.getElementById('vocab-count').textContent=VOCAB.length+' 个术语';
+function renderVocab(q){
+  q=(q||'').trim().toLowerCase();
+  let n=0;
+  stack.innerHTML=VOCAB.map(([t,ipa,d])=>{
+    const hay=(t+' '+ipa+' '+d).toLowerCase();
+    if(q&&!hay.includes(q))return '';
+    n++;
+    return `<div class="term-card"><div class="head"><span class="term">${t}</span>${ipa?`<span class="ipa">${ipa}</span>`:''}</div><div class="def">${d}</div></div>`;
+  }).join('');
+  vEmpty.style.display=n?'none':'block';
+}
+renderVocab();
+document.getElementById('vocab-search').addEventListener('input',e=>renderVocab(e.target.value));
+
+// feed render
+function tweetLink([label,path]){
+  const [user]=path.split('/');
+  return `<a class="tw-link" href="https://x.com/${path}" target="_blank" rel="noopener">${xicon}${label} · @${user}</a>`;
+}
+const ev=document.getElementById('evidence-stack');
+let totalItems=0;
+FEED.forEach(u=>u.items.forEach(()=>totalItems++));
+document.getElementById('feed-count').textContent=`${FEED.length} 人 · ${totalItems} 条`;
+
+function renderFeed(filter){
+  ev.innerHTML=FEED.map((u,ui)=>{
+    let items=u.items;
+    if(filter==='rt')items=items.filter(i=>i.tag==='转推');
+    else if(filter==='orig')items=items.filter(i=>!i.tag);
+    else if(filter==='quote')items=items.filter(i=>i.tag==='引用');
+    if(!items.length)return '';
+    return `<div class="user-block"><div class="user-head"><div class="uname">${u.name}</div><div class="ubio">${u.bio}</div></div><div class="items">${
+      items.map(i=>`<div class="item"><div class="it-title">${i.tag?`<span class="rt-tag">${i.tag==='转推'?'🔁 转推':'❝ 引用'}</span>`:''}${i.t}</div><div class="it-body">${i.b}</div><div class="links">${i.L.map(tweetLink).join('')}</div></div>`).join('')
+    }</div></div>`;
+  }).join('');
+}
+const filters=[["all","全部"],["orig","原创"],["quote","引用"],["rt","转推"]];
+const fbar=document.getElementById('filter-bar');
+fbar.innerHTML=filters.map(([k,l],i)=>`<button class="fbtn${i===0?' active':''}" data-f="${k}">${l}</button>`).join('');
+fbar.addEventListener('click',e=>{
+  const b=e.target.closest('.fbtn');if(!b)return;
+  fbar.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  renderFeed(b.dataset.f);
+});
+renderFeed('all');
+</script>
+</body>
+</html>
