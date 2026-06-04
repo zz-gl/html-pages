@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-06-04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --primary-fixed-dim:#ffb597;
+  --on-primary:#ffffff; --accent-glow:#E8400D;
+  --secondary:#d5baff; --secondary-container:#7b40e0; --tertiary:#4d44e3; --accent-cyan:#00D4FF;
+  --bg:#fff8f6; --surface:#fff8f6; --surface-container-lowest:#ffffff; --surface-container-low:#fbf2ef;
+  --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,0.06); --border-strong:rgba(0,0,0,0.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-xs:4px;--space-sm:8px;--space-md:12px;--space-lg:16px;--space-xl:20px;--space-2xl:24px;--space-3xl:32px;--space-4xl:48px;--space-5xl:64px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:28px;--radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,0.04);--shadow-md:0 4px 12px rgba(30,27,25,0.08);--shadow-lg:0 8px 24px rgba(30,27,25,0.12);--shadow-accent:0 8px 24px rgba(160,59,0,0.15);
+  --gradient-primary:linear-gradient(135deg,#a03b00 0%,#c94c00 100%);
+  --gradient-hero:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+  --gradient-text:linear-gradient(135deg,#a03b00 0%,#7b40e0 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#060B18;--surface:#0B1426;--surface-container-lowest:#101D35;--surface-container-low:#101D35;
+    --surface-container:#162544;--surface-container-high:#1c2d52;
+    --fg-1:#F8FAFC;--fg-2:#CBD5E1;--fg-muted:#94A3B8;
+    --border:rgba(255,255,255,0.08);--border-strong:rgba(255,255,255,0.14);--outline-variant:#33405e;
+    --primary:#FF6B35;--primary-fixed:#3a1f12;--primary-fixed-dim:#5a3322;--accent-glow:#00D4FF;
+    --shadow-md:0 4px 12px rgba(0,0,0,0.4);--shadow-lg:0 8px 24px rgba(0,0,0,0.5);--shadow-accent:0 8px 24px rgba(0,0,0,0.5);
+    --gradient-hero:linear-gradient(135deg,#FF6B35 0%,#7b40e0 100%);
+    --gradient-text:linear-gradient(135deg,#FF6B35 0%,#a78bfa 100%);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:880px;margin:0 auto;padding:var(--space-2xl) var(--space-lg) var(--space-5xl)}
+a{color:inherit}
+
+/* ---------- header ---------- */
+.brief-header{margin-bottom:var(--space-2xl)}
+.kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);font-weight:600}
+.brief-header h1{font-family:var(--font-headline);font-weight:700;letter-spacing:-0.02em;font-size:clamp(26px,6vw,40px);line-height:1.12;margin:var(--space-sm) 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{color:var(--fg-2);font-size:15.5px;max-width:62ch}
+.answer-strip{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-lg)}
+.useful-chip{display:inline-flex;align-items:baseline;gap:6px;background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-pill);padding:7px 14px;font-size:13px;color:var(--fg-2);white-space:nowrap}
+.useful-chip b{font-family:var(--font-mono);font-weight:700;color:var(--fg-1);font-size:14px}
+.useful-chip.hot b{color:var(--primary)}
+
+/* ---------- section heads ---------- */
+.sec{margin-top:var(--space-4xl)}
+.sec-head{display:flex;align-items:center;gap:var(--space-md);margin-bottom:var(--space-lg)}
+.sec-head .ico{font-size:20px}
+.sec-head h2{font-family:var(--font-headline);font-weight:600;letter-spacing:-0.01em;font-size:clamp(19px,4vw,23px)}
+.sec-head .sub{font-size:13px;color:var(--fg-muted);margin-left:auto;font-family:var(--font-mono)}
+
+/* ---------- primary insight: key signals ---------- */
+.primary-insight{background:var(--surface-container-low);border:1px solid var(--border-strong);border-radius:var(--radius-2xl);padding:var(--space-2xl);box-shadow:var(--shadow-lg)}
+.signal{display:flex;gap:var(--space-lg);padding:var(--space-lg) 0;border-top:1px solid var(--border)}
+.signal:first-child{border-top:none;padding-top:0}
+.signal:last-child{padding-bottom:0}
+.signal .num{flex:0 0 auto;width:32px;height:32px;border-radius:var(--radius-pill);background:var(--gradient-primary);color:var(--on-primary);font-family:var(--font-mono);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-accent)}
+.signal .body{flex:1;min-width:0}
+.signal .body .t{font-weight:700;color:var(--fg-1);font-size:15.5px;margin-bottom:2px}
+.signal .body .d{color:var(--fg-2);font-size:14.5px}
+.signal .body .d em{font-style:normal;font-family:var(--font-mono);color:var(--primary);font-weight:600}
+
+/* ---------- glossary term cards ---------- */
+.glossary-tools{margin-bottom:var(--space-lg)}
+.search{position:relative;display:flex;align-items:center}
+.search input{width:100%;font-family:var(--font-body);font-size:15px;color:var(--fg-1);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-pill);padding:12px 16px 12px 42px;outline:none;transition:border-color .15s,box-shadow .15s}
+.search input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-fixed)}
+.search .mag{position:absolute;left:16px;font-size:15px;color:var(--fg-muted);pointer-events:none}
+.term-stack{display:flex;flex-direction:column;gap:var(--space-sm)}
+.term-card{background:var(--surface-container-low);border:1px solid var(--border);border-left:3px solid var(--outline-variant);border-radius:var(--radius-md);padding:var(--space-md) var(--space-lg);transition:border-color .15s,background .15s}
+.term-card:hover{border-left-color:var(--primary);background:var(--surface-container)}
+.term-card .head{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px}
+.term-card .term{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--primary)}
+.term-card .ipa{font-family:var(--font-mono);font-size:13px;color:var(--fg-muted)}
+.term-card .def{color:var(--fg-2);font-size:14.5px;margin-top:3px}
+.no-hits{display:none;color:var(--fg-muted);font-size:14px;padding:var(--space-lg);text-align:center}
+.no-hits.show{display:block}
+
+/* ---------- user filter ---------- */
+.filter-bar{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-bottom:var(--space-xl)}
+.fbtn{font-family:var(--font-body);font-size:13px;color:var(--fg-2);background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-pill);padding:6px 13px;cursor:pointer;transition:.15s;white-space:nowrap}
+.fbtn:hover{border-color:var(--border-strong)}
+.fbtn[aria-pressed="true"]{background:var(--primary);color:var(--on-primary);border-color:var(--primary);font-weight:600}
+
+/* ---------- evidence stack: users ---------- */
+.user-card{background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-xl);padding:var(--space-xl);margin-bottom:var(--space-lg);box-shadow:var(--shadow-sm);scroll-margin-top:16px}
+.user-head{margin-bottom:var(--space-md)}
+.user-head .name-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px}
+.user-head .name{font-family:var(--font-headline);font-weight:700;font-size:18px;letter-spacing:-0.01em}
+.user-head .handle{font-family:var(--font-mono);font-size:13px;color:var(--primary)}
+.user-head .count{margin-left:auto;font-family:var(--font-mono);font-size:12px;color:var(--fg-muted);background:var(--surface-container);border-radius:var(--radius-pill);padding:3px 10px;white-space:nowrap}
+.user-head .bio{color:var(--fg-muted);font-size:13.5px;margin-top:6px;line-height:1.55;border-left:2px solid var(--outline-variant);padding-left:10px}
+.evidence-stack{display:flex;flex-direction:column;gap:var(--space-sm);margin-top:var(--space-md)}
+.tw{border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-md) var(--space-lg);background:var(--surface-container-low);transition:border-color .15s}
+.tw:hover{border-color:var(--border-strong)}
+.tw.rt{border-left:3px solid var(--secondary-container);background:var(--surface-container)}
+.tw .meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.tw .time{font-family:var(--font-mono);font-size:12px;color:var(--fg-muted)}
+.tw .tag{font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--secondary-container);background:color-mix(in srgb,var(--secondary-container) 12%,transparent);border-radius:var(--radius-sm);padding:2px 8px}
+.tw .txt{color:var(--fg-1);font-size:14.5px;line-height:1.62}
+.tw .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.src{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:12px;color:var(--primary);text-decoration:none;background:var(--surface-container-lowest);border:1px solid var(--border);border-radius:var(--radius-pill);padding:4px 11px;transition:.15s}
+.src:hover{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.src .x{font-weight:700}
+
+/* ---------- quiet / no activity ---------- */
+.quiet{margin-top:var(--space-3xl);background:var(--surface-container-low);border:1px dashed var(--border-strong);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl)}
+.quiet h3{font-family:var(--font-headline);font-weight:600;font-size:15px;margin-bottom:8px;color:var(--fg-2)}
+.quiet .names{font-family:var(--font-mono);font-size:12.5px;color:var(--fg-muted);line-height:1.9;word-break:break-word}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-size:12.5px;color:var(--fg-muted);font-family:var(--font-mono);text-align:center}
+.hidden{display:none !important}
+@media (max-width:520px){
+  .wrap{padding:var(--space-xl) var(--space-md) var(--space-4xl)}
+  .primary-insight{padding:var(--space-lg)}
+  .signal{gap:var(--space-md)}
+  .user-card{padding:var(--space-lg)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ ANSWER HEADER ============ -->
+  <header class="brief-header">
+    <div class="kicker">X / TWITTER 关注动态 · 24H 汇总</div>
+    <h1>开源路由<span class="grad">硬刚前沿模型</span>，Codex 出圈，AI 经济叙事开战</h1>
+    <p class="lede">2026-06-04 抓取窗口内，关注列表围绕「开源 + 路由能否打败前沿大模型」「Codex 周活破 500 万」「AI 经济谁受益」三条主线展开激辩。以下为去重、分组、翻译后的当日重点。</p>
+    <div class="answer-strip">
+      <span class="useful-chip">关注总数 <b>41</b></span>
+      <span class="useful-chip hot">有动态 <b>16</b></span>
+      <span class="useful-chip">动态数 <b>68</b></span>
+      <span class="useful-chip">窗口 <b>24h</b></span>
+      <span class="useful-chip">UTC <b>06-03 → 06-04</b></span>
+    </div>
+  </header>
+
+  <!-- ============ PRIMARY INSIGHT: KEY SIGNALS ============ -->
+  <section class="sec" id="signals">
+    <div class="sec-head"><span class="ico">🔑</span><h2>关键信号总结</h2><span class="sub">5 条 · 先读这里</span></div>
+    <div class="primary-insight">
+      <div class="signal">
+        <div class="num">1</div>
+        <div class="body">
+          <div class="t">「开源 + 路由」正面硬刚「前沿模型」</div>
+          <div class="d">Harvey × Fireworks 发布法律 Agent 实测：以开源 GLM 5.1 为主力、仅在必要时路由到 Opus 4.7，质量与成本双双胜过纯 Opus（<em>18% vs 14%</em> 通过率，<em>$368 vs $954</em>）；Kimi 2.6 经 SFT 后成本约低 <em>11×</em>。Hugging Face 的 clem 借势猛批「frontier 只是营销」，引发本期最大讨论。</div>
+        </div>
+      </div>
+      <div class="signal">
+        <div class="num">2</div>
+        <div class="body">
+          <div class="t">Codex 强势出圈</div>
+          <div class="d">OpenAI 官宣 Codex 周活破 <em>500 万</em>、并向「电脑通用办公」扩张；Greg Brockman 连发「fly with codex / codex for computer work is growing very fast」。多位博主（swyx、Peter Yang）实测惊叹。</div>
+        </div>
+      </div>
+      <div class="signal">
+        <div class="num">3</div>
+        <div class="body">
+          <div class="t">AI 经济叙事之争</div>
+          <div class="d">Sarah Guo 连发长串，反对「3-4 家实验室赢者通吃」的悲观叙事，主张让大众真正参与新经济；并整理 Satya Nadella（微软仍是「工具公司」，主打 agentic coding + evals）的访谈要点。</div>
+        </div>
+      </div>
+      <div class="signal">
+        <div class="num">4</div>
+        <div class="body">
+          <div class="t">能力曲线快于预期</div>
+          <div class="d">Ethan Mollick 指出：5 月初超级预测者预测年底 METR 80% 任务时长达 <em>3-4 小时</em>，5 月底 Claude「Mythos」已摸到 <em>3 小时 6 分</em>。</div>
+        </div>
+      </div>
+      <div class="signal">
+        <div class="num">5</div>
+        <div class="body">
+          <div class="t">AI 安全与攻防</div>
+          <div class="d">Anthropic 发布报告，分析 <em>832</em> 个恶意账号、把 AI 驱动的网络攻击映射到既有攻防技战术库；OpenAI 抛出「前沿 AI 民主化治理蓝图」政策提案。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GLOSSARY ============ -->
+  <section class="sec" id="glossary">
+    <div class="sec-head"><span class="ico">📖</span><h2>生词预热</h2><span class="sub" id="glossCount">23 词</span></div>
+    <div class="glossary-tools">
+      <div class="search">
+        <span class="mag">🔍</span>
+        <input id="glossSearch" type="search" placeholder="搜索术语 / 缩写 / 中文释义…" aria-label="搜索生词">
+      </div>
+    </div>
+    <div class="term-stack" id="termStack"></div>
+    <div class="no-hits" id="glossNoHit">没有匹配的术语</div>
+  </section>
+
+  <!-- ============ EVIDENCE STACK: USERS ============ -->
+  <section class="sec" id="feed">
+    <div class="sec-head"><span class="ico">🧵</span><h2>按用户分组的详细动态</h2><span class="sub" id="feedCount">16 人</span></div>
+    <div class="filter-bar" id="filterBar"></div>
+    <div id="userList"></div>
+  </section>
+
+  <!-- ============ QUIET ============ -->
+  <div class="quiet">
+    <h3>💤 无动态用户（25）</h3>
+    <div class="names">Figure_robot · AnimaAnandkumar · soumithchintala · sama · geoffreyhinton · MistralAI · stephzhan · realDonaldTrump · DarioAmodei · jiayq · realGeorgeHotz · ylecun · ilyasut · karpathy · AndrewYNg · tegmark · fchollet · ChatGPTapp · DrJimFan · jackclarkSF · sequoia · demishassabis · paperswithcode · zeritna · deepseek_ai</div>
+  </div>
+
+  <footer>X 关注动态 · 2026-06-04 04:50 UTC 抓取 · 单文件离线页面</footer>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+const GLOSSARY=[
+  {t:"shibboleth",ipa:"/ˈʃɪbəlɛθ/",d:"圈内人辨别身份的「暗号/陈词滥调」，引申为划分阵营的口头禅"},
+  {t:"eschaton",ipa:"/ˈɛskətɒn/",d:"末世/终局（神学术语），此处指 AGI「终局想象」"},
+  {t:"AGI-pilled",ipa:"",d:"被「AGI 必将到来」信念深度洗脑的状态（-pilled 网络后缀）"},
+  {t:"terminal value",ipa:"",d:"终极价值/终值，此处指企业长期估值的「地基」"},
+  {t:"agentic",ipa:"/eɪˈdʒɛntɪk/",d:"智能体式的（能自主多步行动）"},
+  {t:"harness",ipa:"/ˈhɑːrnɪs/",d:"（把模型接入工具/流程的）「外壳/支架」框架"},
+  {t:"eval",ipa:"/ɪˈvæl/",d:"evaluation 评测，模型质量评估"},
+  {t:"GTM",ipa:"",d:"Go-To-Market，市场推进/获客打法"},
+  {t:"ROI",ipa:"",d:"Return on Investment，投资回报率"},
+  {t:"superforecaster",ipa:"/ˌsuːpərˈfɔːrkæstər/",d:"超级预测者（预测准确率显著高于常人的人）"},
+  {t:"METR",ipa:"",d:"Model Evaluation & Threat Research，评估 AI 自主完成长任务能力的机构"},
+  {t:"task horizon",ipa:"",d:"任务时长（模型能以一定成功率独立完成的任务时间跨度）"},
+  {t:"post-training",ipa:"",d:"后训练（预训练之后的微调/对齐阶段）"},
+  {t:"SFT",ipa:"",d:"Supervised Fine-Tuning，监督微调"},
+  {t:"routing",ipa:"/ˈruːtɪŋ/",d:"路由（按任务把请求分发给不同模型）"},
+  {t:"open-weight",ipa:"",d:"开放权重（模型参数可下载）"},
+  {t:"frontier model",ipa:"",d:"前沿模型（能力最强的一线大模型）"},
+  {t:"reward function",ipa:"",d:"奖励函数（强化学习中给模型行为打分的规则）"},
+  {t:"length penalty",ipa:"",d:"长度惩罚（抑制输出过长的奖励项）"},
+  {t:"REAP",ipa:"",d:"Router-weighted Expert Activation Pruning，对 MoE 专家做剪枝压缩的方法"},
+  {t:"MoE",ipa:"",d:"Mixture of Experts，混合专家模型"},
+  {t:"sitzprobe",ipa:"/ˈzɪtsˌproːbə/",d:"（德语·音乐剧术语）「坐排」，乐队与歌手首次合排"},
+  {t:"Hyrox / Rucking",ipa:"",d:"两种健身潮流：Hyrox 为综合体能赛；Rucking 为负重行走"}
+];
+
+const U="https://x.com/";
+const USERS=[
+  {name:"swyx",handle:"@swyx",bio:"Shawn Wang（沈翔 /ʃɔːn wɑːŋ/）— AI 工程师社区 Latent Space 主理人、AI Engineer 大会创办者，「AI Engineer」概念提出者",tweets:[
+    {time:"04:48",txt:"自嘲：我做过最病毒级传播的事，居然是一段盗录的《汉密尔顿》坐排（sitzprobe），跟 AI 毫无关系。",links:[[U+"swyx/status/2062396031812481476","swyx · 原文"]]},
+    {time:"03:11",txt:"「你们都知道这要走向哪了吧」——引用 Hasan 对 @reve 2.0 发布文案的盛赞：可控图像生成与编辑的关键不是更密的 prompt，而是一种「可被代码表达、高度可操控（manipulatable）的中间表征」；并引「真正认真做创意工具的公司，应该自己训练模型」。",links:[[U+"swyx/status/2062371515937800468","swyx · 原文"]]},
+    {time:"06-03 20:59",txt:"安利 Town（@TownAI）：我在 AIE Europe 讲过的「万事版 Devin」。带进公司一天后它竟自发在团队里扩散开来（这种事从没发生过！），可惜当时没聪明到要求投资，如今只能当个旁观的日活用户。@jgreze 将在大会演讲。引用 Town 的 5500 万美元 A 轮发布（a16z 领投）。",links:[[U+"swyx/status/2062273937732775944","swyx · 1"],[U+"swyx/status/2062277925127520576","swyx · 2"]]},
+    {time:"06-03 06:43",txt:"「@saranormous codex 就是 AGI 啊，一发入魂、零修改（oneshotted this, no notes）。」引用 Turing Post 调侃他还在用纸笔。",links:[[U+"swyx/status/2062062585391014245","swyx · 原文"]]},
+    {time:"06-03 06:33",txt:"「我见过的推理效率（reasoning efficiency）奖励函数里最好的一个」——引用 elie 称「length penalty 长度惩罚优雅又简单」。",links:[[U+"swyx/status/2062060142489973010","swyx · 原文"]]},
+    {rt:1,time:"06-03 03:21",txt:"🔁 @saranormous —— NoPriorsPod × LatentSpacePod 在微软 Build 对话 Satya Nadella，「我访谈过的上市公司 CEO 里他的心智模型最锋利」。",links:[[U+"saranormous/status/2062373191528652839","被转原文"],[U+"swyx/status/2062374161297920479","swyx 转推"]]},
+    {rt:1,time:"06-03 02:53",txt:"🔁 @latentspacepod —— 新节目《Scaling Past Informal AI》，Axiom Math AI 创始人兼 CEO Carina Hong 解释为何数学可能是……",links:[[U+"swyx/status/2062367111830458841","swyx 转推"]]},
+    {rt:1,time:"06-03 01:45",txt:"🔁 @kdaigle —— 与 swyx 在 latentspacepod 畅聊平台、岗位演变等话题。",links:[[U+"swyx/status/2062349903402328301","swyx 转推"]]},
+    {rt:1,time:"06-03 19:08",txt:"🔁 @mada299 —— 与 swyx 在 @aiDotEngineer（6 月 30 日）共同策划「AI in GTM」专场，AI 工程师必须意识到的事：GTM 也变了……",links:[[U+"swyx/status/2062250212069142881","swyx 转推"]]},
+    {rt:1,time:"06-03 06:18",txt:"🔁 @eliebakouch —— 微软 MAI 技术报告是个宝库，是同规模模型里最透明的之一；该模型用了零合成（synthetic）数据……",links:[[U+"swyx/status/2062056321046982989","swyx 转推"]]}
+  ]},
+  {name:"sarah guo",handle:"@saranormous",bio:"郭莎拉 /ˈsærə ɡwoʊ/ — 风投机构 Conviction 创始人、NoPriorsPod 播客主持，AI 早期投资人",tweets:[
+    {time:"04:45",txt:"「散了吧这套暗号（shibboleth）。事实证明，信念的强度并不等于思想的严肃性。」",links:[[U+"saranormous/status/2062395202791522786","原文"]]},
+    {time:"04:31",txt:"「『不够 AGI-pilled』是个完美的硅谷羞辱——它把『不思考』包装成一种身份地位：不用有时间线、战略、部署理论、对制度的看法、二阶效应（second-order effects），只要比旁人更死盯着末世终局（eschaton）就行。」",links:[[U+"saranormous/status/2062391763051106469","原文"]]},
+    {time:"04:16",txt:"本周 NoPriorsPod 重磅阵容！明天和 Zuck、Priscilla、Alex Rives 聊「生物 × AI」，有什么想问的？",links:[[U+"saranormous/status/2062387975464661067","原文"]]},
+    {time:"03:55",txt:"「应当向非科技大众呈现：AI 的好处（产品、服务、成果）、参与的途径、必要条件（国家安全、竞争力）、被缓解的担忧（就业、能源成本）——人人都有机会参与新经济！」并反驳流行的悲观叙事（3-4 家实验室争夺『至尊魔戒』、只有他们和粉丝暴富、模型吞噬其余经济、还会毁掉安全甚至杀死所有人）：1. 不属实　2. 不是其他人想要的。",links:[[U+"saranormous/status/2062382797017481227","1"],[U+"saranormous/status/2062383878409712063","2"]]},
+    {time:"03:42",txt:"「很多极成功的公司，看起来都像是朝着一个大方向不断转向（pivots）/抢风（tacking）的过程。」",links:[[U+"saranormous/status/2062379316370174055","原文"]]},
+    {time:"03:17 · thread",txt:"在微软 Build 对话 Satya Nadella 的要点串：$MSFT 本质仍是「工具公司」，重点押注 agentic coding、harness 与 AI evals。12/ 其「终值（terminal value）」论的潜台词是：与其再造一个为天花板厮杀的模型，Satya 宁愿做「托住你终极价值的地板」——否则每家公司都沦为临时『套壳』，利润全经由前沿 API 抽走，没人敢做长期投资。13/ 对其 AI 策略的敏捷印象深刻，完整访谈明日发布。",links:[[U+"saranormous/status/2062373191528652839","1/"],[U+"saranormous/status/2062373208767201411","12/"],[U+"saranormous/status/2062373210549846192","13/"]]},
+    {time:"06-03 15:37",txt:"祝贺 @TownAI 团队！首批「体感上截然不同」的 AI 体验之一：长任务时域（long horizon）智能体、就在我们干活的地方、每次都为创始人撑腰。引用 Town A 轮发布。",links:[[U+"saranormous/status/2062196965543387196","原文"]]}
+  ]},
+  {name:"Ethan Mollick",handle:"@emollick",bio:"伊森·莫里克 /ˈiːθən ˈmɒlɪk/ — 沃顿商学院教授，研究 AI 对工作与教育的影响，畅销书《Co-Intelligence》作者",tweets:[
+    {time:"04:36",txt:"抛开意识问题，Ted Chiang 那篇「若把选择权交给 AI，会导致道德萎缩（moral atrophy）」的观点有其合理之处；但有趣的是，反复的随机对照试验发现 AI 居然是个不错的伦理学家。延伸：一项「道德图灵测试」对比 GPT-4o 与人类，发现 LLM 的道德推理堪比专家级伦理学家。",links:[[U+"emollick/status/2062393081568076038","1"],[U+"emollick/status/2062393330848178330","See also"]]},
+    {time:"02:07",txt:"实读了那份 Bain 报告，非常诡异：它似乎在论证「过去的机器学习系统因数据问题没省下钱，所以会导致对当前 AI 投资不足」，还引用了那份基本是假的「MIT 研究」。补充：GenAI 落地确有诸多问题，但调查普遍显示正向 ROI；关于 AI 失败的数据真实有用，但必须讲清楚到底在测什么——Bain 报告在这点上异常含糊。",links:[[U+"emollick/status/2062355630573170968","1"],[U+"emollick/status/2062356726360265126","2"]]},
+    {time:"06-03 18:10",txt:"5 月初，顶尖超级预测者（superforecaster）预测年底 METR 80% 任务时长（task horizon）将达 3-4 小时；5 月底，Claude「Mythos」就达到了这个数（3 小时 6 分）。引用 Forecasting Research Institute。",links:[[U+"emollick/status/2062235461364445204","原文"]]},
+    {time:"06-03 19:38",txt:"「这个故事太离谱，唯一（勉强）说得通的可能，是某云厂商用自家算力做的内部记账占位符——即便如此，也因诸多原因令人难以置信。」引用 Timothy Lee：不信有公司一个月『不小心』在 Claude 上花掉 5 亿美元。",links:[[U+"emollick/status/2062257554609033528","原文"]]},
+    {time:"06-03 16:25",txt:"「多数人——包括非常有成就的人——对 LLM 如何运作没有准确的心智模型。这体现在普遍误解里：以为 AI 只是从已知来源抄袭、只会给平庸答案、生不出新点子。」",links:[[U+"emollick/status/2062208940658618605","原文"]]},
+    {time:"06-03 19:08",txt:"「开始对任何用了『genuine（真诚）』或『honest（诚实）』字眼的帖子起疑了。」",links:[[U+"emollick/status/2062249984574005351","原文"]]},
+    {time:"06-03 15:15",txt:"「嘿，是我们的论文！」引用 PNAS：上周最高阅读量文章之一是《说服大语言模型遵从不当请求》。",links:[[U+"emollick/status/2062191515925938266","原文"]]},
+    {time:"06-03 05:12 · thread",txt:"让 Claude Code 做了个贪吃蛇游戏：蛇会意识到自己身处游戏中，然后剧情展开。AI 做了些惊艳的创意决定（也有些很『AI 味』的）。我只给了首个 prompt 和过程反馈。后续：免费游戏一小时就把 Netlify 流量额度榨干，正在重新部署更省带宽的版本。",links:[[U+"emollick/status/2062039734453416361","1"],[U+"emollick/status/2062072855509057962","2"],[U+"emollick/status/2062189390445588744","3"]]}
+  ]},
+  {name:"Peter Yang",handle:"@petergyang",bio:"彼得·杨 /ˈpiːtər jæŋ/ — 产品经理、AI 实践博主，专注用 AI 提升日常工作效率的教程",tweets:[
+    {time:"00:16",txt:"「我怎么把 Codex 设成打开 ChatGPT App 时的默认标签页？」",links:[[U+"petergyang/status/2062327484499317124","原文"]]},
+    {time:"06-03 21:21",txt:"「Codex 今天下午帮我编辑表格简直神了（killing it）。」",links:[[U+"petergyang/status/2062283525542531194","原文"]]},
+    {time:"06-03 14:35 · thread",txt:"我的 AI skills 现在能自我评分、越用越好。新教程演示如何构建带「评测闭环（eval loop）让 AI 自我纠错」和「记忆（memory）让 skill 随时间改进」的 skills——skills 真是封装你知识与品味的绝佳方式。另附文字版指南。",links:[[U+"petergyang/status/2062181445746192497","1"],[U+"petergyang/status/2062181457842651249","2"],[U+"petergyang/status/2062363988739146218","自转"]]}
+  ]},
+  {name:"Sonya Huang 🐥",handle:"@sonyatweetybird",bio:"黄如玉 /ˈsɒnjə hwɑːŋ/ — 红杉资本（Sequoia）合伙人，AI 方向投资人",tweets:[
+    {time:"06-03 19:53",txt:"「正爱看 @harvey、@FactoryAI 等公司现在产出的研究——最早一批应用层公司正在从『纯应用层』进化为正经的研究机构，预示着未来走向。」并补：也喜欢 Fireworks、LangChain 成为这波『每家公司都是研究实验室』浪潮的『军火商』。",links:[[U+"sonyatweetybird/status/2062238633089020364","1"],[U+"sonyatweetybird/status/2062261295156781239","2"]]},
+    {rt:1,time:"06-03 02:24",txt:"🔁 @eastdakota —— 「来得比我预测的快。本以为是 2027 年底、然后改到 2027 年初，但 agentic 流量正在增长……」（转推量 827）",links:[[U+"sonyatweetybird/status/2062359739330371694","转推"]]},
+    {rt:1,time:"06-03 18:01",txt:"🔁 @harvey —— 我们与 Fireworks 合作为法律领域训练开源模型，结论：1) 混合法律 Agent 通过选择性路由到前沿『顾问』模型，可在质量与成本上击败前沿模型……",links:[[U+"harvey/status/2062218656420167785","被转原文"],[U+"sonyatweetybird/status/2062233177876562162","转推"]]},
+    {rt:1,time:"06-03 14:06",txt:"🔁 @lqiao —— Fireworks 在微软 Foundry 1P 今日 GA（正式可用）！历经 9 个月把 Fireworks 平台完整接入……",links:[[U+"sonyatweetybird/status/2062174114404761660","转推"]]}
+  ]},
+  {name:"Sergey Levine",handle:"@svlevine",bio:"谢尔盖·列文 /ˈsɜːrɡeɪ ləˈviːn/ — UC Berkeley 教授、Physical Intelligence 联合创始人，机器人学习与强化学习专家",tweets:[
+    {time:"06-03 22:39",txt:"若你在 CVPR 2026，明天（6 月 4 日）我还有一场演讲，ScaleBot workshop，610/612 房间，下午 1:30。主题：「扩展机器人数据，会让扩展机器人数据更容易」——机器人领域有个『奇怪的小技巧』可以做到……",links:[[U+"svlevine/status/2062303206592634902","原文"]]},
+    {time:"06-03 15:36",txt:"今天我将在 CVPR 的「计算机视觉测试时扩展（Test-Time Scaling）」workshop 演讲（下午 1:30 PT，506 房间），讲如何用测试时算力提升机器人策略的泛化；现在还要在 Ballroom 2 的「基础模型部署」workshop 发言！",links:[[U+"svlevine/status/2062196620146651548","原文"]]}
+  ]},
+  {name:"clem 🤗",handle:"@ClementDelangue",bio:"克莱芒·德朗格 /kleˈmɑ̃ dəˈlɑ̃ɡ/ — Hugging Face 联合创始人兼 CEO，开源 AI 生态主要推手",tweets:[
+    {time:"06-03 19:03",txt:"「对开源模型做路由（routing）与后训练（post-training），不仅能给你更准的系统，还能明显更快更便宜（更别提更可控、更隐私）。以为某个『前沿』模型（所谓 frontier 不过是在几个很有限的基准上略准一点）对所有领域、所有任务、所有场景都更好——这根本站不住脚！这是让你多掏钱的营销！」引用 Harvey 法律实测。",links:[[U+"ClementDelangue/status/2062248714945630632","原文"]]},
+    {time:"06-03 21:19",txt:"「我甚至怀疑，你把由开源模型驱动的端点命名为『0pus 4.8』和『GPT 5.S』放进 App，也能在没人抱怨的情况下拿到海量使用——这就是『前沿』营销的威力！」",links:[[U+"ClementDelangue/status/2062282999396237421","原文"]]},
+    {rt:1,time:"06-03 22:13",txt:"🔁 @PatrickOjo_ —— Harvey 刚发布研究：混合方案以开源 GLM 5.1 为主力 worker，仅在必要时路由到 Opus 4.7……",links:[[U+"ClementDelangue/status/2062296551213465736","转推"]]},
+    {rt:1,time:"06-03 22:16",txt:"🔁 @ivan_bezdomny —— 「有两点我觉得以后会越来越多见：1. 在更小的开源模型上做自定义 harness/微调……」",links:[[U+"ClementDelangue/status/2062297448127619263","转推"]]},
+    {rt:1,time:"06-03 22:10",txt:"🔁 @theaiagencysv —— 🇸🇻 萨尔瓦多现在拥有了自己的开放角色（persona）数据集，与 NVIDIA、拉美领先者 WideLabs 合作……（转推量 99）",links:[[U+"ClementDelangue/status/2062295956339507642","转推"]]},
+    {rt:1,time:"06-03 19:57",txt:"🔁 @zhengyaojiang —— OpenAI 办了场招聘挑战赛，但最强候选人是他们无法录用的——我们的自主研究智能体 Aiden……",links:[[U+"ClementDelangue/status/2062262536502694083","转推"]]},
+    {rt:1,time:"06-03 17:17",txt:"🔁 @0xSero —— 「6 个月前我说不搞定『家用 Kimi』不罢休，10 多次失败的 REAP 之后我终于有了它，待跑基准……」",links:[[U+"ClementDelangue/status/2062222060579967210","转推"]]},
+    {rt:1,time:"06-03 16:18",txt:"🔁 @ypatil125 —— 「使用开源模型和（服务开源模型的）推理云，是未来走向的领先指标……」",links:[[U+"ClementDelangue/status/2062207401109909920","转推"]]},
+    {rt:1,time:"06-03 16:11",txt:"🔁 @ideogram_ai —— 「推出 Ideogram 4.0：世界上最好的开源图像模型。想到即做到、归你所有，下载权重、微调……」（转推量 583）",links:[[U+"ClementDelangue/status/2062205640110494089","转推"]]}
+  ]},
+  {name:"Fei-Fei Li",handle:"@drfeifei",bio:"李飞飞 /feɪˈfeɪ liː/ — 斯坦福大学教授、World Labs 创始人，ImageNet 主创、「AI 教母」",tweets:[
+    {rt:1,time:"06-03 21:21",txt:"🔁 @RuohanZhang76 —— 隆重介绍 StereoPolicy（由 @EvansXuHan 主导）：一种为模型有效加入几何线索（geometric cues）的方法……（转推量 15）",links:[[U+"drfeifei/status/2062283541069930791","转推"]]}
+  ]},
+  {name:"Lucas Beyer (bl16)",handle:"@giffmana",bio:"卢卡斯·拜尔 /ˈluːkəs ˈbaɪər/ — 知名计算机视觉/多模态研究员（前 Google DeepMind，现 OpenAI），ViT、SigLIP 等工作参与者",tweets:[
+    {rt:1,time:"06-03 21:12",txt:"🔁 @mtschannen —— 「过去几年我的研究重点是统一跨模态的模型与训练范式（paradigms）。今天很兴奋……」（转推量 65）",links:[[U+"giffmana/status/2062281278871802296","转推"]]}
+  ]},
+  {name:"Greg Brockman",handle:"@gdb",bio:"格雷格·布罗克曼 /ɡrɛɡ ˈbrɒkmən/ — OpenAI 联合创始人兼总裁",tweets:[
+    {time:"06-03 21:05",txt:"「与 codex 一起起飞（fly with codex）」——引用 OpenAI「是时候起飞了（It's time to fly）」（含 90 秒视频，原推点赞 8257）。",links:[[U+"gdb/status/2062279597149061564","原文"]]},
+    {time:"06-03 07:55",txt:"「Codex 用于电脑办公（computer work）正高速增长。」引用 OpenAI Newsroom：Codex 周活已超 500 万，更大的故事是人们用它做研究、分析、内容、运营等各类工作，而不只是写代码。",links:[[U+"gdb/status/2062080673632895138","原文"]]},
+    {time:"06-03 19:47",txt:"「我们发布了一份『前沿 AI 民主化治理』蓝图，以及美国如何为前沿 AI 安全建立持久制度。」引用 OpenAI Newsroom：昨天关于网络安全的行政令（EO）是重要一步，我们提出一组想法供决策者参考。",links:[[U+"gdb/status/2062259921664835833","原文"]]}
+  ]},
+  {name:"Andrew Reed",handle:"@andrew__reed",bio:"安德鲁·里德 /ˈændruː riːd/ — Hugging Face 机器学习工程师",tweets:[
+    {time:"06-03 19:58",txt:"「现在人人都在搞 Hyrox（用最绕的方式搬东西）或 Rucking（用最蠢的方式搬东西）。」",links:[[U+"andrew__reed/status/2062262601455972773","原文"]]},
+    {time:"06-03 14:03",txt:"「勒内·吉拉尔（René Girard）若看到开发者工具市场，准会乐开花。」（暗指其『模仿欲望/竞争』理论）",links:[[U+"andrew__reed/status/2062173439788781764","原文"]]}
+  ]},
+  {name:"Bill Gurley",handle:"@bgurley",bio:"比尔·格利 /bɪl ˈɡɜːrli/ — Benchmark 风投传奇合伙人，硅谷资深投资人",tweets:[
+    {time:"06-03 19:06",txt:"RDAD 基金会 2026 年资助申请开放（含视频，点赞 113）。",links:[[U+"bgurley/status/2062249523859108141","原文"]]},
+    {rt:1,time:"06-03 17:38",txt:"🔁 @CTR_China —— 「这是 2026 年中国最具影响力投资人的最新名单，明显新趋势包括：美元基金更少、国家队更多……」",links:[[U+"bgurley/status/2062227389162090846","转推"]]}
+  ]},
+  {name:"Anthropic",handle:"@AnthropicAI",bio:"安斯罗匹克 /ænˈθrɒpɪk/ — Claude 模型背后的 AI 安全公司，由 Dario Amodei 等创立",tweets:[
+    {time:"06-03 18:42",txt:"「面对 AI 驱动的网络攻击，安全社区的技战术还撑得住吗？我们分析了 832 个恶意账号，把它们的活动映射到一个长期沉淀的威胁行为者（threat actors）攻防技战术数据库上。以下是我们的发现：」（点赞 767）",links:[[U+"AnthropicAI/status/2062243425580367905","原文"]]}
+  ]},
+  {name:"Sebastian Raschka",handle:"@rasbt",bio:"塞巴斯蒂安·拉施卡 /sɪˈbæstiən ˈræʃkə/ — 知名 ML 教育者、《Build a Large Language Model》作者",tweets:[
+    {time:"06-03 18:11",txt:"「久违了！消费级硬件本地 LLM（open-weight local-LLM-on-consumer-hardware）生态新增 4 个不错的成员：」（含图，点赞 574）",links:[[U+"rasbt/status/2062235700636873082","原文"]]}
+  ]},
+  {name:"Jerry Liu",handle:"@jerryjliu0",bio:"刘嘉宇 /ˈdʒɛri ljuː/ — LlamaIndex 联合创始人兼 CEO，RAG/数据 Agent 框架推动者",tweets:[
+    {rt:1,time:"06-03 17:42",txt:"🔁 @ConorBronsdon —— 「Jerry Liu 打造了过去三年安装量最高的 AI『管道（plumbing）』之一，然后他坐下来告诉我……」",links:[[U+"jerryjliu0/status/2062228544638570659","转推"]]},
+    {rt:1,time:"06-03 04:54",txt:"🔁 @disiok —— 「我以为在这儿负责发蠢帖（shit-posting）的应该是我啊。」",links:[[U+"jerryjliu0/status/2062035186720837747","转推"]]}
+  ]},
+  {name:"Simon Willison",handle:"@simonw",bio:"西蒙·威利森 /ˈsaɪmən ˈwɪlɪsən/ — Django 联合创始人、Datasette 作者，知名 AI 工具实践博主",tweets:[
+    {time:"06-03 12:03",txt:"「据报道 Uber 现在把编码智能体（coding agents）的开销上限设为每名员工每款工具 1500 美元/月——我觉得挺合理，但这也有趣地暗示了 Uber 认为这些工具提供的价值有多大。」（点赞 488）",links:[[U+"simonw/status/2062143151184465964","原文"]]}
+  ]}
+];
+
+/* ---------------- RENDER: GLOSSARY ---------------- */
+const termStack=document.getElementById('termStack');
+GLOSSARY.forEach(g=>{
+  const el=document.createElement('div');
+  el.className='term-card';
+  el.dataset.search=(g.t+' '+g.ipa+' '+g.d).toLowerCase();
+  el.innerHTML=`<div class="head"><span class="term">${g.t}</span>${g.ipa?`<span class="ipa">${g.ipa}</span>`:''}</div><div class="def">${g.d}</div>`;
+  termStack.appendChild(el);
+});
+document.getElementById('glossCount').textContent=GLOSSARY.length+' 词';
+
+const glossSearch=document.getElementById('glossSearch');
+const glossNoHit=document.getElementById('glossNoHit');
+glossSearch.addEventListener('input',()=>{
+  const q=glossSearch.value.trim().toLowerCase();
+  let hits=0;
+  termStack.querySelectorAll('.term-card').forEach(c=>{
+    const ok=!q||c.dataset.search.includes(q);
+    c.classList.toggle('hidden',!ok);
+    if(ok)hits++;
+  });
+  glossNoHit.classList.toggle('show',hits===0);
+});
+
+/* ---------------- RENDER: USERS ---------------- */
+const userList=document.getElementById('userList');
+const escapeHtml=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+USERS.forEach((u,i)=>{
+  const card=document.createElement('section');
+  card.className='user-card';
+  card.id='u'+i;
+  card.dataset.idx=i;
+  const tweets=u.tweets.map(t=>{
+    const links=t.links.map(([url,label])=>`<a class="src" href="${url}" target="_blank" rel="noopener"><span class="x">𝕏</span>${label}</a>`).join('');
+    return `<div class="tw${t.rt?' rt':''}"><div class="meta"><span class="time">${t.time}</span>${t.rt?'<span class="tag">🔁 转推</span>':''}</div><div class="txt">${escapeHtml(t.txt)}</div><div class="links">${links}</div></div>`;
+  }).join('');
+  card.innerHTML=`<div class="user-head"><div class="name-row"><span class="name">${u.name}</span><span class="handle">${u.handle}</span><span class="count">${u.tweets.length} 条</span></div><div class="bio">${u.bio}</div></div><div class="evidence-stack">${tweets}</div>`;
+  userList.appendChild(card);
+});
+document.getElementById('feedCount').textContent=USERS.length+' 人';
+
+/* ---------------- USER FILTER ---------------- */
+const filterBar=document.getElementById('filterBar');
+const mkBtn=(label,idx,pressed)=>{
+  const b=document.createElement('button');
+  b.className='fbtn';b.textContent=label;b.dataset.target=idx;
+  b.setAttribute('aria-pressed',pressed?'true':'false');
+  return b;
+};
+filterBar.appendChild(mkBtn('全部','all',true));
+USERS.forEach((u,i)=>filterBar.appendChild(mkBtn(u.name,i,false)));
+filterBar.addEventListener('click',e=>{
+  const b=e.target.closest('.fbtn');if(!b)return;
+  filterBar.querySelectorAll('.fbtn').forEach(x=>x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');
+  const tgt=b.dataset.target;
+  userList.querySelectorAll('.user-card').forEach(c=>{
+    c.classList.toggle('hidden',!(tgt==='all'||c.dataset.idx===tgt));
+  });
+  if(tgt!=='all'){const el=document.getElementById('u'+tgt);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+});
+</script>
+</body>
+</html>
