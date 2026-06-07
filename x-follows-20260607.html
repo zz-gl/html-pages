@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 关注动态汇总 · 2026-06-07</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #a03b00;
+  --primary-container: #c94c00;
+  --primary-fixed: #ffdbcd;
+  --primary-fixed-dim: #ffb597;
+  --on-primary: #ffffff;
+  --accent-glow: #E8400D;
+  --secondary: #d5baff;
+  --secondary-container: #7b40e0;
+  --tertiary: #4d44e3;
+  --accent-cyan: #00D4FF;
+  --bg: #fff8f6;
+  --surface: #fff8f6;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #fbf2ef;
+  --surface-container: #f5ece9;
+  --surface-container-high: #efe6e3;
+  --fg-1: #1e1b19;
+  --fg-2: #594138;
+  --fg-muted: #8d7166;
+  --border: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --outline-variant: #e1bfb2;
+  --green: #10b981;
+  --blue: #3b82f6;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --font-headline: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'Menlo', ui-monospace, monospace;
+  --space-xs: 4px; --space-sm: 8px; --space-md: 12px;
+  --space-lg: 16px; --space-xl: 20px; --space-2xl: 24px;
+  --space-3xl: 32px; --space-4xl: 48px; --space-5xl: 64px;
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  --radius-xl: 20px; --radius-2xl: 28px; --radius-pill: 9999px;
+  --shadow-sm: 0 1px 2px rgba(30, 27, 25, 0.04);
+  --shadow-md: 0 4px 12px rgba(30, 27, 25, 0.08);
+  --shadow-lg: 0 8px 24px rgba(30, 27, 25, 0.12);
+  --shadow-accent: 0 8px 24px rgba(160, 59, 0, 0.15);
+  --gradient-primary: linear-gradient(135deg, #a03b00 0%, #c94c00 100%);
+  --gradient-hero: linear-gradient(135deg, #a03b00 0%, #7b40e0 100%);
+  --gradient-text: linear-gradient(135deg, #a03b00 0%, #7b40e0 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #060B18;
+    --surface: #0B1426;
+    --surface-container-lowest: #101D35;
+    --surface-container-low: #101D35;
+    --surface-container: #162544;
+    --surface-container-high: #1c2d52;
+    --fg-1: #F8FAFC;
+    --fg-2: #CBD5E1;
+    --fg-muted: #94a3b8;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --outline-variant: #2c3e63;
+    --primary: #FF6B35;
+    --primary-fixed: #2a1408;
+    --accent-glow: #00D4FF;
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-accent: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg-1);
+  line-height: 1.6;
+  font-size: 15.5px;
+  padding: var(--space-lg);
+  overflow-x: hidden;
+}
+.insight-shell { max-width: 860px; margin: 0 auto; }
+
+/* ---------- Answer header ---------- */
+.brief-header {
+  padding: var(--space-3xl) 0 var(--space-2xl);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-3xl);
+}
+.brief-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+}
+.brief-title {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  line-height: 1.12;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@media (prefers-color-scheme: dark) {
+  .brief-title { background: linear-gradient(135deg, #FF6B35 0%, #d5baff 100%); -webkit-background-clip: text; background-clip: text; }
+}
+.brief-lede {
+  margin-top: var(--space-md);
+  color: var(--fg-2);
+  font-size: 1.02rem;
+  max-width: 60ch;
+}
+.answer-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+.useful-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface-container);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  color: var(--fg-2);
+}
+.useful-chip b {
+  font-family: var(--font-headline);
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ---------- Section headings ---------- */
+.section { margin-bottom: var(--space-4xl); }
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+.section-head h2 {
+  font-family: var(--font-headline);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-size: 1.25rem;
+}
+.section-head .ico { font-size: 1.3rem; }
+.section-sub { color: var(--fg-muted); font-size: 13.5px; margin: -10px 0 var(--space-xl); }
+
+/* ---------- Primary insight: signals ---------- */
+.primary-insight {
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-md);
+}
+.signal {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-lg) 0;
+  border-bottom: 1px dashed var(--border-strong);
+}
+.signal:last-child { border-bottom: none; padding-bottom: var(--space-xs); }
+.signal:first-child { padding-top: var(--space-xs); }
+.signal-num {
+  flex: none;
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-primary);
+  color: var(--on-primary);
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: var(--shadow-accent);
+}
+.signal-body { min-width: 0; }
+.signal-body strong { color: var(--fg-1); font-weight: 700; }
+.signal-body .txt { color: var(--fg-2); font-size: 14.5px; }
+.cost-pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--primary-fixed);
+  color: var(--primary);
+  padding: 1px 7px;
+  border-radius: var(--radius-sm);
+  margin: 0 2px;
+  white-space: nowrap;
+}
+
+/* ---------- Glossary term cards ---------- */
+.glossary-search {
+  position: relative;
+  margin-bottom: var(--space-xl);
+}
+.glossary-search input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: var(--space-md) var(--space-lg) var(--space-md) 42px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-container-lowest);
+  color: var(--fg-1);
+  transition: border-color .15s, box-shadow .15s;
+}
+.glossary-search input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-fixed);
+}
+.glossary-search .si {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--fg-muted); font-size: 16px; pointer-events: none;
+}
+.term-stack { display: flex; flex-direction: column; gap: var(--space-sm); }
+.term-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  transition: border-left-color .15s, transform .12s;
+}
+.term-card:hover { border-left-color: var(--primary); transform: translateX(2px); }
+.term-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-sm); }
+.term-word { font-family: var(--font-headline); font-weight: 600; color: var(--primary); font-size: 15.5px; }
+.term-ipa { font-family: var(--font-mono); font-size: 12.5px; color: var(--fg-muted); }
+.term-def { color: var(--fg-2); font-size: 14px; margin-top: 2px; }
+.term-empty { color: var(--fg-muted); text-align: center; padding: var(--space-2xl); font-size: 14px; display: none; }
+
+/* ---------- Evidence stack (users) ---------- */
+.evidence-stack { display: flex; flex-direction: column; gap: var(--space-lg); }
+.user-group {
+  background: var(--surface-container-low);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.user-head {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-xl);
+  background: var(--surface-container);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: var(--fg-1);
+  transition: background .15s;
+}
+.user-head:hover { background: var(--surface-container-high); }
+.user-head:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.user-avatar {
+  flex: none;
+  width: 38px; height: 38px;
+  border-radius: var(--radius-pill);
+  display: grid; place-items: center;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--on-primary);
+}
+.user-meta { flex: 1; min-width: 0; }
+.user-name { font-family: var(--font-headline); font-weight: 600; font-size: 1rem; }
+.user-name .handle { color: var(--fg-muted); font-weight: 400; font-size: 13px; margin-left: 6px; font-family: var(--font-mono); }
+.user-bio { color: var(--fg-2); font-size: 13px; margin-top: 3px; line-height: 1.45; }
+.user-count {
+  flex: none;
+  align-self: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.user-count .chev { transition: transform .2s; display: inline-block; }
+.user-group.open .user-count .chev { transform: rotate(90deg); }
+.user-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .25s ease;
+}
+.user-group.open .user-body { grid-template-rows: 1fr; }
+.user-body-inner { overflow: hidden; }
+.tweets { padding: var(--space-sm) var(--space-xl) var(--space-xl); }
+.tweet {
+  position: relative;
+  padding: var(--space-lg) 0 var(--space-lg) var(--space-xl);
+  border-bottom: 1px dashed var(--border);
+}
+.tweet:last-child { border-bottom: none; padding-bottom: var(--space-xs); }
+.tweet::before {
+  content: '';
+  position: absolute;
+  left: 4px; top: 22px;
+  width: 9px; height: 9px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-fixed-dim);
+  border: 2px solid var(--surface-container-low);
+}
+.tweet.rt::before { background: var(--secondary-container); }
+.tweet-top { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs); }
+.tweet-title { font-weight: 600; font-size: 14.5px; color: var(--fg-1); }
+.tweet-time { font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-muted); }
+.tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+}
+.tag-rt { background: color-mix(in srgb, var(--secondary-container) 16%, transparent); color: var(--secondary-container); }
+.tag-quote { background: color-mix(in srgb, var(--tertiary) 16%, transparent); color: var(--tertiary); }
+@media (prefers-color-scheme: dark) {
+  .tag-rt { color: var(--secondary); }
+  .tag-quote { color: var(--accent-cyan); }
+}
+.tweet-text { color: var(--fg-2); font-size: 14.5px; }
+.tweet-text .q {
+  display: block;
+  border-left: 2px solid var(--outline-variant);
+  padding-left: var(--space-md);
+  margin: var(--space-sm) 0;
+  color: var(--fg-2);
+}
+.tweet-text .quoted {
+  display: block;
+  font-size: 13.5px;
+  color: var(--fg-muted);
+  background: var(--surface-container);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  margin-top: var(--space-sm);
+}
+.tweet-text .quoted b { color: var(--fg-2); font-weight: 600; }
+.tweet-links { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md); }
+.tw-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--primary);
+  text-decoration: none;
+  padding: 3px 10px;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-pill);
+  transition: background .15s, border-color .15s;
+}
+.tw-link:hover { background: var(--primary-fixed); border-color: var(--primary); }
+.tw-link.sec { color: var(--fg-muted); }
+.tw-link svg { width: 12px; height: 12px; fill: currentColor; }
+
+/* ---------- Quiet appendix ---------- */
+.appendix {
+  background: var(--surface-container);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+.appendix h3 { font-family: var(--font-headline); font-size: 1rem; margin-bottom: var(--space-sm); display: flex; align-items: center; gap: 8px; }
+.appendix p { color: var(--fg-2); font-size: 13.5px; }
+.appendix .handles { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--space-md); }
+.appendix .handles a { font-family: var(--font-mono); font-size: 12px; color: var(--primary); text-decoration: none; padding: 2px 9px; background: var(--surface-container-lowest); border-radius: var(--radius-pill); border: 1px solid var(--border); }
+.appendix .handles a:hover { border-color: var(--primary); }
+.muted-list { color: var(--fg-muted); font-size: 12.5px; line-height: 1.8; font-family: var(--font-mono); word-break: break-word; }
+
+footer {
+  text-align: center;
+  color: var(--fg-muted);
+  font-size: 12px;
+  padding: var(--space-3xl) 0 var(--space-lg);
+  border-top: 1px solid var(--border);
+  margin-top: var(--space-2xl);
+}
+
+@media (max-width: 600px) {
+  body { padding: var(--space-md); font-size: 15px; }
+  .primary-insight { padding: var(--space-lg); }
+  .tweets { padding: var(--space-xs) var(--space-md) var(--space-lg); }
+  .user-head { padding: var(--space-md) var(--space-lg); }
+}
+</style>
+</head>
+<body>
+<main class="insight-shell">
+
+  <!-- ============ ANSWER HEADER ============ -->
+  <header class="brief-header">
+    <div class="brief-eyebrow">X / Twitter 关注动态 · 每日汇总</div>
+    <h1 class="brief-title">开源追平、价差仍巨——成本周期开启</h1>
+    <p class="brief-lede">近 24 小时关注列表的核心叙事：「你的利润就是我的机会」刷屏，AI 进入「优化阶段」；Codex 浏览器自动化出圈，谷歌 Gemini Pro 迭代掉队。</p>
+    <div class="answer-strip">
+      <span class="useful-chip">🕐 窗口 <b>24h</b></span>
+      <span class="useful-chip">2026-06-06 → 06-07 UTC</span>
+      <span class="useful-chip">关注 <b>42</b></span>
+      <span class="useful-chip">有动态 <b>11</b></span>
+      <span class="useful-chip">动态 <b>37</b></span>
+    </div>
+  </header>
+
+  <!-- ============ PRIMARY INSIGHT: SIGNALS ============ -->
+  <section class="section">
+    <div class="section-head"><span class="ico">🔑</span><h2>关键信号总结</h2></div>
+    <div class="primary-insight" id="signals"></div>
+  </section>
+
+  <!-- ============ GLOSSARY ============ -->
+  <section class="section">
+    <div class="section-head"><span class="ico">📖</span><h2>生词预热</h2></div>
+    <p class="section-sub">正文会出现的术语 / 缩写，可搜索。建议读前预习。</p>
+    <div class="glossary-search">
+      <span class="si">🔍</span>
+      <input type="search" id="termSearch" placeholder="搜索术语、缩写或中文释义…" aria-label="搜索术语">
+    </div>
+    <div class="term-stack" id="termStack"></div>
+    <div class="term-empty" id="termEmpty">没有匹配的术语。</div>
+  </section>
+
+  <!-- ============ EVIDENCE STACK: USERS ============ -->
+  <section class="section">
+    <div class="section-head"><span class="ico">📋</span><h2>按用户分组的动态</h2></div>
+    <p class="section-sub">点击展开 / 收起每位博主。每条动态可点击回到 x.com 原文。</p>
+    <div class="evidence-stack" id="evidence"></div>
+  </section>
+
+  <!-- ============ APPENDIX ============ -->
+  <section class="section">
+    <div class="appendix">
+      <h3>⏳ 限流未获取</h3>
+      <p>以下用户本次因接口限流未能获取动态，可点主页查看：</p>
+      <div class="handles">
+        <a href="https://x.com/DrJimFan" target="_blank" rel="noopener">@DrJimFan</a>
+      </div>
+      <h3 style="margin-top:var(--space-xl)">😴 无动态用户（30）</h3>
+      <p class="muted-list">svlevine · realGeorgeHotz · drfeifei · zeritna · rasbt · stephzhan · andrew__reed · ChatGPTapp · soumithchintala · jiayq · realDonaldTrump · paperswithcode · MistralAI · demishassabis · gdb · tegmark · AnthropicAI · sama · geoffreyhinton · sonyatweetybird · simonw · AnimaAnandkumar · sequoia · deepseek_ai · Figure_robot · DarioAmodei · jackclarkSF · karpathy · ilyasut · AndrewYNg</p>
+    </div>
+  </section>
+
+  <footer>X 关注动态汇总 · 2026-06-07 · 由 html-anything 生成 · Insight Brief</footer>
+</main>
+
+<script>
+const X = u => `https://x.com/${u}`;
+
+/* ---------- Signals ---------- */
+const signals = [
+  {t:'「开源追平、价差仍巨」成本周期开启', h:`Chamath 一条「Your margin is my opportunity」刷屏（Bill Gurley、clem 都转发）：2026 年开源/开放权重模型与闭源的<strong>能力差距迅速收窄、价格差距却依旧巨大</strong>（同样 10 亿 token，<span class="cost-pill">GPT-5.5 Pro ≈ $105k</span> 而 <span class="cost-pill">DeepSeek V4 Pro ≈ $5.2k</span>）。Bill Gurley 据此判断 AI 进入「优化阶段」——类比互联网泡沫后从 Oracle+Sun 转向 MySQL+Linux，「最终利润率说了算」。`},
+  {t:'消费级模型「偷懒」质疑', h:`Bill Gurley 观察到多家消费模型近期「答得更省」——倾向不联网搜索、更早放弃，疑为成本优化所致。`},
+  {t:'模型路由与开放权重的护城河叙事', h:`Jerry Liu（LlamaIndex）呼应——没有任何前沿实验室能占满成本/延迟 vs 准确率的整条<strong>帕累托前沿</strong>，开放权重在文档 OCR 等场景有「便宜几个数量级」的可利用缺口。`},
+  {t:'Codex × 浏览器自动化体验出圈', h:`Peter Yang 多条推文盛赞 Codex 的浏览器操作能力（自动跑没有 API 的网站、手机口述写代码、L8 工程师单干每天交 40 个 PR）。`},
+  {t:'谷歌 Gemini Pro 迭代掉队', h:`Ethan Mollick 指出 Gemini Pro 自 2 月 3.1 Pro 后久未更新，与 Claude / GPT 的性能差距在拉大；同时呼吁 AI 提升写作能力以摆脱满屏「Claudism」。`},
+];
+document.getElementById('signals').innerHTML = signals.map((s,i)=>`
+  <div class="signal">
+    <div class="signal-num">${i+1}</div>
+    <div class="signal-body"><strong>${s.t}</strong><div class="txt">${s.h}</div></div>
+  </div>`).join('');
+
+/* ---------- Glossary ---------- */
+const terms = [
+  ['legibility','/ˈledʒəbɪləti/','（可被国家）辨识/读取的程度，指政权为治理把社会"标准化、可计数化"'],
+  ['statecraft','/ˈsteɪtkræft/','治国术、治国方略'],
+  ['mētis','/ˈmiːtɪs/','（希腊语）在地的实践智慧、经验性知识，与自上而下的标准化知识相对'],
+  ['takeoff','/ˈteɪkɔːf/','（AI 语境）"起飞"，能力快速跃升的临界过程；fast takeoff 即"快速起飞"'],
+  ['diffusion','/dɪˈfjuːʒn/','扩散、普及（此处指技术在经济社会中的渗透速度）'],
+  ['discontinuous','/ˌdɪskənˈtɪnjuəs/','不连续的、断裂式的'],
+  ['margin','/ˈmɑːrdʒɪn/','利润率、毛利；"Your margin is my opportunity"即"你的利润就是我的机会"'],
+  ['open-weight','','开放权重模型（公开模型参数，可本地部署，区别于纯闭源 API）'],
+  ['pareto frontier','/pəˈreɪtoʊ ˈfrʌntɪr/','帕累托前沿，多目标（成本/延迟 vs 准确率）权衡下的最优边界'],
+  ['moat','/moʊt/','护城河，企业的竞争壁垒'],
+  ['gross margin','','毛利率'],
+  ['OCR','','Optical Character Recognition，光学字符识别'],
+  ['VLM','','Vision-Language Model，视觉-语言（多模态）模型'],
+  ['VLA','','Vision-Language-Action model，视觉-语言-动作模型，用于机器人控制'],
+  ['JEPA','','Joint-Embedding Predictive Architecture，联合嵌入预测架构（LeCun 主张的世界模型路线）'],
+  ['agentic','/eɪˈdʒentɪk/','智能体式的，具备自主规划/调用工具能力的'],
+  ['harness','/ˈhɑːrnɪs/','（此处）支撑/约束智能体运行的"框架/脚手架"'],
+  ['long-horizon','','长程的，需要多步、长时间跨度才能完成的任务'],
+  ['TARP','','Troubled Asset Relief Program，问题资产救助计划（2008 金融危机美国救市方案）'],
+  ['UBI','','Universal Basic Income，全民基本收入；文中戏改为 Universal Basic AI'],
+  ['non-compete','','竞业禁止协议；California non-competes 在加州基本不可执行'],
+  ['tacit knowledge','/ˈtæsɪt/','隐性知识、难以言传的经验性知识'],
+  ['Claudism / ChatGPTish','','戏称 AI 写作里的"腔调/套话"（如 Claude、ChatGPT 的口头禅）'],
+  ['normies','/ˈnɔːrmiz/','俚语，"普通人"（非技术圈/非 AI 圈的大众）'],
+  ['OOH','','Out-Of-Home advertising，户外广告'],
+];
+const termStack = document.getElementById('termStack');
+function renderTerms(q=''){
+  q = q.trim().toLowerCase();
+  const rows = terms.filter(([w,,d])=> !q || w.toLowerCase().includes(q) || d.toLowerCase().includes(q));
+  termStack.innerHTML = rows.map(([w,ipa,d])=>`
+    <div class="term-card">
+      <div class="term-head"><span class="term-word">${w}</span>${ipa?`<span class="term-ipa">${ipa}</span>`:''}</div>
+      <div class="term-def">${d}</div>
+    </div>`).join('');
+  document.getElementById('termEmpty').style.display = rows.length ? 'none' : 'block';
+}
+renderTerms();
+document.getElementById('termSearch').addEventListener('input', e=>renderTerms(e.target.value));
+
+/* ---------- Users & tweets ---------- */
+function lk(u,id,label,sec){
+  const bird=`<svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8 9.2 9.4 12.4h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9zm-1.3 19.5h2L6.5 3.3H4.4L17.6 20.7z"/></svg>`;
+  return `<a class="tw-link ${sec?'sec':''}" href="${X(u)}/status/${id}" target="_blank" rel="noopener">${bird}${label||'原文'}</a>`;
+}
+const users = [
+  { u:'saranormous', name:'sarah guo', cn:'萨拉·郭 /ˈsærə ɡwoʊ/', color:'#7b40e0',
+    bio:'Conviction 创始合伙人，AI 早期投资人，播客 No Priors 主持人',
+    tweets:[
+      {title:'plan B 的潜台词', time:'06-07 04:50',
+        text:`<span class="q">"当有人向你提出 plan B 时，那显然是因为他们不相信 plan A。"</span>`,
+        links:[lk('saranormous','2063483599069008327')]},
+      {title:'重读 James C. Scott《Seeing Like a State》', time:'06-07 04:39',
+        text:`<span class="q">Scott 在 1998 年说：legibility（可辨识性）是治国术的核心问题——国家往往对其子民所知甚少，于是把他们"压平/标准化"，以便计数、征税、征兵和控制。而 <b>mētis</b> 是其反概念，强调在地经验智慧的价值。"放到 2026 年看也很有意思。"</span><span class="quoted">补充（04:40 回复）："作者已故，这里是 PDF。"</span>`,
+        links:[lk('saranormous','2063480887900352820'),lk('saranormous','2063481130553401430','补充',1)]},
+      {title:'"快起飞、慢扩散"', time:'06-07 04:30',
+        text:`<span class="q">"一次'快速起飞'（fast takeoff）若伴随缓慢的扩散（受制于原子世界、制度，以及人们对变化的不适），从经济的视角看，反而显得没那么断裂（discontinuous）。"</span>`,
+        links:[lk('saranormous','2063478712860123257')]},
+    ]},
+  { u:'petergyang', name:'Peter Yang', cn:'彼得·杨 /ˈpiːtər jæŋ/', color:'#c94c00',
+    bio:'产品增长与 AI 实践内容创作者，前 Twitch/Reddit 产品负责人，时事通讯/播客作者',
+    tweets:[
+      {title:'给 Codex 提需求：线程的筛选与排序', time:'06-07 04:17',
+        text:`<span class="q">希望 Codex 的线程能按"待审批 / 进行中"等维度筛选排序，而非只按项目分类——"我想控制在 10 个线程内，但已经开始乱了。@ajambrosino 你怎么看？"</span>`,
+        links:[lk('petergyang','2063475353335869922')]},
+      {title:'预告下期嘉宾', time:'06-07 02:20', rt:true, tag:'转推',
+        text:`<span class="q">"我的下期嘉宾 @kunchenguid 曾是 Meta 和微软的 L8 首席工程师，最近辞职单干做 AI 产品……"</span>`,
+        links:[lk('petergyang','2063445975436599508')]},
+      {title:'周末日常', time:'06-06 20:13',
+        text:`<span class="q">"周末就是开车送娃去各种活动，然后躲在角落里用手机对着 Codex 口述写代码 🙈"</span>`,
+        links:[lk('petergyang','2063353542103167369')]},
+      {title:'Codex 浏览器操作让我惊掉下巴（线程）', time:'06-06 14:18→15:53',
+        text:`<span class="q">（14:18）"Codex 用浏览器能做的事让我大开眼界。"<br>（14:20）"以前要我手动操作的那些破网站，现在直接让 AI 来搞 🤣"<br>（15:53）举例：做了个一键发布到多个社交平台的 skill。有些平台没 API（Substack Notes），有些有坑（LinkedIn 要去掉 @ 标签、Threads 最多 500 字）。细节一股脑丢给 Codex，它全搞定了，只靠浏览器就跑起来。</span>`,
+        links:[lk('petergyang','2063264220834381829'),lk('petergyang','2063264738172453266','后续',1),lk('petergyang','2063288150089515394','后续',1)]},
+      {title:'预告：单干工程师的智能体工作流', time:'06-06 14:15',
+        text:`<span class="q">嘉宾 @kunchenguid（前 Meta/微软 L8 首席，辞职单干）自述"解放了"，每天能交多达 40 个 PR 且几乎不用手动审代码。系统：→ 用 HTML artifact 做可视化规划；→ 并行跑 20-30 个 agent；→ 自研工具 "No Mistakes" 确保无 bug 发布。</span>`,
+        links:[lk('petergyang','2063263399228883160')]},
+      {title:'求推荐：用 AI agent 做出色产品的女性', time:'06-06 15:13',
+        text:`<span class="q">"现在有哪些女性正在用 AI agent 做很棒的东西？我想关注并向更多这样的人学习。"</span>`,
+        links:[lk('petergyang','2063278080802873755')]},
+      {title:'周末项目预告', time:'06-06 15:29',
+        text:`<span class="q">"想到一个不错的周末项目，做个对所有普通人（normies，包括我爸妈）都有用的工具，而不只是给'吃了 AI 药丸'的人用。第一次试用 Compound Engineering @kieranklaassen ;)"</span>`,
+        links:[lk('petergyang','2063282128792739922')]},
+    ]},
+  { u:'swyx', name:'swyx', cn:'Shawn Wang，黄轩 /ʃɔːn wɑːŋ/', color:'#4d44e3',
+    bio:'Latent.Space 播客 / AI Engineer 大会创办人，"AI 工程师"概念推广者',
+    tweets:[
+      {title:'设想"全民基本 AI"（Universal Basic AI）', time:'06-07 04:12',
+        text:`<span class="q">给每位美国公民各发 1 股 xAI、OpenAI、Anthropic。粗算总成本约 $628B（SpaceXai $47B + OpenAI $256B + Anthropic $325B），相当于美国政府预算 8.5%、国防预算 62%，约等于金融危机时 $700B 的 TARP——"但这次会分散得多（TARP 当年主要给了大银行）。"</span>`,
+        links:[lk('swyx','2063474153995526219')]},
+      {title:'人才流动 > 论文：加州不禁竞业的威力', time:'06-07 01:27', tag:'引用', quote:true,
+        text:`<span class="q">swyx：研究者意识到与其和市场部门扯皮，不如直接走人、凭受法律保护的隐性知识拿到 >$1 亿，研究论文与实验室发文化就此"近乎消亡"。"加州的'不禁竞业'对知识扩散的影响，比 GitHub、arXiv、HuggingFace 加起来还大。这也是我把 @aidotengineer 办成以产品为中心的行业大会的动机。"</span><span class="quoted"><b>被引用 @tszzl / roon：</b>"openai 流出的 IP 的纯美元规模简直惊人，可能高达数万亿。openai 确实相当'open'。"</span>`,
+        links:[lk('swyx','2063432747432268259'),lk('tszzl','2063426261666660701','被引用',1)]},
+    ]},
+  { u:'bgurley', name:'Bill Gurley', cn:'比尔·格利 /bɪl ˈɡɜːrli/', color:'#a03b00',
+    bio:'Benchmark 传奇风险投资人，科技 / 反垄断评论者',
+    tweets:[
+      {title:'AI 进入"优化阶段"（线程）', time:'06-07 02:11',
+        text:`<span class="q">（主贴）"企业更想搞清 token 成本，我感觉消费级模型最近'不那么努力'了——倾向不联网搜索、更早放弃。倾向认为这是成本优化的结果。"<br>（续）"也许我们正进入 AI 的'优化'阶段。互联网泡沫时所有网站都建在 Oracle+Sun 上，五年后全成了 MySQL+Linux。最终，利润率说了算。"</span>`,
+        links:[lk('bgurley','2063443726228414582'),lk('bgurley','2063443727751004225','续',1)]},
+      {title:'Chamath「你的利润就是我的机会·AI 版」', time:'06-07 01:51', rt:true, tag:'转推',
+        text:`<span class="q">"2026 年最大的意外是：最佳开放权重/开源模型与最佳闭源模型的<b>能力差距</b>收窄得远比<b>价格差距</b>快……"</span>`,
+        links:[lk('bgurley','2063438737124851885'),lk('chamath','2063292917964517830','被转推',1)]},
+      {title:'中国政府引导基金一瞥', time:'06-07 00:08', tag:'引用', quote:true,
+        text:`<span class="q">Bill Gurley：在美国政府讨论入股大型 LLM 公司之际，正好看看中国政府引导基金的现状——"比你想象的更细致复杂。你怎么看市级基金？他们是有的……"</span><span class="quoted"><b>被引用 @CTR_China：</b>在中国，政府基金已成为投向初创公司的 VC 资金的重要部分，深度解析其运作机制。</span>`,
+        links:[lk('bgurley','2063412809426211024'),lk('CTR_China','2063412298220253378','被引用',1)]},
+    ]},
+  { u:'ClementDelangue', name:'clem 🤗', cn:'Clément Delangue，克莱芒·德朗格 /kleˈmɑ̃ dəˈlɑ̃ɡ/', color:'#f59e0b',
+    bio:'Hugging Face 联合创始人兼 CEO',
+    tweets:[
+      {title:'"史上最疯狂开源周"', time:'06-06 23:20', rt:true, tag:'转推',
+        text:`<span class="q">@victormustar："本周结束前必须承认，这是开源 AI 史上最疯狂的一周之一，25+ 个重磅开放权重模型发布……"</span>`,
+        links:[lk('ClementDelangue','2063400765264171050')]},
+      {title:'Chamath「你的利润就是我的机会·AI 版」', time:'06-06 23:20', rt:true, tag:'转推',
+        text:`<span class="q">同 Chamath 关于开源能力追平、价差仍巨的观点。</span>`,
+        links:[lk('ClementDelangue','2063400660427530487'),lk('chamath','2063292917964517830','被转推',1)]},
+      {title:'Harness-1：20B 搜索智能体', time:'06-06 22:35', rt:true, tag:'转推',
+        text:`<span class="q">@patpcj："推出 Harness-1，一个用'状态外化（state-externalizing）harness'训练的 20B 搜索智能体——前沿级别的长程搜索……"</span>`,
+        links:[lk('ClementDelangue','2063389460977344551')]},
+      {title:'VLA-JEPA 登陆 LeRobot', time:'06-06 12:10', rt:true, tag:'转推',
+        text:`<span class="q">@LeRobotHF："VLA-JEPA 已加入 LeRobot 🤖。特别之处在于它不只是从演示中学'该做什么动作'……"（VLA=视觉-语言-动作，JEPA=联合嵌入预测架构）</span>`,
+        links:[lk('ClementDelangue','2063232029848645646')]},
+    ]},
+  { u:'emollick', name:'Ethan Mollick', cn:'伊森·莫里克 /ˈiːθən ˈmɒlɪk/', color:'#10b981',
+    bio:'沃顿商学院教授，生成式 AI 应用研究者，著有《Co-Intelligence》',
+    tweets:[
+      {title:'为什么希望 AI 更会写作', time:'06-06 21:13',
+        text:`<span class="q">"希望 AI 成为更好的写作者的一个原因：软件里也有大量文字，点开一个满是 Claudism 或 ChatGPTish 套话的菜单，体验极其痛苦。报告不是'什么离开了房间'，分析也不是'每个数字都留下印记'。"（讽刺 AI 的空洞修辞）</span>`,
+        links:[lk('emollick','2063368660798898284')]},
+      {title:'谷歌 Gemini Pro 迭代掉队', time:'06-06 17:09',
+        text:`<span class="q">"Gemini Pro 系列的迭代速度远不及 Claude 或 GPT（上次更新还是 2 月的 3.1 Pro）。这正在拉大谷歌与另两家实验室的性能差距，而 Gemini 3.5 Flash 虽然不错，也补不上多少。"</span>`,
+        links:[lk('emollick','2063307399537004907')]},
+      {title:'"如你所见"', time:'06-06 19:22', tag:'引用', quote:true,
+        text:`<span class="q">简短回应"As you can see"，引用旧帖：OpenAI 与 Anthropic 的重大发布在加速，附其制作的"仅列在 Artificial Analysis 指数上较前代提升≥3 分新模型"时间线。</span>`,
+        links:[lk('emollick','2063340808904819038'),lk('emollick','2060867599869649097','被引用',1)]},
+    ]},
+  { u:'giffmana', name:'Lucas Beyer', cn:'卢卡斯·拜尔 /ˈluːkəs ˈbaɪər/，"bl16"', color:'#3b82f6',
+    bio:'知名计算机视觉 / 多模态研究员（前 Google DeepMind，现 OpenAI）',
+    tweets:[
+      {title:'他的邮件签名', time:'06-06 20:43', rt:true, tag:'转推',
+        text:`<span class="q">@mervenoyann："这就是 @giffmana 给邮件署名的方式。"（配图玩梗）</span>`,
+        links:[lk('giffmana','2063361159487467902')]},
+    ]},
+  { u:'fchollet', name:'François Chollet', cn:'弗朗索瓦·肖莱 /frɑ̃ˈswa ʃɔˈlɛ/', color:'#7b40e0',
+    bio:'Keras 之父，ARC-AGI 基准提出者，Ndea 联合创始人',
+    tweets:[
+      {title:'知识 vs 智能', time:'06-06 20:01',
+        text:`<span class="q">"扩展知识带给你的是静态的能力；智能带给你的是适应力（adaptability）。"</span>`,
+        links:[lk('fchollet','2063350697626845639')]},
+      {title:'代码量不代表生产力', time:'06-06 15:56', tag:'引用', quote:true,
+        text:`<span class="q">Chollet："代码量不代表生产力。"</span><span class="quoted"><b>被引用 @jenzhuscott / Jen Zhu：</b>"因智能体 AI，产出大幅上升，采用率却完全持平。"（配图）</span>`,
+        links:[lk('fchollet','2063288883052491011'),lk('jenzhuscott','2063032701087883647','被引用',1)]},
+    ]},
+  { u:'latentspacepod', name:'Latent.Space', cn:'swyx 等主办的 AI 工程播客 / 社区', color:'#4d44e3',
+    bio:'AI 工程播客与社区',
+    tweets:[
+      {title:'学界 vs 产品', time:'06-06 19:57', rt:true, tag:'转推',
+        text:`<span class="q">@aurielws："在学界我们学数学和算法、学如何最好地建模世界，但很少学如何打造一个产品……"</span>`,
+        links:[lk('latentspacepod','2063349487058493711')]},
+    ]},
+  { u:'ylecun', name:'Yann LeCun', cn:'杨立昆 /jɑ̃ ləˈkœ̃/', color:'#a03b00',
+    bio:'图灵奖得主，Meta 首席 AI 科学家，卷积网络与世界模型倡导者',
+    tweets:[
+      {title:'给转向机器人的 CV 研究者的建议', time:'06-06 18:46', rt:true, tag:'转推',
+        text:`<span class="q">@JitendraMalikCV："想给跳进机器人领域的计算机视觉研究者一些忠告：不要过于纠结……"</span>`,
+        links:[lk('ylecun','2063331709798523343')]},
+      {title:'白宫官网的"个人崇拜"页面', time:'06-06 18:45', rt:true, tag:'转推',
+        text:`<span class="q">@paulg："这是白宫官网上的一个真实页面，读起来像在写一个第三世界独裁者。太尴尬了……"</span>`,
+        links:[lk('ylecun','2063331550247223711')]},
+    ]},
+  { u:'jerryjliu0', name:'Jerry Liu', cn:'刘 Jerry /ˈdʒeri ljuː/', color:'#c94c00',
+    bio:'LlamaIndex 联合创始人兼 CEO，RAG / 文档智能体基础设施',
+    tweets:[
+      {title:'开放权重在文档 OCR 的可利用缺口（线程）', time:'06-06 18:34', tag:'引用', quote:true,
+        text:`<span class="q">（主贴）"没有哪个前沿实验室能占满成本/延迟 vs 准确率帕累托前沿上的每一个点。总会有点被'便宜几个数量级'的开放权重模型占据。模型路由和成本优化大热有两因：✅ 组织更谨慎管成本；✅ 每个 AI 原生创业公司和 VC 都在想如何对抗前沿实验室、抬高毛利。这契合 @llama_index 的使命——为 AI agent 打造文档基础设施。文档 OCR 的帕累托前沿存在可观、可利用的缺口，超出前沿 VLM 所能提供；要利用它，既需 AI 专长，也需对 PDF/.docx/.pptx 的极致钻研。"<br>（续/招聘）"对这些问题感兴趣？来聊聊或看看我们的招聘页！"</span><span class="quoted"><b>被引用 @chamath：</b>开源能力追平、价差仍巨（同上）。</span>`,
+        links:[lk('jerryjliu0','2063328779221754342'),lk('jerryjliu0','2063328781058941034','续',1),lk('chamath','2063292917964517830','被引用',1)]},
+      {title:'"Faker 在大杀四方"', time:'06-06 06:16', tag:'引用', quote:true,
+        text:`<span class="q">Jerry："先是 Karina，然后是 Jensen——Faker 在大杀四方（is cooking）。"</span><span class="quoted"><b>被引用 @TeslaZoa：</b>黄仁勋亲手送给电竞选手 Faker 一张独一无二、本人签名的显卡——"全世界仅此一张，可能值一百万美元。"</span>`,
+        links:[lk('jerryjliu0','2063142844341317680'),lk('TeslaZoa','2062783011490537809','被引用',1)]},
+      {title:'纽约户外广告玩梗', time:'06-06 05:27', tag:'引用', quote:true,
+        text:`<span class="q">（05:27）"右边是 Codex 的广告……我们当初真该在纽约做户外广告（OOH）🙃 Knicks in 5"<br>（05:33 补充）"我们就是这么热衷于让每个尼克斯球迷都知道——我们能解析 PDF。"</span><span class="quoted"><b>被引用 @ESPNNewYork：</b>尼克斯带着 2-0 领先飞回主场。</span>`,
+        links:[lk('jerryjliu0','2063130666758459522'),lk('jerryjliu0','2063132097771082179','补充',1),lk('ESPNNewYork','2063104142747287592','被引用',1)]},
+    ]},
+];
+
+const initials = n => n.replace(/[^A-Za-z一-龥]/g,'').slice(0,2).toUpperCase() || 'X';
+document.getElementById('evidence').innerHTML = users.map((g,gi)=>`
+  <div class="user-group${gi===0?' open':''}">
+    <button class="user-head" aria-expanded="${gi===0}">
+      <span class="user-avatar" style="background:${g.color}">${initials(g.name)}</span>
+      <span class="user-meta">
+        <span class="user-name">${g.name}<span class="handle">@${g.u}</span></span>
+        <span class="user-bio">${g.cn} — ${g.bio}</span>
+      </span>
+      <span class="user-count">${g.tweets.length} 条<span class="chev">›</span></span>
+    </button>
+    <div class="user-body"><div class="user-body-inner"><div class="tweets">
+      ${g.tweets.map(t=>`
+        <div class="tweet${t.rt?' rt':''}">
+          <div class="tweet-top">
+            ${t.tag?`<span class="tag ${t.quote?'tag-quote':'tag-rt'}">${t.rt?'🔁 ':''}${t.tag}</span>`:''}
+            <span class="tweet-title">${t.title}</span>
+            <span class="tweet-time">${t.time}</span>
+          </div>
+          <div class="tweet-text">${t.text}</div>
+          <div class="tweet-links">${t.links.join('')}</div>
+        </div>`).join('')}
+    </div></div></div>
+  </div>`).join('');
+
+document.querySelectorAll('.user-head').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const g = btn.closest('.user-group');
+    const open = g.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+});
+</script>
+</body>
+</html>
