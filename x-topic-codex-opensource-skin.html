@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · Codex 是否开源，能不能直接套壳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#a03b00; --primary-container:#c94c00; --primary-fixed:#ffdbcd; --on-primary:#fff;
+  --bg:#fff8f6; --surface-container-lowest:#fff; --surface-container-low:#fbf2ef; --surface-container:#f5ece9; --surface-container-high:#efe6e3;
+  --fg-1:#1e1b19; --fg-2:#594138; --fg-muted:#8d7166;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#e1bfb2;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(30,27,25,.04); --shadow-md:0 4px 12px rgba(30,27,25,.08);
+  --gradient-text:linear-gradient(135deg,#0b6e9e 0%,#a03b00 100%);
+  --gradient-hero:linear-gradient(135deg,#0b6e9e 0%,#c94c00 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#080b0e; --surface-container-lowest:#11161c; --surface-container-low:#11161c; --surface-container:#192029; --surface-container-high:#212a34;
+    --fg-1:#F8FAFC; --fg-2:#cdd5dd; --fg-muted:#909aa6;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#39424f;
+    --primary:#ff6b35; --primary-fixed:#3a1d10; --on-primary:#1a0d05;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.75rem;line-height:1.26;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.tldr{margin-top:var(--space-lg);font-size:.95rem;color:var(--fg-1);background:var(--primary-fixed);border-radius:var(--radius-md);padding:.7rem 1rem;border-left:3px solid var(--primary-container)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.layers .ly{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-md);align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.layers .ly:last-child{border-bottom:none}
+.layers .nm{font-weight:700;color:var(--fg-1);font-size:.95rem;min-width:9em}
+.layers .ds{color:var(--fg-2);font-size:.86rem}
+.pill{font-family:var(--font-mono);font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--radius-pill);white-space:nowrap}
+.pill.open{background:rgba(16,185,129,.16);color:var(--green)}
+.pill.closed{background:rgba(239,68,68,.16);color:var(--red)}
+.pill.warn{background:rgba(245,158,11,.18);color:var(--yellow)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.signal .t a{font-family:var(--font-mono);font-size:.76rem}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-lg)}
+.dcol{border-radius:var(--radius-lg);padding:var(--space-lg);border:1px solid var(--border)}
+.dcol.yes{background:linear-gradient(180deg,rgba(16,185,129,.1),var(--surface-container-low))}
+.dcol.no{background:linear-gradient(180deg,rgba(239,68,68,.1),var(--surface-container-low))}
+.dcol h4{font-family:var(--font-headline);font-size:1rem;margin-bottom:var(--space-sm)}
+.dcol.yes h4{color:var(--green)}.dcol.no h4{color:var(--red)}
+.dcol .it{font-size:.86rem;color:var(--fg-2);padding:.35rem 0;border-bottom:1px solid var(--border)}
+.dcol .it:last-child{border-bottom:none}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.02rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.96rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.9rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.66rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.fact{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.yes{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.no{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.warn{background:rgba(245,158,11,.18);color:var(--yellow)}
+.tag.you{background:rgba(123,64,224,.16);color:var(--purple)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.verdict{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:var(--surface-container-high);border-radius:var(--radius-lg);font-size:.95rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.disambig{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);font-size:.92rem;color:var(--fg-1)}
+.disambig b{color:var(--primary-container)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.debate{grid-template-columns:1fr}.layers .ly{grid-template-columns:1fr auto}.layers .ds{display:none}.brief-header h1{font-size:1.38rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 开源 & 套壳</div>
+    <h1>Codex 是否开源，<span class="grad">能不能直接套壳？</span></h1>
+    <p class="answer-strip">能。新 Codex（App/CLI/SDK）<b>Apache-2.0 开源、不绑定 OpenAI 模型</b>，fork 改皮合规且已有真实案例——<b>但「套壳」≠「随便商用」，且接第三方模型后高级能力会缺斤短两。</b></p>
+    <div class="tldr">⚡ <b>一句话</b>：代码层绿灯（fork / 改名 / 换模型都行），<b>但商标不归你、computer use 等插件只认 GPT、还得自己补 proxy</b>。</div>
+    <div class="chips">
+      <span class="useful-chip hot">Apache-2.0 开源</span>
+      <span class="useful-chip">不绑定 OpenAI 模型</span>
+      <span class="useful-chip">fork 改皮已有案例</span>
+      <span class="useful-chip">接第三方模型有坑</span>
+      <span class="useful-chip">商标≠版权</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>2026-05~06</b></span>
+      <span>检索式 <b>25 条</b></span>
+      <span>采集 <b>~350 帖</b></span>
+      <span>生成 <b>2026-06-22</b></span>
+    </div>
+  </header>
+
+  <div class="disambig">
+    ⚠️ <b>先消歧</b>：本文的「Codex」指 <b>2025 年起的编程智能体（App / CLI / SDK）</b>，不是 2021 年那个驱动早期 GitHub Copilot 的旧 <code>code-davinci</code> 模型。<b>旧 Codex 模型从不开源、早已下线；新 Codex 工具链才是开源对象。</b>两者重名，结论相反，别混。
+  </div>
+
+  <section class="primary-insight">
+    <div class="eyebrow">「套壳 Codex」拆两层看 · 别混为一谈</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">官方 Codex CLI / App / SDK</div><div class="ds">编程智能体外壳（Rust）</div><div class="pill open">✓ 开源 Apache-2.0</div></div>
+      <div class="ly"><div class="nm">① 换模型（接别的后端）</div><div class="ds">官方支持，但需 proxy</div><div class="pill warn">⚠ 能做·有坑</div></div>
+      <div class="ly"><div class="nm">② fork 改皮做自己的</div><div class="ds">许可证允许·已有实例</div><div class="pill open">✓ 合规可行</div></div>
+      <div class="ly"><div class="nm">computer use / browser use</div><div class="ds">仅对 GPT 模型开放</div><div class="pill closed">✗ 换模型即失效</div></div>
+      <div class="ly"><div class="nm">「Codex」品牌 / 商标</div><div class="ds">商标≠版权，不能随便打牌子</div><div class="pill closed">✗ 不归你</div></div>
+    </div>
+    <div class="verdict">📌 <b>结论</b>：想 fork 来研究、改造、自用 → 全绿灯；想接 Qwen/DeepSeek/本地模型 → 官方支持但要自己补接口转换层、且会丢失 computer use 等高级能力；想<b>打着 Codex 名号商业化卖钱</b> → 代码可以、品牌不行，且功能不完整。</div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <details class="glossary" open>
+    <summary>📖 生词预热 <span class="hint">读正文前先扫一眼 · 可搜索</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，如 Apache、套壳、Responses…" oninput="filterTerms(this.value)">
+      <div id="terms">
+        <div class="term"><span class="w">Codex</span><span class="ipa">/ˈkoʊdeks/</span><span class="def">OpenAI 的编程智能体产品线，现含 App / CLI / SDK；与 2021 年同名旧代码模型不是一回事。</span></div>
+        <div class="term"><span class="w">套壳</span><span class="def">中文俗语：拿现成开源/产品改个皮（换名字、图标、界面）当自己的。本文分两层——① fork 改皮 ② 接别的模型做包装层。</span></div>
+        <div class="term"><span class="w">CLI</span><span class="def">Command-Line Interface，命令行界面工具。</span></div>
+        <div class="term"><span class="w">SDK</span><span class="def">Software Development Kit，软件开发工具包，供开发者二次集成。</span></div>
+        <div class="term"><span class="w">fork</span><span class="ipa">/fɔːrk/</span><span class="def">把一个开源仓库完整复制到自己名下，在此基础上改。</span></div>
+        <div class="term"><span class="w">Apache 2.0</span><span class="def">宽松型（permissive）开源许可证，允许商用、修改、闭源再分发，只需保留版权与许可声明。</span></div>
+        <div class="term"><span class="w">AGPL-3.0</span><span class="def">「传染型」（copyleft）许可证，连网络服务也须开源你的修改，常用来「防白嫖」。</span></div>
+        <div class="term"><span class="w">permissive / copyleft</span><span class="def">宽松型 vs 传染型，开源许可证的两大阵营。</span></div>
+        <div class="term"><span class="w">agentic</span><span class="ipa">/eɪˈdʒentɪk/</span><span class="def">代理式的；AI 能自主规划、调用工具、多步执行，而非被动一问一答。</span></div>
+        <div class="term"><span class="w">harness</span><span class="ipa">/ˈhɑːrnɪs/</span><span class="def">把模型「套」起来干活的外层框架：负责工具调用、上下文管理、循环执行。Codex CLI 本质就是一套 harness。</span></div>
+        <div class="term"><span class="w">Responses API</span><span class="def">OpenAI 较新的接口规范，支持有状态对话与工具调用；Codex 默认依赖它。</span></div>
+        <div class="term"><span class="w">Chat Completions</span><span class="def">更老更通用的 OpenAI 风格接口；绝大多数第三方/开源模型只兼容这一种。</span></div>
+        <div class="term"><span class="w">tool-calling</span><span class="def">工具调用，模型按约定格式请求执行外部函数/命令的能力。</span></div>
+        <div class="term"><span class="w">computer use / browser use</span><span class="def">让智能体操作电脑桌面 / 浏览器的高级能力。</span></div>
+        <div class="term"><span class="w">base_url</span><span class="def">配置里指向「模型从哪个服务地址取」的字段，换供应商的关键开关。</span></div>
+        <div class="term"><span class="w">proxy</span><span class="ipa">/ˈprɒksi/</span><span class="def">代理层；这里指夹在 Codex 与第三方模型之间、把 Responses 接口翻译成 Chat Completions 的中间件。</span></div>
+        <div class="term"><span class="w">model-agnostic</span><span class="def">模型无关（不绑定特定模型，可任意替换）。</span></div>
+      </div>
+      <div id="gnores" class="nores" style="display:none">没有匹配的术语</div>
+    </div>
+  </details>
+
+  <!-- KEY SIGNALS -->
+  <h2>关键信号 · 先看这 5 条</h2>
+  <div class="signals">
+    <div class="signal"><div class="n">1</div><div class="t"><b>新 Codex 工具链是开源的，许可证宽松（Apache 2.0）。</b>OpenAI Codex 团队成员帖下有人直点「数百万工程师在学习 Codex 的源码」，源码公开可读、可 fork。 <a href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux 帖内</a></div></div>
+    <div class="signal"><div class="n">2</div><div class="t"><b>Codex 不绑定 OpenAI 自家模型</b>——App/CLI/SDK 都能接「任意开源模型」，官方还出文档教你换「大脑」。当事方高热帖（6858❤）。 <a href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux</a> · <a href="https://x.com/xiaohu/status/2067244558765998261">@xiaohu</a></div></div>
+    <div class="signal"><div class="n">3</div><div class="t"><b>「接别的模型」这层套壳能做但有坑</b>：Codex 默认走 Responses API，多数模型只兼容 Chat Completions，需 proxy 转换；<b>computer use / browser use 只对 GPT 开放</b>。 <a href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux 帖内回复</a></div></div>
+    <div class="signal"><div class="n">4</div><div class="t"><b>「fork 改皮」这层套壳合规、已有真实案例</b>：有人 fork 了 Apache 2.0 的第三方 Codex 远程 App，按协议把名字、图标、Bundle ID 全换成自己的。 <a href="https://x.com/davezfr/status/2054528332264337726">@davezfr</a></div></div>
+    <div class="signal"><div class="n">5</div><div class="t"><b>「能套壳」≠「能随便商用卖钱」</b>：Apache 2.0 给的是代码自由；但「Codex」<b>商标</b>不归你，且接第三方模型后功能缺斤短两。上面 fork 案例作者自己强调「非官方、不商业化」。 <a href="https://x.com/davezfr/status/2054528332264337726">@davezfr</a></div></div>
+  </div>
+
+  <!-- DEBATE -->
+  <h2>核心权衡 · 套壳能 vs 不能</h2>
+  <div class="debate">
+    <div class="dcol yes">
+      <h4>✓ 这些事可以做</h4>
+      <div class="it">fork 官方/第三方 Codex 仓库（Apache 2.0）</div>
+      <div class="it">改名、换图标、换 Bundle ID 做自己的分支</div>
+      <div class="it">把后端模型换成 Qwen / DeepSeek / GLM / 本地 Ollama</div>
+      <div class="it">把 Codex 当底座嵌进自己的工具 / 工作流</div>
+      <div class="it">商用、闭源再分发（保留 LICENSE / NOTICE）</div>
+    </div>
+    <div class="dcol no">
+      <h4>✗ 这些事有坑 / 不能</h4>
+      <div class="it">直接打「Codex」品牌名号（商标≠版权）</div>
+      <div class="it">换模型后仍想用 computer use / browser use</div>
+      <div class="it">指望开箱即用的图形化模型切换（当前靠改 config）</div>
+      <div class="it">接只兼容 Chat Completions 的模型却不加 proxy</div>
+      <div class="it">把「学习版套壳」直接当商业产品卖（口碑/合规风险）</div>
+    </div>
+  </div>
+
+  <!-- EVIDENCE -->
+  <h2>分维度详细发现</h2>
+
+  <div class="ev">
+    <div class="h">维度一 · 官方到底开不开源？—— 开源，且宽松许可</div>
+    <p class="claim"><span class="tag fact">事实</span>新 Codex 工具链（CLI 用 Rust 写，配 App 与 SDK）源码公开，许可证 Apache 2.0。</p>
+    <div class="quote">「开源的力量！数百万工程师从 Codex 源码里学习。」——侧证源码公开可读。<br><a class="src" href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux 帖内回复</a></div>
+    <div class="quote">「原版是意大利独立开发者用 <b>Apache 2.0 完全开源</b>的……」——X 上可直接拿到的 Apache 2.0 实证（对象为第三方 Codex 远程 App）。官方 Codex CLI 仓库 <code>github.com/openai/codex</code> 同为 Apache 2.0，属公开事实。<br><a class="src" href="https://x.com/davezfr/status/2054528332264337726">@davezfr</a></div>
+    <div class="quote">对比参照：「Warp 开源那天我没换——它选的是 AGPL-3.0，专门防白嫖。」反衬出 Codex 选 Apache 2.0 是「欢迎你拿去改」的宽松姿态，而非防御姿态。<br><a class="src" href="https://x.com/runes_leo/status/2049791371364479224">@runes_leo</a></div>
+  </div>
+
+  <div class="ev">
+    <div class="h">维度二 · 是不是只能用 OpenAI 的模型？—— 不绑定</div>
+    <p class="claim"><span class="tag yes">当事方确认</span>App / CLI / SDK 均可搭配任意开源模型。</p>
+    <div class="quote">「提醒一下：Codex 的 App、CLI 和 SDK <b>可以搭配任意开源模型，不止 OpenAI 自家模型</b>。」——OpenAI Codex 团队 Tibo 原话，6858❤ / 714 转 / 482 评，本主题最高信号帖。<br><a class="src" href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux</a></div>
+    <div class="quote">「OpenAI 格局大了……支持直接接入任何开源大模型，不强制绑定自家模型，还放了文档手把手教你把底层『大脑』换成免费开源模型。」<br><a class="src" href="https://x.com/xiaohu/status/2067244558765998261">@xiaohu</a></div>
+    <div class="quote">「真正的杠杆不是『哪个模型赢』，而是把模型做成可替换的引擎……Codex 变得模型灵活，是件大事。」<br><a class="src" href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux 帖内回复</a></div>
+  </div>
+
+  <div class="ev">
+    <div class="h">维度三 · 接第三方模型这层「套壳」的真实坑点 ⚠️</div>
+    <p class="claim"><span class="tag warn">能跑·功能打折</span>这是最值得注意的部分——Tibo 帖子回复区基本是一份踩坑清单。</p>
+    <div class="quote">「Codex 期望其他模型用相同的 tool-calling 协议，但它们没有」「Codex 只用 Responses API 调，而多模型只支持 Chat 端点」——接 DeepSeek 这类只兼容 Chat Completions 的模型，得加一层 Responses↔Chat 的 <b>proxy</b>（社区有 CC Switch 等工具补）。<br><a class="src" href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux 帖内回复</a></div>
+    <div class="quote">「computer use 和 browser use 能力对自定义 provider 不开放」——多人确认换模型后这些高级能力<b>用不了</b>。<br><a class="src" href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux 帖内回复</a> · <a href="https://x.com/xiaohu/status/2067244558765998261">@xiaohu 帖内回复</a></div>
+    <div class="quote">「desktop app 的 model picker 因 bug 不显示外部 provider 的模型」「换模型要改 config/profile 再重启」——当下配置主要靠改 config 文件，<b>没有顺手的 GUI</b>。<br><a class="src" href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux 帖内回复</a></div>
+  </div>
+
+  <div class="ev">
+    <div class="h">维度四 · fork 改皮这层「套壳」的真实案例 —— 可行，边界清楚</div>
+    <p class="claim"><span class="tag you">实证</span>教科书级的「合规套壳」动作。</p>
+    <div class="quote">「这是我自己 fork 的一个第三方开源 Codex 远程 App……按开源协议<b>把名字、图标、Bundle ID 都换成自己的</b>，做了个学习分支叫 Dexora，顺手修了几个小 bug。」<br><a class="src" href="https://x.com/davezfr/status/2054528332264337726">@davezfr</a></div>
+    <div class="quote">作者主动划界：「<b>这不是 OpenAI 官方 Codex，也不是替代品，更不是商业项目</b>……只是自己学 iOS 开发的小实验，不会商业化；长期要用建议去 App Store 买正版支持原作者。」<br><a class="src" href="https://x.com/davezfr/status/2054528332264337726">@davezfr</a></div>
+    <div class="quote">生态侧也印证 Codex「可被包装/嵌入」属性强：有人把 Codex 嵌进 Claude Code 用；各种第三方工具把 Codex 当作可对接的底座之一。<br><a class="src" href="https://x.com/emanueledpt/status/2038719718379700617">@emanueledpt</a> · <a href="https://x.com/nachogo44847875/status/2068715505725096033">@nachogo44847875</a></div>
+  </div>
+
+  <div class="ev">
+    <div class="h">维度五 · 战略背景 —— OpenAI 为什么乐意被套壳</div>
+    <p class="claim"><span class="tag fact">推断·多方印证</span>用开放的 harness 抢开发者入口。</p>
+    <div class="quote">「模型竞争到最后其实同质化了，还不如卷应用，应用做牛逼了抢入口，比卷模型更有意义。」<br><a class="src" href="https://x.com/xiaohu/status/2067244558765998261">@xiaohu 帖内回复</a></div>
+    <div class="quote">「Codex 支持第三方模型，对开源模型供给是利好。下一代智能体不会锁死在一个模型上，它们会<b>路由</b>——跨编程模型、跨开源 LLM、跨不同 token 供应商。」<br><a class="src" href="https://x.com/thsottiaux/status/2067181377028538431">@thsottiaux 帖内回复</a></div>
+  </div>
+
+  <!-- DISPUTES -->
+  <h2>争议与开放问题</h2>
+  <div class="ev">
+    <p class="claim"><span class="tag warn">开放问题</span>「套壳」的法律边界 vs 品牌边界</p>
+    <div class="quote">Apache 2.0 在代码上给足自由（可商用、可闭源分发），但「Codex」是<b>商标</b>，商标≠版权——你能用它的代码，不能直接打它的牌子。X 上暂无围绕官方 Codex 商标维权的讨论，属开放问题（推断需另查 OpenAI 品牌/使用条款）。</div>
+    <div class="quote"><b>接第三方模型后的能力完整性</b>：computer use / browser use 受限是当下事实，OpenAI 是否会逐步对自定义 provider 开放，未见官方承诺，待观察。</div>
+    <div class="quote"><b>「学习版套壳」与「商业套壳」的差距</b>：现有公开案例都强调「非商业、学习用」。真把套壳产品商业化卖钱的合规与口碑风险，X 样本里没人现身说法，属空白区。</div>
+    <div class="quote"><b>新旧 Codex 混淆风险</b>：网上仍有大量讲 2021 旧 Codex 的旧文，检索「Codex 开源」时务必确认对象是新工具链。</div>
+  </div>
+
+  <!-- SOURCE BROWSER -->
+  <h2>信源浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="按账号或关键词过滤信源…" oninput="filterSrc(this.value)">
+    <div id="srclist">
+      <div class="src-row"><span class="hh">@thsottiaux</span><span class="g">OpenAI Codex 团队 · 「App/CLI/SDK 可接任意开源模型」6858❤；回复区踩坑清单</span><a class="lk" href="https://x.com/thsottiaux/status/2067181377028538431">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@xiaohu</span><span class="g">中文转述「OpenAI 格局大了」+ 官方换模型文档；回复区插件疑问</span><a class="lk" href="https://x.com/xiaohu/status/2067244558765998261">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@davezfr</span><span class="g">套壳实证：fork Apache 2.0 第三方 Codex App，改名换图标做 Dexora</span><a class="lk" href="https://x.com/davezfr/status/2054528332264337726">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@runes_leo</span><span class="g">对比参照：Warp 选 AGPL-3.0 防白嫖，反衬 Codex 的 Apache 宽松姿态</span><a class="lk" href="https://x.com/runes_leo/status/2049791371364479224">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@emanueledpt</span><span class="g">把 Codex 嵌进 Claude Code 使用（生态可包装性）</span><a class="lk" href="https://x.com/emanueledpt/status/2038719718379700617">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@nachogo44847875</span><span class="g">CanvasIO 等第三方工具把 Codex 当可对接底座之一</span><a class="lk" href="https://x.com/nachogo44847875/status/2068715505725096033">查看 ↗</a></div>
+    </div>
+    <div id="snores" class="nores" style="display:none">没有匹配的信源</div>
+  </div>
+
+  <!-- METHOD / LIMITS -->
+  <h2>方法与局限</h2>
+  <div class="ev">
+    <p class="claim">检索式 25 条（3 批），围绕 <code>open source / Apache 2.0 / license / fork / rebrand / wrapper / model_providers / 套壳 / 二次开发</code> 等中英组合并配反向式；对 3 条核心帖跑了完整 thread + replies。</p>
+    <ul class="limit">
+      <li>X 上「codex + open source」噪声极大（大量泛 AI 工具/玄学项目帖），高赞未必相关，已人工筛除。</li>
+      <li>官方 Codex CLI 仓库为 Apache 2.0 属公开事实，X 直接实证主要落在第三方 App 上，已显式区分标注。</li>
+      <li>样本偏英文与中文技术圈；限流导致部分检索式覆盖不全，已分批隔开重试。</li>
+      <li>核心信源 Tibo 为 OpenAI Codex 团队成员（一手信息，强度最高）；davezfr 案例对象为第三方 App，非官方 CLI。</li>
+      <li>承接既有《Codex 开源 / 抄 harness》调研（x-topic-codex-opensource-copy-harness-20260524），可对照阅读。</li>
+    </ul>
+  </div>
+
+  <footer>报告生成 · Claude Code · 2026-06-22 · 数据源 X/Twitter via bird CLI · 凡观点必标出处，无法溯源处已标「推断」</footer>
+</div>
+
+<script>
+function filterTerms(q){
+  q=(q||'').trim().toLowerCase();var n=0;
+  document.querySelectorAll('#terms .term').forEach(function(t){
+    var hit=t.textContent.toLowerCase().indexOf(q)>-1;t.style.display=hit?'':'none';if(hit)n++;
+  });
+  document.getElementById('gnores').style.display=n?'none':'';
+}
+function filterSrc(q){
+  q=(q||'').trim().toLowerCase();var n=0;
+  document.querySelectorAll('#srclist .src-row').forEach(function(r){
+    var hit=r.textContent.toLowerCase().indexOf(q)>-1;r.style.display=hit?'':'none';if(hit)n++;
+  });
+  document.getElementById('snores').style.display=n?'none':'';
+}
+</script>
+</body>
+</html>
