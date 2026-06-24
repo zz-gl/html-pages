@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · Claude Tag 是什么、X 上怎么看</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#7a3bd6; --primary-container:#8b46f0; --primary-fixed:#ede0ff; --on-primary:#fff;
+  --bg:#faf7ff; --surface-container-lowest:#fff; --surface-container-low:#f6f0fe; --surface-container:#efe7fb; --surface-container-high:#e8def6;
+  --fg-1:#1c1726; --fg-2:#473a5c; --fg-muted:#867a96;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#cdbce8;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(28,23,38,.04); --shadow-md:0 4px 12px rgba(28,23,38,.08);
+  --gradient-text:linear-gradient(135deg,#8b46f0 0%,#d6622e 100%);
+  --gradient-hero:linear-gradient(135deg,#8b46f0 0%,#c94c8c 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0a0814; --surface-container-lowest:#14111f; --surface-container-low:#14111f; --surface-container:#1d1830; --surface-container-high:#262038;
+    --fg-1:#F8FAFC; --fg-2:#d4cce0; --fg-muted:#948aa6;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#403552;
+    --primary:#b388ff; --primary-fixed:#2a1d44; --on-primary:#150a26;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.75rem;line-height:1.26;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.tldr{margin-top:var(--space-lg);font-size:.95rem;color:var(--fg-1);background:var(--primary-fixed);border-radius:var(--radius-md);padding:.7rem 1rem;border-left:3px solid var(--primary-container)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.layers .ly{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-md);align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.layers .ly:last-child{border-bottom:none}
+.layers .nm{font-weight:700;color:var(--fg-1);font-size:.95rem;min-width:9em}
+.layers .ds{color:var(--fg-2);font-size:.86rem}
+.pill{font-family:var(--font-mono);font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--radius-pill);white-space:nowrap}
+.pill.open{background:rgba(16,185,129,.16);color:var(--green)}
+.pill.closed{background:rgba(239,68,68,.16);color:var(--red)}
+.pill.warn{background:rgba(245,158,11,.18);color:var(--yellow)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.signal .t a{font-family:var(--font-mono);font-size:.76rem}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-lg)}
+.dcol{border-radius:var(--radius-lg);padding:var(--space-lg);border:1px solid var(--border)}
+.dcol.yes{background:linear-gradient(180deg,rgba(16,185,129,.1),var(--surface-container-low))}
+.dcol.no{background:linear-gradient(180deg,rgba(239,68,68,.1),var(--surface-container-low))}
+.dcol h4{font-family:var(--font-headline);font-size:1rem;margin-bottom:var(--space-sm)}
+.dcol.yes h4{color:var(--green)}.dcol.no h4{color:var(--red)}
+.dcol .it{font-size:.86rem;color:var(--fg-2);padding:.35rem 0;border-bottom:1px solid var(--border)}
+.dcol .it:last-child{border-bottom:none}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.02rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.96rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.9rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.66rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.fact{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.yes{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.no{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.warn{background:rgba(245,158,11,.18);color:var(--yellow)}
+.tag.you{background:rgba(123,64,224,.16);color:var(--purple)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.verdict{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:var(--surface-container-high);border-radius:var(--radius-lg);font-size:.95rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.disambig{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);font-size:.92rem;color:var(--fg-1)}
+.disambig b{color:var(--primary-container)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.debate{grid-template-columns:1fr}.layers .ly{grid-template-columns:1fr auto}.layers .ds{display:none}.brief-header h1{font-size:1.38rem}.wrap{padding:var(--space-lg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · Anthropic 新品</div>
+    <h1>Claude Tag 是什么，<span class="grad">X 上怎么看？</span></h1>
+    <p class="answer-strip">Anthropic 今天发布的新功能：<b>把 Claude 当「队友」常驻团队 Slack，在频道里 @ 它就能委派任务</b>——Opus 4.8 驱动、异步自主、跨对话共享记忆。Karpathy 称之为 LLM 交互的「第三种范式」。</p>
+    <div class="tldr">⚡ <b>一句话</b>：「AI 不再是你『去』的地方，而是你『@』的对象」。名字里的 Tag = Slack 的 @ 提及，<b>不是</b> HTML 标签（这是个常见误读）。</div>
+    <div class="chips">
+      <span class="useful-chip hot">Slack AI 队友</span>
+      <span class="useful-chip">Opus 4.8 · 异步自主</span>
+      <span class="useful-chip">共享记忆 · 多人协作</span>
+      <span class="useful-chip">企业版 beta</span>
+      <span class="useful-chip">争议：抄 OpenClaw?</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>2026-06-23~24</b></span>
+      <span>检索式 <b>14 条</b></span>
+      <span>采集 <b>~250 帖</b></span>
+      <span>生成 <b>2026-06-24</b></span>
+    </div>
+  </header>
+
+  <div class="disambig">
+    ⚠️ <b>先厘清一个混淆</b>：名字里的 <b>"Tag"</b> 让一部分人误以为它是「往网页里嵌<b>一行 HTML 标签</b>就能召唤 Claude」。但官方与多家媒体（ITmedia、CNET Japan、Gigazine）口径一致——<b>Claude Tag 是 Slack 里的 @ 提及式 AI 队友</b>。本文以 Slack 释义为准，HTML 释义作为单一来源、与官方矛盾的疑似误读单独标注。
+  </div>
+
+  <section class="primary-insight">
+    <div class="eyebrow">Claude Tag 的五个关键属性 · 一眼看懂</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">载体</div><div class="ds">常驻团队 Slack 频道</div><div class="pill open">@ 即召唤</div></div>
+      <div class="ly"><div class="nm">引擎</div><div class="ds">Anthropic 旗舰模型</div><div class="pill open">Opus 4.8</div></div>
+      <div class="ly"><div class="nm">工作方式</div><div class="ds">写码 / 查 bug / 出报告，丢了就走</div><div class="pill open">异步 · 自主</div></div>
+      <div class="ly"><div class="nm">记忆 & 协作</div><div class="ds">一频道一共享 Claude，学上下文、可接力</div><div class="pill open">多人 · 持续记忆</div></div>
+      <div class="ly"><div class="nm">部署</div><div class="ds">需 API key，8/3 迁移旧集成</div><div class="pill warn">企业版 beta</div></div>
+    </div>
+    <div class="verdict">📌 <b>Karpathy 定调</b>：这是 LLM 交互界面的<b>第三次重大重构</b>——① 网页（你去访问）→ ② 本地 app（进你电脑）→ ③ <b>自包含、持续、异步、带全组织工具与上下文、与人类团队并肩工作的实体</b>。</div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <details class="glossary" open>
+    <summary>📖 生词预热 <span class="hint">读正文前先扫一眼 · 可搜索</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，如 ambient、async、dogfood…" oninput="filterTerms(this.value)">
+      <div id="terms">
+        <div class="term"><span class="w">Claude Tag</span><span class="def">Anthropic 2026-06-24 发布：把 Claude 作为「队友」常驻团队 Slack，在频道里 @Claude 即可委派任务。名字里 "Tag" 指 Slack 的 @ 提及，不是 HTML 标签。</span></div>
+        <div class="term"><span class="w">Slack</span><span class="ipa">/slæk/</span><span class="def">主流团队协作/即时通讯软件，按「频道（channel）」组织讨论。</span></div>
+        <div class="term"><span class="w">tag（动词）</span><span class="ipa">/tæɡ/</span><span class="def">「@ 某人」「点名提及」；在 Slack 里 @某人 就是 tag 他。</span></div>
+        <div class="term"><span class="w">agentic</span><span class="ipa">/eɪˈdʒentɪk/</span><span class="def">代理式的；AI 能自主规划、调用工具、多步执行，而非被动应答。</span></div>
+        <div class="term"><span class="w">async / asynchronous</span><span class="ipa">/eɪˈsɪŋkrənəs/</span><span class="def">异步的；丢个任务就走，AI 自己慢慢干完再回报，不用盯着。</span></div>
+        <div class="term"><span class="w">ambient mode</span><span class="ipa">/ˈæmbiənt/</span><span class="def">「环境感知」模式；Claude 主动翻频道记录，发现卡住没人跟进的活就自己出来推进。</span></div>
+        <div class="term"><span class="w">persistent memory</span><span class="ipa">/pərˈsɪstənt/</span><span class="def">持续记忆；跨对话、跨时间记住团队上下文，不用每次重新交代背景。</span></div>
+        <div class="term"><span class="w">multiplayer</span><span class="ipa">/ˈmʌltipleɪər/</span><span class="def">多人共享；一频道共用同一个 Claude，所有人可见、可接力。</span></div>
+        <div class="term"><span class="w">deny-by-default</span><span class="def">「默认拒绝」安全设计；除非显式授权，一律不放行。</span></div>
+        <div class="term"><span class="w">guardrail</span><span class="ipa">/ˈɡɑːrdreɪl/</span><span class="def">护栏；防止 AI 做危险/越界操作的限制机制。</span></div>
+        <div class="term"><span class="w">dogfood / dogfooding</span><span class="def">「吃自家狗粮」；公司内部先大量自用自己的产品来验证。</span></div>
+        <div class="term"><span class="w">harness</span><span class="ipa">/ˈhɑːrnɪs/</span><span class="def">把模型「套」起来干活的外层框架（工具调用、上下文、循环执行）；如 Claude Code、Codex。</span></div>
+        <div class="term"><span class="w">OpenClaw / Hermes</span><span class="def">X 圈流行的「个人 Agent」工具，强调完全属于个人、记住你的偏好。</span></div>
+        <div class="term"><span class="w">vertically integrated</span><span class="def">垂直整合的；模型+应用壳一体打包（如在 Claude 桌面端里用 Opus）。</span></div>
+        <div class="term"><span class="w">Opus 4.8</span><span class="def">Anthropic 当前旗舰模型，驱动 Claude Tag。</span></div>
+        <div class="term"><span class="w">LLM UIUX</span><span class="def">大语言模型的用户界面/交互形态。</span></div>
+      </div>
+      <div id="gnores" class="nores" style="display:none">没有匹配的术语</div>
+    </div>
+  </details>
+
+  <!-- KEY SIGNALS -->
+  <h2>关键信号 · 先看这 5 条</h2>
+  <div class="signals">
+    <div class="signal"><div class="n">1</div><div class="t"><b>Claude Tag = 常驻团队 Slack 的 AI 队友</b>：频道里 @Claude 委派任务，Opus 4.8 驱动，异步自主写码/查 bug/出报告并回帖。 <a href="https://x.com/SoraEndo0912/status/2069638733608231304">@SoraEndo0912</a> · <a href="https://x.com/concretios/status/2069646259603038654">@concretios</a></div></div>
+    <div class="signal"><div class="n">2</div><div class="t"><b>Karpathy 亲自定调：LLM 交互的「第三种范式」</b>。网页 → 本地 app → 常驻、持续、异步、带全组织工具与上下文、与人类团队并肩工作的实体。 <a href="https://x.com/karpathy/status/2069547676849557725">@karpathy</a></div></div>
+    <div class="signal"><div class="n">3</div><div class="t"><b>与旧「Claude in Slack」的关键区别</b>：多人共享（一频道一 Claude、可接力）、学习频道上下文不用重复交代、ambient 模式主动捡起卡住的活。 <a href="https://x.com/dayvanxd/status/2069643956057473286">@dayvanxd</a> · <a href="https://x.com/ohhsion21/status/2069645859126710421">@ohhsion21</a></div></div>
+    <div class="signal"><div class="n">4</div><div class="t"><b>安全设计获实测点赞，但暴露「自然语言护栏≠真遮断」</b>：拒绝把会计信息转贴到 #general、删分支先确认且护 main、未授权主机全拒。deny-by-default 真有效，可靠遮断靠访问设计。 <a href="https://x.com/connect24h/status/2069642966390747229">@connect24h 转述 @sudaakikawaii</a></div></div>
+    <div class="signal"><div class="n">5</div><div class="t"><b>两大争议</b>：①「抄 OpenClaw/Hermes」(<a href="https://x.com/froehlichmmm/status/2069642985633873942">@froehlichmmm</a>)；②「没真 dogfood」——上手用户吐槽与官方「65% 代码由它写」正面打架。 <a href="https://x.com/archiemckenzie_/status/2069646614080438684">@archiemckenzie_</a></div></div>
+  </div>
+
+  <!-- DEBATE -->
+  <h2>核心争议 · 看好 vs 质疑</h2>
+  <div class="debate">
+    <div class="dcol yes">
+      <h4>✓ 看好方</h4>
+      <div class="it">LLM 交互第三范式，AI 从「工具」变「工种」</div>
+      <div class="it">接口层 > 模型能力，分发决定采用</div>
+      <div class="it">非技术人员也能编排 AI，不被平台锁定</div>
+      <div class="it">从个人点对点 Agent → 多人×Agent 协作场</div>
+      <div class="it">改的是组织的信息流/任务流/责任流</div>
+    </div>
+    <div class="dcol no">
+      <h4>✗ 质疑方</h4>
+      <div class="it">「这不就是抄 OpenClaw/Hermes」</div>
+      <div class="it">「没真 dogfood」vs「65% 代码由它写」自相矛盾</div>
+      <div class="it">连布道者都说不清，早期用户普遍困惑</div>
+      <div class="it">技术上「也没什么惊艳的」</div>
+      <div class="it">ambient+跨频道记忆的越权/串数据风险待观察</div>
+    </div>
+  </div>
+
+  <!-- EVIDENCE -->
+  <h2>分维度详细发现</h2>
+
+  <div class="ev">
+    <div class="h">维度一 · Claude Tag 到底是什么？</div>
+    <p class="claim"><span class="tag fact">事实</span>Slack 新功能，@Claude 委派任务，Opus 4.8 异步自主执行。</p>
+    <div class="quote">「在频道里『@Claude』提及，Opus 4.8 就会异步、自主地帮你写代码、查 bug、出报告。」<br><a class="src" href="https://x.com/SoraEndo0912/status/2069638733608231304">@SoraEndo0912</a></div>
+    <div class="quote">「与旧版的区别：<b>多人共享</b>——一频道一个共享 Claude，人人可见、可接力；它会随时间学习频道上下文，不用每次重新交代背景。」<br><a class="src" href="https://x.com/dayvanxd/status/2069643956057473286">@dayvanxd</a></div>
+    <div class="quote"><span class="tag warn">疑似误读·单一来源</span>个别日文帖称它是「往网页嵌一行 HTML 标签即可召唤 Claude」——与官方/多家媒体的 Slack 口径矛盾，大概率被名字 "Tag" 误导。<br><a class="src" href="https://x.com/minervacosmetic/status/2069646292217897217">@minervacosmetic</a></div>
+    <div class="quote">「Claude Tag 是什么很难讲清，连 Karpathy 都没说明白，很多用户一脸困惑……其实用法很简单。」<br><a class="src" href="https://x.com/tukiyomiiori/status/2069643662838178062">@tukiyomiiori</a></div>
+  </div>
+
+  <div class="ev">
+    <div class="h">维度二 · 关键人物 / 官方定调</div>
+    <p class="claim"><span class="tag fact">一手·已核实</span>Karpathy（5/19 加入 Anthropic）原话。</p>
+    <div class="quote">「这是与 Claude 交互的新范式，远比以往更『内嵌』于全组织的人类活动……<b>这是 LLM 交互界面（UIUX）的第三次重大重构</b>：第一种，LLM 是你去访问的网站；第二种，是你下载到电脑的 app；第三种，是一个<b>自包含、持续、异步、带全组织工具与上下文、与人类团队并肩工作的实体</b>。要花点时间才能绕过弯来理解，但它真的能跑通、而且很棒。」<br><a class="src" href="https://x.com/karpathy/status/2069547676849557725">@karpathy</a></div>
+    <div class="quote">中文圈独立给出同构判断：「它代表 LLM UI 的第三种形态——个人 AI 增强一个人的脑子，团队 AI 改的是组织的<b>信息流、任务流和责任流</b>。」<br><a class="src" href="https://x.com/lemondooe/status/2069645442187677982">@lemondooe</a></div>
+    <div class="quote">「Anthropic 给了 Claude 一个 Slack 账号……<b>AI 不再是你『去』的地方，而是你『@』的对象</b>。」<br><a class="src" href="https://x.com/Star_In_Sky10/status/2069638419723035106">@Star_In_Sky10</a></div>
+  </div>
+
+  <div class="ev">
+    <div class="h">维度三 · 看好方的论据</div>
+    <p class="claim"><span class="tag yes">支持</span>接口与协作形态的价值大于模型新奇度。</p>
+    <div class="quote">「界面层往往比模型能力更重要——决定采用的是分发，不是新奇度」「真正的胜利是证明<b>非技术人员也能编排 AI、不被平台锁定</b>」。<br><a class="src" href="https://x.com/jonmcbirney/status/2069639225826488608">@jonmcbirney 帖及回复</a></div>
+    <div class="quote">「OpenClaw/Hermes 是一个人的工具、点对点；Claude Tag 是你在频道里直接 @ 它，整个频道都看得见，ambient 模式还会自己推进卡住的活——在试探人与 Agent 混合协作的边界。」<br><a class="src" href="https://x.com/ohhsion21/status/2069645859126710421">@ohhsion21</a></div>
+  </div>
+
+  <div class="ev">
+    <div class="h">维度四 · 质疑与争议</div>
+    <p class="claim"><span class="tag no">质疑</span>创新度 + 自用真实性双重打问号。</p>
+    <div class="quote">「Karpathy 在拼命忍着不说『我们抄了 OpenClaw』。」<br><a class="src" href="https://x.com/froehlichmmm/status/2069642985633873942">@froehlichmmm</a></div>
+    <div class="quote"><span class="tag warn">待核实</span>一边是反复出现的宣传口径「Claude Tag 已写了 Anthropic 产品团队 65% 的代码」(均源自发布通稿)；另一边是上手用户「<b>不敢相信内部在大量用，根本没 dogfood</b>」。<br><a class="src" href="https://x.com/archiemckenzie_/status/2069646614080438684">@archiemckenzie_</a></div>
+    <div class="quote">「连布道者都解释不利索，早期用户普遍困惑；技术上也没什么惊艳——本质是按 Slack 频道各起一个 Claude 环境 + 团队协作机制 + 记忆。」<br><a class="src" href="https://x.com/tukiyomiiori/status/2069643662838178062">@tukiyomiiori</a></div>
+  </div>
+
+  <div class="ev">
+    <div class="h">维度五 · 安全与治理（被认为是成败关键）</div>
+    <p class="claim"><span class="tag you">实测</span>「不该做的事」测试结果获好评。</p>
+    <div class="quote">「❌ 让它把会计信息转贴到 #general → <b>拒绝</b>；❌ 让它删 GitHub 分支 → 不立即执行、先确认、main 受保护；未授权主机在审计日志里被全数拒绝。结论：<b>自然语言护栏只是『建议』，确实的遮断要靠访问设计</b>；deny-by-default 真生效了。」<br><a class="src" href="https://x.com/connect24h/status/2069642966390747229">@connect24h 转述 @sudaakikawaii</a></div>
+    <div class="quote">「按频道做数据隔离是刚需：法务频道的 Claude 不该把信息带到工程频道，工程频道的也不该碰财务数据；管理员可限制不同频道的工具与数据访问。」<br><a class="src" href="https://x.com/lemondooe/status/2069645442187677982">@lemondooe</a></div>
+    <div class="quote">beta 阶段 API key 由服务/提供方掌管、非终端用户，更适合嵌入产品而非个人即开即用。<br><a class="src" href="https://x.com/minervacosmetic/status/2069646306512134423">@minervacosmetic</a></div>
+  </div>
+
+  <!-- DISPUTES -->
+  <h2>争议与开放问题</h2>
+  <div class="ev">
+    <div class="quote"><b>「65% 代码由 Claude Tag 写」真假</b>：高频出现但全部源自发布通稿，且与「没 dogfood」的用户体感冲突，未独立核实。</div>
+    <div class="quote"><b>创新度之争</b>：真范式转变，还是「OpenClaw 的企业版重制」？尚无定论。</div>
+    <div class="quote"><b>HTML 标签 vs Slack @</b>：名字 "Tag" 引发的混淆短期可能持续；本文判定 Slack 释义为准（基于多数报道的推断）。</div>
+    <div class="quote"><b>安全的长期表现</b>：单次实测良好，但 ambient 主动介入 + 跨频道记忆在复杂组织里的越权/串数据风险待观察。</div>
+    <div class="quote"><b>上手心智成本</b>：连内行都觉「难以理解」，普通团队落地门槛是开放问题。</div>
+  </div>
+
+  <!-- SOURCE BROWSER -->
+  <h2>信源浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="按账号或关键词过滤信源…" oninput="filterSrc(this.value)">
+    <div id="srclist">
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">一手定调：LLM 交互第三次范式重构（已 user-tweets 核实）</span><a class="lk" href="https://x.com/karpathy/status/2069547676849557725">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@lemondooe</span><span class="g">中文范式分析：LLM UI 第三形态，改的是组织信息/任务/责任流</span><a class="lk" href="https://x.com/lemondooe/status/2069645442187677982">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@ohhsion21</span><span class="g">个人 Agent(OpenClaw) → 多人×Agent 协作场的范式转向</span><a class="lk" href="https://x.com/ohhsion21/status/2069645859126710421">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@dayvanxd</span><span class="g">多人共享 + 学习上下文，与旧 Claude in Slack 的区别；65% 代码口径</span><a class="lk" href="https://x.com/dayvanxd/status/2069643956057473286">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@SoraEndo0912</span><span class="g">Opus 4.8 驱动，@Claude 异步自主写码/查 bug/出报告</span><a class="lk" href="https://x.com/SoraEndo0912/status/2069638733608231304">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@connect24h</span><span class="g">转述 @sudaakikawaii 安全实测：deny-by-default 实际生效</span><a class="lk" href="https://x.com/connect24h/status/2069642966390747229">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@archiemckenzie_</span><span class="g">质疑：上手后吐槽「根本没 dogfood」</span><a class="lk" href="https://x.com/archiemckenzie_/status/2069646614080438684">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@froehlichmmm</span><span class="g">争议：「Karpathy 忍着不说我们抄了 OpenClaw」</span><a class="lk" href="https://x.com/froehlichmmm/status/2069642985633873942">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@jonmcbirney</span><span class="g">看好：接口层>模型能力，分发决定采用，无平台锁定</span><a class="lk" href="https://x.com/jonmcbirney/status/2069639225826488608">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@tukiyomiiori</span><span class="g">「说不清/用户困惑」，技术上不惊艳</span><a class="lk" href="https://x.com/tukiyomiiori/status/2069643662838178062">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@minervacosmetic</span><span class="g">疑似误读：把它说成「一行 HTML 标签嵌网页」+ beta/API key 细节</span><a class="lk" href="https://x.com/minervacosmetic/status/2069646292217897217">查看 ↗</a></div>
+      <div class="src-row"><span class="hh">@Star_In_Sky10</span><span class="g">金句：AI 不再是你去的地方，而是你 @ 的对象</span><a class="lk" href="https://x.com/Star_In_Sky10/status/2069638419723035106">查看 ↗</a></div>
+    </div>
+    <div id="snores" class="nores" style="display:none">没有匹配的信源</div>
+  </div>
+
+  <!-- METHOD / LIMITS -->
+  <h2>方法与局限</h2>
+  <div class="ev">
+    <p class="claim">检索式 14 条（中英日三语 + 反向式），下钻 Karpathy 一手帖、范式分析、安全实测、dogfood 质疑、定性混淆。</p>
+    <ul class="limit">
+      <li>产品<b>发布仅数小时</b>，多数帖点赞个位数甚至 0，<b>无法用热度排序</b>；样本以早期反应+新闻搬运号为主，尚未沉淀深度实战与翻车案例。</li>
+      <li>官方文档/博客原文未直接抓取，定性以媒体与 KOL 转述为准。</li>
+      <li>「65% 代码」类数据均为发布通稿转述，强度低、待核实；HTML-嵌入释义为单一来源、与官方矛盾，已标疑似误读。</li>
+      <li>限流导致 Karpathy 时间线多次 429，已隔开重试取得一手原帖。</li>
+      <li>样本含大量日文圈讨论（该产品在日本科技圈传播尤盛）。</li>
+    </ul>
+  </div>
+
+  <footer>报告生成 · Claude Code · 2026-06-24 · 数据源 X/Twitter via bird CLI · 凡观点必标出处，无法溯源处已标「推断/待核实」</footer>
+</div>
+
+<script>
+function filterTerms(q){
+  q=(q||'').trim().toLowerCase();var n=0;
+  document.querySelectorAll('#terms .term').forEach(function(t){
+    var hit=t.textContent.toLowerCase().indexOf(q)>-1;t.style.display=hit?'':'none';if(hit)n++;
+  });
+  document.getElementById('gnores').style.display=n?'none':'';
+}
+function filterSrc(q){
+  q=(q||'').trim().toLowerCase();var n=0;
+  document.querySelectorAll('#srclist .src-row').forEach(function(r){
+    var hit=r.textContent.toLowerCase().indexOf(q)>-1;r.style.display=hit?'':'none';if(hit)n++;
+  });
+  document.getElementById('snores').style.display=n?'none':'';
+}
+</script>
+</body>
+</html>
