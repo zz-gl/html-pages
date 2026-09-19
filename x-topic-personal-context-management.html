@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · 个人上下文管理：人怎么给自己做 Context Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#7a3bd6; --primary-container:#8b46f0; --primary-fixed:#ede0ff; --on-primary:#fff;
+  --bg:#faf7ff; --surface-container-lowest:#fff; --surface-container-low:#f6f0fe; --surface-container:#efe7fb; --surface-container-high:#e8def6;
+  --fg-1:#1c1726; --fg-2:#473a5c; --fg-muted:#867a96;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#cdbce8;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(28,23,38,.04); --shadow-md:0 4px 12px rgba(28,23,38,.08);
+  --gradient-text:linear-gradient(135deg,#8b46f0 0%,#d6622e 100%);
+  --gradient-hero:linear-gradient(135deg,#8b46f0 0%,#c94c8c 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0a0814; --surface-container-lowest:#14111f; --surface-container-low:#14111f; --surface-container:#1d1830; --surface-container-high:#262038;
+    --fg-1:#F8FAFC; --fg-2:#d4cce0; --fg-muted:#948aa6;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#403552;
+    --primary:#b388ff; --primary-fixed:#2a1d44; --on-primary:#150a26;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.75rem;line-height:1.26;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.tldr{margin-top:var(--space-lg);font-size:.95rem;color:var(--fg-1);background:var(--primary-fixed);border-radius:var(--radius-md);padding:.7rem 1rem;border-left:3px solid var(--primary-container)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.layers .ly{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-md);align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.layers .ly:last-child{border-bottom:none}
+.layers .nm{font-weight:700;color:var(--fg-1);font-size:.95rem;min-width:9em}
+.layers .ds{color:var(--fg-2);font-size:.86rem}
+.pill{font-family:var(--font-mono);font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--radius-pill);white-space:nowrap}
+.pill.open{background:rgba(16,185,129,.16);color:var(--green)}
+.pill.closed{background:rgba(239,68,68,.16);color:var(--red)}
+.pill.warn{background:rgba(245,158,11,.18);color:var(--yellow)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.signal .t a{font-family:var(--font-mono);font-size:.76rem}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-lg)}
+.dcol{border-radius:var(--radius-lg);padding:var(--space-lg);border:1px solid var(--border)}
+.dcol.yes{background:linear-gradient(180deg,rgba(16,185,129,.1),var(--surface-container-low))}
+.dcol.no{background:linear-gradient(180deg,rgba(239,68,68,.1),var(--surface-container-low))}
+.dcol h4{font-family:var(--font-headline);font-size:1rem;margin-bottom:var(--space-sm)}
+.dcol.yes h4{color:var(--green)}.dcol.no h4{color:var(--red)}
+.dcol .it{font-size:.86rem;color:var(--fg-2);padding:.35rem 0;border-bottom:1px solid var(--border)}
+.dcol .it:last-child{border-bottom:none}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.02rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.96rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.9rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.66rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.fact{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.yes{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.no{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.warn{background:rgba(245,158,11,.18);color:var(--yellow)}
+.tag.you{background:rgba(123,64,224,.16);color:var(--purple)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.verdict{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:var(--surface-container-high);border-radius:var(--radius-lg);font-size:.95rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.disambig{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);font-size:.92rem;color:var(--fg-1)}
+.disambig b{color:var(--primary-container)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.debate{grid-template-columns:1fr}.layers .ly{grid-template-columns:1fr auto}.layers .ds{display:none}.brief-header h1{font-size:1.38rem}.wrap{padding:var(--space-lg)}}
+</style></head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 个人上下文管理</div>
+    <h1>人怎么给自己做 <span class="grad">Context Engineering</span></h1>
+    <p class="answer-strip">把个人知识、偏好、项目背景组织成一套「模型每次都读得到、但不会被撑死」的结构，让你不必每轮对话重复交代。X 上的答案已经相当收敛：<b>不是 RAG，是编译；不是多存，是分层</b>。</p>
+    <div class="tldr">⚡ <b>一句话</b>：你要建的不是笔记库，而是 Karpathy 说的「<b>给自己写的那本解题书</b>」——个人事实只是最浅一层，真正复利的是「我遇到 X 类问题时的既定打法」。</div>
+    <div class="chips">
+      <span class="useful-chip hot">raw/ → wiki → output 编译器</span>
+      <span class="useful-chip">四层文件体系</span>
+      <span class="useful-chip">删掉 80% 系统提示</span>
+      <span class="useful-chip">context rot</span>
+      <span class="useful-chip">争议：记忆会分散注意力</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>2025-11~2026-09</b></span>
+      <span>检索式 <b>39 条</b></span>
+      <span>采集 <b>598 帖</b></span>
+      <span>下钻 <b>21 条</b></span>
+      <span>生成 <b>2026-09-19</b></span>
+    </div>
+  </header>
+
+  <details class="glossary" open>
+    <summary>📖 生词预热 <span class="hint">读前扫一遍，避免卡壳 · 可搜索</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，如 harness / 腐化 / RAG">
+      <div id="glist">
+        <div class="term"><span class="w">context engineering</span><span class="ipa">/ˈkɒntekst ˌendʒɪˈnɪərɪŋ/</span><span class="def">上下文工程；决定「模型在回答前到底看到了什么」的设计工作，范围远大于写提示词</span></div>
+        <div class="term"><span class="w">harness</span><span class="ipa">/ˈhɑːrnɪs/</span><span class="def">挽具、马具，引申为「外壳/骨架」；指包在模型外面、把它变成 agent 的那一整套东西（工具、系统提示、上下文管理、循环控制）</span></div>
+        <div class="term"><span class="w">autoregressive</span><span class="ipa">/ˌɔːtoʊrɪˈɡresɪv/</span><span class="def">自回归的；每次预测下一个 token，再把它拼回输入继续预测的生成方式</span></div>
+        <div class="term"><span class="w">context rot</span><span class="ipa">/ˈkɒntekst rɒt/</span><span class="def">上下文腐化；上下文塞得越多，模型在其中检索与推理的准确率反而下降</span></div>
+        <div class="term"><span class="w">compaction</span><span class="ipa">/kəmˈpækʃn/</span><span class="def">压实、压缩；agent 会话变长时把历史摘要成更短形式的操作</span></div>
+        <div class="term"><span class="w">progressive disclosure</span><span class="ipa">/prəˈɡresɪv dɪsˈkloʊʒər/</span><span class="def">渐进式披露；先只给目录和一行摘要，真要用时才加载全文，用来省上下文</span></div>
+        <div class="term"><span class="w">just-in-time</span><span class="ipa">/dʒʌst ɪn taɪm/</span><span class="def">即时按需（取自丰田准时制生产）；用到才取，而不是开场全塞</span></div>
+        <div class="term"><span class="w">retrieval</span><span class="ipa">/rɪˈtriːvl/</span><span class="def">检索</span></div>
+        <div class="term"><span class="w">RAG</span><span class="def">Retrieval-Augmented Generation，检索增强生成；先从外部库检索片段，再让模型基于片段作答</span></div>
+        <div class="term"><span class="w">vault</span><span class="ipa">/vɔːlt/</span><span class="def">金库、保险库；Obsidian 里指一个笔记仓库目录</span></div>
+        <div class="term"><span class="w">backlink</span><span class="ipa">/ˈbæklɪŋk/</span><span class="def">反向链接；B 引用了 A，则 A 的页面上显示「被 B 引用」</span></div>
+        <div class="term"><span class="w">zettelkasten</span><span class="ipa">/ˈtseteəlˌkastən/</span><span class="def">卡片盒笔记法（德语，直译「纸条盒子」）</span></div>
+        <div class="term"><span class="w">PKM</span><span class="def">Personal Knowledge Management，个人知识管理</span></div>
+        <div class="term"><span class="w">second brain</span><span class="ipa">/ˈsekənd breɪn/</span><span class="def">第二大脑；把外部笔记系统当作大脑的延伸</span></div>
+        <div class="term"><span class="w">anterograde amnesia</span><span class="ipa">/ˈæntərəˌɡreɪd æmˈniːʒə/</span><span class="def">顺行性遗忘症；能回忆过去但无法形成新的长期记忆，Karpathy 用它比喻 LLM</span></div>
+        <div class="term"><span class="w">consolidate</span><span class="ipa">/kənˈsɒlɪdeɪt/</span><span class="def">巩固（记忆）；短期记忆转为长期记忆的过程</span></div>
+        <div class="term"><span class="w">provenance</span><span class="ipa">/ˈprɒvənəns/</span><span class="def">来源、出处链条</span></div>
+        <div class="term"><span class="w">evergreen note</span><span class="ipa">/ˈevərɡriːn noʊt/</span><span class="def">常青笔记；持续修订、越用越准的笔记，区别于一次性流水记录</span></div>
+        <div class="term"><span class="w">idempotent</span><span class="ipa">/ˌaɪdəmˈpoʊtnt/</span><span class="def">幂等的；同一操作执行多次与执行一次结果相同</span></div>
+        <div class="term"><span class="w">overfit</span><span class="ipa">/ˌoʊvərˈfɪt/</span><span class="def">过拟合；这里指模型对被塞进上下文的零碎记忆过度反应</span></div>
+      </div>
+      <div class="nores" id="gnores" style="display:none">没有匹配的术语</div>
+    </div>
+  </details>
+
+  <h2>关键信号</h2>
+  <div class="signals">
+    <div class="signal"><div class="n">1</div><div class="t"><b>你观察到的「微观-宏观同构」，Karpathy 三年前写过，而且推到了第三层：人的学习。</b> 2023 年他写「1 次 GPT 调用约等于 1 个念头，串进循环就成了能感知、思考、行动的 agent」；2025 年他把同一循环套到学习范式上，提出 <b>system prompt learning</b>——预训练管知识、微调管习惯，而人类学习很大一块其实是「改系统提示」。<a href="https://x.com/karpathy/status/1921368644069765486">@karpathy · 10,289♥</a></div></div>
+    <div class="signal"><div class="n">2</div><div class="t"><b>行业事实标准不是 RAG，是「编译」</b>：raw/ 原始目录 → LLM 增量编译成 md wiki → 输出物回填 wiki。Karpathy 4 月的帖子 6 万赞，关键细节是他<b>没有用 RAG</b>：「本以为要上花哨的 RAG，结果 LLM 自己维护索引文件和摘要就够了。」<a href="https://x.com/karpathy/status/2039805659525644595">@karpathy · 60,954♥</a></div></div>
+    <div class="signal"><div class="n">3</div><div class="t"><b>与「多存」同等重要的是「少喂」。</b> Anthropic 把 Claude Code 系统提示删掉 <b>80% 以上</b>，编码评测无可测损失。最可抄的一条：<b>CLAUDE.md 只写「坑」</b>，凡是模型看一眼仓库就能学会的都删掉。<a href="https://x.com/trq212/status/2080710971228918066">@trq212 · 16,304♥</a></div></div>
+    <div class="signal"><div class="n">4</div><div class="t"><b>最该警惕的失败模式不是「没建系统」，而是「建了个第二份工作」。</b> 转折点是维护成本越过价值——归档的时间超过思考的时间。结构性结论：<b>人写、人链、人维护的知识库必然崩；只有「人读、模型写」才可持续</b>。<a href="https://x.com/rvaniaaaa/status/2091991026139361633">@rvaniaaaa · 981♥</a></div></div>
+    <div class="signal"><div class="n">5</div><div class="t"><b>最适合当行动准则的一句：「你每周向 AI 重复解释的每一件事，都是一个你还没建的 skill。」</b> 这把「我怎么不用每次啰嗦」翻译成可执行规则：<b>本月说过三次的话，就该变成一个文件</b>。<a href="https://x.com/AISystems_hq/status/2094385457391919147">@AISystems_hq · 665♥</a></div></div>
+  </div>
+
+  <h2>一、范式层：同一个循环的三次放大</h2>
+  <div class="ev">
+    <div class="h">自回归 → agent 循环 → 人的学习</div>
+    <p class="claim">你昨天提炼的同构关系在 X 上有完整谱系，而且被推得更远。</p>
+    <blockquote class="quote">「1 次 GPT 调用有点像 1 个念头。把它们串进循环，就造出了能感知、思考、行动的 agent，目标用英语写在提示里。至于反馈/学习，一条路径是加一个『反思』阶段评估结果、把轨迹存进记忆、再加载回提示里做 few-shot。<b>你能『学到』的，就是你能塞进上下文的东西。</b>」<a class="src" href="https://x.com/karpathy/status/1642607620673634304">@karpathy · 2023-04</a></blockquote>
+    <blockquote class="quote">「LLM 有点像一个患<b>顺行性遗忘症</b>的同事——训练结束后不再巩固任何长期知识，只有短期记忆（上下文窗口）。跟这种状况的人建立关系（见《初恋 50 次》）或者做事（见《记忆碎片》）都很难。」<a class="src" href="https://x.com/karpathy/status/1930003172246073412">@karpathy</a></blockquote>
+    <blockquote class="quote">「遇到问题、搞明白、然后用相当明确的措辞『记住』点什么留给下次。比如『看来碰到这类问题时，我应该试试那类办法』。<b>这感觉更像给自己记笔记。</b>……知识引导的『复盘』阶段，是比标量奖励高得多维的反馈通道。」<a class="src" href="https://x.com/karpathy/status/1921368644069765486">@karpathy · system prompt learning</a></blockquote>
+    <div class="verdict"><span class="tag you">对你的含义</span> 你要管的「个人上下文」，在这个框架里就是<b>你自己的 system prompt 语料库</b>。个人事实只是最浅一层，真正复利的是<b>策略层</b>——而这一层恰好最难被通用记忆功能自动抽取，必须你有意识地写下来。</div>
+  </div>
+  <div class="ev">
+    <div class="h">工程圈已经把这个循环分好了层</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">prompt</div><div class="ds">单条消息本身</div><div class="pill warn">第 1 层</div></div>
+      <div class="ly"><div class="nm">context</div><div class="ds">这一次调用前模型看到的一切</div><div class="pill warn">第 2 层</div></div>
+      <div class="ly"><div class="nm">harness</div><div class="ds">工具 / 系统提示 / 上下文管理这套外壳</div><div class="pill warn">第 3 层</div></div>
+      <div class="ly"><div class="nm">loop</div><div class="ds">多轮循环怎么收敛</div><div class="pill warn">第 4 层</div></div>
+      <div class="ly"><div class="nm">graph</div><div class="ds">多 agent 拓扑</div><div class="pill warn">第 5 层</div></div>
+    </div>
+    <p class="claim" style="margin-top:12px">每一层包住前一层，不是替代关系，区分标准是「一个工作单元长什么样」。<a href="https://x.com/akshay_pachaar/status/2081356379026280677">@akshay_pachaar</a> · <a href="https://x.com/_avichawla/status/2072980277870383366">@_avichawla</a></p>
+    <blockquote class="quote">「模型 = 一堆参数，只会 next-token 预测，无状态。harness = 包在模型外面把它变成 agent 的一切。environment = harness 之外它感知与作用的世界。」<a class="src" href="https://x.com/mattpocockuk/status/2050456062520615131">@mattpocockuk</a></blockquote>
+    <p class="claim">更早的类比：GPT 是一台「可编程的文本计算机」——<b>上下文窗口是 RAM</b>，「和当年一样，优化这块稀缺资源是关键」（<a href="https://x.com/karpathy/status/1644183721405464576">@karpathy · 2023</a>），后来固化成 CPU→模型 / RAM→上下文 / OS→harness 的标准讲法（<a href="https://x.com/akshay_pachaar/status/2041433526189633928">@akshay_pachaar</a>）。</p>
+  </div>
+
+  <h2>二、事实标准：把知识库当编译产物，不是文件柜</h2>
+  <div class="ev">
+    <div class="h">Karpathy 的五环节工作流（可直接抄）</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">① 摄入</div><div class="ds">文章/论文/代码/数据/图片一律先落 <code>raw/</code>，网页用 Obsidian Web Clipper 转 md，配快捷键连图片一起下载</div><div class="pill open">零摩擦</div></div>
+      <div class="ly"><div class="nm">② 编译</div><div class="ds">LLM <b>增量</b>把 raw/ 编译成 wiki：摘要、反向链接、归类概念、为概念写文章再互链</div><div class="pill open">模型写</div></div>
+      <div class="ly"><div class="nm">③ IDE</div><div class="ds">Obsidian 只当前端看，看原始数据、编译产物、衍生可视化</div><div class="pill open">人只读</div></div>
+      <div class="ly"><div class="nm">④ 问答</div><div class="ds">约 100 篇文章 / 40 万词规模下直接提复杂问题，agent 自己去翻</div><div class="pill open">不用 RAG</div></div>
+      <div class="ly"><div class="nm">⑤ 回填</div><div class="ds">答案生成 md / Marp 幻灯片 / matplotlib 图，再归档回 wiki</div><div class="pill open">越用越值钱</div></div>
+      <div class="ly"><div class="nm">⑥ 体检</div><div class="ds">定期跑 LLM 健康检查：找矛盾、补缺失、发现值得新建条目的连接</div><div class="pill warn">linting</div></div>
+    </div>
+    <blockquote class="quote"><b>「wiki 的所有数据都由 LLM 书写和维护，我几乎不直接碰它。」</b><a class="src" href="https://x.com/karpathy/status/2039805659525644595">@karpathy · 60,954♥ · 2026-04-02</a></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">追问出来的三个关键实现细节（都在回复里）</div>
+    <blockquote class="quote"><span class="tag warn">别全自动</span>「目前不是全自动流程，我<b>一条条手动添加</b>每个来源，我在环里，尤其早期。过一阵 LLM 摸到套路，边际文档就容易多了，我只说一句『把这篇新文档归档进我们的 wiki：(路径)』。」<a class="src" href="https://x.com/karpathy/status/2039812403962253744">@karpathy</a></blockquote>
+    <blockquote class="quote"><span class="tag fact">保持扁平</span>「不用 Obsidian CLI，就是一个嵌套的 .md 和 .png 目录，加几个 .csv 和 .py，<b>schema 维护在 AGENTS.md 里</b>保持最新。LLM 很容易就懂了。」<a class="src" href="https://x.com/karpathy/status/2039814066575917263">@karpathy</a></blockquote>
+    <blockquote class="quote"><span class="tag no">要有隔离区</span>「我喜欢这个做法，因为它<b>缓解了 agent 生成内容污染你主 vault 的风险</b>……agent 也需要自己的游乐场。」<a class="src" href="https://x.com/kepano/status/2039841147494031637">@kepano · Obsidian 创始人</a></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">一句概括 + 两个延伸</div>
+    <blockquote class="quote"><b>「第二大脑不是存储系统，是编译器。」</b> raw 是不可变的事实底座，wiki 是模型编译出的结构化常青知识，output 是成品；中心放一份 CLAUDE.md 承载身份、偏好、目标和项目背景——「你再也不用解释你自己」。<b>检索回答问题，编译建立理解。</b><a class="src" href="https://x.com/rvaniaaaa/status/2090722810674975071">@rvaniaaaa</a></blockquote>
+    <blockquote class="quote">「我会让系统针对某个话题生成一个临时的、聚焦的<b>迷你知识库</b>，然后在 7-10 英里长跑时加载进 LLM 做语音交互。于是它变成一档我一边跑一边提问的互动播客。」<a class="src" href="https://x.com/lexfridman/status/2039841897066414291">@lexfridman · 5,786♥</a></blockquote>
+    <blockquote class="quote">500 条笔记的库，k=2 的有序组合是 25 万，k=3 是 1.25 亿，k=4 是 625 亿——<b>价值不在条数而在可遍历的路径数</b>。你可以让 agent 串「斯多葛哲学—SaaS 定价—爆款内容—育儿」这种跨域路径并真找出连贯结论。<a class="src" href="https://x.com/elvissun/status/2039886954246881339">@elvissun</a></blockquote>
+  </div>
+
+  <h2>三、文件体系：分层，而不是往一个大文件里堆</h2>
+  <div class="ev">
+    <div class="h">最小可用版：四个 md 文件，零数据库</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">按领域分</div><div class="ds">people.md / projects.md / decisions.md，<b>绝不按日期</b>——「流水记录一开始整齐，两周后没法检索」</div><div class="pill open">核心</div></div>
+      <div class="ly"><div class="nm">MEMORY.md</div><div class="ds">索引文件，每个文件一行说明。agent 先读索引再按需拉全文，上下文占用可预测</div><div class="pill open">核心</div></div>
+      <div class="ly"><div class="nm">cache 标记</div><div class="ds">镜像外部系统的文件标 <code>last_sync</code>，分析前先声明数据新鲜度</div><div class="pill warn">防幻觉</div></div>
+      <div class="ly"><div class="nm">扁平 md</div><div class="ds">可读、可搜、可 git 追踪，跳过 embedding 管线与检索基础设施</div><div class="pill open">够用</div></div>
+    </div>
+    <blockquote class="quote">「<b>悄悄用陈旧数据，正是『自信但错误』的输出的来源。</b>」<a class="src" href="https://x.com/alex_prompter/status/2084233350903128530">@alex_prompter</a></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">个人身份层的实操版：三小时搭完，六周见效</div>
+    <p class="claim">建 <code>brain/</code> 目录：<code>USER.md</code>（姓名、时区、作息、履历、兴趣、雷区，约 80 行）、<code>MEMORY.md</code>（决策、教训、观点，每次会话都读并追加）、<code>family/{名字}.md</code>（一人一文件）。</p>
+    <blockquote class="quote"><span class="tag fact">别自己憋</span>把 onboarding 提示词丢给 agent，回答 10-15 分钟的问题，让它生成全部文件。</blockquote>
+    <blockquote class="quote"><span class="tag fact">每日一滴灌</span>设 9 点定时任务：「读我的 USER.md 和家庭文件，找出一个空白，就此问我<b>一个</b>深思熟虑的问题」。你 30 秒回答，第二天它处理答案、更新文件、再问新问题。</blockquote>
+    <blockquote class="quote"><b>第 1 天：一个做了好笔记的陌生人。第 2 周：开始有点私人感。第 6 周：一个真懂你的助手。</b>「没有向量库，没有花哨 RAG，就是 markdown 文件加每天一个问题。」<a class="src" href="https://x.com/coreyganim/status/2034575472328155242">@coreyganim</a></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">流程层用 skill，不要用提示词</div>
+    <blockquote class="quote">「一个 skill 就是一个含 SKILL.md 的文件夹——名字、描述、纯英文步骤。<b>描述是最多人写错的部分：它决定何时触发，要像规则那样写，不要像标题那样写。</b>你甚至不用自己写，让 Claude 就这个任务访谈你、再让它起草，十分钟一次性搞定。之后输出漂了就改 skill 一次，而不是永远改每条提示词。<b>每周一个 skill，到 12 月你就攒出了一支团队。</b>」<a class="src" href="https://x.com/AISystems_hq/status/2094385457391919147">@AISystems_hq</a></blockquote>
+    <blockquote class="quote"><span class="tag warn">易被忽略</span>「把你的『永远不要做 X』规则写成<b>权限设置</b>，而不是 CLAUDE.md 里的句子——<b>长会话里那些句子会被忽略</b>。」<a class="src" href="https://x.com/EXM7777/status/2087176716901023834">@EXM7777</a></blockquote>
+    <p class="claim"><span class="tag fact">格式之争在收敛</span>2026-09-18 起 Claude Code 支持 AGENTS.md：文件夹里没有 CLAUDE.md 时就读它（<a href="https://x.com/trq212/status/2101009392611278961">@trq212 · 23,234♥</a>）。<b>对你的含义：新建个人上下文文件优先用 AGENTS.md，跨工具可移植性最好</b>——Karpathy 自己的知识库 schema 也放在 AGENTS.md 里。</p>
+  </div>
+
+  <h2>四、减法一侧：上下文是预算，不是仓库</h2>
+  <div class="ev">
+    <div class="h">Anthropic 官方的新规则</div>
+    <blockquote class="quote">他们读自家使用记录时发现，系统提示、skills 和用户请求互相打架——同一次请求里同时出现「酌情留文档」和「不要加注释」。「这些约束曾经必要，但我们发现现在可以删掉很多，让模型用周边上下文和判断力。」结果：对 Opus 5 / Fable 5 <b>删掉 80% 以上的系统提示，编码评测无可测损失</b>。<a class="src" href="https://x.com/trq212/status/2080710971228918066">@trq212 · Anthropic</a></blockquote>
+    <blockquote class="quote"><b>可抄的两条</b>：① CLAUDE.md 只留「坑」，模型看仓库就能学会的一律删；② 硬性禁令换成风格描述（把「绝不写注释」换成「与周边代码风格一致」）。<a class="src" href="https://x.com/Voxyz_ai/status/2080760935455576540">@Voxyz_ai · 要点摘录</a></blockquote>
+    <blockquote class="quote">「我觉得终局是 CLAUDE.md 只剩<b>一行</b>，写你最在意什么；仓库探索、次要偏好之类都交给 harness 魔法和记忆去办。」<a class="src" href="https://x.com/ShrivuShankar/status/2080716199378538811">@ShrivuShankar</a></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">context rot：塞得下 ≠ 用得上</div>
+    <blockquote class="quote"><span class="tag warn">二手转述</span>「256k tokens 时 GPT-5.5 的检索得分 80%，推到 100 万就掉到 <b>36%</b>。模型接受了这些上下文，只是没法在其上推理。人们管这叫 context rot。」<a class="src" href="https://x.com/0xCarnagee/status/2075983721841225885">@0xCarnagee · 4,497♥</a></blockquote>
+    <blockquote class="quote">「翻译我的书时，5-10 轮之后 LLM 就不再遵守第一条提示里定义的术语表和规则了。<b>所以不行，永远不结束的会话是反效果的。</b>」<a class="src" href="https://x.com/burkov/status/1902740793984524481">@burkov</a></blockquote>
+    <blockquote class="quote">「代码塞超过约 7000 行，前沿模型的有效智商开始下降；反过来<b>上下文保持得很小，模型会能干得多</b>。」<a class="src" href="https://x.com/doodlestein/status/1902757671767302508">@doodlestein</a></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">一份很实用的省 context 清单</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">200 行封顶</div><div class="ds">全局 CLAUDE.md 控制在 200 行内，<b>每 2-3 个月删掉重写一遍</b></div><div class="pill open">做</div></div>
+      <div class="ly"><div class="nm">/context</div><div class="ds">新会话里跑一次，看还没打字窗口里就装了什么，删掉最大那项再看</div><div class="pill open">做</div></div>
+      <div class="ly"><div class="nm">CLI &gt; MCP</div><div class="ds">命令只回你要的几行，MCP 每次把整个结果倒进窗口</div><div class="pill open">做</div></div>
+      <div class="ly"><div class="nm">手动 skill</div><div class="ds">不常用的标 <code>disable-model-invocation: true</code>，不调用就不花钱</div><div class="pill open">做</div></div>
+      <div class="ly"><div class="nm">状态栏计量</div><div class="ds">把 context 计量放进 statusline，在质量掉下去之前先看见窗口在涨</div><div class="pill open">做</div></div>
+    </div>
+    <p class="claim" style="margin-top:12px">出处 <a href="https://x.com/EXM7777/status/2087176716901023834">@EXM7777</a>；官方配套命令 <code>/skill-doctor</code> <code>/doctor</code> <code>/context</code> <code>/usage</code> 见 <a href="https://x.com/addyosmani/status/2098297991019057363">@addyosmani</a>。渐进式披露已成标准机制：skill 启动时只扫名字和描述，匹配才载入全文（<a href="https://x.com/pidotdev/status/2090049615408119947">@pidotdev</a>）；MCP 工具也被收到单个 search-and-execute 后面（<a href="https://x.com/Teknium/status/2081450522608107816">@Teknium</a>）。</p>
+    <div class="disambig">⚠️ <b>一个流传很广但须打问号的数字</b>：有人转述 Boris Cherny 播客称「73% 的 token 在 Claude 读到你真正的提示词之前就浪费了」（14% CLAUDE.md 膨胀、13% 重读历史、11% 被遗忘的 hooks，<a href="https://x.com/sairahul1/status/2056050387678024143">出处</a>）。<b>二手转述、未见原始出处，只当方向性提示，别引用具体百分比。</b></div>
+  </div>
+
+  <h2>五、会话层：不是长 vs 短，而是分四类</h2>
+  <div class="ev">
+    <div class="h">Karpathy 抛出问题，回复区给出最好答案</div>
+    <p class="claim">他列出长会话的三个代价：速度（更大上下文更慢更贵）、能力（能塞进去不等于注意力能有效操纵）、信噪比（太多 token 抢注意力反而降低性能）。<a href="https://x.com/karpathy/status/1902737525900525657">@karpathy · 6,553♥</a></p>
+    <div class="layers">
+      <div class="ly"><div class="nm">① 常驻团队</div><div class="ds">长期运行、加书签：AI 私人教练、装机顾问、一个学科一位「AI 教授」</div><div class="pill open">回去接着聊</div></div>
+      <div class="ly"><div class="nm">② 可能会回</div><div class="ds">「如果我觉得以前问过、当时的上下文现在能省时间，就搜旧会话接着聊」</div><div class="pill warn">搜索优先</div></div>
+      <div class="ly"><div class="nm">③ 一次性</div><div class="ds">直接开新会话</div><div class="pill closed">不留</div></div>
+      <div class="ly"><div class="nm">④ 纯抛弃</div><div class="ds">新开，用完归档或删除，避免杂物堆积</div><div class="pill closed">主动删</div></div>
+    </div>
+    <blockquote class="quote">Karpathy 的认可：「这个其实挺有意思，谢谢。你基本上是在创建『Projects』并把查询按项目分组（以长会话的形式），再配一个一次性的默认档，加上手动的『总结并继续』来管理过长的上下文。」<a class="src" href="https://x.com/karpathy/status/1902743929554121131">@karpathy → @DanCalle</a></blockquote>
+    <blockquote class="quote"><span class="tag no">反方</span>「我更喜欢多会话……全在一条线里它会<b>把什么都硬往一起联系</b>、在奇怪的时候把话题绕回去。有时候我只是想放下刚才那个人际问题、聊聊技术问题。」<a class="src" href="https://x.com/venturetwins/status/1902761159054512602">@venturetwins</a></blockquote>
+  </div>
+
+  <h2>六、反方：为什么「多存」会反噬</h2>
+  <div class="debate">
+    <div class="dcol yes"><h4>✅ 支持建体系</h4>
+      <div class="it">Karpathy 本人跑 40 万词知识库，Lex Fridman 跑同构系统</div>
+      <div class="it">「人读、模型写」把维护成本压到接近零</div>
+      <div class="it">输出回填让每次使用都增值，形成复利</div>
+      <div class="it">跨工具可移植：换 CLI、换设备不用重建上下文</div>
+      <div class="it">多 agent 时代，文件是唯一能共享的东西</div>
+    </div>
+    <div class="dcol no"><h4>⚠️ 反对/警告</h4>
+      <div class="it">记忆会分散模型注意力，Karpathy 原话「有点像用力过猛」</div>
+      <div class="it">模型会对被 RAG 进来的零碎记忆<b>过拟合</b></div>
+      <div class="it">人工维护的第二大脑会变成「第二份工作」</div>
+      <div class="it">上下文体系本身正在变成一种表演（600 行 CLAUDE.md）</div>
+      <div class="it">为旧模型写的规则会变成新模型的负担</div>
+    </div>
+  </div>
+  <div class="ev" style="margin-top:16px">
+    <div class="h">最硬的一条反方证据，来自 Karpathy 自己（2 万赞）</div>
+    <blockquote class="quote">「所有 LLM 的个性化都有一个通病：<b>记忆对模型来说似乎非常分散注意力</b>。两个月前问过一次的某个话题，会被当成我某种深度兴趣不断冒出来、永远被无端提及。有点像<b>用力过猛</b>。」<a class="src" href="https://x.com/karpathy/status/2036836816654147718">@karpathy · 20,949♥</a></blockquote>
+    <blockquote class="quote">「我轮着用所有 LLM，都这样，所以这不是某个实现的问题，而是更深层的东西——也许训练时上下文窗口里的信息大多与任务相关，于是 LLM 养成了『用给我的东西』的偏好，到测试时就<b>对任何碰巧被记忆功能 RAG 进来的东西过拟合</b>。」<a class="src" href="https://x.com/karpathy/status/2036841069636370467">@karpathy</a></blockquote>
+    <div class="verdict"><span class="tag you">对你的含义</span> 往上下文里塞得越全，越可能招来「用力过猛」的联想。<b>这直接反对「把一切个人信息都塞进常驻记忆」的路线</b>，支持「默认精简 + 按需加载」的分层结构。</div>
+  </div>
+  <div class="ev">
+    <div class="h">人手维护的知识库结构性会崩</div>
+    <blockquote class="quote">「一位研究者告诉我他为什么六个月后放弃了第二大脑：<b>『加得越多，要维护的越多。它变成了第二份工作。』</b>」转折点是维护成本越过价值：归档的时间超过思考的时间，库越来越大同时越来越慢。<a class="src" href="https://x.com/rvaniaaaa/status/2091991026139361633">@rvaniaaaa</a></blockquote>
+    <blockquote class="quote">「人工维护的 Obsidian 大概能撑一周，然后就荒废了。vault 只有在 agent 接管了排序、检索、生成这些日常之后，才真正成为第二大脑。」<a class="src" href="https://x.com/Atenov_D/status/2033520502505898368">@Atenov_D</a></blockquote>
+    <blockquote class="quote"><span class="tag warn">黑色幽默</span>「原来我几十年不维护笔记的策略只是超前了。现在 LLM 替我维护了。」<a class="src" href="https://x.com/EthanHe_42/status/2040328877743145416">@EthanHe_42</a></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">「上下文体系」本身正在成为一种表演</div>
+    <blockquote class="quote">AI 红旗清单里的两条：「『我发消息前上下文里已经有 25 万 token 了，这正常吗？』」「『诸位，瞻仰我 <b>600 行的 CLAUDE.md</b> 吧，我的效果好极了。』」<a class="src" href="https://x.com/mattpocockuk/status/2091990288738783251">@mattpocockuk · 2,973♥</a></blockquote>
+    <blockquote class="quote">「我在 AGENTS.md 里写了『不要过度工程化』。它给我造了一个<b>轻量级可扩展的过度工程防治框架</b>。」<a class="src" href="https://x.com/fayazara/status/2099742772828012595">@fayazara · 6,123♥</a></blockquote>
+    <blockquote class="quote"><span class="tag warn">规则会过期</span>OpenAI 明确提醒：为老模型写的规则可能让新模型做无谓的工作——「你只想改个错别字，AI 却先把架构、数据库、部署文档全读了一遍」（<a href="https://x.com/Voxyz_ai/status/2098537511735750686">@Voxyz_ai</a>）。Anthropic 侧对应工具 <code>/claude-api prompt-audit</code> 会点名 "double-check your work"、"be maximally thorough"、"CRITICAL: YOU MUST ALWAYS" 这类老写法（<a href="https://x.com/mylifcc/status/2097377395766706493">@mylifcc</a>）。</blockquote>
+    <blockquote class="quote"><span class="tag you">很好的自检问题</span>「真正的考验是：<b>换到 Opus 5 时，我那 15 个 skill 文件里有几个会因为它们本来只是在补旧模型的短板而失效？</b>」<a class="src" href="https://x.com/MandyMondayAI/status/2080716641092976868">@MandyMondayAI</a></blockquote>
+  </div>
+
+  <h2>七、现在能直接用的工具</h2>
+  <div class="ev">
+    <div class="layers">
+      <div class="ly"><div class="nm">LLM Wiki</div><div class="ds">把 Karpathy 模式产品化的桌面应用：丢 PDF/Word/EPUB/剪藏/整个文件夹 → <b>先分析、再写 wiki 页</b>（比一步到位好得多）→ 建知识图谱、页页标来源 → 找知识空白并深度研究去补 → 开箱即 Obsidian vault → <b>自带 MCP server，Claude Code / Codex 可直接查</b>，也能 Ollama 全本地跑</div><div class="pill open">最相关</div></div>
+      <div class="ly"><div class="nm">Obsidian skills</div><div class="ds">kepano（「File over app」作者）开源了自己 vault 私用的 5 个 Claude Code skills，MIT 协议</div><div class="pill open">可抄</div></div>
+      <div class="ly"><div class="nm">会话日志考古</div><div class="ds">扫 <code>~/.claude/projects/</code> 等归档，蒸馏出「你反复纠正它的地方」「问过三次却从不自动化的事」</div><div class="pill open">你本机就有</div></div>
+      <div class="ly"><div class="nm">Graphify</div><div class="ds">一条命令把任意文件夹转知识图谱，宣称零向量库</div><div class="pill warn">数据存疑</div></div>
+      <div class="ly"><div class="nm">SkillOpt</div><div class="ds">微软把 markdown skill 当可训练参数来优化，配测试与自进化框架</div><div class="pill warn">研究阶段</div></div>
+    </div>
+  </div>
+  <div class="ev">
+    <div class="h">今年最有想象力的一条：从 agent 日志里反向挖掘你自己</div>
+    <blockquote class="quote">「人在日记里撒谎，在心理治疗里表演。<b>没有人会对一个编码 agent 表演。</b>这台机器上存着有史以来关于我心智最诚实的记录：我跑过的每一个 agent 会话。我构建什么、我放弃什么、<b>我问过三次却从不自动化的东西</b>、我反复绕着走却从不动手的东西。」<a class="src" href="https://x.com/EXM7777/status/2086512844594679820">@EXM7777 · 1,457♥</a></blockquote>
+    <p class="claim">提示词分六阶段：定位所有会话归档 → 分批蒸馏成证据文件（限每文件读 150 行、最多 200 文件，用 grep 扫「不，我的意思是」「又来了」「停」这类纠正词、扫跨周重复请求、扫出现三次后消失的项目）→ 访谈核对 → 给出画像 → 指出时间死在哪又在哪放大 → 征得同意后重建你的工具。</p>
+  </div>
+  <div class="ev">
+    <div class="h">跨工具一致性</div>
+    <blockquote class="quote">「200 亿 token、12000 个会话之后，我受够了每换一个工具就要重新解释一遍项目，于是给它们造了个<b>共享大脑</b>。」<a class="src" href="https://x.com/Av1dlive/status/2097639365644279857">@Av1dlive</a></blockquote>
+    <blockquote class="quote">「<b>我的笔记和 skills 都住在 Obsidian 里，所以我换工具、换设备都不用重建那份上下文。</b>」<a class="src" href="https://x.com/Whats_AI/status/2100600923689021665">@Whats_AI</a></blockquote>
+    <blockquote class="quote"><span class="tag fact">多 agent 场景</span>「提示是一个愿望，重复三百遍的愿望仍然只是愿望。写进文件的边界才是法律——每个 agent 在每次行动前都读、有版本、归你所有。<b>三百个 agent 没法共享一种氛围，但可以共享一个文件。</b>」<a class="src" href="https://x.com/slash1sol/status/2098813215610212788">@slash1sol</a></blockquote>
+  </div>
+
+  <h2>给你的方法论草案 <span style="font-size:.7em;color:var(--fg-muted);font-family:var(--font-body);font-weight:400">（综合推断，非某位大佬原话）</span></h2>
+  <div class="ev">
+    <div class="h">分四层，各有各的生命周期和加载时机</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">L0 身份层</div><div class="ds">AGENTS.md / USER.md，50-80 行。只写模型「看一眼环境学不会、但每次都会踩」的东西：你是谁、默认语言与风格、指令优先级、几条硬边界。<b>是坑清单，不是简历</b></div><div class="pill open">常驻·极小</div></div>
+      <div class="ly"><div class="nm">L1 索引层</div><div class="ds">MEMORY.md，一行一条列出所有二级文件。<b>这是「随取随用」的核心开关</b>：让「全都存着」和「不全都喂」同时成立</div><div class="pill open">常驻</div></div>
+      <div class="ly"><div class="nm">L2 领域层</div><div class="ds">按领域一个文件，绝不按日期。镜像外部系统的标 last_sync 并声明为 cache</div><div class="pill warn">按需加载</div></div>
+      <div class="ly"><div class="nm">L3 流程层</div><div class="ds">skills。判定规则：<b>本月重复解释超过三次 → 建一个 skill</b>；触发描述写成规则而非标题</div><div class="pill warn">触发式</div></div>
+    </div>
+  </div>
+  <div class="ev">
+    <div class="h">两个循环让它自己长大</div>
+    <blockquote class="quote"><b>编译循环</b>（对应 raw → wiki）：所有输入先无脑落 <code>raw/</code> 不做整理（降低摄入摩擦是所有 PKM 存活的前提）；定期让 agent 增量编译进 wiki。<b>人只读，模型只写</b>——这是避开「第二份工作」陷阱的唯一已知解法。产出物回填 wiki，让每次使用都增值。</blockquote>
+    <blockquote class="quote"><b>蒸馏循环</b>（对应 system prompt learning）：定期让 agent 扫你的会话记录，把「我反复纠正它的地方」提炼成 L0/L1 的新条目。这是 Karpathy 说的「给自己写的那本解题书」，复利最高、最不可能被通用记忆功能自动学会。</blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">三条守恒定律</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">注意力守恒</div><div class="ds">加进常驻层的每一行，都在跟你未来所有请求抢注意力。默认答案是「放进 L2 按需加载」，不是「放进 L0」</div><div class="pill closed">克制</div></div>
+      <div class="ly"><div class="nm">季度清零</div><div class="ds">模型在进化，为旧模型写的补丁会变成新模型的负担。用 /context、/doctor、prompt-audit 做定期体检</div><div class="pill closed">定期删</div></div>
+      <div class="ly"><div class="nm">隔离写入</div><div class="ds">给 agent 一个独立的写入区，别让模型生成的内容污染你的主库（kepano 的提醒）</div><div class="pill closed">隔离</div></div>
+    </div>
+    <div class="verdict"><span class="tag you">关于你的 LLM wiki 试点</span> 从证据看方向是对的（Karpathy、Lex Fridman 都在跑同构系统）。它「感觉不是终极解法」的原因很可能<b>不在 wiki 本身，而在缺了 L0/L1 这两层薄的、常驻的接口</b>——wiki 解决了「知识存在哪」，但没解决「每次对话开场，模型默认知道我是谁、这次该加载哪一块」。<b>先补索引层，再谈换架构。</b>（推断）</div>
+  </div>
+
+  <h2>争议与开放问题</h2>
+  <div class="ev">
+    <div class="layers">
+      <div class="ly"><div class="nm">多 vs 少</div><div class="ds">一端是 Karpathy 说记忆「分散注意力」、模型会对 RAG 进来的零碎过拟合；另一端是他自己跑 40 万词知识库。和解可能是<b>「存量可以很大，喂量必须很小」</b>，但界线怎么自动划无共识</div><div class="pill warn">无定论</div></div>
+      <div class="ly"><div class="nm">90% 弃用率</div><div class="ds">同一则「某研究者放弃第二大脑」的故事被多账号用近乎相同措辞发布（一说六个月、一说四个月），明显内容农场特征。<b>方向可信，数字不可引用</b></div><div class="pill closed">数字存疑</div></div>
+      <div class="ly"><div class="nm">context rot 数字</div><div class="ds">「256k→80%，1M→36%」是对一场演讲的二手转述，未给评测名称与配置</div><div class="pill closed">未核实</div></div>
+      <div class="ly"><div class="nm">文件名之争</div><div class="ds">Claude Code 刚加 AGENTS.md 回退（2026-09-18），社区仍有抱怨。短期两者并存</div><div class="pill warn">进行中</div></div>
+      <div class="ly"><div class="nm">外部化 vs 内部化</div><div class="ds">一派认为持续学习 + 在自己轨迹上训练才是真解、文件只是权宜；Karpathy 认为显式文本这条通道信息密度更高、该先做。<b>本主题最大未决分歧</b></div><div class="pill warn">核心分歧</div></div>
+      <div class="ly"><div class="nm">skill 该不该有评测</div><div class="ds">SkillOpt 把 skill 当可训练参数，但个人用户层面还没有轻量可用的做法</div><div class="pill warn">刚起步</div></div>
+    </div>
+  </div>
+
+  <h2>信源浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索账号或观点，如 karpathy / 编译 / 删除">
+    <div id="slist">
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">LLM 知识库完整工作流，raw → wiki → output，明确不用 RAG</span><a class="lk" href="https://x.com/karpathy/status/2039805659525644595">60,954♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">system prompt learning：缺失的第三种学习范式</span><a class="lk" href="https://x.com/karpathy/status/1921368644069765486">10,289♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">记忆对模型非常分散注意力，「有点像用力过猛」</span><a class="lk" href="https://x.com/karpathy/status/2036836816654147718">20,949♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">LLM 像患顺行性遗忘症的同事，《记忆碎片》比喻</span><a class="lk" href="https://x.com/karpathy/status/1930003172246073412">1,175♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">1 次 GPT 调用 ≈ 1 个念头；你能学到的就是你能塞进上下文的</span><a class="lk" href="https://x.com/karpathy/status/1642607620673634304">667♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">GPT 是可编程文本计算机：上下文窗口 = RAM</span><a class="lk" href="https://x.com/karpathy/status/1644183721405464576">3,339♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">长会话 vs 新会话的三个代价：速度、能力、信噪比</span><a class="lk" href="https://x.com/karpathy/status/1902737525900525657">6,553♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">认可 DanCalle 的四类会话法 = 手工版 Projects</span><a class="lk" href="https://x.com/karpathy/status/1902743929554121131">369♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@karpathy</span><span class="g">实现细节：手动一条条加来源、保持扁平、schema 放 AGENTS.md</span><a class="lk" href="https://x.com/karpathy/status/2039814066575917263">267♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@trq212</span><span class="g">Anthropic 新上下文工程规则：删掉 80% 系统提示，CLAUDE.md 只写坑</span><a class="lk" href="https://x.com/trq212/status/2080710971228918066">16,304♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@trq212</span><span class="g">Claude Code 开始支持 AGENTS.md（2026-09-18）</span><a class="lk" href="https://x.com/trq212/status/2101009392611278961">23,234♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@lexfridman</span><span class="g">同构系统 + 长跑时加载迷你知识库做语音互动播客</span><a class="lk" href="https://x.com/lexfridman/status/2039841897066414291">5,786♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@kepano</span><span class="g">Obsidian 创始人：agent 需要自己的游乐场，别污染主 vault</span><a class="lk" href="https://x.com/kepano/status/2039841147494031637">463♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@rvaniaaaa</span><span class="g">第二大脑不是存储系统是编译器；维护成本越过价值的转折点</span><a class="lk" href="https://x.com/rvaniaaaa/status/2091991026139361633">981♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@alex_prompter</span><span class="g">四个 md 文件零数据库：按领域分、MEMORY.md 索引、cache 标时间戳</span><a class="lk" href="https://x.com/alex_prompter/status/2084233350903128530">780♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@AISystems_hq</span><span class="g">「每个重复的解释都是一个你还没建的 skill」</span><a class="lk" href="https://x.com/AISystems_hq/status/2094385457391919147">665♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@coreyganim</span><span class="g">brain/ 目录三小时实操清单 + 每日一问滴灌</span><a class="lk" href="https://x.com/coreyganim/status/2034575472328155242">937♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@EXM7777</span><span class="g">从 agent 会话日志反向挖掘你自己的六阶段提示词</span><a class="lk" href="https://x.com/EXM7777/status/2086512844594679820">1,457♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@EXM7777</span><span class="g">省 context 清单：200 行封顶、CLI 优于 MCP、规则写成权限</span><a class="lk" href="https://x.com/EXM7777/status/2087176716901023834">1,102♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@0xCarnagee</span><span class="g">context rot：1M 上下文检索准确率掉到 36%（二手转述）</span><a class="lk" href="https://x.com/0xCarnagee/status/2075983721841225885">4,497♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@mattpocockuk</span><span class="g">AI 红旗清单：600 行 CLAUDE.md 与 25 万起步 token</span><a class="lk" href="https://x.com/mattpocockuk/status/2091990288738783251">2,973♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@mattpocockuk</span><span class="g">模型 / harness / environment / agent 的干净定义</span><a class="lk" href="https://x.com/mattpocockuk/status/2050456062520615131">1,315♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@fayazara</span><span class="g">「我写了不要过度工程化，它造了个过度工程防治框架」</span><a class="lk" href="https://x.com/fayazara/status/2099742772828012595">6,123♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@akshay_pachaar</span><span class="g">prompt → context → harness → loop → graph 五层包裹关系</span><a class="lk" href="https://x.com/akshay_pachaar/status/2081356379026280677">2,829♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@DanCalle</span><span class="g">四类会话分法（被 Karpathy 认可）</span><a class="lk" href="https://x.com/DanCalle/status/1902742443209924964">742♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@hasantoxr</span><span class="g">LLM Wiki 桌面应用：Karpathy 模式产品化，自带 MCP server</span><a class="lk" href="https://x.com/hasantoxr/status/2098766600828854358">651♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@Av1dlive</span><span class="g">200 亿 token 之后给所有编码工具造一个共享大脑</span><a class="lk" href="https://x.com/Av1dlive/status/2097639365644279857">642♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@Whats_AI</span><span class="g">笔记与 skills 住 Obsidian，换工具换设备不重建上下文</span><a class="lk" href="https://x.com/Whats_AI/status/2100600923689021665">652♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@slash1sol</span><span class="g">约束工程：三百个 agent 没法共享氛围，但可以共享一个文件</span><a class="lk" href="https://x.com/slash1sol/status/2098813215610212788">716♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@Voxyz_ai</span><span class="g">Anthropic 规则要点摘录；以及 OpenAI 提醒旧规则会拖累新模型</span><a class="lk" href="https://x.com/Voxyz_ai/status/2080760935455576540">639♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@burkov</span><span class="g">5-10 轮后 LLM 不再遵守首轮定义的术语表</span><a class="lk" href="https://x.com/burkov/status/1902740793984524481">90♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@doodlestein</span><span class="g">超过约 7000 行代码，前沿模型有效智商开始下降</span><a class="lk" href="https://x.com/doodlestein/status/1902757671767302508">4♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@Atenov_D</span><span class="g">人工维护的 Obsidian 大概能撑一周</span><a class="lk" href="https://x.com/Atenov_D/status/2033520502505898368">661♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@elvissun</span><span class="g">价值不在条数而在可遍历路径数：500 条笔记 k=4 是 625 亿</span><a class="lk" href="https://x.com/elvissun/status/2039886954246881339">150♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@EthanHe_42</span><span class="g">「我几十年不维护笔记的策略只是超前了」</span><a class="lk" href="https://x.com/EthanHe_42/status/2040328877743145416">313♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@addyosmani</span><span class="g">/skill-doctor · /doctor · /context · /usage 四个体检命令</span><a class="lk" href="https://x.com/addyosmani/status/2098297991019057363">743♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@Teknium</span><span class="g">MCP 工具收到单个 search-and-execute 后面，渐进式披露</span><a class="lk" href="https://x.com/Teknium/status/2081450522608107816">1,155♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@MandyMondayAI</span><span class="g">自检问题：换模型时有几个 skill 会因为只在补旧短板而失效</span><a class="lk" href="https://x.com/MandyMondayAI/status/2080716641092976868">—♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@ShrivuShankar</span><span class="g">终局猜想：CLAUDE.md 只剩一行写你最在意什么</span><a class="lk" href="https://x.com/ShrivuShankar/status/2080716199378538811">—♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@sairahul1</span><span class="g">「73% token 在读到提示词前就浪费了」（二手转述，存疑）</span><a class="lk" href="https://x.com/sairahul1/status/2056050387678024143">695♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@AYi_AInotes</span><span class="g">中文圈：根目录只放四维契约，业务上下文下沉子目录</span><a class="lk" href="https://x.com/AYi_AInotes/status/2097296619771232442">382♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@Khazix0918</span><span class="g">中文 AGENT.md 范例，含清晰的指令优先级一节</span><a class="lk" href="https://x.com/Khazix0918/status/2096125440893329685">2,192♥ ↗</a></div>
+    </div>
+    <div class="nores" id="snores" style="display:none">没有匹配的信源</div>
+  </div>
+
+  <h2>方法与局限</h2>
+  <div class="ev">
+    <ul class="limit">
+      <li><b>内容农场噪音严重。</b>本主题（尤其「Karpathy 第二大脑」）是今年被搬运最多的题材之一，数十个账号逐字复制同一段文案，Graphify 相关文案至少见于 6 个账号且星标数互相矛盾（7.6 万 ~ 14.8 万）。报告中一手观点均已追到原作者，转述型已显式标注。</li>
+      <li><b>样本偏英文圈。</b>中文检索式仅 4 条且热度门槛被迫放低（min_faves 20-50）；中文圈观点基本是英文圈的转述与本地化，未见独立方法论创新。</li>
+      <li><b>限流影响。</b>首批 10 条检索式中 5 条被 X 拒绝（嵌套括号过多），简化语法后重跑；简化会损失精确匹配，可能漏掉长尾观点。批量脚本另有一次 UnicodeDecodeError 崩溃（输出截断于 64KB），改用逐条调用后解决。</li>
+      <li><b>数字类结论普遍不可靠。</b>涉及百分比的三处（80% 系统提示削减、73% token 浪费、context rot 80%→36%）只有第一处有 Anthropic 官方长文背书，另两处均为二手转述。</li>
+      <li><b>未覆盖</b>：论文原文、Anthropic/OpenAI 官方工程博客原文、GitHub 仓库实测均未核验；本报告只反映 X 上的讨论。</li>
+    </ul>
+  </div>
+
+  <footer>
+    X 主题调研 · 个人上下文管理 · 39 条检索式 / 598 帖去重 / 21 条深度下钻 · 生成于 2026-09-19 · 所有观点均可点回原推
+  </footer>
+</div>
+<script>
+(function(){
+  function wire(inputId, listId, noresId, rowSel){
+    var inp=document.getElementById(inputId), list=document.getElementById(listId), nores=document.getElementById(noresId);
+    if(!inp||!list) return;
+    inp.addEventListener('input',function(){
+      var q=inp.value.trim().toLowerCase(), rows=list.querySelectorAll(rowSel), hit=0;
+      rows.forEach(function(r){
+        var ok=!q||r.textContent.toLowerCase().indexOf(q)>-1;
+        r.style.display=ok?'':'none'; if(ok)hit++;
+      });
+      if(nores) nores.style.display=hit?'none':'block';
+    });
+  }
+  wire('gsearch','glist','gnores','.term');
+  wire('ssearch','slist','snores','.src-row');
+})();
+</script>
+</body>
+</html>
