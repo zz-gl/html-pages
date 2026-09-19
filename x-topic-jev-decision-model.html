@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh" data-ha-style="default">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 调研 · Jev 决策模型对商业化技术团队是不是机会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#7a3bd6; --primary-container:#8b46f0; --primary-fixed:#ede0ff; --on-primary:#fff;
+  --bg:#faf7ff; --surface-container-lowest:#fff; --surface-container-low:#f6f0fe; --surface-container:#efe7fb; --surface-container-high:#e8def6;
+  --fg-1:#1c1726; --fg-2:#473a5c; --fg-muted:#867a96;
+  --border:rgba(0,0,0,.06); --border-strong:rgba(0,0,0,.12); --outline-variant:#cdbce8;
+  --green:#10b981; --blue:#3b82f6; --yellow:#f59e0b; --red:#ef4444; --purple:#7b40e0;
+  --font-headline:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --font-body:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'SF Mono','Menlo',ui-monospace,monospace;
+  --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:20px; --space-2xl:24px; --space-3xl:32px; --space-4xl:48px;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:20px; --radius-2xl:28px; --radius-pill:9999px;
+  --shadow-sm:0 1px 2px rgba(28,23,38,.04); --shadow-md:0 4px 12px rgba(28,23,38,.08);
+  --gradient-text:linear-gradient(135deg,#8b46f0 0%,#d6622e 100%);
+  --gradient-hero:linear-gradient(135deg,#8b46f0 0%,#c94c8c 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0a0814; --surface-container-lowest:#14111f; --surface-container-low:#14111f; --surface-container:#1d1830; --surface-container-high:#262038;
+    --fg-1:#F8FAFC; --fg-2:#d4cce0; --fg-muted:#948aa6;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14); --outline-variant:#403552;
+    --primary:#b388ff; --primary-fixed:#2a1d44; --on-primary:#150a26;
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg-1);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-4xl)}
+a{color:var(--primary-container);text-decoration:none}a:hover{text-decoration:underline}
+h2{font-family:var(--font-headline);font-size:1.5rem;letter-spacing:-.01em;margin:var(--space-4xl) 0 var(--space-md)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted)}
+.brief-header{background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:var(--space-3xl);box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.brief-header::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--gradient-hero)}
+.brief-header h1{font-family:var(--font-headline);font-size:1.75rem;line-height:1.26;letter-spacing:-.02em;margin:.4rem 0 var(--space-md)}
+.brief-header h1 .grad{background:var(--gradient-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.answer-strip{font-size:1.05rem;color:var(--fg-2);max-width:64ch}
+.tldr{margin-top:var(--space-lg);font-size:.95rem;color:var(--fg-1);background:var(--primary-fixed);border-radius:var(--radius-md);padding:.7rem 1rem;border-left:3px solid var(--primary-container)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xl)}
+.useful-chip{font-size:.8rem;font-weight:600;padding:.4rem .8rem;border-radius:var(--radius-pill);background:var(--surface-container-high);color:var(--fg-1);border:1px solid var(--border)}
+.useful-chip.hot{background:var(--primary-fixed);color:var(--primary);border-color:transparent}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-lg);margin-top:var(--space-xl);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.meta-row b{color:var(--fg-2);font-weight:600}
+.primary-insight{margin-top:var(--space-2xl);background:var(--surface-container-lowest);border:1px solid var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-2xl);box-shadow:var(--shadow-sm)}
+.layers .ly{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-md);align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.layers .ly:last-child{border-bottom:none}
+.layers .nm{font-weight:700;color:var(--fg-1);font-size:.95rem;min-width:9em}
+.layers .ds{color:var(--fg-2);font-size:.86rem}
+.pill{font-family:var(--font-mono);font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:var(--radius-pill);white-space:nowrap}
+.pill.open{background:rgba(16,185,129,.16);color:var(--green)}
+.pill.closed{background:rgba(239,68,68,.16);color:var(--red)}
+.pill.warn{background:rgba(245,158,11,.18);color:var(--yellow)}
+details.glossary{margin-top:var(--space-2xl);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);overflow:hidden}
+details.glossary>summary{cursor:pointer;list-style:none;padding:var(--space-lg) var(--space-2xl);font-family:var(--font-headline);font-weight:600;display:flex;align-items:center;justify-content:space-between;background:var(--surface-container-low)}
+details.glossary>summary::-webkit-details-marker{display:none}
+details.glossary>summary .hint{font-family:var(--font-body);font-weight:400;font-size:.8rem;color:var(--fg-muted)}
+.glossary-body{padding:var(--space-lg) var(--space-2xl) var(--space-2xl)}
+#gsearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.term{padding:.55rem 0;border-bottom:1px solid var(--border)}.term:last-child{border-bottom:none}
+.term .w{font-weight:700;color:var(--fg-1)}.term .ipa{font-family:var(--font-mono);color:var(--primary-container);font-size:.82rem;margin-left:.4rem}
+.term .def{display:block;color:var(--fg-2);font-size:.9rem;margin-top:.15rem}
+.signals{display:grid;gap:var(--space-md);margin-top:var(--space-lg)}
+.signal{display:flex;gap:var(--space-lg);background:var(--surface-container-low);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm)}
+.signal .n{font-family:var(--font-headline);font-size:1.6rem;font-weight:700;color:var(--primary-container);line-height:1;min-width:1.4em}
+.signal .t{font-size:.96rem;color:var(--fg-2)}.signal .t b{color:var(--fg-1)}
+.signal .t a{font-family:var(--font-mono);font-size:.76rem}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin-top:var(--space-lg)}
+.dcol{border-radius:var(--radius-lg);padding:var(--space-lg);border:1px solid var(--border)}
+.dcol.yes{background:linear-gradient(180deg,rgba(16,185,129,.1),var(--surface-container-low))}
+.dcol.no{background:linear-gradient(180deg,rgba(239,68,68,.1),var(--surface-container-low))}
+.dcol h4{font-family:var(--font-headline);font-size:1rem;margin-bottom:var(--space-sm)}
+.dcol.yes h4{color:var(--green)}.dcol.no h4{color:var(--red)}
+.dcol .it{font-size:.86rem;color:var(--fg-2);padding:.35rem 0;border-bottom:1px solid var(--border)}
+.dcol .it:last-child{border-bottom:none}
+.ev{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-container-lowest);padding:var(--space-xl);margin-bottom:var(--space-md);box-shadow:var(--shadow-sm)}
+.ev .h{font-family:var(--font-headline);font-size:1.02rem;margin-bottom:.4rem;color:var(--fg-1)}
+.claim{font-weight:600;color:var(--fg-1);font-size:.96rem}
+.quote{margin:.5rem 0 0;padding:var(--space-md) var(--space-lg);border-left:3px solid var(--outline-variant);background:var(--surface-container-low);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:.9rem;color:var(--fg-2)}
+.quote .src{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;font-family:var(--font-mono);font-size:.74rem;font-weight:600}
+.quote .src::before{content:"🔗"}
+.tag{display:inline-block;font-size:.66rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:var(--radius-pill);margin-right:.3rem}
+.tag.fact{background:rgba(59,130,246,.14);color:var(--blue)}
+.tag.yes{background:rgba(16,185,129,.16);color:var(--green)}
+.tag.no{background:rgba(239,68,68,.16);color:var(--red)}
+.tag.warn{background:rgba(245,158,11,.18);color:var(--yellow)}
+.tag.you{background:rgba(123,64,224,.16);color:var(--purple)}
+.source-browser{margin-top:var(--space-lg);border:1px solid var(--border-strong);border-radius:var(--radius-xl);background:var(--surface-container-lowest);padding:var(--space-xl)}
+#ssearch{width:100%;padding:.6rem .9rem;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--bg);color:var(--fg-1);font-family:var(--font-body);font-size:.9rem;margin-bottom:var(--space-md)}
+.src-row{display:flex;gap:var(--space-md);align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.src-row:last-child{border-bottom:none}
+.src-row .hh{font-family:var(--font-mono);font-weight:600;color:var(--primary-container);white-space:nowrap}
+.src-row .g{color:var(--fg-2)}.src-row .lk{margin-left:auto;white-space:nowrap;font-size:.78rem}
+.verdict{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:var(--surface-container-high);border-radius:var(--radius-lg);font-size:.95rem;color:var(--fg-1);border-left:3px solid var(--primary-container)}
+.disambig{margin-top:var(--space-lg);padding:var(--space-lg) var(--space-xl);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);font-size:.92rem;color:var(--fg-1)}
+.disambig b{color:var(--primary-container)}
+.limit{font-size:.88rem;color:var(--fg-muted)}.limit li{margin:.4rem 0 .4rem 1.2rem}
+footer{margin-top:var(--space-4xl);padding-top:var(--space-xl);border-top:1px solid var(--border);font-family:var(--font-mono);font-size:.72rem;color:var(--fg-muted)}
+.nores{color:var(--fg-muted);font-size:.85rem;padding:var(--space-md) 0}
+@media(max-width:640px){.debate{grid-template-columns:1fr}.layers .ly{grid-template-columns:1fr auto}.layers .ds{display:none}.brief-header h1{font-size:1.38rem}.wrap{padding:var(--space-lg)}}
+</style></head>
+<body>
+<div class="wrap">
+  <header class="brief-header">
+    <div class="eyebrow">X / Twitter 主题调研 · 发布期快照（5 天）</div>
+    <h1>Jev 决策模型，<span class="grad">对商业化技术团队是不是机会？</span></h1>
+    <p class="answer-strip"><b>直接结论</b>：Jev 官方版对你们<b>不是</b>可采用的机会——美国托管、闭源权重、需排队、32k 上下文、不支持图像视频输入。但它验证出来的<b>架构范式</b>（用只做决策、不生成文本的小模型接管海量 if/else 判断）对高吞吐商业化链路是真机会，<b>而且现在就能自己做</b>。</p>
+    <div class="tldr">⚡ <b>最关键的一个信号</b>：发布 <b>72 小时</b>内已有至少 8 个开源复现，其中 Cua 的 706K 参数模型在表单填写评测上拿 99.7%，<b>托管版 Jev 只有 83.6%</b>。范式红利是真的，但不属于 TypeSafe 一家。</div>
+    <div class="chips">
+      <span class="useful-chip hot">$0.042/M 输入 · 输出免费</span>
+      <span class="useful-chip">~150ms</span>
+      <span class="useful-chip">不能生成文本</span>
+      <span class="useful-chip">32k 上下文 · 无多模态</span>
+      <span class="useful-chip">闭源 · 美国托管</span>
+    </div>
+    <div class="meta-row">
+      <span>窗口 <b>2026-09-15~19</b></span>
+      <span>检索式 <b>30 条</b></span>
+      <span>采集 <b>648 帖</b></span>
+      <span>下钻 <b>16 条</b></span>
+      <span>生成 <b>2026-09-19</b></span>
+    </div>
+  </header>
+
+  <div class="disambig">
+    ⚠️ <b>读之前先知道这是什么样的证据</b>：这是一次<b>发布期调研</b>，时间窗口只有 5 天，样本几乎全是「刚拿到手的第一印象」。<b>尚不存在任何长期生产验证、稳定性数据或大规模 A/B 结果。</b>而且同周 Vercel、Cloudflare、OpenRouter、Venice、Dot 都上线了集成，语料有明显正向偏差。本报告刻意加大了反面检索权重（20 条里 8 条是反向检索），但请把所有结论当作<b>早期信号</b>而非定论。
+  </div>
+
+  <details class="glossary" open>
+    <summary>📖 生词预热 <span class="hint">读前扫一遍 · 可搜索</span></summary>
+    <div class="glossary-body">
+      <input id="gsearch" type="search" placeholder="搜索术语，如 校准 / RLCD / ECE">
+      <div id="glist">
+        <div class="term"><span class="w">System One model</span><span class="ipa">/ˈsɪstəm wʌn/</span><span class="def">系统一模型；借用卡尼曼「快思考/慢思考」，指只做快速判断、不做长链推理与文本生成的模型</span></div>
+        <div class="term"><span class="w">decision model</span><span class="ipa">/dɪˈsɪʒn/</span><span class="def">决策模型；输入状态与选项，输出「选哪个 + 置信度」，而非输出一段话</span></div>
+        <div class="term"><span class="w">autoregressive</span><span class="ipa">/ˌɔːtoʊrɪˈɡresɪv/</span><span class="def">自回归；逐 token 顺序生成，Jev 刻意放弃的正是这一点</span></div>
+        <div class="term"><span class="w">RLCD</span><span class="def">Reinforcement Learning for Calibrated Decisions，面向校准决策的强化学习；目标不只是答对，还要让置信度反映真实正确率</span></div>
+        <div class="term"><span class="w">calibration</span><span class="ipa">/ˌkælɪˈbreɪʃn/</span><span class="def">校准；模型说 90% 把握时，实际正确率是否真的接近 90%</span></div>
+        <div class="term"><span class="w">ECE</span><span class="def">Expected Calibration Error，期望校准误差；衡量校准好坏的标准指标，越低越好</span></div>
+        <div class="term"><span class="w">logits</span><span class="ipa">/ˈloʊdʒɪts/</span><span class="def">未归一化的打分；过 softmax 后变成概率</span></div>
+        <div class="term"><span class="w">KV-cache</span><span class="def">Key-Value 缓存；把已算过的注意力键值存下来复用，是 Jev 快的关键</span></div>
+        <div class="term"><span class="w">softmax</span><span class="ipa">/ˈsɒftmæks/</span><span class="def">归一化指数函数；把一组分数变成加起来等于 1 的概率</span></div>
+        <div class="term"><span class="w">Spearman</span><span class="ipa">/ˈspɪərmən/</span><span class="def">斯皮尔曼等级相关系数；衡量两组排序的一致程度，做相关性/排序任务的常用指标</span></div>
+        <div class="term"><span class="w">cross-encoder</span><span class="ipa">/krɔːs ɪnˈkoʊdər/</span><span class="def">交叉编码器；把两段文本拼一起编码再打分，相关性排序的传统强基线</span></div>
+        <div class="term"><span class="w">GLiNER</span><span class="def">Generalist Lightweight NER，一类开源的轻量通用抽取/分类编码器模型</span></div>
+        <div class="term"><span class="w">zero-shot</span><span class="ipa">/ˈzɪroʊ ʃɒt/</span><span class="def">零样本；不给训练样例，只靠描述就能做任务</span></div>
+        <div class="term"><span class="w">enum</span><span class="ipa">/ˈiːnʌm/</span><span class="def">枚举；有限的、预先列好的候选集合</span></div>
+        <div class="term"><span class="w">compaction</span><span class="ipa">/kəmˈpækʃn/</span><span class="def">压实；agent 会话过长时把历史摘要压缩</span></div>
+        <div class="term"><span class="w">Jevons paradox</span><span class="ipa">/ˈdʒevənz/</span><span class="def">杰文斯悖论；某资源使用效率提高后，总消耗量反而上升。Jev 的名字来源</span></div>
+        <div class="term"><span class="w">p95</span><span class="def">第 95 百分位；95% 的请求快于这个耗时，比平均值更能反映真实体验</span></div>
+        <div class="term"><span class="w">CLOUD Act</span><span class="def">美国《澄清域外合法使用数据法》；允许美国政府调取美国公司控制的境外数据，跨境合规的核心障碍</span></div>
+        <div class="term"><span class="w">SCC</span><span class="def">Standard Contractual Clauses，标准合同条款；欧盟跨境数据传输的合规工具</span></div>
+      </div>
+      <div class="nores" id="gnores" style="display:none">没有匹配的术语</div>
+    </div>
+  </details>
+
+  <h2>关键信号</h2>
+  <div class="signals">
+    <div class="signal"><div class="n">1</div><div class="t"><b>Jev 是刻意「阉掉文本生成」换速度和成本的模型，不是更强的 LLM。</b> 作者 Diogo Almeida 是 InstructGPT 论文主要作者之一、后参与 GPT-4，隐身两年，TypeSafe AI 拿了 DCVC 领投 4000 万美元种子轮。他在发布串第二条就把代价讲明白：<b>「收益不是免费的：Jev 不能生成文本。」</b><a href="https://x.com/CompleteSkeptic/status/2099925684256899543">@CompleteSkeptic · 5,924♥</a></div></div>
+    <div class="signal"><div class="n">2</div><div class="t"><b>实测证实「便宜十倍、准确率略降、但置信度可用」——置信度才是真正的产品。</b> 1,565 封德英文商务邮件十分类：Jev 96.4% 输给 Gemini 3.8 Flash 的 98.5%；<b>但置信度 ≥99% 的 737 条预测全对，最自信的 85.5% 样本零错误</b>，成本 $0.08 vs $1.79 / 千封。<a href="https://x.com/nikhilmudholkar/status/2100605870409195985">@nikhilmudholkar</a></div></div>
+    <div class="signal"><div class="n">3</div><div class="t"><b>72 小时内被开源复现，部分场景反超。</b> 有人「隐身两小时」开源了 Qwen-2.5-1B-RLCD，并点破关键：<b>「每个 LLM 本来就有能力并行批量推理 JSON 的每个键、并在候选类别上给出概率。不需要新训练。」</b><a href="https://x.com/harshagundal/status/2100044305536889015">@harshagundal · 5,777♥</a></div></div>
+    <div class="signal"><div class="n">4</div><div class="t"><b>「这不新鲜」的批评站得住，且来自有资格的人。</b> Hugging Face 的 Niels Rogge 一边画图解释机制，一边说：<b>「一个 JSON 分类器拿了 1200 万浏览？是的，我们在泡沫里。」</b>GLiNER2 作者则直接主张信用归属：「GLiNER2 能做 Jev 能做的任何任务，Apache-2.0 开源一年多了。」<a href="https://x.com/NielsRogge/status/2100114968460820986">@NielsRogge · 1,739♥</a></div></div>
+    <div class="signal"><div class="n">5</div><div class="t"><b>对中国团队最致命的是非技术限制。</b> 闭源权重 + 美国托管 + 排队 + 32k 上下文 + <b>不支持非文本输入</b>（邮件评测因此被迫排除附件，测试者称这是「上生产最大的阻碍」）。欧盟用户已给出明确的不合规判定并自建了等价物。<a href="https://x.com/blogtheristo/status/2101106832060400028">@blogtheristo</a></div></div>
+  </div>
+
+  <h2>一、机制：它到底做了什么</h2>
+  <div class="ev">
+    <div class="h">用单次前向替代自回归生成</div>
+    <blockquote class="quote">上下文 + JSON schema <b>只处理一遍</b>，KV 存进缓存。然后对每个字段：① 字段后缀 token 复用 KV-cache 再过一遍解码器；② 拿到隐状态过 LM head；③ 得到全词表 logits；④ <b>只看这个字段关心的那几个 token 的分数</b>，过 softmax 得到和为 1 的概率；⑤ 取最高的。<br>好处：<b>不用逐 token 生成 JSON 所以快；而且 100% 是合法 JSON</b>，不需要指望模型自己生成对 schema。<a class="src" href="https://x.com/NielsRogge/status/2100239244501430438">@NielsRogge · 3,710♥</a></blockquote>
+    <blockquote class="quote">官方自己的说法更简洁：「它输出的东西比任意 JSON 还要窄：你<b>并行地</b>问多个问题，每个问题拿回概率。可以理解成一个 <b>schema 遵循完美、且概率经过校准</b>的 JSON。」<a class="src" href="https://x.com/CompleteSkeptic/status/2099968369093148681">@CompleteSkeptic</a></blockquote>
+    <div class="layers">
+      <div class="ly"><div class="nm">Choice</div><div class="ds">从候选列表里选一个</div><div class="pill open">原语</div></div>
+      <div class="ly"><div class="nm">Score</div><div class="ds">在给定量表上打分</div><div class="pill open">原语</div></div>
+      <div class="ly"><div class="nm">Noul</div><div class="ds">返回 0-1 的「是」概率</div><div class="pill open">原语</div></div>
+    </div>
+    <blockquote class="quote"><span class="tag fact">定位类比</span>前神经科学研究者：「为什么脑子里需要一个更笨但更快的系统一？因为它<b>把更慢但更聪明的系统二解放出来</b>，去专注真正重要的事。我作为人可以有意识地控制手，但那样我就没法同时做需要智力的任务了。」<a class="src" href="https://x.com/GuangyuRobert/status/2100806885960007914">@GuangyuRobert</a></blockquote>
+  </div>
+
+  <h2>二、正面实测：数字有多硬</h2>
+  <div class="ev">
+    <div class="h">简历 × 职位相关性打分（250 万月活线上应用，人工标注基准）</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">Jev</div><div class="ds">Spearman <b>0.79</b></div><div class="pill open">$0.02</div></div>
+      <div class="ly"><div class="nm">DeepSeek V4 Flash-high</div><div class="ds">Spearman 0.77</div><div class="pill warn">$0.14</div></div>
+      <div class="ly"><div class="nm">DeepSeek V4 Flash-low</div><div class="ds">Spearman 0.73</div><div class="pill warn">$0.27</div></div>
+      <div class="ly"><div class="nm">Gemini 3.1 Flash-lite</div><div class="ds">Spearman 0.72</div><div class="pill closed">$0.29</div></div>
+    </div>
+    <p class="claim" style="margin-top:12px">作者（斯坦福 CS 博士，HiringCafe）：「这绝对是一次重大突破。」<a href="https://x.com/h_nilforoshan/status/2100411132498641301">出处</a></p>
+    <blockquote class="quote"><span class="tag no">回复区的专业质疑</span>「你们试过用自己的数据训一个模型吗？训个分类器挺容易的。」（<a href="https://x.com/NicholasBardy/status/2100508322717970434">@NicholasBardy</a>）「我觉得你们用一个自己微调的 pointwise cross-encoder 会更好。」（<a href="https://x.com/tomaarsen/status/2100551401755578697">@tomaarsen</a>，sentence-transformers 维护者）<br><b>这条质疑对你们特别重要——见下方「不适合」一节。</b></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">其余可信度较高的实测</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">Vercel 分类器评测</div><div class="ds">替换原用 Gemini 2.5 Flash Lite 的既有评测，<b>质量打满 + 速度 6 倍</b>（Vercel CTO 本人跑的）</div><div class="pill open">双赢</div></div>
+      <div class="ly"><div class="nm">fx 安全审查器</div><div class="ds">Vercel CEO：比 GPT Luna <b>快最多 18 倍（p95）而且更准</b></div><div class="pill open">18x</div></div>
+      <div class="ly"><div class="nm">生产任务路由</div><div class="ds">~200ms 完成，25 个评测任务给出与 Fable 完全一致的答案；<b>整流程成本 −71%、墙钟时间 −90%</b></div><div class="pill open">已上线</div></div>
+      <div class="ly"><div class="nm">WebMCP 浏览器基准</div><div class="ds">Jev + Mercury 2.5 解 100% 任务，模型成本比 GPT-6 Astra 低 <b>112 倍</b>（对比截图式 computer use 低 245 倍）。方法完全开放可复现</div><div class="pill open">可复现</div></div>
+      <div class="ly"><div class="nm">SEO 内链重建</div><div class="ds">586 页 45.1 秒 $0.21；同时长 Opus 5 只跑完 21 页花 $1.43，<b>每页约便宜 190 倍</b></div><div class="pill open">190x</div></div>
+      <div class="ly"><div class="nm">采用速度</div><div class="ds">Vercel：AI Gateway 史上被采用最快的模型，首日触达 ~13% 团队，<b>GPT-5.6 系列的 2 倍、Fable 5.1 的 6 倍</b></div><div class="pill open">首日</div></div>
+    </div>
+    <blockquote class="quote"><span class="tag you">最值得记的一句</span>SEO 那位点破了适配条件：<b>「内链不是写作，是 8,790 次是/否判断。」</b><a class="src" href="https://x.com/borjafat/status/2101018783976722479">@borjafat</a></blockquote>
+  </div>
+
+  <h2>三、负面实测：它在哪里输</h2>
+  <div class="debate">
+    <div class="dcol yes"><h4>✅ 它赢的地方</h4>
+      <div class="it">成本：一致地便宜 10–20 倍，输出 token 免费</div>
+      <div class="it">延迟：~150ms，最长 1.3 秒，比 LLM 快一到两个数量级</div>
+      <div class="it"><b>校准的置信度</b>——唯一一个还给你真实概率的模型</div>
+      <div class="it">输出 100% 合法 schema，不需要解析层与校验层</div>
+      <div class="it">零样本可用，一条 prompt 就学会，省掉微调</div>
+    </div>
+    <div class="dcol no"><h4>⚠️ 它输的地方</h4>
+      <div class="it">总体准确率比强 LLM 低 1–2 个百分点</div>
+      <div class="it"><b>按类别等权后差距拉大到 4.9 个点</b>——长尾类目更弱</div>
+      <div class="it">专用微调小模型碾压它：99.7% vs 83.6%</div>
+      <div class="it">不会推理、不会前瞻（下棋 29 步被将死）</div>
+      <div class="it">有单一来源反映重复跑会有几个点波动</div>
+    </div>
+  </div>
+  <div class="ev" style="margin-top:16px">
+    <div class="h">专用模型 vs 通用决策模型</div>
+    <blockquote class="quote">「Jev 的零样本分类很强，但<b>商业场景会被专用分类器统治</b>。Cua 微调了个小模型在表单填写评测拿 99.7%，托管版 Jev 是 83.6%。我昨天花 <b>51 分钟</b>微调了 GLiNER 2.5，<b>碾压 Jev，而且是本地跑的，还快 8.8 倍</b>。」<a class="src" href="https://x.com/JoshKuechly/status/2101156721074774115">@JoshKuechly</a></blockquote>
+    <blockquote class="quote">NetworkChuck 的 200 条短信垃圾分类：<b>Jev 96% @ 118ms vs 本机 Qwen3.6-35B 93.5% @ 359ms</b>；他的结论里带了一句关键限定——<b>「它是闭源权重。」</b><a class="src" href="https://x.com/NetworkChuck/status/2101032873641857487">@NetworkChuck</a></blockquote>
+    <blockquote class="quote">日文圈的实测结论最实用：<b>「Jev 通用、随便搞也能跑；但如果是特定任务、且你能准备 200 条以上数据集，那就用 GLiNER。Jev 更像试用版。」</b><a class="src" href="https://x.com/AM09_21/status/2101173680382619936">@AM09_21</a></blockquote>
+  </div>
+  <div class="ev">
+    <div class="h">最有工程价值的一次技术反驳：Theo 拆 compaction 用法</div>
+    <p class="claim">有人提议「用 Jev 给每次工具调用打分、丢掉不相关的，实现瞬时 compaction」。Theo 逐条拆（2,471♥）：</p>
+    <div class="layers">
+      <div class="ly"><div class="nm">① 职责错了</div><div class="ds">compaction 不是过滤器，是整理历史保持专注，应在上下文过长时<b>少量使用</b></div><div class="pill closed">错</div></div>
+      <div class="ly"><div class="nm">② 它不知道在决策什么</div><div class="ds">32k 上下文模型对之前发生了什么知之甚少，这个实现里<b>连工具调用的结果都看不到</b></div><div class="pill closed">错</div></div>
+      <div class="ly"><div class="nm">③ 丢掉推理数据</div><div class="ds">前沿模型不通过 API 共享推理轨迹，只给加密载荷，Jev 看不见也会丢掉</div><div class="pill closed">错</div></div>
+      <div class="ly"><div class="nm">④ 模型自带更好的</div><div class="ds">前沿实验室已把 compaction 与长程运行纳入训练</div><div class="pill closed">错</div></div>
+      <div class="ly"><div class="nm">⑤ 缓存写入更贵</div><div class="ds">改动历史靠前的数据让整段缓存失效，「我自己用 CC 和 Codex 时缓存写入常超总支出 60%」</div><div class="pill closed">更贵</div></div>
+    </div>
+    <div class="verdict"><span class="tag you">对你们的判据价值最高</span>这条示范了一条通用判据：<b>Jev 适合「候选集有限、判据局部、错了代价可控」的决策；不适合「需要全局状态、需要因果链、错误会累积」的决策。</b><a href="https://x.com/theo/status/2100762304862384257">出处</a></div>
+  </div>
+
+  <h2>四、质疑派：「这不新鲜」的完整论证</h2>
+  <div class="ev">
+    <p class="claim">这一派不是酸葡萄，技术论证成立，值得团队认真看。</p>
+    <blockquote class="quote"><span class="tag fact">机制本来就存在</span>「每个 LLM 本来就有能力并行批量推理 JSON 的每个键、并从候选类别里生成概率。<b>不需要新训练</b>，要优化也容易。」<a class="src" href="https://x.com/harshagundal/status/2100044305536889015">@harshagundal</a></blockquote>
+    <blockquote class="quote"><span class="tag fact">推理引擎早有现成能力</span>「只要一点推理工程，你可以让<b>任何</b>开源模型表现得像 Jev，<b>简单得吓人</b>。sglang 提供 scoring 端点——给定输入和候选答案集，强制模型为每个候选产出概率。」<a class="src" href="https://x.com/skeptrune/status/2101209390992994570">@skeptrune</a></blockquote>
+    <blockquote class="quote"><span class="tag fact">信用归属</span>「schema 定义的概率决策正在获得关注，但底层能力——schema 条件下的多任务分类——<b>并不新</b>。GLiNER2 于 2025 年公开发布、EMNLP2025 发表，一次前向完成多分类 + 置信分数，Apache-2.0 开源至今。」<a class="src" href="https://x.com/urchadeDS/status/2101105769059885373">@urchadeDS</a></blockquote>
+    <blockquote class="quote"><span class="tag warn">历史坐标</span>「Jev 在原理上是有意思的，它是一个低成本、快速的分类服务，宣称性能约等于 GPT-5.6-terra。<b>有意思的一点是，这就是 2022 年大多数 AI 服务的样子；Cohere 当年就在卖分类器。</b>」<a class="src" href="https://x.com/fleetingbits/status/2100292587621863590">@fleetingbits</a></blockquote>
+    <blockquote class="quote"><span class="tag no">一句很重的行业评论</span>「一位 OpenAI 的人花三年悄悄做出 Jev，结果三天内就有人开源出性能更好的模型。<b>这正是现在创办 AI 公司风险过高的原因。</b>」（该帖称其为「联合创始人」有误，Almeida 是 InstructGPT 主要作者之一）<a class="src" href="https://x.com/jun_song/status/2101246204143366425">@jun_song · 944♥</a></blockquote>
+  </div>
+
+  <h2>五、开源复现生态（发布 5 天内）</h2>
+  <div class="ev">
+    <div class="h">这一节对你们行动价值最高</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">Qwen-2.5-1B-RLCD</div><div class="ds">发布次日开源，JSON 类型安全负载端侧推理快 5 倍，M4 MacBook 有 demo</div><div class="pill open">HF</div></div>
+      <div class="ly"><div class="nm">Kev-0.5B</div><div class="ds">微型开源 Jev，<b>API 与 TypeSafe 兼容</b>，基于 Qwen2.5-0.5B，MacBook Pro 可训可跑（Vercel 的 Jared Palmer）</div><div class="pill open">GitHub</div></div>
+      <div class="ly"><div class="nm">Bespoke Nimble</div><div class="ds">开数据/开模型/开配方。核心是<b>对比式数据构造</b>：轻改事实生成负样本逼模型判别，<b>校准隐式获得，训练数据不需带概率标签</b></div><div class="pill open">关键配方</div></div>
+      <div class="ly"><div class="nm">CUA-S1-FORMS</div><div class="ds">706K 参数 / 2.8MB，表单填写 99.7%（托管 Jev 83.6%）</div><div class="pill open">开源</div></div>
+      <div class="ly"><div class="nm">SimpleJev</div><div class="ds">「Jev 化任意开源模型」，示例用 Gemma 4 零标注分类 1,697 个活动，<b>带视觉</b></div><div class="pill open">带视觉</div></div>
+      <div class="ly"><div class="nm">jeff / LocalJev</div><div class="ds">GliFormer 驱动的本地 drop-in 替代；GitHub Next 用 omlx 搭的本地版，repo 里带基准报告</div><div class="pill open">本地</div></div>
+      <div class="ly"><div class="nm">Jev Ultrafast</div><div class="ds">Browser Use 开源：网页按钮输入框全部编号，让 Jev 做选择题，只在需要打字时调小模型</div><div class="pill open">开源</div></div>
+      <div class="ly"><div class="nm">sglang scoring</div><div class="ds">不需要任何新模型，直接用推理引擎的打分端点就能得到同等行为</div><div class="pill open">零成本</div></div>
+    </div>
+  </div>
+
+  <h2>六、硬性限制清单（决定能不能上生产）</h2>
+  <div class="ev">
+    <div class="layers">
+      <div class="ly"><div class="nm">不能生成文本</div><div class="ds">设计如此。<b>工具调用的参数它生成不了</b>，必须配一个小 LLM。中文圈同样观察：tool using 不是有限集，参数需要推理出来</div><div class="pill closed">硬限制</div></div>
+      <div class="ly"><div class="nm">32k 上下文</div><div class="ds">Theo 与多位实测者点名，官方回帖区大量「要更大窗口」的诉求</div><div class="pill closed">硬限制</div></div>
+      <div class="ly"><div class="nm">不支持非文本输入</div><div class="ds">邮件评测因此排除附件，测试者称这是<b>「上生产最大的阻碍」</b></div><div class="pill closed">对你们致命</div></div>
+      <div class="ly"><div class="nm">闭源 + 美国托管 + 排队</div><div class="ds">「就算 API 免费我也想让它跑在本地。<b>机器人不能等 WiFi 恢复。</b>」「我至少一半的想法要求它是私有的，其中一半还要本地」</div><div class="pill closed">对你们致命</div></div>
+      <div class="ly"><div class="nm">企业合规通道未就绪</div><div class="ds">官方回帖区在问何时上 Azure Foundry；欧盟用户给出明确不合规判定（美国托管 + CLOUD Act），并已自建等价物</div><div class="pill closed">阻断</div></div>
+      <div class="ly"><div class="nm">超高频仍不够便宜</div><div class="ds">「要解锁工业级规模需求，<b>我认为它需要再便宜大约 10 倍</b>」。官方 demo 自证：~10 次调用/秒 ≈ <b>$7/小时</b></div><div class="pill warn">看场景</div></div>
+    </div>
+  </div>
+
+  <h2>七、中文圈判断</h2>
+  <div class="ev">
+    <blockquote class="quote"><span class="tag fact">生态位定位</span>「很多人以为 jev 是一个超级无敌强力神级大模型……<b>实际的 jev 接替的是以前 13b 和 2b model 的生态位，就是一个小的 text classifier</b>，允许你去干微小的、粗颗粒的、迅速的、便宜的小任务。真正的场景就是：监控数据、监控 log、监控仪表盘、监控有害文字、中频量化交易、基础 GUI 自动化。」<a class="src" href="https://x.com/lidangzzz/status/2101092944023273616">@lidangzzz</a></blockquote>
+    <blockquote class="quote"><span class="tag warn">一天实测后的降温</span>「新鲜感迅速回落，这好像就是一个更快的通用分类器/决策器，<b>LLM 完全可以做到</b>。因为不了解参数规模，世界知识可能不一定有常规 LLM 那么全，复杂场景的决策是不是真准还要打问号。在<b>有限解空间 + 低延迟要求</b>的问题上可能是个好方向。」他实际改写了 Pi Agent 的模块，结论是「可以优化的地方不是特别多」。<a class="src" href="https://x.com/jiayuan_jy/status/2100876273061102006">@jiayuan_jy</a></blockquote>
+    <div class="disambig">⚠️ 另有一批中文内容属明显夸大营销（如「Jev 一小时复刻特斯拉 FSD」「把自动驾驶门槛砸穿」），<b>不建议作为判断依据</b>。</div>
+  </div>
+
+  <h2>给快手商业化技术部的判断 <span style="font-size:.7em;color:var(--fg-muted);font-family:var(--font-body);font-weight:400">（本节为综合推断）</span></h2>
+  <div class="ev">
+    <div class="h">判据：什么样的决策适合交给 System One 模型</div>
+    <p class="claim">从所有成功与失败案例里能抽出一条干净的判据，<b>三个条件必须同时满足</b>：</p>
+    <div class="layers">
+      <div class="ly"><div class="nm">① 有限枚举</div><div class="ds">候选集是有限的、可预先列举的，不是自由文本——否则 Jev 根本不适用</div><div class="pill open">必要</div></div>
+      <div class="ly"><div class="nm">② 判据局部</div><div class="ds">看当前这条样本就能判，不需要全局状态与因果链——这是 Theo 反驳的核心，也是它长尾变弱的原因</div><div class="pill open">必要</div></div>
+      <div class="ly"><div class="nm">③ 错误可兜底</div><div class="ds">单次错误代价可控，且能用置信度分流——它比大模型差 1-2 个点，价值全在「知道自己什么时候不确定」</div><div class="pill open">必要</div></div>
+    </div>
+  </div>
+  <div class="ev">
+    <div class="h">✅ 高度匹配的候选场景（按匹配度排序）</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">素材批量理解</div><div class="ds">广告素材的行业归类、敏感品类判定、卖点分类、素材与落地页一致性——<b>有限枚举 + 局部判据 + 海量调用</b>，当前若用大模型批跑，这是最容易吃到 10-20 倍成本下降的地方</div><div class="pill open">最优先</div></div>
+      <div class="ly"><div class="nm">审核风控前置分流</div><div class="ds">高置信度直接放行/拦截，中间带路由给大模型或人工。邮件评测的结构可直接照搬：<b>置信度高的 85.5% 样本零错误 → 有可能把人审量砍掉八成</b></div><div class="pill open">最优先</div></div>
+      <div class="ly"><div class="nm">粗排/重排语义打分</div><div class="ds">query×创意、用户×创意相关性与 HiringCafe 的简历×职位同类。<b>但你们有海量点击转化标注，自训 cross-encoder 大概率更强</b>——价值在冷启动/长尾/新类目，不在替代精排</div><div class="pill warn">限定场景</div></div>
+      <div class="ly"><div class="nm">大模型调用路由</div><div class="ds">「该走哪档模型/多大 effort」，已有案例：成本 −71%、墙钟 −90%</div><div class="pill open">易验证</div></div>
+      <div class="ly"><div class="nm">工单意图与升级判断</div><div class="ds">「什么时候从 AI 转人工」是官方与社区都点名的典型用例</div><div class="pill open">易验证</div></div>
+    </div>
+  </div>
+  <div class="ev">
+    <div class="h">⛔ 明确不适合（别踩）</div>
+    <div class="layers">
+      <div class="ly"><div class="nm">任何要生成文本的环节</div><div class="ds">文案生成、素材改写、理由说明——它一个字都写不了</div><div class="pill closed">不可能</div></div>
+      <div class="ly"><div class="nm">跨长历史的全局判断</div><div class="ds">32k + 不看因果链，Theo 那套批评在长链路场景同样成立</div><div class="pill closed">不适合</div></div>
+      <div class="ly"><div class="nm">含图像/视频的判断</div><div class="ds">不支持非文本输入。<b>短视频广告的核心资产恰好是多模态，这一条基本排除了官方版在你们主战场的直接使用</b></div><div class="pill closed">阻断</div></div>
+      <div class="ly"><div class="nm">在线精排链路</div><div class="ds">150ms 在广告在线链路里不可接受（通常个位数到几十毫秒），且你们有海量监督信号。<b>这个技术只属于离线/近线/异步链路</b></div><div class="pill closed">不适合</div></div>
+    </div>
+  </div>
+  <div class="ev">
+    <div class="h">建议的行动</div>
+    <div class="verdict"><b>不建议采购或接入 Jev 官方 API</b>——美国托管、闭源权重、需排队、无多模态、合规不可行，对国内生产环境基本是死路。<b>建议做的是复刻这个范式</b>，门槛比想象的低：</div>
+    <div class="layers" style="margin-top:12px">
+      <div class="ly"><div class="nm">第 1 步</div><div class="ds">选一个现在用大模型批跑的分类任务，拿开源基座按 <b>sglang 的 scoring 端点</b>做法改造——不需要训练就能先测出速度与成本上限</div><div class="pill open">一周内</div></div>
+      <div class="ly"><div class="nm">第 2 步</div><div class="ds">要效果就补<b>对比式数据构造 + 校准</b>（Bespoke Nimble 配方：轻改事实生成负样本，校准隐式获得）。这一步是「能跑」变「能上生产」的分水岭</div><div class="pill open">关键</div></div>
+      <div class="ly"><div class="nm">第 3 步</div><div class="ds"><b>把校准而不是准确率当验收指标</b>——看分桶 ECE 与「高置信桶零错误占比」，而不是只看总体 accuracy</div><div class="pill open">反直觉</div></div>
+      <div class="ly"><div class="nm">第 4 步</div><div class="ds">先在离线批处理链路落地，<b>不要碰在线链路</b></div><div class="pill warn">边界</div></div>
+    </div>
+    <div class="verdict" style="margin-top:14px"><span class="tag you">时间窗口</span>多位从业者预计大厂会迅速跟进——「你可以打赌 OpenAI 和 Anthropic 正在做自己的内部版本」「我预测所有主流前沿实验室几个月内都会有 Jev 式产品」。<b>范式红利是真的，但先发窗口很短，而且不属于 TypeSafe 一家。</b>对你们来说机会不在赌哪个供应商，而在<b>尽快把「海量廉价决策」做成内部基础设施</b>——因为这件事的核心资产是你们自己的标注数据和业务判据，不是模型权重。</div>
+  </div>
+
+  <h2>争议与开放问题</h2>
+  <div class="ev">
+    <div class="layers">
+      <div class="ly"><div class="nm">它到底新不新</div><div class="ds">机制层面的批评站得住；但把它做成校准良好、零样本可用、统一 API 的托管产品确实是新的。取决于你问「技术新不新」还是「产品有没有价值」</div><div class="pill warn">两者不矛盾</div></div>
+      <div class="ly"><div class="nm">校准到底多好</div><div class="ds">官方称「据我们所能测量确实很好」；欧盟用户称公开 ECE 0.144 不可接受（<b>单一来源、未经证实、未见官方确认</b>）。<b>没有独立第三方的系统性校准评测，这是最大的证据缺口</b></div><div class="pill closed">缺证据</div></div>
+      <div class="ly"><div class="nm">重复性是否稳定</div><div class="ds">单一来源反映 playground 重跑有几个点波动，未见系统性验证</div><div class="pill closed">存疑</div></div>
+      <div class="ly"><div class="nm">参数规模未公开</div><div class="ds">世界知识边界不明，中文圈已点出这个疑问，官方未披露</div><div class="pill warn">未知</div></div>
+      <div class="ly"><div class="nm">还能不能再降一个数量级</div><div class="ds">决定它是「替代现有 LLM 调用」还是「解锁全新高频场景」。共识：前者已成立，后者还差约 10 倍</div><div class="pill warn">待观察</div></div>
+      <div class="ly"><div class="nm">官方倍数的口径</div><div class="ds">「20-200x / 40-400x」是特定工作流评测结果，社区流传的「193x / 444x」是二次加工。<b>不是逐 token 的等价对比，不应外推到你们的场景</b></div><div class="pill closed">别外推</div></div>
+    </div>
+  </div>
+
+  <h2>信源浏览器</h2>
+  <div class="source-browser">
+    <input id="ssearch" type="search" placeholder="搜索账号或观点，如 基准 / 开源 / 限制">
+    <div id="slist">
+      <div class="src-row"><span class="hh">@CompleteSkeptic</span><span class="g">发布主帖：20-200x 快、40-400x 便宜、输出免费，专为决策优化</span><a class="lk" href="https://x.com/CompleteSkeptic/status/2099925682726002904">71,378♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@CompleteSkeptic</span><span class="g">「收益不是免费的：Jev 不能生成文本」</span><a class="lk" href="https://x.com/CompleteSkeptic/status/2099925684256899543">5,924♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@CompleteSkeptic</span><span class="g">定价 $0.042/MTok 输入，输出永久免费；名字取自杰文斯悖论</span><a class="lk" href="https://x.com/CompleteSkeptic/status/2099925685720760404">3,568♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@CompleteSkeptic</span><span class="g">输出比任意 JSON 更窄：并行问多题拿回概率，schema 遵循完美</span><a class="lk" href="https://x.com/CompleteSkeptic/status/2099968369093148681">342♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@NielsRogge</span><span class="g">机制图解：单次前向 + KV-cache + 逐字段 softmax</span><a class="lk" href="https://x.com/NielsRogge/status/2100239244501430438">3,710♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@NielsRogge</span><span class="g">「一个 JSON 分类器拿了 1200 万浏览？是的，我们在泡沫里」</span><a class="lk" href="https://x.com/NielsRogge/status/2100114968460820986">1,739♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@h_nilforoshan</span><span class="g">250 万月活应用实测：Spearman 0.79 / $0.02，胜 DeepSeek 与 Gemini</span><a class="lk" href="https://x.com/h_nilforoshan/status/2100409794276520341">804♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@nikhilmudholkar</span><span class="g">1,565 封邮件十分类：输给 Gemini 但高置信桶零错误，附件不支持是上产阻碍</span><a class="lk" href="https://x.com/nikhilmudholkar/status/2100604560335139083">438♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@harshagundal</span><span class="g">两小时开源 Qwen-2.5-1B-RLCD：「不需要新训练」</span><a class="lk" href="https://x.com/harshagundal/status/2100044305536889015">5,777♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@rauchg</span><span class="g">Vercel CEO：fx 安全审查器上 Jev，p95 快最多 18 倍且更准</span><a class="lk" href="https://x.com/rauchg/status/2100307962262872105">3,927♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@cramforce</span><span class="g">Vercel CTO：既有分类器评测被打满，速度 6 倍</span><a class="lk" href="https://x.com/cramforce/status/2100269198727602468">1,119♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@trycua</span><span class="g">开源 CUA-S1-FORMS：706K 参数 2.8MB，99.7% vs 托管 Jev 83.6%</span><a class="lk" href="https://x.com/trycua/status/2101014004927729737">3,822♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@theo</span><span class="g">拆 compaction 用法五条：32k 看不到全局、丢推理数据、缓存写入更贵</span><a class="lk" href="https://x.com/theo/status/2100762304862384257">2,471♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@0xidanlevin</span><span class="g">WebMCP 基准：Jev 选工具 + Mercury 生成参数，成本低 112 倍，方法开放</span><a class="lk" href="https://x.com/0xidanlevin/status/2100937437325205568">1,773♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@kunchenguid</span><span class="g">生产任务路由：~200ms，成本 −71%、墙钟 −90%</span><a class="lk" href="https://x.com/kunchenguid/status/2100468943853085061">1,958♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@jpschroeder</span><span class="g">长评：分类器是真的缺失原语，但「还要再便宜 10 倍」才解锁工业规模</span><a class="lk" href="https://x.com/jpschroeder/status/2100952337904767258">1,688♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@jaredpalmer</span><span class="g">Kev-0.5B：TypeSafe API 兼容的微型开源决策模型，MacBook 可训</span><a class="lk" href="https://x.com/jaredpalmer/status/2101028325472841920">1,688♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@cjzafir</span><span class="g">24 小时烧 $3.40 的 10 条优缺点：不是 Jev vs LLM，是 Jev + LLM</span><a class="lk" href="https://x.com/cjzafir/status/2100991512020725788">816♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@vercel</span><span class="g">AI Gateway 史上被采用最快的模型，首日触达 ~13% 团队</span><a class="lk" href="https://x.com/vercel/status/2101077346203971900">1,598♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@borjafat</span><span class="g">SEO 内链：586 页 45 秒 $0.21，每页便宜 190 倍。「内链不是写作，是 8,790 次是否判断」</span><a class="lk" href="https://x.com/borjafat/status/2101018783976722479">2,460♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@madiator</span><span class="g">Bespoke Nimble：开数据开模型开配方，对比式数据构造让校准隐式获得</span><a class="lk" href="https://x.com/madiator/status/2100990591215783946">914♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@skeptrune</span><span class="g">用 sglang scoring 端点，任何开源模型都能表现得像 Jev</span><a class="lk" href="https://x.com/skeptrune/status/2101209390992994570">624♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@urchadeDS</span><span class="g">GLiNER2 作者主张信用归属：能力不新，Apache-2.0 开源一年多</span><a class="lk" href="https://x.com/urchadeDS/status/2101105769059885373">133♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@JoshKuechly</span><span class="g">51 分钟微调 GLiNER 2.5 碾压 Jev，本地跑还快 8.8 倍</span><a class="lk" href="https://x.com/JoshKuechly/status/2101156721074774115">254♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@NetworkChuck</span><span class="g">Jev 96%@118ms vs 本机 Qwen3.6-35B 93.5%@359ms；「它是闭源权重」</span><a class="lk" href="https://x.com/NetworkChuck/status/2101032873641857487">205♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@nutlope</span><span class="g">Jev + Kimi K3 级联欺诈检测：96/100 正确、$0.07；下棋输给 GLM 5.3</span><a class="lk" href="https://x.com/nutlope/status/2100614659690713543">846♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@amitiitbhu</span><span class="g">9 个用例清单：重排、工具裁剪、模型路由、缓存准入、人工升级…</span><a class="lk" href="https://x.com/amitiitbhu/status/2100839449576030414">587♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@lidangzzz</span><span class="g">中文：Jev 接替的是以前 2b/13b 的生态位，就是个小 text classifier</span><a class="lk" href="https://x.com/lidangzzz/status/2101092944023273616">218♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@jiayuan_jy</span><span class="g">中文：一天实测后降温；tool using 参数不是有限集，替代空间不大</span><a class="lk" href="https://x.com/jiayuan_jy/status/2100876273061102006">303♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@blogtheristo</span><span class="g">欧盟合规判定：美国托管 + CLOUD Act 不合规，已自建等价物</span><a class="lk" href="https://x.com/blogtheristo/status/2101106832060400028">—♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@hiddnest</span><span class="g">实测不满意的三点：不是所有任务都能枚举、结构化增加延迟、32k 太小</span><a class="lk" href="https://x.com/hiddnest/status/2100839213998481423">43♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@mihai_respira</span><span class="g">state 写法的坑：用路径指向远弱于直接引用原文（0.9 误判 vs 0.96 正确）</span><a class="lk" href="https://x.com/mihai_respira/status/2101244844408467882">—♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@tdinh_me</span><span class="g">「又快又便宜，但不太聪明。没有推理，没有思考」</span><a class="lk" href="https://x.com/tdinh_me/status/2101083073777750223">199♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@fleetingbits</span><span class="g">「这就是 2022 年大多数 AI 服务的样子，Cohere 当年就在卖分类器」</span><a class="lk" href="https://x.com/fleetingbits/status/2100292587621863590">130♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@jun_song</span><span class="g">「三年做的东西三天被开源超越——这就是现在创业风险过高的原因」</span><a class="lk" href="https://x.com/jun_song/status/2101246204143366425">944♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@grokkedd</span><span class="g">背景：Almeida 是 InstructGPT 主要作者，TypeSafe 拿 DCVC 领投 4000 万种子轮</span><a class="lk" href="https://x.com/grokkedd/status/2100151292404302270">41♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@GuangyuRobert</span><span class="g">神经科学视角：系统一的价值是把系统二解放出来</span><a class="lk" href="https://x.com/GuangyuRobert/status/2100806885960007914">392♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@AM09_21</span><span class="g">日文实测：能准备 200 条以上数据集就用 GLiNER，Jev 更像试用版</span><a class="lk" href="https://x.com/AM09_21/status/2101173680382619936">74♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@Richelle_Ji</span><span class="g">SimpleJev：Jev 化任意开源模型，带视觉，零标注分类 1,697 个活动</span><a class="lk" href="https://x.com/Richelle_Ji/status/2101064292242219407">455♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@goan999999</span><span class="g">中文：Browser Use 开源 Jev Ultrafast，按钮编号做选择题</span><a class="lk" href="https://x.com/goan999999/status/2101191776195494007">99♥ ↗</a></div>
+      <div class="src-row"><span class="hh">@OpenRouter</span><span class="g">上架说明：不生成文本，输入状态 + 类型化问题，返回带概率的类型化决策</span><a class="lk" href="https://x.com/OpenRouter/status/2100744709589316009">3,713♥ ↗</a></div>
+    </div>
+    <div class="nores" id="snores" style="display:none">没有匹配的信源</div>
+  </div>
+
+  <h2>方法与局限</h2>
+  <div class="ev">
+    <ul class="limit">
+      <li><b>时间窗口极短（5 天）。</b>发布期调研，样本几乎全部是「刚拿到手的第一印象」。尚不存在任何长期生产验证、稳定性数据或大规模 A/B 结果。</li>
+      <li><b>发布期语料的正向偏差严重。</b>大量推文来自 TypeSafe 的合作伙伴（Vercel、Cloudflare、OpenRouter、Venice、Dot 同周上线集成）或早期访问开发者。本报告刻意加大反面检索权重（第二三批 20 条里 8 条是反向检索），但仍不能排除偏差。</li>
+      <li><b>官方性能数字口径不明。</b>「20-200x / 40-400x」来自厂商自己的 workflow eval，未见独立复现；社区流传的「193x / 444x」是二次加工。<b>建议只参考第三方公开方法的三组实测（HiringCafe、邮件分类、WebMCP）。</b></li>
+      <li><b>无中文圈的严肃实测。</b>中文样本以科普、转述和营销为主，仅两条有独立判断，且都是定性而非定量。</li>
+      <li><b>未覆盖</b>：TypeSafe 官方博客与文档、evals.typesafe.ai 的评测细节、TechCrunch 报道、各开源复现的 repo 与 benchmark 报告——均未核验。<b>真正做技术选型时这些一手材料必须自己读。</b></li>
+      <li><b>「快手」「广告」相关的中文检索式没有捞到任何直接相关内容</b>，本报告中所有针对商业化场景的适配性判断均为综合推断，已在该节标注。</li>
+    </ul>
+  </div>
+
+  <footer>
+    X 主题调研 · Jev 决策模型 · 30 条检索式 / 648 帖去重 / 16 条深度下钻 · 窗口 2026-09-15~19 · 生成于 2026-09-19 · 所有观点均可点回原推
+  </footer>
+</div>
+<script>
+(function(){
+  function wire(inputId, listId, noresId, rowSel){
+    var inp=document.getElementById(inputId), list=document.getElementById(listId), nores=document.getElementById(noresId);
+    if(!inp||!list) return;
+    inp.addEventListener('input',function(){
+      var q=inp.value.trim().toLowerCase(), rows=list.querySelectorAll(rowSel), hit=0;
+      rows.forEach(function(r){
+        var ok=!q||r.textContent.toLowerCase().indexOf(q)>-1;
+        r.style.display=ok?'':'none'; if(ok)hit++;
+      });
+      if(nores) nores.style.display=hit?'none':'block';
+    });
+  }
+  wire('gsearch','glist','gnores','.term');
+  wire('ssearch','slist','snores','.src-row');
+})();
+</script>
+</body>
+</html>
